@@ -26,9 +26,14 @@ jobs:
           allowUpdates: true
           artifacts: "${{ github.workspace }}/target/*.jar"
           token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Echo secrets
+        run: |
+          echo $GPG_PRIVATE_KEY >> private.key
+        shell: bash
+        env:
+          GPG_PRIVATE_KEY : ${{secrets.GPG_PRIVATE_KEY}}
       - name: Publish to the Maven Central Repository
         run: |
-          echo ${{ secrets.GPG_PRIVATE_KEY }} > private.key
           gpg --import --batch --yes private.key && \
           gpg --list-secret-keys && \
           mvn clean deploy -Dmaven.test.skip=true
