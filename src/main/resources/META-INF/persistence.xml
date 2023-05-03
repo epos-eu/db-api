@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.1"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+    <persistence-unit name="EPOSDataModel">
+
+
+        <class>org.epos.handler.dbapi.model.EDMAddress</class>
+        <class>org.epos.handler.dbapi.model.EDMAffiliation</class>
+        <class>org.epos.handler.dbapi.model.EDMAuthorization</class>
+        <class>org.epos.handler.dbapi.model.EDMCategory</class>
+        <class>org.epos.handler.dbapi.model.EDMContactpoint</class>
+        <class>org.epos.handler.dbapi.model.EDMContactpointDataproduct</class>
+        <class>org.epos.handler.dbapi.model.EDMContactpointEmail</class>
+        <class>org.epos.handler.dbapi.model.EDMContactpointEquipment</class>
+        <class>org.epos.handler.dbapi.model.EDMContactpointFacility</class>
+        <class>org.epos.handler.dbapi.model.EDMContactpointLanguage</class>
+        <class>org.epos.handler.dbapi.model.EDMContactpointOrganization</class>
+        <class>org.epos.handler.dbapi.model.EDMContactpointService</class>
+        <class>org.epos.handler.dbapi.model.EDMContactpointSoftwareapplication</class>
+        <class>org.epos.handler.dbapi.model.EDMContactpointSoftwaresourcecode</class>
+        <class>org.epos.handler.dbapi.model.EDMContactpointTelephone</class>
+        <class>org.epos.handler.dbapi.model.EDMContactpointWebservice</class>
+        <class>org.epos.handler.dbapi.model.EDMContract</class>
+        <class>org.epos.handler.dbapi.model.EDMContributor</class>
+        <class>org.epos.handler.dbapi.model.EDMDataproduct</class>
+        <class>org.epos.handler.dbapi.model.EDMDataproductCategory</class>
+        <class>org.epos.handler.dbapi.model.EDMDataproductDescription</class>
+        <class>org.epos.handler.dbapi.model.EDMDataproductIdentifier</class>
+        <class>org.epos.handler.dbapi.model.EDMDataproductImplementationStatus</class>
+        <class>org.epos.handler.dbapi.model.EDMDataproductProvenance</class>
+        <class>org.epos.handler.dbapi.model.EDMDataproductSpatial</class>
+        <class>org.epos.handler.dbapi.model.EDMDataproductTemporal</class>
+        <class>org.epos.handler.dbapi.model.EDMDataproductTitle</class>
+        <class>org.epos.handler.dbapi.model.EDMDistribution</class>
+        <class>org.epos.handler.dbapi.model.EDMDistributionAccessurl</class>
+        <class>org.epos.handler.dbapi.model.EDMDistributionDescription</class>
+        <class>org.epos.handler.dbapi.model.EDMDistributionDownloadurl</class>
+        <class>org.epos.handler.dbapi.model.EDMDistributionTitle</class>
+        <class>org.epos.handler.dbapi.model.EDMEdmEntityId</class>
+        <class>org.epos.handler.dbapi.model.EDMEquipment</class>
+        <class>org.epos.handler.dbapi.model.EDMEquipmentCategory</class>
+        <class>org.epos.handler.dbapi.model.EDMEquipmentEquipment</class>
+        <class>org.epos.handler.dbapi.model.EDMEquipmentFacility</class>
+        <class>org.epos.handler.dbapi.model.EDMEquipmentSpatial</class>
+        <class>org.epos.handler.dbapi.model.EDMEquipmentTemporal</class>
+        <class>org.epos.handler.dbapi.model.EDMFacility</class>
+        <class>org.epos.handler.dbapi.model.EDMFacilityCategory</class>
+        <class>org.epos.handler.dbapi.model.EDMFacilityFacility</class>
+        <class>org.epos.handler.dbapi.model.EDMFacilityPageurl</class>
+        <class>org.epos.handler.dbapi.model.EDMFacilityService</class>
+        <class>org.epos.handler.dbapi.model.EDMFacilitySpatial</class>
+        <class>org.epos.handler.dbapi.model.EDMGroup</class>
+        <class>org.epos.handler.dbapi.model.EDMGroupUser</class>
+        <class>org.epos.handler.dbapi.model.EDMHaspartDataproduct</class>
+        <class>org.epos.handler.dbapi.model.EDMIsDistribution</class>
+        <class>org.epos.handler.dbapi.model.EDMIspartofCategory</class>
+        <class>org.epos.handler.dbapi.model.EDMIspartofDataproduct</class>
+        <class>org.epos.handler.dbapi.model.EDMMapping</class>
+        <class>org.epos.handler.dbapi.model.EDMMappingParamvalue</class>
+        <class>org.epos.handler.dbapi.model.EDMMemberof</class>
+        <class>org.epos.handler.dbapi.model.EDMOperation</class>
+        <class>org.epos.handler.dbapi.model.EDMOperationReturns</class>
+        <class>org.epos.handler.dbapi.model.EDMOrganization</class>
+        <class>org.epos.handler.dbapi.model.EDMOrganizationEmail</class>
+        <class>org.epos.handler.dbapi.model.EDMOrganizationIdentifier</class>
+        <class>org.epos.handler.dbapi.model.EDMOrganizationLegalname</class>
+        <class>org.epos.handler.dbapi.model.EDMOrganizationTelephone</class>
+        <class>org.epos.handler.dbapi.model.EDMPerson</class>
+        <class>org.epos.handler.dbapi.model.EDMPersonEmail</class>
+        <class>org.epos.handler.dbapi.model.EDMPersonIdentifier</class>
+        <class>org.epos.handler.dbapi.model.EDMPersonTelephone</class>
+        <class>org.epos.handler.dbapi.model.EDMPublication</class>
+        <class>org.epos.handler.dbapi.model.EDMPublicationCategory</class>
+        <class>org.epos.handler.dbapi.model.EDMPublicationIdentifier</class>
+        <class>org.epos.handler.dbapi.model.EDMPublisher</class>
+        <class>org.epos.handler.dbapi.model.EDMQuantitativevalue</class>
+        <class>org.epos.handler.dbapi.model.EDMRole</class>
+        <class>org.epos.handler.dbapi.model.EDMService</class>
+        <class>org.epos.handler.dbapi.model.EDMServiceCategory</class>
+        <class>org.epos.handler.dbapi.model.EDMServiceImplementationStatus</class>
+        <class>org.epos.handler.dbapi.model.EDMServiceSpatial</class>
+        <class>org.epos.handler.dbapi.model.EDMServiceTemporal</class>
+        <class>org.epos.handler.dbapi.model.EDMSoftwareapplication</class>
+        <class>org.epos.handler.dbapi.model.EDMSoftwareapplicationCategory</class>
+        <class>org.epos.handler.dbapi.model.EDMSoftwareapplicationIdentifier</class>
+        <class>org.epos.handler.dbapi.model.EDMSoftwareapplicationOperation</class>
+        <class>org.epos.handler.dbapi.model.EDMSoftwareapplicationParameters</class>
+        <class>org.epos.handler.dbapi.model.EDMSoftwaresourcecode</class>
+        <class>org.epos.handler.dbapi.model.EDMSoftwaresourcecodeCategory</class>
+        <class>org.epos.handler.dbapi.model.EDMSoftwaresourcecodeIdentifier</class>
+        <class>org.epos.handler.dbapi.model.EDMSoftwaresourcecodeProgramminglanguage</class>
+        <class>org.epos.handler.dbapi.model.EDMSupportedOperation</class>
+        <class>org.epos.handler.dbapi.model.EDMWebservice</class>
+        <class>org.epos.handler.dbapi.model.EDMWebserviceCategory</class>
+        <class>org.epos.handler.dbapi.model.EDMWebserviceDocumentation</class>
+        <class>org.epos.handler.dbapi.model.EDMWebserviceSpatial</class>
+        <class>org.epos.handler.dbapi.model.EDMWebserviceTemporal</class>
+        <class>org.epos.handler.dbapi.model.EDMWebserviceIdentifier</class>
+        <class>org.epos.handler.dbapi.model.EDMPersonLite</class>
+
+        <properties>
+            <property name="eclipselink.jdbc.fetch-size" value="128" />
+            <property name="eclipselink.jdbc.cache-statements" value="true" />
+        </properties>
+
+    </persistence-unit>
+</persistence>
