@@ -3,6 +3,8 @@ on:
   push:
     tags:
       - '*'
+    branches:
+      - nightly
 jobs:
   publish:
     runs-on: ubuntu-latest
