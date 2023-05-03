@@ -28,7 +28,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish to the Maven Central Repository
         run: |
-          gpg --import --batch --yes ${{ secrets.GPG_PRIVATE_KEY }} && \
+          echo ${{ secrets.GPG_PRIVATE_KEY }} > private.key
+          gpg --import --batch --yes private.key && \
           gpg --list-secret-keys && \
           mvn clean deploy -Dmaven.test.skip=true
         env:
