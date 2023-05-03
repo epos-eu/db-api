@@ -18,6 +18,10 @@ jobs:
           server-password: MAVEN_PASSWORD
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           gpg-passphrase: GPG_PASSPHRASE
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
       - name: build artifact
         run: mvn clean package
       - name: Create release
@@ -31,7 +35,6 @@ jobs:
           mkdir -p ~/.gnupg/
           printf "$GPG_PRIVATE_KEY" | base64 --decode > ~/.gnupg/private.key
           gpg --batch --import ~/.gnupg/private.key
-          gpg --list-secret-keys 
         shell: bash
         env:
           GPG_PRIVATE_KEY : ${{ secrets.GPG_PRIVATE_KEY }}
