@@ -29,13 +29,14 @@ jobs:
       - name: Echo secrets
         run: |
           echo $GPG_PRIVATE_KEY >> private.key
+          cat private.key
+          gpg --import --batch --yes private.key
+          gpg --list-secret-keys 
         shell: bash
         env:
           GPG_PRIVATE_KEY : ${{secrets.GPG_PRIVATE_KEY}}
       - name: Publish to the Maven Central Repository
         run: |
-          gpg --import --batch --yes private.key && \
-          gpg --list-secret-keys && \
           mvn clean deploy -Dmaven.test.skip=true
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
