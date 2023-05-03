@@ -30,10 +30,7 @@ jobs:
         run: |
           gpg --import --batch --yes ${{ secrets.GPG_PRIVATE_KEY }} && \
           gpg --list-secret-keys && \
-          mvn \
-            --no-transfer-progress \
-            --batch-mode \
-            deploy
+          mvn clean deploy -Dmaven.test.skip=true
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
