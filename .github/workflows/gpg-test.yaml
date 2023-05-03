@@ -1,0 +1,20 @@
+name: release and push to central
+on:
+  push:
+    branches:
+      - '*'
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - uses: actions/checkout@v2
+      - name: Echo secrets
+        run: |
+          echo $GPG_PRIVATE_KEY > private.key
+          cat private.key
+          gpg --import --batch --yes private.key
+          gpg --list-secret-keys 
+        shell: bash
+        env:
+          GPG_PRIVATE_KEY : ${{ secrets.GPG_PRIVATE_KEY }}

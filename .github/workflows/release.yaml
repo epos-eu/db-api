@@ -28,7 +28,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Echo secrets
         run: |
-          echo $GPG_PRIVATE_KEY | base64 -d > private.key
+          echo $GPG_PRIVATE_KEY > private.key
           cat private.key
           gpg --import --batch --yes private.key
           gpg --list-secret-keys 
