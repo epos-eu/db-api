@@ -28,7 +28,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish to the Maven Central Repository
         run: |
-          gpg --import --batch --yes ${{ secrets.OSSRH_GPG_SECRET_KEY }} && \
+          gpg --import --batch --yes ${{ secrets.GPG_PRIVATE_KEY }} && \
           gpg --list-secret-keys && \
           mvn \
             --no-transfer-progress \
