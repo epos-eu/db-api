@@ -60,3 +60,8 @@ Let's see some examples to create a new Distribution in the database:
         distributionDB.save(distribution);
 ```
 The behavior is similar for all other methods described in the EPOSDataModel interface.
+
+
+## Contributing
+
+TODO
