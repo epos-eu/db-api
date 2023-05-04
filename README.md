@@ -19,7 +19,7 @@ Within a Maven project it is sufficient to copy to the file *pom.xml*, inside th
 <dependency>
     <groupId>org.epos-eu.ics-c</groupId>
     <artifactId>db-api</artifactId>
-    <version>no-versioning-approval</version>
+    <version>2.3.1</version>
 </dependency>
 ```
 Then you will have to reload the maven project in order to allow it to download the new dependency.
