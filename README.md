@@ -11,7 +11,7 @@ There are three main step required to be able to work with the db-api
 ### 1. Set up maven project
 
 The db-api are available on the maven central repository so you can get the artifact
-[here](https://mvnrepository.com/artifact/org.epos-eu.ics-c/db-api/no-versioning-approval-javadoc). 
+[here](https://mvnrepository.com/artifact/org.epos-eu.ics-c/db-api/2-3-1-javadoc). 
 
 Within a Maven project it is sufficient to copy to the file *pom.xml*, inside the dependencies tag, the following code snippet:
 ```xml
