@@ -20,6 +20,7 @@ public class EPOSDataModelDBAPI {
     public static void save(EPOSDataModelEntity eposDataModel) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
 
         String objectName = eposDataModel.getClass().getSimpleName();
+        System.out.println("EDM"+objectName);
         EPOSDataModel implementationDBAPI = getImplementationDBAPI(objectName);
         implementationDBAPI.save(eposDataModel);
 

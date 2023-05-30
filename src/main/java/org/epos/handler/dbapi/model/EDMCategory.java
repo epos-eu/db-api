@@ -8,12 +8,15 @@ import java.util.Objects;
 @Table(name = "category")
 @NamedQueries({
         @NamedQuery(name = "EDMCategory.findAll", query = "SELECT c FROM EDMCategory c"),
-        @NamedQuery(name = "EDMCategory.findByName", query = "select c from EDMCategory c where c.name = :NAME")
+        @NamedQuery(name = "EDMCategory.findByName", query = "select c from EDMCategory c where c.name = :NAME"),
+        @NamedQuery(name = "EDMCategory.findByUid", query = "select c from EDMCategory c where c.uid = :UID")
 })
 public class EDMCategory {
     private String id;
+    private String uid;
     private String description;
     private String name;
+    private String inscheme;
     private Collection<EDMDataproductCategory> dataproductCategoriesById;
     private Collection<EDMEquipmentCategory> equipmentCategoriesById;
     private Collection<EDMIspartofCategory> ispartofCategoriesById;
@@ -34,6 +37,16 @@ public class EDMCategory {
     public void setId(String id) {
         this.id = id;
     }
+    
+    @Basic
+    @Column(name = "uid")
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     @Basic
     @Column(name = "description")
@@ -53,6 +66,16 @@ public class EDMCategory {
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+    @Basic
+    @Column(name = "in_scheme")
+    public String getScheme() {
+        return inscheme;
+    }
+
+    public void setScheme(String inscheme) {
+        this.inscheme = inscheme;
     }
 
     @Override

@@ -127,12 +127,12 @@ public class ServiceDBAPI extends AbstractDBAPI<Service> {
         if (eposDataModelObject.getCategory() != null) {
             edmObject.setServiceCategoriesByInstanceId(new LinkedList<>());
             for (String categoryName : eposDataModelObject.getCategory()) {
-                EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByName",
-                        "NAME", categoryName);
+                EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByUid",
+                        "UID", categoryName);
 
                 if (edmCategory == null) {
                     edmCategory = new EDMCategory();
-                    edmCategory.setName(categoryName);
+                    edmCategory.setUid(categoryName);
                     edmCategory.setId(UUID.randomUUID().toString());
                     em.persist(edmCategory);
                 }

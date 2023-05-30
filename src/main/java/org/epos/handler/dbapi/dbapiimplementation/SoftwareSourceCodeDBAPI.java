@@ -132,12 +132,12 @@ public class SoftwareSourceCodeDBAPI extends AbstractDBAPI<SoftwareSourceCode> {
         if (eposDataModelObject.getCategory() != null) {
             edmObject.setSoftwaresourcecodeCategoriesByInstanceId(new ArrayList<>());
             for (String categoryName : eposDataModelObject.getCategory()) {
-                EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByName",
+                EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByUid",
                         "NAME", categoryName);
 
                 if (edmCategory == null) {
                     edmCategory = new EDMCategory();
-                    edmCategory.setName(categoryName);
+                    edmCategory.setUid(categoryName);
                     edmCategory.setId(UUID.randomUUID().toString());
                     em.persist(edmCategory);
                 }

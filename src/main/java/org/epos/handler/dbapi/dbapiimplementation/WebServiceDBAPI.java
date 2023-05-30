@@ -131,12 +131,12 @@ public class WebServiceDBAPI extends AbstractDBAPI<WebService> {
 
         if (eposDataModelObject.getCategory() != null) {
             for (String categoryName : eposDataModelObject.getCategory()) {
-                EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByName",
+                EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByUid",
                         "NAME", categoryName);
 
                 if (edmCategory == null) {
                     edmCategory = new EDMCategory();
-                    edmCategory.setName(categoryName);
+                    edmCategory.setUid(categoryName);
                     edmCategory.setId(UUID.randomUUID().toString());
                     em.persist(edmCategory);
                 }

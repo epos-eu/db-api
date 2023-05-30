@@ -9,6 +9,7 @@
         <class>org.epos.handler.dbapi.model.EDMAffiliation</class>
         <class>org.epos.handler.dbapi.model.EDMAuthorization</class>
         <class>org.epos.handler.dbapi.model.EDMCategory</class>
+        <class>org.epos.handler.dbapi.model.EDMCategoryScheme</class>
         <class>org.epos.handler.dbapi.model.EDMContactpoint</class>
         <class>org.epos.handler.dbapi.model.EDMContactpointDataproduct</class>
         <class>org.epos.handler.dbapi.model.EDMContactpointEmail</class>
