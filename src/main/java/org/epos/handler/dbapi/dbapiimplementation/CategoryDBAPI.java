@@ -5,76 +5,125 @@ import org.epos.eposdatamodel.CategoryScheme;
 import org.epos.eposdatamodel.LinkedEntity;
 import org.epos.handler.dbapi.model.*;
 import javax.persistence.EntityManager;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.UUID;
 import static org.epos.handler.dbapi.util.DBUtil.getOneFromDB;
 
 public class CategoryDBAPI extends AbstractDBAPI<Category> {
 
 
-    public CategoryDBAPI() {
-        super("categoryscheme", EDMContract.class);
-    }
+	public CategoryDBAPI() {
+		super("categoryscheme", EDMContract.class);
+	}
 
-    @Override
-    public LinkedEntity save(Category eposDataModelObject, EntityManager em, String edmInstanceId) {
+	@Override
+	public LinkedEntity save(Category eposDataModelObject, EntityManager em, String edmInstanceId) {
 
-        //search for a existing instance placeholder to be populated
-        EDMCategory edmObject = getOneFromDB(em, EDMCategory.class,
-                "EDMCategory.findByUid", "UID", eposDataModelObject.getUid());
+		//search for a existing instance placeholder to be populated
+		EDMCategory edmObject = getOneFromDB(em, EDMCategory.class,
+				"EDMCategory.findByUid", "UID", eposDataModelObject.getUid());
 
-        //if there's a placeholder for the entity check if is passed a specific metaid
-        //only if the metaid is the same of the placeholder merge the two (the placeholder and the passed entity)
-        EDMEdmEntityId edmMetaId;
-        if (edmObject != null &&
-                (eposDataModelObject.getUid() != null && eposDataModelObject.getUid().equals(edmObject.getId()))) {
-            em.merge(edmObject);
-        } else {
-            edmObject = new EDMCategory();
-            edmObject.setId(edmInstanceId);
-            em.persist(edmObject);
+		if (edmObject != null &&
+				(eposDataModelObject.getUid() != null && eposDataModelObject.getUid().equals(edmObject.getId()))) {
+			em.merge(edmObject);
+		} else {
+			edmObject = new EDMCategory();
+			edmObject.setId(edmInstanceId);
+			em.persist(edmObject);
+		}
+		edmObject.setUid(eposDataModelObject.getUid());
+		edmObject.setName(eposDataModelObject.getName());
+		edmObject.setDescription(eposDataModelObject.getDescription());
+		
+		EDMCategoryScheme edmCategoryScheme = null;
+		
+		if (eposDataModelObject.getInScheme() != null) {
+			edmCategoryScheme = getOneFromDB(em, EDMCategoryScheme.class, "EDMCategoryScheme.findByUid",
+					"UID", eposDataModelObject.getInScheme());
+			System.out.println("Persisting "+edmCategoryScheme);
+			if (edmCategoryScheme == null) {
+				CategoryScheme scheme = new CategoryScheme();
+				scheme.setUid(eposDataModelObject.getInScheme());
+				CategorySchemeDBAPI schemeAPI = new CategorySchemeDBAPI();
+				schemeAPI.save(scheme);
 
-            if (eposDataModelObject.getMetaId() == null) {
-                edmMetaId = new EDMEdmEntityId();
-                edmMetaId.setMetaId(UUID.randomUUID().toString());
-                em.persist(edmMetaId);
-            } else {
-                edmMetaId = getOneFromDB(em, EDMEdmEntityId.class,
-                        "edmentityid.findByMetaId",
-                        "METAID", eposDataModelObject.getMetaId());
-                if (edmMetaId == null) {
-                    edmMetaId = new EDMEdmEntityId();
-                    edmMetaId.setMetaId(eposDataModelObject.getMetaId());
-                    em.persist(edmMetaId);
-                }
-            }
+				edmCategoryScheme = getOneFromDB(em, EDMCategoryScheme.class, "EDMCategoryScheme.findByUid",
+						"UID", eposDataModelObject.getInScheme());
+				//edmCategoryScheme = new EDMCategoryScheme();
+				//edmCategoryScheme.setUid(eposDataModelObject.getInScheme());
+				//edmCategoryScheme.setId(UUID.randomUUID().toString());
+				//em.persist(edmCategoryScheme);
+			}
+			edmObject.setScheme(edmCategoryScheme.getId());
+		}
 
-        }
-        edmObject.setUid(eposDataModelObject.getUid());
-        edmObject.setScheme(eposDataModelObject.getInScheme());
-        edmObject.setName(eposDataModelObject.getName());
-        edmObject.setDescription(eposDataModelObject.getDescription());
+		if (eposDataModelObject.getBroader() != null) {
+			EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByUid",
+					"UID", eposDataModelObject.getBroader());
+			if (edmCategory == null) {
+				edmCategory = new EDMCategory();
+				edmCategory.setScheme(edmCategoryScheme.getId());
+				edmCategory.setUid(eposDataModelObject.getBroader());
+				edmCategory.setId(UUID.randomUUID().toString());
+				em.persist(edmCategory);
+			}
 
-        System.out.println(edmObject);
+			EDMIspartofCategory edmIspartOfCategory = new EDMIspartofCategory();
+			edmIspartOfCategory.setCategory1Id(edmCategory.getId());
+			edmIspartOfCategory.setCategoryByCategory1Id(edmCategory);
+			edmIspartOfCategory.setCategory2Id(edmInstanceId);
+			edmIspartOfCategory.setCategoryByCategory2Id(edmObject);
 
-        return new LinkedEntity().entityType(entityString)
-                .instanceId(edmInstanceId)
-                .uid(eposDataModelObject.getUid());
-    }
+			em.persist(edmIspartOfCategory);
+		}
 
-    @Override
-    protected Category mapFromDB(Object edmObject) {
-    	Category o = new Category();
+		if (eposDataModelObject.getNarrower() != null) {
+			for (String categoryName : eposDataModelObject.getNarrower()) {
+				EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByUid",
+						"UID", categoryName);
+				if (edmCategory == null) {
+					edmCategory = new EDMCategory();
+					edmCategory.setScheme(edmCategoryScheme.getId());
+					edmCategory.setUid(categoryName);
+					edmCategory.setId(UUID.randomUUID().toString());
+					em.persist(edmCategory);
+				}
 
-    	EDMCategory edm = (EDMCategory) edmObject;
+
+				EDMIspartofCategory edmIspartOfCategory = new EDMIspartofCategory();
+				edmIspartOfCategory.setCategory2Id(edmCategory.getId());
+				edmIspartOfCategory.setCategoryByCategory2Id(edmCategory);
+				edmIspartOfCategory.setCategory1Id(edmInstanceId);
+				edmIspartOfCategory.setCategoryByCategory1Id(edmObject);
+
+				em.persist(edmIspartOfCategory);
+			}
+
+		}
+
+		System.out.println(edmObject);
+
+		return new LinkedEntity().entityType(entityString)
+				.instanceId(edmInstanceId)
+				.uid(eposDataModelObject.getUid());
+	}
+
+	@Override
+	protected Category mapFromDB(Object edmObject) {
+		Category o = new Category();
+
+		EDMCategory edm = (EDMCategory) edmObject;
 
 
-        o.setInstanceId(edm.getId());
-        o.setUid(edm.getUid());
-        o.setInScheme(edm.getScheme());
-        o.setName(edm.getName());
-        o.setDescription(edm.getDescription());
+		o.setInstanceId(edm.getId());
+		o.setUid(edm.getUid());
+		o.setInScheme(edm.getScheme());
+		o.setName(edm.getName());
+		o.setDescription(edm.getDescription());
 
-        return o;
-    }
+		return o;
+	}
 
 }
