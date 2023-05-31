@@ -91,7 +91,7 @@ public class EDMCategory {
         return Objects.hash(id, description, name);
     }
 
-    @OneToMany(mappedBy = "categoryByCategoryId",fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "categoryByCategoryId",fetch=FetchType.LAZY)
     public Collection<EDMDataproductCategory> getDataproductCategoriesById() {
         return dataproductCategoriesById;
     }
@@ -100,7 +100,7 @@ public class EDMCategory {
         this.dataproductCategoriesById = dataproductCategoriesById;
     }
 
-    @OneToMany(mappedBy = "categoryByCategoryId",fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "categoryByCategoryId",fetch=FetchType.LAZY)
     public Collection<EDMEquipmentCategory> getEquipmentCategoriesById() {
         return equipmentCategoriesById;
     }
@@ -109,7 +109,7 @@ public class EDMCategory {
         this.equipmentCategoriesById = equipmentCategoriesById;
     }
 
-    @OneToMany(mappedBy = "categoryByCategory1Id",fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "categoryByCategory1Id",fetch=FetchType.LAZY)
     public Collection<EDMIspartofCategory> getIspartofCategoriesById() {
         return ispartofCategoriesById;
     }
@@ -118,7 +118,7 @@ public class EDMCategory {
         this.ispartofCategoriesById = ispartofCategoriesById;
     }
 
-    @OneToMany(mappedBy = "categoryByCategory2Id",fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "categoryByCategory2Id",fetch=FetchType.LAZY)
     public Collection<EDMIspartofCategory> getIspartofCategoriesById_0() {
         return ispartofCategoriesById_0;
     }
@@ -127,7 +127,7 @@ public class EDMCategory {
         this.ispartofCategoriesById_0 = ispartofCategoriesById_0;
     }
 
-    @OneToMany(mappedBy = "categoryByCategoryId",fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "categoryByCategoryId",fetch=FetchType.LAZY)
     public Collection<EDMPublicationCategory> getPublicationCategoriesById() {
         return publicationCategoriesById;
     }
@@ -136,7 +136,7 @@ public class EDMCategory {
         this.publicationCategoriesById = publicationCategoriesById;
     }
 
-    @OneToMany(mappedBy = "categoryByCategoryId",fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "categoryByCategoryId",fetch=FetchType.LAZY)
     public Collection<EDMServiceCategory> getServiceCategoriesById() {
         return serviceCategoriesById;
     }
@@ -145,7 +145,7 @@ public class EDMCategory {
         this.serviceCategoriesById = serviceCategoriesById;
     }
 
-    @OneToMany(mappedBy = "categoryByCategoryId",fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "categoryByCategoryId",fetch=FetchType.LAZY)
     public Collection<EDMSoftwareapplicationCategory> getSoftwareapplicationCategoriesById() {
         return softwareapplicationCategoriesById;
     }
@@ -154,7 +154,7 @@ public class EDMCategory {
         this.softwareapplicationCategoriesById = softwareapplicationCategoriesById;
     }
 
-    @OneToMany(mappedBy = "categoryByCategoryId",fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "categoryByCategoryId",fetch=FetchType.LAZY)
     public Collection<EDMSoftwaresourcecodeCategory> getSoftwaresourcecodeCategoriesById() {
         return softwaresourcecodeCategoriesById;
     }
@@ -163,7 +163,7 @@ public class EDMCategory {
         this.softwaresourcecodeCategoriesById = softwaresourcecodeCategoriesById;
     }
 
-    @OneToMany(mappedBy = "categoryByCategoryId",fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "categoryByCategoryId",fetch=FetchType.LAZY)
     public Collection<EDMWebserviceCategory> getWebserviceCategoriesById() {
         return webserviceCategoriesById;
     }
@@ -172,7 +172,7 @@ public class EDMCategory {
         this.webserviceCategoriesById = webserviceCategoriesById;
     }
 
-    @OneToMany(mappedBy = "categoryByCategoryId",fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "categoryByCategoryId",fetch=FetchType.LAZY)
     public Collection<EDMFacilityCategory> getFacilityCategoriesById() {
         return facilityCategoriesById;
     }

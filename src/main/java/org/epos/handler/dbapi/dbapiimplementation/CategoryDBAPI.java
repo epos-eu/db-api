@@ -119,6 +119,9 @@ public class CategoryDBAPI extends AbstractDBAPI<Category> {
 		o.setName(edm.getName());
 		o.setDescription(edm.getDescription());
 		
+		edm.getIspartofCategoriesById_0().isEmpty();
+		edm.getIspartofCategoriesById().isEmpty();
+		
 		if(edm.getIspartofCategoriesById_0().size()==1) 
 			o.setBroader(((List<EDMIspartofCategory>)edm.getIspartofCategoriesById_0()).get(0).getCategory1Id());
 
