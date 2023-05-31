@@ -11,7 +11,7 @@ public class CategorySchemeDBAPI extends AbstractDBAPI<CategoryScheme> {
 
 
     public CategorySchemeDBAPI() {
-        super("categoryscheme", EDMContract.class);
+        super("EDMCategoryScheme", EDMCategoryScheme.class);
     }
 
     @Override

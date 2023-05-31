@@ -17,62 +17,11 @@ public class Tests {
 	
 	public static void main(String[] args) {
 		
-		CategoryScheme seismologyScheme = new CategoryScheme();
-		seismologyScheme.setTitle("Seismology");
-		seismologyScheme.setDescription("It contains the concepts of Seismology");
-		seismologyScheme.setUid("epos:Seismology");
+		CategorySchemeDBAPI scheme = new CategorySchemeDBAPI();
+		System.out.println(scheme.getAll());
 		
-		Category products = new Category();
-		products.setUid("epos:Seismologicalproducts");
-		
-		
-		/*DataProduct dataproductTest = new DataProduct();
-		dataproductTest.setUid("TEST");
-		dataproductTest.setState(State.DRAFT);
-		dataproductTest.setEditorId("test");
-		Identifier identifier = new Identifier();
-		identifier.setIdentifier("test");
-		identifier.setType("test");
-		dataproductTest.addIdentifier(identifier);
-		DataProductDBAPI dbapi = new DataProductDBAPI();*/
-		
-		Category cat = new Category();
-		cat.setName("ciao");
-		cat.setDescription("ciao");
-		cat.setInScheme("test");
-		cat.setUid("ciao");
-		Category cat2 = new Category();
-		cat2.setName("ciao2");
-		cat2.setDescription("ciao2");
-		cat2.setInScheme("test");
-		cat2.setUid("ciao2");
-		ArrayList<String> narrowers = new ArrayList<>();
-		narrowers.add("ciao2");
-		cat.setNarrower(narrowers);
-		cat2.setBroader("ciao");
-		CategoryDBAPI cats = new CategoryDBAPI();
-		cats.save(cat);
-		cats.save(cat2);
-		
-		Category cat3 = new Category();
-		cat3.setName("ciao3");
-		cat3.setDescription("ciao3");
-		cat3.setInScheme("test");
-		cat3.setUid("ciao");
-		cats.save(cat3);
-		
-		
-		CategoryScheme scheme = new CategoryScheme();
-		scheme.setTitle("updatetest");
-		scheme.setDescription("test");
-		scheme.setUid("test");
-		
-		CategorySchemeDBAPI cs = new CategorySchemeDBAPI();
-		cs.save(scheme);
-		
-		//dataproductTest.addCategory("21fbf1d5-738a-4199-9235-1cfa7bfbeaf4");
-
-		//dbapi.save(dataproductTest);
+		CategoryDBAPI cat = new CategoryDBAPI();
+		System.out.println(cat.getAll());
 
 	}
 
