@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 import static org.epos.handler.dbapi.util.DBUtil.getOneFromDB;
 
@@ -51,10 +52,6 @@ public class CategoryDBAPI extends AbstractDBAPI<Category> {
 
 				edmCategoryScheme = getOneFromDB(em, EDMCategoryScheme.class, "EDMCategoryScheme.findByUid",
 						"UID", eposDataModelObject.getInScheme());
-				//edmCategoryScheme = new EDMCategoryScheme();
-				//edmCategoryScheme.setUid(eposDataModelObject.getInScheme());
-				//edmCategoryScheme.setId(UUID.randomUUID().toString());
-				//em.persist(edmCategoryScheme);
 			}
 			edmObject.setScheme(edmCategoryScheme.getId());
 		}
@@ -116,12 +113,23 @@ public class CategoryDBAPI extends AbstractDBAPI<Category> {
 
 		EDMCategory edm = (EDMCategory) edmObject;
 
-
 		o.setInstanceId(edm.getId());
 		o.setUid(edm.getUid());
 		o.setInScheme(edm.getScheme());
 		o.setName(edm.getName());
 		o.setDescription(edm.getDescription());
+		
+		if(edm.getIspartofCategoriesById_0().size()==1) 
+			o.setBroader(((List<EDMIspartofCategory>)edm.getIspartofCategoriesById_0()).get(0).getCategory1Id());
+
+
+		if(edm.getIspartofCategoriesById().size()>0) {
+			ArrayList<String> narrowers = new ArrayList<>();
+			for(EDMIspartofCategory ed : ((List<EDMIspartofCategory>)edm.getIspartofCategoriesById())) {
+				narrowers.add(ed.getCategory2Id());
+			}
+			o.setNarrower(narrowers);
+		}
 
 		return o;
 	}
