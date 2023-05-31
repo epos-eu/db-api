@@ -25,7 +25,7 @@ public class CategorySchemeDBAPI extends AbstractDBAPI<CategoryScheme> {
         //only if the metaid is the same of the placeholder merge the two (the placeholder and the passed entity)
         EDMEdmEntityId edmMetaId;
         if (edmObject != null &&
-                (eposDataModelObject.getUid() != null && eposDataModelObject.getUid().equals(edmObject.getId()))) {
+                (eposDataModelObject.getUid() != null && eposDataModelObject.getUid().equals(edmObject.getUid()))) {
             em.merge(edmObject);
         } else {
             edmObject = new EDMCategoryScheme();
