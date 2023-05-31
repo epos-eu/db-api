@@ -16,6 +16,16 @@ import org.epos.handler.dbapi.model.EDMIspartofCategory;
 public class Tests {
 	
 	public static void main(String[] args) {
+		
+		CategoryScheme seismologyScheme = new CategoryScheme();
+		seismologyScheme.setTitle("Seismology");
+		seismologyScheme.setDescription("It contains the concepts of Seismology");
+		seismologyScheme.setUid("epos:Seismology");
+		
+		Category products = new Category();
+		products.setUid("epos:Seismologicalproducts");
+		
+		
 		/*DataProduct dataproductTest = new DataProduct();
 		dataproductTest.setUid("TEST");
 		dataproductTest.setState(State.DRAFT);

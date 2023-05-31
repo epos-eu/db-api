@@ -26,7 +26,7 @@ public class CategoryDBAPI extends AbstractDBAPI<Category> {
 				"EDMCategory.findByUid", "UID", eposDataModelObject.getUid());
 
 		if (edmObject != null &&
-				(eposDataModelObject.getUid() != null && eposDataModelObject.getUid().equals(edmObject.getId()))) {
+				(eposDataModelObject.getUid() != null && eposDataModelObject.getUid().equals(edmObject.getUid()))) {
 			em.merge(edmObject);
 		} else {
 			edmObject = new EDMCategory();
