@@ -138,7 +138,7 @@ public class FacilityDBAPI extends AbstractDBAPI<Facility> {
             edmObject.setFacilityCategoriesByInstanceId(new LinkedList<>());
             for (String categoryName : eposDataModelObject.getCategory()) {
                 EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByUid",
-                        "NAME", categoryName);
+                        "UID", categoryName);
 
                 if (edmCategory == null) {
                     edmCategory = new EDMCategory();
