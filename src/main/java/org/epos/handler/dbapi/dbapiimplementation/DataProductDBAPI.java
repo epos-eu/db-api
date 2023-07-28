@@ -529,10 +529,9 @@ public class DataProductDBAPI extends AbstractDBAPI<DataProduct> {
         o.setAccrualPeriodicity(edm.getAccrualperiodicity());
         o.setCategory(
                 edm.getDataproductCategoriesByInstanceId() != null ?
-                        edm.getDataproductCategoriesByInstanceId().stream()
-                                .map(EDMDataproductCategory::getCategoryByCategoryId)
-                                .map(EDMCategory::getName)
-                                .collect(Collectors.toList())
+                		edm.getDataproductCategoriesByInstanceId().stream()
+                        		.map(EDMDataproductCategory::getCategoryByCategoryId)
+                        		.map(EDMCategory::getUid).collect(Collectors.toList())
                         : null
         );
         o.setHasQualityAnnotation(edm.getHasQualityAnnotation());

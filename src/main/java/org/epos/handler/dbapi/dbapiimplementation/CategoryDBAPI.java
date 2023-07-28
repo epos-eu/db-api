@@ -100,8 +100,6 @@ public class CategoryDBAPI extends AbstractDBAPI<Category> {
 
 		}
 
-		System.out.println(edmObject);
-
 		return new LinkedEntity().entityType(entityString)
 				.instanceId(edmInstanceId)
 				.uid(eposDataModelObject.getUid());
