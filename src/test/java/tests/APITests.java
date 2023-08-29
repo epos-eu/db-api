@@ -37,18 +37,23 @@ public class APITests {
 		tsunami.setUid("category:tsunami");
 		tsunami.setDescription("TCS Domain");
 		
+		schemeCatAPI.save(tsunami);
+		
 		Category tsunamidata = new Category();
 		tsunamidata.setUid("category:tsunamidata");
 		tsunamidata.setName("Tsunami Data");
 		tsunamidata.setDescription("TCS Subdomain");
 		tsunamidata.setInScheme("category:tsunami");
 		tsunamidata.setNarrower(Arrays.asList("category:sealevelstatimitgfacilitydatavliz"));
+		catAPI.save(tsunamidata);
 		
 		Category sealevelstatimitgfacilitydatavliz = new Category();
 		sealevelstatimitgfacilitydatavliz.setUid("category:sealevelstatimitgfacilitydatavliz");
 		sealevelstatimitgfacilitydatavliz.setName("Tsunami Data");
 		sealevelstatimitgfacilitydatavliz.setDescription("TCS Subdomain");
 		sealevelstatimitgfacilitydatavliz.setInScheme("category:tsunami");
+		sealevelstatimitgfacilitydatavliz.setBroader(Arrays.asList("category:tsunamidata"));
+		catAPI.save(sealevelstatimitgfacilitydatavliz);
 	}
 	
 	public static Person getPersonUsingDBAPIClient() {

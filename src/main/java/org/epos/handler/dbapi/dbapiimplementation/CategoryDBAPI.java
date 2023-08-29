@@ -60,7 +60,7 @@ public class CategoryDBAPI extends AbstractDBAPI<Category> {
 
 			for (String categoryName : eposDataModelObject.getBroader()) {
 				EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByUid",
-						"UID", eposDataModelObject.getBroader());
+						"UID", categoryName);
 
 				boolean exists = true;
 
