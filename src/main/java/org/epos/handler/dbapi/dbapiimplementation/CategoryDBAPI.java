@@ -37,9 +37,9 @@ public class CategoryDBAPI extends AbstractDBAPI<Category> {
 		edmObject.setUid(eposDataModelObject.getUid());
 		edmObject.setName(eposDataModelObject.getName());
 		edmObject.setDescription(eposDataModelObject.getDescription());
-		
+
 		EDMCategoryScheme edmCategoryScheme = null;
-		
+
 		if (eposDataModelObject.getInScheme() != null) {
 			edmCategoryScheme = getOneFromDB(em, EDMCategoryScheme.class, "EDMCategoryScheme.findByUid",
 					"UID", eposDataModelObject.getInScheme());
@@ -57,37 +57,40 @@ public class CategoryDBAPI extends AbstractDBAPI<Category> {
 		}
 
 		if (eposDataModelObject.getBroader() != null) {
-			EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByUid",
-					"UID", eposDataModelObject.getBroader());
 
-			boolean exists = true;
-			
-			if (edmCategory == null) {
-				exists = false;
-				edmCategory = new EDMCategory();
-				edmCategory.setScheme(edmCategoryScheme.getId());
-				edmCategory.setUid(eposDataModelObject.getBroader());
-				edmCategory.setId(UUID.randomUUID().toString());
-				em.persist(edmCategory);
+			for (String categoryName : eposDataModelObject.getBroader()) {
+				EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByUid",
+						"UID", eposDataModelObject.getBroader());
+
+				boolean exists = true;
+
+				if (edmCategory == null) {
+					exists = false;
+					edmCategory = new EDMCategory();
+					edmCategory.setScheme(edmCategoryScheme.getId());
+					edmCategory.setUid(categoryName);
+					edmCategory.setId(UUID.randomUUID().toString());
+					em.persist(edmCategory);
+				}
+
+				EDMIspartofCategory edmIspartOfCategory = new EDMIspartofCategory();
+				edmIspartOfCategory.setCategory1Id(edmCategory.getId());
+				edmIspartOfCategory.setCategoryByCategory1Id(edmCategory);
+				edmIspartOfCategory.setCategory2Id(edmInstanceId);
+				edmIspartOfCategory.setCategoryByCategory2Id(edmObject);
+
+				if(exists)em.merge(edmIspartOfCategory);
+				else em.persist(edmIspartOfCategory);
 			}
-
-			EDMIspartofCategory edmIspartOfCategory = new EDMIspartofCategory();
-			edmIspartOfCategory.setCategory1Id(edmCategory.getId());
-			edmIspartOfCategory.setCategoryByCategory1Id(edmCategory);
-			edmIspartOfCategory.setCategory2Id(edmInstanceId);
-			edmIspartOfCategory.setCategoryByCategory2Id(edmObject);
-
-			if(exists)em.merge(edmIspartOfCategory);
-			else em.persist(edmIspartOfCategory);
 		}
 
 		if (eposDataModelObject.getNarrower() != null) {
 			for (String categoryName : eposDataModelObject.getNarrower()) {
 				EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByUid",
 						"UID", categoryName);
-				
+
 				boolean exists = true;
-				
+
 				if (edmCategory == null) {
 					exists = false;
 					edmCategory = new EDMCategory();
@@ -103,7 +106,7 @@ public class CategoryDBAPI extends AbstractDBAPI<Category> {
 				edmIspartOfCategory.setCategoryByCategory2Id(edmCategory);
 				edmIspartOfCategory.setCategory1Id(edmInstanceId);
 				edmIspartOfCategory.setCategoryByCategory1Id(edmObject);
-				
+
 				if(exists)em.merge(edmIspartOfCategory);
 				else em.persist(edmIspartOfCategory);
 			}
@@ -126,13 +129,17 @@ public class CategoryDBAPI extends AbstractDBAPI<Category> {
 		o.setInScheme(edm.getScheme());
 		o.setName(edm.getName());
 		o.setDescription(edm.getDescription());
-		
+
 		edm.getIspartofCategoriesById_0().isEmpty();
 		edm.getIspartofCategoriesById().isEmpty();
-		
-		if(edm.getIspartofCategoriesById_0().size()==1) 
-			o.setBroader(((List<EDMIspartofCategory>)edm.getIspartofCategoriesById_0()).get(0).getCategory1Id());
 
+		if(edm.getIspartofCategoriesById_0().size()>0) {
+			ArrayList<String> broaders = new ArrayList<>();
+			for(EDMIspartofCategory ed : ((List<EDMIspartofCategory>)edm.getIspartofCategoriesById_0())) {
+				broaders.add(ed.getCategory1Id());
+			}
+			o.setBroader(broaders);
+		}
 
 		if(edm.getIspartofCategoriesById().size()>0) {
 			ArrayList<String> narrowers = new ArrayList<>();

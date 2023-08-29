@@ -3,6 +3,7 @@ package tests;
 import static org.epos.eposdatamodel.State.DRAFT;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -31,78 +32,23 @@ public class APITests {
 		CategoryDBAPI catAPI = new CategoryDBAPI();
 		CategorySchemeDBAPI schemeCatAPI = new CategorySchemeDBAPI();
 		
-		CategoryScheme scheme = new CategoryScheme();
-		scheme.setTitle("Scheme");
-		scheme.setUid("scheme");
-		scheme.setDescription("scheme test");
+		CategoryScheme tsunami = new CategoryScheme();
+		tsunami.setTitle("Tsunami");
+		tsunami.setUid("category:tsunami");
+		tsunami.setDescription("TCS Domain");
 		
-		schemeCatAPI.save(scheme);
+		Category tsunamidata = new Category();
+		tsunamidata.setUid("category:tsunamidata");
+		tsunamidata.setName("Tsunami Data");
+		tsunamidata.setDescription("TCS Subdomain");
+		tsunamidata.setInScheme("category:tsunami");
+		tsunamidata.setNarrower(Arrays.asList("category:sealevelstatimitgfacilitydatavliz"));
 		
-		List<String> narrowers1 = new ArrayList<String>();
-		narrowers1.add("son1");
-		narrowers1.add("son3");
-		List<String> narrowers2 = new ArrayList<String>();
-		narrowers2.add("son2");
-		narrowers2.add("son3");
-		
-		Category catFather1 = new Category();
-		catFather1.setUid("father1");
-		catFather1.setName("Father 1");
-		catFather1.setDescription("father 1 test");
-		catFather1.setInScheme("scheme");
-		catFather1.setNarrower(narrowers1);
-		
-		catAPI.save(catFather1);
-		
-		
-		Category catSon1 = new Category();
-		catSon1.setUid("son1");
-		catSon1.setName("Son 1");
-		catSon1.setDescription("son 1 test");
-		catSon1.setInScheme("scheme");
-		catSon1.setBroader("father1");
-		
-		catAPI.save(catSon1);
-		
-		Category catSon3 = new Category();
-		catSon3.setUid("son3");
-		catSon3.setName("Son 3");
-		catSon3.setDescription("son 3 test");
-		catSon3.setInScheme("scheme");
-		catSon3.setBroader("father1");
-		
-		catAPI.save(catSon3);
-		
-		
-		Category catFather2 = new Category();
-		catFather2.setUid("father2");
-		catFather2.setName("Father 2");
-		catFather2.setDescription("father 2 test");
-		catFather2.setInScheme("scheme");
-		catFather2.setNarrower(narrowers2);
-		
-		catAPI.save(catFather2);
-		
-		Category catSon2 = new Category();
-		catSon2.setUid("son2");
-		catSon2.setName("Son 2");
-		catSon2.setDescription("son 2 test");
-		catSon2.setInScheme("scheme");
-		catSon2.setBroader("father2");
-		
-		catAPI.save(catSon2);
-		
-		catSon3 = new Category();
-		catSon3.setUid("son3");
-		catSon3.setName("Son 3");
-		catSon3.setDescription("son 3 test");
-		catSon3.setInScheme("scheme");
-		catSon3.setBroader("father2");
-		
-		catAPI.save(catSon3);
-		
-		
-		//System.out.println(getPersonUsingDBAPIClient());
+		Category sealevelstatimitgfacilitydatavliz = new Category();
+		sealevelstatimitgfacilitydatavliz.setUid("category:sealevelstatimitgfacilitydatavliz");
+		sealevelstatimitgfacilitydatavliz.setName("Tsunami Data");
+		sealevelstatimitgfacilitydatavliz.setDescription("TCS Subdomain");
+		sealevelstatimitgfacilitydatavliz.setInScheme("category:tsunami");
 	}
 	
 	public static Person getPersonUsingDBAPIClient() {

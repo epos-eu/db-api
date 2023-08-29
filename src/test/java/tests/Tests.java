@@ -29,7 +29,9 @@ public class Tests {
 
 				if(cat.getBroader()!=null) {
 					System.out.println("--------- BROADER ----------");
-					recursivePrint(categoriesList, cat.getBroader());
+					for(String uid : cat.getBroader()) {
+						recursivePrint(categoriesList, uid);
+					}
 					System.out.println("--------- END BROADER ----------");
 				}
 				if(cat.getNarrower()!=null) {
