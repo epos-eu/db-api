@@ -47,12 +47,20 @@ public class APITests {
 		tsunamidata.setNarrower(Arrays.asList("category:sealevelstatimitgfacilitydatavliz"));
 		catAPI.save(tsunamidata);
 		
+		Category tsunamitest = new Category();
+		tsunamitest.setUid("category:tsunamitest");
+		tsunamitest.setName("Tsunami Test");
+		tsunamitest.setDescription("TCS Subdomain");
+		tsunamitest.setInScheme("category:tsunami");
+		tsunamitest.setNarrower(Arrays.asList("category:sealevelstatimitgfacilitydatavliz"));
+		catAPI.save(tsunamidata);
+		
 		Category sealevelstatimitgfacilitydatavliz = new Category();
 		sealevelstatimitgfacilitydatavliz.setUid("category:sealevelstatimitgfacilitydatavliz");
 		sealevelstatimitgfacilitydatavliz.setName("Tsunami Data");
 		sealevelstatimitgfacilitydatavliz.setDescription("TCS Subdomain");
 		sealevelstatimitgfacilitydatavliz.setInScheme("category:tsunami");
-		sealevelstatimitgfacilitydatavliz.setBroader(Arrays.asList("category:tsunamidata"));
+		sealevelstatimitgfacilitydatavliz.setBroader(Arrays.asList("category:tsunamidata","category:tsunamitest"));
 		catAPI.save(sealevelstatimitgfacilitydatavliz);
 	}
 	
