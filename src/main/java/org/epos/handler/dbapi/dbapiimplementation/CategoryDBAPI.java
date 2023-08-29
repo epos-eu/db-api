@@ -59,7 +59,11 @@ public class CategoryDBAPI extends AbstractDBAPI<Category> {
 		if (eposDataModelObject.getBroader() != null) {
 			EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByUid",
 					"UID", eposDataModelObject.getBroader());
+
+			boolean exists = true;
+			
 			if (edmCategory == null) {
+				exists = false;
 				edmCategory = new EDMCategory();
 				edmCategory.setScheme(edmCategoryScheme.getId());
 				edmCategory.setUid(eposDataModelObject.getBroader());
@@ -73,14 +77,19 @@ public class CategoryDBAPI extends AbstractDBAPI<Category> {
 			edmIspartOfCategory.setCategory2Id(edmInstanceId);
 			edmIspartOfCategory.setCategoryByCategory2Id(edmObject);
 
-			em.persist(edmIspartOfCategory);
+			if(exists)em.merge(edmIspartOfCategory);
+			else em.persist(edmIspartOfCategory);
 		}
 
 		if (eposDataModelObject.getNarrower() != null) {
 			for (String categoryName : eposDataModelObject.getNarrower()) {
 				EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByUid",
 						"UID", categoryName);
+				
+				boolean exists = true;
+				
 				if (edmCategory == null) {
+					exists = false;
 					edmCategory = new EDMCategory();
 					edmCategory.setScheme(edmCategoryScheme.getId());
 					edmCategory.setUid(categoryName);
@@ -94,8 +103,9 @@ public class CategoryDBAPI extends AbstractDBAPI<Category> {
 				edmIspartOfCategory.setCategoryByCategory2Id(edmCategory);
 				edmIspartOfCategory.setCategory1Id(edmInstanceId);
 				edmIspartOfCategory.setCategoryByCategory1Id(edmObject);
-
-				em.persist(edmIspartOfCategory);
+				
+				if(exists)em.merge(edmIspartOfCategory);
+				else em.persist(edmIspartOfCategory);
 			}
 
 		}
