@@ -39,6 +39,21 @@ public class APITests {
 		
 		schemeCatAPI.save(tsunami);
 		
+		Category sealevelstatimitgfacilitydatavliz = new Category();
+		sealevelstatimitgfacilitydatavliz.setUid("category:sealevelstatimitgfacilitydatavliz");
+		sealevelstatimitgfacilitydatavliz.setName("Tsunami Data");
+		sealevelstatimitgfacilitydatavliz.setDescription("TCS Subdomain");
+		sealevelstatimitgfacilitydatavliz.setInScheme("category:tsunami");
+		sealevelstatimitgfacilitydatavliz.setBroader(Arrays.asList("category:tsunamidata","category:tsunamitest"));
+		catAPI.save(sealevelstatimitgfacilitydatavliz);
+		
+		Category test = new Category();
+		test.setUid("category:test");
+		test.setName("Tsunami TEST");
+		test.setDescription("TCS Subdomain");
+		test.setInScheme("category:tsunami");
+		catAPI.save(test);
+		
 		Category tsunamidata = new Category();
 		tsunamidata.setUid("category:tsunamidata");
 		tsunamidata.setName("Tsunami Data");
@@ -53,15 +68,7 @@ public class APITests {
 		tsunamitest.setDescription("TCS Subdomain");
 		tsunamitest.setInScheme("category:tsunami");
 		tsunamitest.setNarrower(Arrays.asList("category:sealevelstatimitgfacilitydatavliz"));
-		catAPI.save(tsunamidata);
-		
-		Category sealevelstatimitgfacilitydatavliz = new Category();
-		sealevelstatimitgfacilitydatavliz.setUid("category:sealevelstatimitgfacilitydatavliz");
-		sealevelstatimitgfacilitydatavliz.setName("Tsunami Data");
-		sealevelstatimitgfacilitydatavliz.setDescription("TCS Subdomain");
-		sealevelstatimitgfacilitydatavliz.setInScheme("category:tsunami");
-		sealevelstatimitgfacilitydatavliz.setBroader(Arrays.asList("category:tsunamidata","category:tsunamitest"));
-		catAPI.save(sealevelstatimitgfacilitydatavliz);
+		catAPI.save(tsunamitest);
 	}
 	
 	public static Person getPersonUsingDBAPIClient() {

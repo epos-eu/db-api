@@ -43,7 +43,6 @@ public class CategoryDBAPI extends AbstractDBAPI<Category> {
 		if (eposDataModelObject.getInScheme() != null) {
 			edmCategoryScheme = getOneFromDB(em, EDMCategoryScheme.class, "EDMCategoryScheme.findByUid",
 					"UID", eposDataModelObject.getInScheme());
-			System.out.println("Persisting "+edmCategoryScheme);
 			if (edmCategoryScheme == null) {
 				CategoryScheme scheme = new CategoryScheme();
 				scheme.setUid(eposDataModelObject.getInScheme());
@@ -57,9 +56,6 @@ public class CategoryDBAPI extends AbstractDBAPI<Category> {
 		}
 
 		if (eposDataModelObject.getBroader() != null) {
-			
-			System.out.println(eposDataModelObject.getBroader());
-
 			for (String categoryName : eposDataModelObject.getBroader()) {
 				EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByUid",
 						"UID", categoryName);
@@ -70,15 +66,25 @@ public class CategoryDBAPI extends AbstractDBAPI<Category> {
 					edmCategory.setUid(categoryName);
 					edmCategory.setId(UUID.randomUUID().toString());
 					em.persist(edmCategory);
+					
+					EDMIspartofCategory edmIspartOfCategory = new EDMIspartofCategory();
+					edmIspartOfCategory.setCategory1Id(edmCategory.getId());
+					edmIspartOfCategory.setCategoryByCategory1Id(edmCategory);
+					edmIspartOfCategory.setCategory2Id(edmInstanceId);
+					edmIspartOfCategory.setCategoryByCategory2Id(edmObject);
+					
+					em.persist(edmIspartOfCategory);
+				} else {
+					EDMIspartofCategory edmIspartOfCategory = new EDMIspartofCategory();
+					edmIspartOfCategory.setCategory1Id(edmCategory.getId());
+					edmIspartOfCategory.setCategoryByCategory1Id(edmCategory);
+					edmIspartOfCategory.setCategory2Id(edmInstanceId);
+					edmIspartOfCategory.setCategoryByCategory2Id(edmObject);
+					
+					em.merge(edmIspartOfCategory);
 				}
 
-				EDMIspartofCategory edmIspartOfCategory = new EDMIspartofCategory();
-				edmIspartOfCategory.setCategory1Id(edmCategory.getId());
-				edmIspartOfCategory.setCategoryByCategory1Id(edmCategory);
-				edmIspartOfCategory.setCategory2Id(edmInstanceId);
-				edmIspartOfCategory.setCategoryByCategory2Id(edmObject);
 				
-				em.persist(edmIspartOfCategory);
 			}
 		}
 
@@ -93,16 +99,26 @@ public class CategoryDBAPI extends AbstractDBAPI<Category> {
 					edmCategory.setUid(categoryName);
 					edmCategory.setId(UUID.randomUUID().toString());
 					em.persist(edmCategory);
+					
+					EDMIspartofCategory edmIspartOfCategory = new EDMIspartofCategory();
+					edmIspartOfCategory.setCategory2Id(edmCategory.getId());
+					edmIspartOfCategory.setCategoryByCategory2Id(edmCategory);
+					edmIspartOfCategory.setCategory1Id(edmInstanceId);
+					edmIspartOfCategory.setCategoryByCategory1Id(edmObject);
+
+					em.persist(edmIspartOfCategory);
+				}else {
+					EDMIspartofCategory edmIspartOfCategory = new EDMIspartofCategory();
+					edmIspartOfCategory.setCategory2Id(edmCategory.getId());
+					edmIspartOfCategory.setCategoryByCategory2Id(edmCategory);
+					edmIspartOfCategory.setCategory1Id(edmInstanceId);
+					edmIspartOfCategory.setCategoryByCategory1Id(edmObject);
+
+					em.merge(edmIspartOfCategory);
 				}
 
 
-				EDMIspartofCategory edmIspartOfCategory = new EDMIspartofCategory();
-				edmIspartOfCategory.setCategory2Id(edmCategory.getId());
-				edmIspartOfCategory.setCategoryByCategory2Id(edmCategory);
-				edmIspartOfCategory.setCategory1Id(edmInstanceId);
-				edmIspartOfCategory.setCategoryByCategory1Id(edmObject);
-
-				em.persist(edmIspartOfCategory);
+				
 			}
 
 		}
