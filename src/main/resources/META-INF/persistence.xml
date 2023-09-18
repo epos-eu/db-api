@@ -99,6 +99,7 @@
         <class>org.epos.handler.dbapi.model.EDMWebserviceTemporal</class>
         <class>org.epos.handler.dbapi.model.EDMWebserviceIdentifier</class>
         <class>org.epos.handler.dbapi.model.EDMPersonLite</class>
+        <class>org.epos.handler.dbapi.model.EDMWebserviceRelation</class>
 
         <properties>
             <property name="eclipselink.jdbc.fetch-size" value="128" />

@@ -340,6 +340,46 @@ public class WebServiceDBAPI extends AbstractDBAPI<WebService> {
             }
         }
 
+        if (eposDataModelObject.getRelation() != null) {
+            edmObject.setWebserviceRelationByInstanceId(new ArrayList<>());
+            for (LinkedEntity linkedEntity : eposDataModelObject.getRelation()) {
+                EDMWebservice instance = null;
+
+                if (linkedEntity.getInstanceId() != null) {
+                    instance = getOneFromDB(em, EDMWebservice.class,
+                            "webservice.findByInstanceId", "INSTANCEID", linkedEntity.getInstanceId());
+                }
+                if (linkedEntity.getInstanceId() == null || instance == null) {
+                    List<EDMWebservice> instanceList = getFromDB(em, EDMWebservice.class,
+                            "webservice.findByUid", "UID", linkedEntity.getUid());
+
+                    instanceList.sort(EDMUtil::compareEntityVersion);
+
+                    instance = !instanceList.isEmpty() ? instanceList.get(0) : null;
+                }
+
+                if (instance == null) {
+                    EDMEdmEntityId edmOpMetaId = new EDMEdmEntityId();
+                    edmOpMetaId.setMetaId(UUID.randomUUID().toString());
+                    em.persist(edmOpMetaId);
+
+                    instance = new EDMWebservice();
+                    instance.setUid(linkedEntity.getUid());
+                    instance.setState(State.PLACEHOLDER.toString());
+                    instance.setInstanceId(UUID.randomUUID().toString());
+                    instance.setEdmEntityIdByMetaId(edmOpMetaId);
+                    em.persist(instance);
+
+                }
+
+                EDMWebserviceRelation edmWebserviceRelation = new EDMWebserviceRelation();
+                edmWebserviceRelation.setWebserviceByInstanceWebserviceId(edmObject);
+                edmWebserviceRelation.setWebserviceByInstanceWebserviceId_0(instance);
+                
+                edmObject.getWebserviceRelationByInstanceId().add(edmWebserviceRelation);
+            }
+        }
+
         edmObject.setAaaitypes(eposDataModelObject.getAaaiTypes());
 
         return new LinkedEntity().entityType(entityString)
@@ -479,6 +519,17 @@ public class WebServiceDBAPI extends AbstractDBAPI<WebService> {
                                     .instanceId(e.getInstanceId())
                                     .uid(e.getUid())
                                     .entityType("Operation")));
+        }
+        if(edm.getWebserviceRelationByInstanceId()!=null) {
+            o.setRelation(new LinkedList<>());
+            edm.getWebserviceRelationByInstanceId().stream()
+                    .map(EDMWebserviceRelation::getWebserviceByInstanceWebserviceId_0)
+                    .forEach(e -> o.getRelation().add(
+                            new LinkedEntity()
+                                    .metaId(e.getMetaId())
+                                    .instanceId(e.getInstanceId())
+                                    .uid(e.getUid())
+                                    .entityType("Webservice")));
         }
 
         return o;

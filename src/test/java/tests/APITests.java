@@ -15,6 +15,7 @@ import org.epos.eposdatamodel.Identifier;
 import org.epos.eposdatamodel.LinkedEntity;
 import org.epos.eposdatamodel.Person;
 import org.epos.eposdatamodel.State;
+import org.epos.eposdatamodel.WebService;
 import org.epos.handler.dbapi.DBAPIClient;
 import org.epos.handler.dbapi.dbapiimplementation.CategoryDBAPI;
 import org.epos.handler.dbapi.dbapiimplementation.CategorySchemeDBAPI;
@@ -1029,8 +1030,152 @@ public class APITests {
 			+ "}";
 
 	public static void main(String[] args) {
+
+		DBAPIClient dbapi = new DBAPIClient();
 		
-		Gson gson = new Gson();
+		WebService a = new WebService();
+		a.setUid("a");
+		a.setState(State.DRAFT);
+		a.setEditorId("ingestor");
+		
+		LinkedEntity leA = dbapi.create(a);
+		System.out.println(leA);
+		
+		WebService b = new WebService();
+		b.setUid("b");
+		b.setState(State.DRAFT);
+		b.setEditorId("ingestor");
+
+		ArrayList<LinkedEntity> les = new ArrayList<>();
+		les.add(leA);
+		b.setRelation(les);
+		
+		LinkedEntity leB = dbapi.create(b);
+		System.out.println(leB);
+		
+		/*DataProduct dp = new DataProduct();
+		dp.setUid("prova-vv");
+		dp.setState(State.DRAFT);
+		dp.setEditorId("ingestor");
+		
+		LinkedEntity leDataproduct = dbapi.create(dp);
+		System.out.println(leDataproduct);
+		
+		Distribution d = new Distribution();
+		d.setUid("prova-vv distribution");
+		d.setState(State.DRAFT);
+		d.setEditorId("ingestor");
+		ArrayList<LinkedEntity> dataproducts = new ArrayList<>();
+		dataproducts.add(leDataproduct);
+		d.setDataProduct(dataproducts);
+		
+		LinkedEntity leDistribution = dbapi.create(d);
+		System.out.println(leDistribution);
+		
+		WebService ws = new WebService();
+		ws.setUid("prova-vv webservice");
+		ws.setState(State.DRAFT);
+		ws.setEditorId("ingestor");
+		
+		LinkedEntity leWebService = dbapi.create(ws);
+		System.out.println(leWebService);
+		
+		d.setInstanceId(leDistribution.getInstanceId());
+		d.setMetaId(leDistribution.getMetaId());
+		d.setAccessService(leWebService);
+		
+		dbapi.update(d, new DBAPIClient.UpdateQuery().hardUpdate(true));*/
+		
+		
+		
+		/*dp.setInstanceId(leDataproduct.getInstanceId());
+		dp.setMetaId(leDataproduct.getMetaId());
+		
+		dbapi.update(dp, new DBAPIClient.UpdateQuery().hardUpdate(true));*/
+		
+		
+	}
+	
+	public static Person getPersonUsingDBAPIClient() {
+		DBAPIClient client = new DBAPIClient();
+		LinkedEntity l = new LinkedEntity();
+		l.setEntityType("Person");
+		l.setInstanceId("870f1195-1391-4416-957c-747c8c7867fb");
+		l.setMetaId("8ad830f8-946d-43b1-bceb-84910aae506e");
+		l.setUid("http://orcid.org/0000-0001-8626-2703");
+		
+		List<Person> d = client.retrieve(Person.class,
+				new DBAPIClient.GetQuery()
+				.metaId(l.getMetaId()));
+		
+		return d.get(0);
+	}
+	
+	public static void createContactPoint() {
+		ContactPoint cp = new ContactPoint();
+		cp.setUid("testprova");
+		cp.setRole("legalContact");
+		LinkedEntity l = new LinkedEntity();
+		l.setEntityType("Person");
+		l.setInstanceId("870f1195-1391-4416-957c-747c8c7867fb");
+		l.setMetaId("8ad830f8-946d-43b1-bceb-84910aae506e");
+		l.setUid("http://orcid.org/0000-0001-8626-2703");
+		System.out.println(l);
+		cp.setPerson(l);
+		cp.setState(State.DRAFT);
+		cp.setEditorId("test");
+
+		System.out.println(cp);
+		
+		ContactPointDBAPI api = new ContactPointDBAPI();
+		api.save(cp);
+	}
+
+	public static void createDataproduct() {
+		if(getDataproduct()==null) {
+			DataProduct dp = new DataProduct();
+			dp.setUid("test/dataproduct");
+			dp.setTitle(new ArrayList<String>());
+			dp.getTitle().add("test title");
+			dp.setDescription(new ArrayList<String>());
+			dp.getDescription().add("test description");
+			dp.setIdentifier(new ArrayList<Identifier>());
+			Identifier identifier = new Identifier();
+			identifier.setIdentifier("test");
+			identifier.setType("DDSS");
+			dp.getIdentifier().add(identifier);
+			dp.setState(State.DRAFT);
+			dp.setEditorId("test");
+
+			System.out.println(dp);
+			
+			DataProductDBAPI api = new DataProductDBAPI();
+			api.save(dp);
+		}
+
+
+	}
+
+	public static void createDistribution() {
+		if(getDistribution()==null) {
+			Distribution distr = new Distribution();
+			distr.setUid("test/distribution");
+			distr.setTitle(new ArrayList<String>());
+			distr.getTitle().add("test title");
+			distr.setDescription(new ArrayList<String>());
+			distr.getDescription().add("test description");
+			distr.setState(State.DRAFT);
+			distr.setEditorId("test");
+
+			System.out.println(distr);
+
+			DistributionDBAPI api = new DistributionDBAPI();
+			api.save(distr);
+		}
+	}
+	
+	public static void testCategories() {
+Gson gson = new Gson();
 		
 		JsonObject input = gson.fromJson(json_input, JsonObject.class);
 		
@@ -1109,122 +1254,6 @@ public class APITests {
 		
 		for(Category cat : categories) {
 			catAPI.save(cat);
-		}
-		
-		/*CategoryScheme tsunami = new CategoryScheme();
-		tsunami.setTitle("Tsunami");
-		tsunami.setUid("category:tsunami");
-		tsunami.setDescription("TCS Domain");
-		
-		schemeCatAPI.save(tsunami);
-		
-		Category sealevelstatimitgfacilitydatavliz = new Category();
-		sealevelstatimitgfacilitydatavliz.setUid("category:sealevelstatimitgfacilitydatavliz");
-		sealevelstatimitgfacilitydatavliz.setName("Tsunami Data");
-		sealevelstatimitgfacilitydatavliz.setDescription("TCS Subdomain");
-		sealevelstatimitgfacilitydatavliz.setInScheme("category:tsunami");
-		sealevelstatimitgfacilitydatavliz.setBroader(Arrays.asList("category:tsunamidata","category:tsunamitest"));
-		catAPI.save(sealevelstatimitgfacilitydatavliz);
-		
-		Category test = new Category();
-		test.setUid("category:test");
-		test.setName("Tsunami TEST");
-		test.setDescription("TCS Subdomain");
-		test.setInScheme("category:tsunami");
-		catAPI.save(test);
-		
-		Category tsunamidata = new Category();
-		tsunamidata.setUid("category:tsunamidata");
-		tsunamidata.setName("Tsunami Data");
-		tsunamidata.setDescription("TCS Subdomain");
-		tsunamidata.setInScheme("category:tsunami");
-		tsunamidata.setNarrower(Arrays.asList("category:sealevelstatimitgfacilitydatavliz"));
-		catAPI.save(tsunamidata);
-		
-		Category tsunamitest = new Category();
-		tsunamitest.setUid("category:tsunamitest");
-		tsunamitest.setName("Tsunami Test");
-		tsunamitest.setDescription("TCS Subdomain");
-		tsunamitest.setInScheme("category:tsunami");
-		tsunamitest.setNarrower(Arrays.asList("category:sealevelstatimitgfacilitydatavliz"));
-		catAPI.save(tsunamitest);*/
-	}
-	
-	public static Person getPersonUsingDBAPIClient() {
-		DBAPIClient client = new DBAPIClient();
-		LinkedEntity l = new LinkedEntity();
-		l.setEntityType("Person");
-		l.setInstanceId("870f1195-1391-4416-957c-747c8c7867fb");
-		l.setMetaId("8ad830f8-946d-43b1-bceb-84910aae506e");
-		l.setUid("http://orcid.org/0000-0001-8626-2703");
-		
-		List<Person> d = client.retrieve(Person.class,
-				new DBAPIClient.GetQuery()
-				.metaId(l.getMetaId()));
-		
-		return d.get(0);
-	}
-	
-	public static void createContactPoint() {
-		ContactPoint cp = new ContactPoint();
-		cp.setUid("testprova");
-		cp.setRole("legalContact");
-		LinkedEntity l = new LinkedEntity();
-		l.setEntityType("Person");
-		l.setInstanceId("870f1195-1391-4416-957c-747c8c7867fb");
-		l.setMetaId("8ad830f8-946d-43b1-bceb-84910aae506e");
-		l.setUid("http://orcid.org/0000-0001-8626-2703");
-		System.out.println(l);
-		cp.setPerson(l);
-		cp.setState(State.DRAFT);
-		cp.setEditorId("test");
-
-		System.out.println(cp);
-		
-		ContactPointDBAPI api = new ContactPointDBAPI();
-		api.save(cp);
-	}
-
-	public static void createDataproduct() {
-		if(getDataproduct()==null) {
-			DataProduct dp = new DataProduct();
-			dp.setUid("test/dataproduct");
-			dp.setTitle(new ArrayList<String>());
-			dp.getTitle().add("test title");
-			dp.setDescription(new ArrayList<String>());
-			dp.getDescription().add("test description");
-			dp.setIdentifier(new ArrayList<Identifier>());
-			Identifier identifier = new Identifier();
-			identifier.setIdentifier("test");
-			identifier.setType("DDSS");
-			dp.getIdentifier().add(identifier);
-			dp.setState(State.DRAFT);
-			dp.setEditorId("test");
-
-			System.out.println(dp);
-			
-			DataProductDBAPI api = new DataProductDBAPI();
-			api.save(dp);
-		}
-
-
-	}
-
-	public static void createDistribution() {
-		if(getDistribution()==null) {
-			Distribution distr = new Distribution();
-			distr.setUid("test/distribution");
-			distr.setTitle(new ArrayList<String>());
-			distr.getTitle().add("test title");
-			distr.setDescription(new ArrayList<String>());
-			distr.getDescription().add("test description");
-			distr.setState(State.DRAFT);
-			distr.setEditorId("test");
-
-			System.out.println(distr);
-
-			DistributionDBAPI api = new DistributionDBAPI();
-			api.save(distr);
 		}
 	}
 

@@ -51,6 +51,7 @@ public class EDMWebservice {
     private Collection<EDMWebserviceTemporal> webserviceTemporalsByInstanceId;
     private Collection<EDMSupportedOperation> supportedOperationByInstanceId;
     private Collection<EDMWebserviceIdentifier> webserviceIdentifiersByIduid;
+    private Collection<EDMWebserviceRelation> webserviceRelationByInstanceId;
 
     @Basic
     @Column(name = "uid")
@@ -452,5 +453,14 @@ public class EDMWebservice {
 
     public void setWebserviceIdentifiersByIduid(Collection<EDMWebserviceIdentifier> webserviceIdentifiersByIduid) {
         this.webserviceIdentifiersByIduid = webserviceIdentifiersByIduid;
+    }
+    
+    @OneToMany(mappedBy = "webserviceByInstanceWebserviceId", cascade = CascadeType.ALL)
+    public Collection<EDMWebserviceRelation> getWebserviceRelationByInstanceId() {
+        return webserviceRelationByInstanceId;
+    }
+
+    public void setWebserviceRelationByInstanceId(Collection<EDMWebserviceRelation> webserviceRelationByInstanceId) {
+        this.webserviceRelationByInstanceId = webserviceRelationByInstanceId;
     }
 }
