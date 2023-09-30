@@ -41,11 +41,12 @@ public class EDMDistribution {
     private EDMDistribution distributionByInstanceChangedId;
     private Collection<EDMDistribution> distributionsByInstanceId;
     private EDMEdmEntityId edmEntityIdByEditorMetaId;
-    private Collection<EDMDistributionAccessurl> distributionAccessurlsByInstanceId;
+    //private Collection<EDMDistributionAccessurl> distributionAccessurlsByInstanceId;
     private Collection<EDMDistributionDescription> distributionDescriptionsByInstanceId;
     private Collection<EDMDistributionDownloadurl> distributionDownloadurlsByInstanceId;
     private Collection<EDMDistributionTitle> distributionTitlesByInstanceId;
     private Collection<EDMIsDistribution> isDistributionsByInstanceId;
+    private Collection<EDMDistributionAccessURL> distributionAccessurlsByInstanceId;
 
     @Basic
     @Column(name = "uid")
@@ -356,15 +357,6 @@ public class EDMDistribution {
     }
 
     @OneToMany(mappedBy = "distributionByInstanceDistributionId", cascade = CascadeType.ALL)
-    public Collection<EDMDistributionAccessurl> getDistributionAccessurlsByInstanceId() {
-        return distributionAccessurlsByInstanceId;
-    }
-
-    public void setDistributionAccessurlsByInstanceId(Collection<EDMDistributionAccessurl> distributionAccessurlsByInstanceId) {
-        this.distributionAccessurlsByInstanceId = distributionAccessurlsByInstanceId;
-    }
-
-    @OneToMany(mappedBy = "distributionByInstanceDistributionId", cascade = CascadeType.ALL)
     public Collection<EDMDistributionDescription> getDistributionDescriptionsByInstanceId() {
         return distributionDescriptionsByInstanceId;
     }
@@ -398,5 +390,14 @@ public class EDMDistribution {
 
     public void setIsDistributionsByInstanceId(Collection<EDMIsDistribution> isDistributionsByInstanceId) {
         this.isDistributionsByInstanceId = isDistributionsByInstanceId;
+    }
+    
+    @OneToMany(mappedBy = "distributionByInstanceDistributionId", cascade = CascadeType.ALL)
+    public Collection<EDMDistributionAccessURL> getAccessURLByInstanceId() {
+        return distributionAccessurlsByInstanceId;
+    }
+
+    public void setAccessURLByInstanceId(Collection<EDMDistributionAccessURL> accessURLByInstanceId) {
+        this.distributionAccessurlsByInstanceId = accessURLByInstanceId;
     }
 }

@@ -34,7 +34,6 @@
         <class>org.epos.handler.dbapi.model.EDMDataproductTemporal</class>
         <class>org.epos.handler.dbapi.model.EDMDataproductTitle</class>
         <class>org.epos.handler.dbapi.model.EDMDistribution</class>
-        <class>org.epos.handler.dbapi.model.EDMDistributionAccessurl</class>
         <class>org.epos.handler.dbapi.model.EDMDistributionDescription</class>
         <class>org.epos.handler.dbapi.model.EDMDistributionDownloadurl</class>
         <class>org.epos.handler.dbapi.model.EDMDistributionTitle</class>
@@ -100,6 +99,7 @@
         <class>org.epos.handler.dbapi.model.EDMWebserviceIdentifier</class>
         <class>org.epos.handler.dbapi.model.EDMPersonLite</class>
         <class>org.epos.handler.dbapi.model.EDMWebserviceRelation</class>
+        <class>org.epos.handler.dbapi.model.EDMDistributionAccessURL</class>
 
         <properties>
             <property name="eclipselink.jdbc.fetch-size" value="128" />

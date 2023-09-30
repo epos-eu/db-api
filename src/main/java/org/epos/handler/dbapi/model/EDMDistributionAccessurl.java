@@ -1,36 +1,21 @@
 package org.epos.handler.dbapi.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "distribution_accessurl")
-public class EDMDistributionAccessurl {
-    private String id;
-    private String accessurl;
+@IdClass(EDMDistributionAccessURLPK.class)
+@NamedQueries({
+        @NamedQuery(name = "accessurl.findByinstanceId", query = "SELECT c FROM EDMDistributionAccessURL c where c.instanceDistributionId = :DISTINST and c.instanceOperationId = :OPINST")
+})public class EDMDistributionAccessURL {
     private String instanceDistributionId;
+    private String instanceOperationId;
     private EDMDistribution distributionByInstanceDistributionId;
+    private EDMOperation operationByInstanceOperationId;
+
 
     @Id
-    @Column(name = "id")
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    @Basic
-    @Column(name = "accessurl")
-    public String getAccessurl() {
-        return accessurl;
-    }
-
-    public void setAccessurl(String accessurl) {
-        this.accessurl = accessurl;
-    }
-
-    @Basic
     @Column(name = "instance_distribution_id", insertable = false, updatable = false)
     public String getInstanceDistributionId() {
         return instanceDistributionId;
@@ -40,24 +25,27 @@ public class EDMDistributionAccessurl {
         this.instanceDistributionId = instanceDistributionId;
     }
 
+    @Id
+    @Column(name = "instance_operation_id", insertable = false, updatable = false)
+    public String getInstanceOperationId() {
+        return instanceOperationId;
+    }
+
+    public void setInstanceOperationId(String metaOperationId) {
+        this.instanceOperationId = metaOperationId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        EDMDistributionAccessurl that = (EDMDistributionAccessurl) o;
-
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (accessurl != null ? !accessurl.equals(that.accessurl) : that.accessurl != null) return false;
-        return instanceDistributionId != null ? instanceDistributionId.equals(that.instanceDistributionId) : that.instanceDistributionId == null;
+        EDMDistributionAccessURL that = (EDMDistributionAccessURL) o;
+        return Objects.equals(getInstanceDistributionId(), that.getInstanceDistributionId()) && Objects.equals(getInstanceOperationId(), that.getInstanceOperationId());
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (accessurl != null ? accessurl.hashCode() : 0);
-        result = 31 * result + (instanceDistributionId != null ? instanceDistributionId.hashCode() : 0);
-        return result;
+        return Objects.hash(getInstanceDistributionId(), getInstanceOperationId());
     }
 
     @ManyToOne
@@ -68,5 +56,16 @@ public class EDMDistributionAccessurl {
 
     public void setDistributionByInstanceDistributionId(EDMDistribution distributionByInstanceDistributionId) {
         this.distributionByInstanceDistributionId = distributionByInstanceDistributionId;
+    }
+
+
+    @ManyToOne
+    @JoinColumn(name = "instance_operation_id", referencedColumnName = "instance_id", nullable = false)
+    public EDMOperation getOperationByInstanceOperationId() {
+        return operationByInstanceOperationId;
+    }
+
+    public void setOperationByInstanceOperationId(EDMOperation edmEntityIdByMetaOperationId) {
+        this.operationByInstanceOperationId = edmEntityIdByMetaOperationId;
     }
 }

@@ -13,6 +13,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -154,15 +155,51 @@ public class DistributionDBAPI extends AbstractDBAPI<Distribution> {
         }
 
         if (eposDataModelObject.getAccessURL() != null) {
-            edmObject.setDistributionAccessurlsByInstanceId(new ArrayList<>());
-            for (String accessUrl : eposDataModelObject.getAccessURL()) {
-                EDMDistributionAccessurl edmAccessURL = new EDMDistributionAccessurl();
+            edmObject.setAccessURLByInstanceId(new ArrayList<>());
+            for (LinkedEntity linkedEntity : eposDataModelObject.getAccessURL()) {
+                EDMOperation instance = null;
 
-                edmAccessURL.setId(UUID.randomUUID().toString());
-                edmAccessURL.setDistributionByInstanceDistributionId(edmObject);
-                edmAccessURL.setAccessurl(accessUrl);
+                if (linkedEntity.getInstanceId() != null) {
+                    instance = getOneFromDB(em, EDMOperation.class,
+                            "operation.findByInstanceId", "INSTANCEID", linkedEntity.getInstanceId());
+                }
+                if (linkedEntity.getInstanceId() == null || instance == null) {
+                    List<EDMOperation> instanceList = getFromDB(em, EDMOperation.class,
+                            "operation.findByUid", "UID", linkedEntity.getUid());
 
-                edmObject.getDistributionAccessurlsByInstanceId().add(edmAccessURL);
+                    instanceList.sort(EDMUtil::compareEntityVersion);
+
+                    instance = !instanceList.isEmpty() ? instanceList.get(0) : null;
+                }
+
+                if (instance == null) {
+                    EDMEdmEntityId edmOpMetaId = new EDMEdmEntityId();
+                    edmOpMetaId.setMetaId(UUID.randomUUID().toString());
+                    em.persist(edmOpMetaId);
+
+                    instance = new EDMOperation();
+                    instance.setUid(linkedEntity.getUid());
+                    instance.setState(State.PLACEHOLDER.toString());
+                    instance.setInstanceId(UUID.randomUUID().toString());
+                    instance.setEdmEntityIdByMetaId(edmOpMetaId);
+                    em.persist(instance);
+
+                }
+
+                EDMDistributionAccessURL edmSupportedOperation = getOneFromDB(em, EDMDistributionAccessURL.class,
+                        "accessurl.findByinstanceId",
+                        "DISTINST", edmObject.getInstanceId(),
+                        "OPINST", instance.getInstanceId());
+
+                if (Objects.nonNull(edmSupportedOperation)) continue;
+
+                EDMDistributionAccessURL edmLink = new EDMDistributionAccessURL();
+                edmLink.setDistributionByInstanceDistributionId(edmObject);
+                edmLink.setOperationByInstanceOperationId(instance);
+
+                em.persist(edmLink);
+
+                edmObject.getAccessURLByInstanceId().add(edmLink);
             }
         }
 
@@ -287,15 +324,17 @@ public class DistributionDBAPI extends AbstractDBAPI<Distribution> {
                             .entityType("WebService")
             );
         }
-
-
-        //can be a problem here, if the operation name change
-        o.setAccessURL(
-                edm.getDistributionAccessurlsByInstanceId() != null ?
-                        edm.getDistributionAccessurlsByInstanceId().stream()
-                                .map(EDMDistributionAccessurl::getAccessurl).collect(Collectors.toList()) :
-                        null
-        );
+        if (edm.getAccessURLByInstanceId() != null) {
+            o.setAccessURL(new LinkedList<>());
+            edm.getAccessURLByInstanceId().stream()
+                    .map(EDMDistributionAccessURL::getOperationByInstanceOperationId)
+                    .forEach(e -> o.getAccessURL().add(
+                            new LinkedEntity()
+                                    .metaId(e.getMetaId())
+                                    .instanceId(e.getInstanceId())
+                                    .uid(e.getUid())
+                                    .entityType("Operation")));
+        }
         o.setDescription(
                 edm.getDistributionDescriptionsByInstanceId() != null ?
                         edm.getDistributionDescriptionsByInstanceId().stream()
