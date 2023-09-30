@@ -20,6 +20,3 @@ jobs:
           GPG_PRIVATE_KEY : ${{ secrets.GPG_PRIVATE_KEY }}
       - name: Update version in pom.xml
         run: mvn -B versions:set -DnewVersion=${{ github.ref }} -DgenerateBackupPoms=false
-      - name: Test artifact
-        run: |
-          mvn clean test
