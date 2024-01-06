@@ -139,7 +139,7 @@ public class Main {
 
             webService.setAaaiTypes(getStringCellValue(row, 66));
             ArrayList<Documentation> documentations = new ArrayList<>();
-            documentations.add(new Documentation().URI(getStringCellValue(row, 64)));
+            documentations.add(new Documentation().uri(getStringCellValue(row, 64)));
             webService.setDocumentation(documentations);
 
             distribution.setAccessService(new LinkedEntity().uid(webService.getUid()));

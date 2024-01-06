@@ -28,11 +28,12 @@ jobs:
           allowUpdates: true
           artifacts: "${{ github.workspace }}/target/*.jar"
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Echo secrets
+      - name: Configure GPG Key
         run: |
           mkdir -p ~/.gnupg/
           printf "$GPG_PRIVATE_KEY" | base64 --decode > ~/.gnupg/private.key
           gpg --batch --import ~/.gnupg/private.key
+          gpg --list-secret-keys 
         shell: bash
         env:
           GPG_PRIVATE_KEY : ${{ secrets.GPG_PRIVATE_KEY }}

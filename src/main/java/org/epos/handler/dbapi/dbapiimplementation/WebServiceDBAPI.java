@@ -213,7 +213,7 @@ public class WebServiceDBAPI extends AbstractDBAPI<WebService> {
                 EDMWebserviceDocumentation edmWebserviceDocumentation = new EDMWebserviceDocumentation();
 
                 edmWebserviceDocumentation.setId(UUID.randomUUID().toString());
-                edmWebserviceDocumentation.setDocumentation(documentation.getURI());
+                edmWebserviceDocumentation.setDocumentation(documentation.getUri());
                 edmWebserviceDocumentation.setWebserviceByInstanceWebserviceId(edmObject);
 
                 edmObject.getWebserviceDocumentationsByInstanceId().add(edmWebserviceDocumentation);
@@ -468,7 +468,7 @@ public class WebServiceDBAPI extends AbstractDBAPI<WebService> {
         if (edm.getWebserviceDocumentationsByInstanceId() != null) {
             o.setDocumentation(edm.getWebserviceDocumentationsByInstanceId().stream()
                     .map(EDMWebserviceDocumentation::getDocumentation)
-                    .map(x -> new Documentation().URI(x)).collect(Collectors.toCollection(ArrayList::new)));
+                    .map(x -> new Documentation().uri(x)).collect(Collectors.toCollection(ArrayList::new)));
         } else o.setDocumentation(
                 null
         );
