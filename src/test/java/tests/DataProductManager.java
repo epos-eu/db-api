@@ -15,7 +15,7 @@ import org.epos.handler.dbapi.DBAPIClient.UpdateQuery;
 public class DataProductManager {
 
 	protected static DBAPIClient dbapi = new DBAPIClient();
-	
+
 	public static List<DataProduct> getDataProduct(String meta_id, String instance_id) {
 		dbapi.setMetadataMode(false);
 		List<DataProduct> list;
@@ -169,11 +169,11 @@ public class DataProductManager {
 		System.out.println("Distribution: "+dataProduct.getDistribution());
 		if(sons) {
 			if(dataProduct.getDistribution()!=null)
-			for(LinkedEntity le : dataProduct.getDistribution()) {
-				Distribution distribution = DistributionManager.getDistribution(le.getMetaId(), le.getInstanceId()).get(0);
-				distribution.getDataProduct().add(relation);
-				DistributionManager.updateDistribution(distribution, false, true);
-			}
+				for(LinkedEntity le : dataProduct.getDistribution()) {
+					Distribution distribution = DistributionManager.getDistribution(le.getMetaId(), le.getInstanceId()).get(0);
+					distribution.getDataProduct().add(relation);
+					DistributionManager.updateDistribution(distribution, false, true);
+				}
 		}
 	}
 

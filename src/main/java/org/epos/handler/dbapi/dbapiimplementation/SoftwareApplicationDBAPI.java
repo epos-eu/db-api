@@ -39,6 +39,7 @@ public class SoftwareApplicationDBAPI extends AbstractDBAPI<SoftwareApplication>
         if (edmObject != null &&
                 (eposDataModelObject.getMetaId() == null || (eposDataModelObject.getMetaId() != null && eposDataModelObject.getMetaId().equals(edmObject.getMetaId())))) {
             merge = true;
+            edmInstanceId = eposDataModelObject.getInstanceId();
         } else {
             edmObject = new EDMSoftwareapplication();
             edmObject.setInstanceId(edmInstanceId);

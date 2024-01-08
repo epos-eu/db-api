@@ -36,13 +36,11 @@ public class DataProductDBAPI extends AbstractDBAPI<DataProduct> {
 
         boolean merged = false;
         
-        System.out.println(edmObject);
-        System.out.println(eposDataModelObject.getMetaId());
-        
         if (edmObject != null &&
                 (eposDataModelObject.getMetaId() == null || (eposDataModelObject.getMetaId() != null && eposDataModelObject.getMetaId().equals(edmObject.getMetaId())))) {
             merged = true;
-            //em.merge(edmObject);
+            edmInstanceId = eposDataModelObject.getInstanceId();
+           //em.merge(edmObject);
         } else {
             edmObject = new EDMDataproduct();
             edmObject.setInstanceId(edmInstanceId);

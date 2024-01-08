@@ -47,7 +47,7 @@ public class DistributionDBAPI extends AbstractDBAPI<Distribution> {
                 (eposDataModelObject.getMetaId() == null || (eposDataModelObject.getMetaId() != null && eposDataModelObject.getMetaId().equals(edmObject.getMetaId())))) {
             //em.merge(edmObject);
             merged = true;
-
+            edmInstanceId = eposDataModelObject.getInstanceId();
         } else {
             edmObject = new EDMDistribution();
             edmObject.setInstanceId(edmInstanceId);

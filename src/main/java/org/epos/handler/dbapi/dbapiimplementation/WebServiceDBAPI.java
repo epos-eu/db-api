@@ -39,6 +39,7 @@ public class WebServiceDBAPI extends AbstractDBAPI<WebService> {
                 (eposDataModelObject.getMetaId() == null || (eposDataModelObject.getMetaId() != null && eposDataModelObject.getMetaId().equals(edmObject.getMetaId())))) {
             //em.merge(edmObject);
             merged = true;
+            edmInstanceId = eposDataModelObject.getInstanceId();
         } else {
             edmObject = new EDMWebservice();
             edmObject.setInstanceId(edmInstanceId);

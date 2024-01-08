@@ -52,6 +52,7 @@ public class PersonDBAPI extends AbstractDBAPI<Person> {
         if (edmObject != null &&
                 (eposDataModelObject.getMetaId() == null || (eposDataModelObject.getMetaId() != null && eposDataModelObject.getMetaId().equals(edmObject.getMetaId())))) {
             merge = true;
+            edmInstanceId = eposDataModelObject.getInstanceId();
         } else {
             edmObject = new EDMPerson();
             edmObject.setInstanceId(edmInstanceId);

@@ -41,6 +41,7 @@ public class OperationDBAPI extends AbstractDBAPI<Operation> {
                 (eposDataModelObject.getMetaId() == null || (eposDataModelObject.getMetaId() != null && eposDataModelObject.getMetaId().equals(edmObject.getMetaId())))) {
             //em.merge(edmObject);
             merged = true;
+            edmInstanceId = eposDataModelObject.getInstanceId();
         } else {
             edmObject = new EDMOperation();
             edmObject.setInstanceId(edmInstanceId);

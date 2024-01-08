@@ -30,7 +30,7 @@ public class Tests {
 		dataproduct.setInstanceId(dataproductlink.getInstanceId());
 		dataproduct.setMetaId(dataproductlink.getMetaId());
 		
-		DataProductManager.updateDataProduct(dataproduct, true, true).getEntity();
+		dataproductlink = DataProductManager.updateDataProduct(dataproduct, true, true).getEntity();
 		
 		System.out.println(dataproductlink);
 

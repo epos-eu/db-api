@@ -40,6 +40,7 @@ public class SoftwareSourceCodeDBAPI extends AbstractDBAPI<SoftwareSourceCode> {
         if (edmObject != null &&
                 (eposDataModelObject.getMetaId() == null || (eposDataModelObject.getMetaId() != null && eposDataModelObject.getMetaId().equals(edmObject.getMetaId())))) {
             merge = true;
+            edmInstanceId = eposDataModelObject.getInstanceId();
         } else {
             edmObject = new EDMSoftwaresourcecode();
             edmObject.setInstanceId(edmInstanceId);
