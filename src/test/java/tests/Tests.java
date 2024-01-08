@@ -22,7 +22,21 @@ public class Tests {
 
 		LinkedEntity dataproductlink = DataProductManager.createDataProduct(dataproduct, true, true).getEntity();
 		
-		Distribution distribution = new Distribution();
+		System.out.println(dataproductlink);
+		System.out.println(DataProductManager.getDataProduct(dataproductlink.getMetaId(),dataproductlink.getInstanceId()));
+
+		dataproduct.setTitle(List.of("MIAOMIAO"));
+		dataproduct.setUid(dataproductlink.getUid());
+		dataproduct.setInstanceId(dataproductlink.getInstanceId());
+		dataproduct.setMetaId(dataproductlink.getMetaId());
+		
+		DataProductManager.updateDataProduct(dataproduct, true, true).getEntity();
+		
+		System.out.println(dataproductlink);
+
+
+		
+		/*Distribution distribution = new Distribution();
 		distribution.setEditorId("fixedUser5_metaid");
 		distribution.setDataProduct(List.of(dataproductlink));
 		
@@ -33,13 +47,13 @@ public class Tests {
 		webservice.setEditorId("fixedUser5_metaid");
 		webservice.setDistribution(List.of(distributionlink));
 		
-		LinkedEntity webservicelink = WebServiceManager.createWebService(webservice, true, true).getEntity();
+		LinkedEntity webservicelink = WebServiceManager.createWebService(webservice, true, true).getEntity();*/
 
 		System.out.println(DataProductManager.getDataProduct(dataproductlink.getMetaId(),dataproductlink.getInstanceId()));
 
-		System.out.println(DistributionManager.getDistribution(distributionlink.getMetaId(),distributionlink.getInstanceId()));
+		/*System.out.println(DistributionManager.getDistribution(distributionlink.getMetaId(),distributionlink.getInstanceId()));
 		
-		System.out.println(WebServiceManager.getWebService(webservicelink.getMetaId(),webservicelink.getInstanceId()));
+		System.out.println(WebServiceManager.getWebService(webservicelink.getMetaId(),webservicelink.getInstanceId()));*/
 		
 	}
 

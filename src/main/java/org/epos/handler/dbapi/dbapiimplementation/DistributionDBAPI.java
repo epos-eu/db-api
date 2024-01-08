@@ -34,9 +34,8 @@ public class DistributionDBAPI extends AbstractDBAPI<Distribution> {
 
         //search for a existing instance placeholder to be populated
         EDMDistribution edmObject = getOneFromDB(em, EDMDistribution.class,
-                "distribution.findByUidAndState",
-                "UID", eposDataModelObject.getUid(),
-                "STATE", State.PLACEHOLDER.toString());
+                "distribution.findByUid",
+                "UID", eposDataModelObject.getUid());
 
         //if there's a placeholder for the entity check if is passed a specific metaid
         //only if the metaid is the same of the placeholder merge the two (the placeholder and the passed entity)

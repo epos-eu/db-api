@@ -28,9 +28,8 @@ public class OrganizationDBAPI extends AbstractDBAPI<Organization> {
 
         //search for a existing instance placeholder to be populated
         EDMOrganization edmObject = getOneFromDB(em, EDMOrganization.class,
-                "organization.findByUidAndState",
-                "UID", eposDataModelObject.getUid(),
-                "STATE", State.PLACEHOLDER.toString());
+                "organization.findByUid",
+                "UID", eposDataModelObject.getUid());
 
         //if there's a placeholder for the entity check if is passed a specific metaid
         //only if the metaid is the same of the placeholder merge the two (the placeholder and the passed entity)

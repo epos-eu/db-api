@@ -27,16 +27,18 @@ public class DataProductDBAPI extends AbstractDBAPI<DataProduct> {
 
         //search for a existing instance placeholder to be populated
         EDMDataproduct edmObject = getOneFromDB(em, EDMDataproduct.class,
-                "dataproduct.findByUidAndState",
-                "UID", eposDataModelObject.getUid(),
-                "STATE", State.PLACEHOLDER.toString());
+                "dataproduct.findByUid",
+                "UID", eposDataModelObject.getUid());
 
         //if there's a placeholder for the entity check if is passed a specific metaid
         //only if the metaid is the same of the placeholder merge the two (the placeholder and the passed entity)
         EDMEdmEntityId edmMetaId;
 
         boolean merged = false;
-
+        
+        System.out.println(edmObject);
+        System.out.println(eposDataModelObject.getMetaId());
+        
         if (edmObject != null &&
                 (eposDataModelObject.getMetaId() == null || (eposDataModelObject.getMetaId() != null && eposDataModelObject.getMetaId().equals(edmObject.getMetaId())))) {
             merged = true;
@@ -66,6 +68,8 @@ public class DataProductDBAPI extends AbstractDBAPI<DataProduct> {
 
         }
         edmObject.setUid(eposDataModelObject.getUid());
+        
+        System.out.println(merged);
 
         if (Objects.nonNull(eposDataModelObject.getGroups())){
             for (Group group : eposDataModelObject.getGroups()){

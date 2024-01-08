@@ -174,9 +174,6 @@ public class DBAPIClient implements DBAPIClientInterface {
                 }
             }
         }
-
-
-        System.out.println("theqyert: "+results);
         return results;
     }
 
@@ -214,11 +211,11 @@ public class DBAPIClient implements DBAPIClientInterface {
 
         if (query.hardUpdate) {
             //dbapi.hardUpdate(instance.getInstanceId(), (T) instance, em);
-        	dbapi.save((T) instance, em);
+        	dbapi.save((T)instance, em);
         }
 
         if (query.state != null){
-        	dbapi.save((T) instance, em);
+        	dbapi.save((T)instance, em);
             //dbapi.updateStatus(instance.getInstanceId(), query.state, em);
         }
 
