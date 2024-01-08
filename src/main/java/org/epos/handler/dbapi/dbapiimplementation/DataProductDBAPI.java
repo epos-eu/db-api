@@ -66,8 +66,6 @@ public class DataProductDBAPI extends AbstractDBAPI<DataProduct> {
 
         }
         edmObject.setUid(eposDataModelObject.getUid());
-        
-        System.out.println(merged);
 
         if (Objects.nonNull(eposDataModelObject.getGroups())){
             for (Group group : eposDataModelObject.getGroups()){
