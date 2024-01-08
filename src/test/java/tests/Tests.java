@@ -3,6 +3,12 @@ package tests;
 import java.util.List;
 
 import org.epos.eposdatamodel.Category;
+import org.epos.eposdatamodel.DataProduct;
+import org.epos.eposdatamodel.Distribution;
+import org.epos.eposdatamodel.LinkedEntity;
+import org.epos.eposdatamodel.State;
+import org.epos.eposdatamodel.WebService;
+import org.epos.handler.dbapi.DBAPIClient;
 import org.epos.handler.dbapi.dbapiimplementation.CategoryDBAPI;
 
 
@@ -11,49 +17,30 @@ public class Tests {
 
 	public static void main(String[] args) {
 
-		CategoryDBAPI cats = new CategoryDBAPI();
-		List<Category> categoriesList = cats.getAll();
+		DataProduct dataproduct = new DataProduct();
+		dataproduct.setEditorId("fixedUser5_metaid");
 
-		Tests.recursivePrint(categoriesList, null);
+		LinkedEntity dataproductlink = DataProductManager.createDataProduct(dataproduct, true, true).getEntity();
+		
+		Distribution distribution = new Distribution();
+		distribution.setEditorId("fixedUser5_metaid");
+		distribution.setDataProduct(List.of(dataproductlink));
+		
+		LinkedEntity distributionlink = DistributionManager.createDistribution(distribution, true, true).getEntity();
+		
+		
+		WebService webservice = new WebService();
+		webservice.setEditorId("fixedUser5_metaid");
+		webservice.setDistribution(List.of(distributionlink));
+		
+		LinkedEntity webservicelink = WebServiceManager.createWebService(webservice, true, true).getEntity();
 
+		System.out.println(DataProductManager.getDataProduct(dataproductlink.getMetaId(),dataproductlink.getInstanceId()));
 
-	}
-
-	public static void recursivePrint(List<Category> categoriesList, String id) {
-		if(id==null) {
-			for(Category cat : categoriesList) {
-				System.out.println("---------- NODE -------- ");
-				System.out.println("UID "+cat.getUid());
-				System.out.println("NAME "+cat.getName());
-				System.out.println("DESCRIPTION "+cat.getDescription());
-
-				if(cat.getBroader()!=null) {
-					System.out.println("--------- BROADER ----------");
-					for(String uid : cat.getBroader()) {
-						recursivePrint(categoriesList, uid);
-					}
-					System.out.println("--------- END BROADER ----------");
-				}
-				if(cat.getNarrower()!=null) {
-					System.out.println("---------- NARROWERS -------- ");
-					for(String uid : cat.getNarrower()) {
-						recursivePrint(categoriesList, uid);
-					}
-					System.out.println("----------END  NARROWERS -------- ");
-				}
-			}
-		}else {
-			for(Category cat : categoriesList) {
-				if(cat.getInstanceId().equals(id)) {
-					System.out.println("---------- SUBNODE -------- ");
-					System.out.println("UID "+cat.getUid());
-					System.out.println("NAME "+cat.getName());
-					System.out.println("DESCRIPTION "+cat.getDescription());
-					System.out.println("---------- END SUBNODE -------- ");
-				}
-			}
-
-		}
+		System.out.println(DistributionManager.getDistribution(distributionlink.getMetaId(),distributionlink.getInstanceId()));
+		
+		System.out.println(WebServiceManager.getWebService(webservicelink.getMetaId(),webservicelink.getInstanceId()));
+		
 	}
 
 }

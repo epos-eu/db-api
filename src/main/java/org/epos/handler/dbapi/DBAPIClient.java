@@ -133,25 +133,25 @@ public class DBAPIClient implements DBAPIClientInterface {
 
         List<T> results;
 
-        if (query.instanceId != null) {
-            T byInstanceId = dbapi.getByInstanceId(query.instanceId, em);
+        if (query.getInstanceId() != null) {
+            T byInstanceId = dbapi.getByInstanceId(query.getInstanceId(), em);
             results = byInstanceId == null ? new ArrayList<>() : List.of(byInstanceId);
-        } else if (query.uid != null && query.state != null) {
-            results = dbapi.getByUid(query.uid, em)
+        } else if (query.getUid() != null && query.getState() != null) {
+            results = dbapi.getByUid(query.getUid(), em)
                     .stream()
-                    .filter(i -> Objects.equals(i.getState(), query.state))
+                    .filter(i -> Objects.equals(i.getState(), query.getState()))
                     .collect(Collectors.toList());
-        } else if (query.uid != null) {
-            results = dbapi.getByUid(query.uid, em);
-        } else if (query.metaId != null && query.state != null) {
-            results = dbapi.getByMetaId(query.metaId, em)
+        } else if (query.getUid() != null) {
+            results = dbapi.getByUid(query.getUid(), em);
+        } else if (query.getMetaId() != null && query.getState() != null) {
+            results = dbapi.getByMetaId(query.getMetaId(), em)
                     .stream()
-                    .filter(i -> i.getState().equals(query.state))
+                    .filter(i -> i.getState().equals(query.getState()))
                     .collect(Collectors.toList());
-        } else if (query.metaId != null) {
-            results = dbapi.getByMetaId(query.metaId, em);
-        } else if (query.state != null) {
-            results = dbapi.getAllByState(query.state, em);
+        } else if (query.getMetaId() != null) {
+            results = dbapi.getByMetaId(query.getMetaId(), em);
+        } else if (query.getState() != null) {
+            results = dbapi.getAllByState(query.getState(), em);
         } else {
             results = dbapi.getAll(em);
         }
@@ -176,6 +176,7 @@ public class DBAPIClient implements DBAPIClientInterface {
         }
 
 
+        System.out.println("theqyert: "+results);
         return results;
     }
 
@@ -212,11 +213,13 @@ public class DBAPIClient implements DBAPIClientInterface {
         if (transactionModeAuto) startTransaction();
 
         if (query.hardUpdate) {
-            dbapi.hardUpdate(instance.getInstanceId(), (T) instance, em);
+            //dbapi.hardUpdate(instance.getInstanceId(), (T) instance, em);
+        	dbapi.save((T) instance, em);
         }
 
         if (query.state != null){
-            dbapi.updateStatus(instance.getInstanceId(), query.state, em);
+        	dbapi.save((T) instance, em);
+            //dbapi.updateStatus(instance.getInstanceId(), query.state, em);
         }
 
         if (transactionModeAuto) closeTransaction(true);
