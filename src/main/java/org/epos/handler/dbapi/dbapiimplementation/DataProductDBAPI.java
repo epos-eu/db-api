@@ -18,6 +18,17 @@ public class DataProductDBAPI extends AbstractDBAPI<DataProduct> {
     public DataProductDBAPI() {
         super("dataproduct", EDMDataproduct.class);
     }
+    
+    @Override
+    public void hardUpdate(String instanceId, DataProduct eposDataModelObject, EntityManager em) {
+    	EDMDataproduct edmObject = getOneFromDB(em, EDMDataproduct.class,
+                "dataproduct.findByInstanceId",
+                "INSTANCEID", instanceId);
+    	if(edmObject.getInstanceId().equals(eposDataModelObject.getInstanceId())) {
+            generateEntity(edmObject, eposDataModelObject, em,instanceId,true);
+    		em.merge(edmObject);
+    	}
+    }
 
     @Override
     public LinkedEntity save(DataProduct eposDataModelObject, EntityManager em, String edmInstanceId) {
@@ -27,8 +38,9 @@ public class DataProductDBAPI extends AbstractDBAPI<DataProduct> {
 
         //search for a existing instance placeholder to be populated
         EDMDataproduct edmObject = getOneFromDB(em, EDMDataproduct.class,
-                "dataproduct.findByUid",
-                "UID", eposDataModelObject.getUid());
+                "dataproduct.findByUidAndState",
+                "UID", eposDataModelObject.getUid(),
+                "STATE", State.PLACEHOLDER.toString());
 
         //if there's a placeholder for the entity check if is passed a specific metaid
         //only if the metaid is the same of the placeholder merge the two (the placeholder and the passed entity)
@@ -39,7 +51,6 @@ public class DataProductDBAPI extends AbstractDBAPI<DataProduct> {
         if (edmObject != null &&
                 (eposDataModelObject.getMetaId() == null || (eposDataModelObject.getMetaId() != null && eposDataModelObject.getMetaId().equals(edmObject.getMetaId())))) {
             merged = true;
-            edmInstanceId = eposDataModelObject.getInstanceId();
            //em.merge(edmObject);
         } else {
             edmObject = new EDMDataproduct();
@@ -66,6 +77,17 @@ public class DataProductDBAPI extends AbstractDBAPI<DataProduct> {
 
         }
         edmObject.setUid(eposDataModelObject.getUid());
+        
+        generateEntity(edmObject, eposDataModelObject, em,edmInstanceId,merged);
+
+        return new LinkedEntity().entityType(entityString)
+                .instanceId(edmInstanceId)
+                .metaId(edmObject.getEdmEntityIdByMetaId().getMetaId())
+                .uid(eposDataModelObject.getUid());
+
+    }
+    
+    protected EDMDataproduct generateEntity(EDMDataproduct edmObject, DataProduct eposDataModelObject, EntityManager em, String edmInstanceId, boolean merged) {
 
         if (Objects.nonNull(eposDataModelObject.getGroups())){
             for (Group group : eposDataModelObject.getGroups()){
@@ -478,11 +500,7 @@ public class DataProductDBAPI extends AbstractDBAPI<DataProduct> {
         edmObject.setDocumentation(eposDataModelObject.getDocumentation());
         edmObject.setQualityassurance(eposDataModelObject.getQualityAssurance());
         edmObject.setHasQualityAnnotation(eposDataModelObject.getHasQualityAnnotation());
-
-        return new LinkedEntity().entityType(entityString)
-                .instanceId(edmInstanceId)
-                .metaId(edmObject.getEdmEntityIdByMetaId().getMetaId())
-                .uid(eposDataModelObject.getUid());
+        return edmObject;
 
     }
 

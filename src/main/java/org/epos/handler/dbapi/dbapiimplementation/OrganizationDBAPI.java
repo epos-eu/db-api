@@ -19,8 +19,19 @@ public class OrganizationDBAPI extends AbstractDBAPI<Organization> {
     public OrganizationDBAPI() {
         super("organization", EDMOrganization.class);
     }
-
+    
     @Override
+	public void hardUpdate(String instanceId, Organization eposDataModelObject, EntityManager em) {
+    	EDMOrganization edmObject = getOneFromDB(em, EDMOrganization.class,
+				"organization.findByInstanceId",
+				"INSTANCEID", instanceId);
+		if(edmObject.getInstanceId().equals(eposDataModelObject.getInstanceId())) {
+			generateEntity(edmObject, eposDataModelObject, em,instanceId,true);
+			em.merge(edmObject);
+		}
+	}
+
+	@Override
     public LinkedEntity save(Organization eposDataModelObject, EntityManager em, String edmInstanceId) {
         if (eposDataModelObject.getState().equals(State.PUBLISHED)
                 && isAlreadyPublished(EDMOrganization.class, "organization.findByUidAndState", em, eposDataModelObject))
@@ -28,8 +39,9 @@ public class OrganizationDBAPI extends AbstractDBAPI<Organization> {
 
         //search for a existing instance placeholder to be populated
         EDMOrganization edmObject = getOneFromDB(em, EDMOrganization.class,
-                "organization.findByUid",
-                "UID", eposDataModelObject.getUid());
+                "organization.findByUidAndState",
+                "UID", eposDataModelObject.getUid(),
+                "STATE", State.PLACEHOLDER.toString());
 
         //if there's a placeholder for the entity check if is passed a specific metaid
         //only if the metaid is the same of the placeholder merge the two (the placeholder and the passed entity)
@@ -40,7 +52,6 @@ public class OrganizationDBAPI extends AbstractDBAPI<Organization> {
         if (edmObject != null &&
                 (eposDataModelObject.getMetaId() == null || (eposDataModelObject.getMetaId() != null && eposDataModelObject.getMetaId().equals(edmObject.getMetaId())))) {
             merge = true;
-            edmInstanceId = eposDataModelObject.getInstanceId();
         } else {
             edmObject = new EDMOrganization();
             edmObject.setInstanceId(edmInstanceId);
@@ -65,7 +76,18 @@ public class OrganizationDBAPI extends AbstractDBAPI<Organization> {
 
         edmObject.setUid(eposDataModelObject.getUid());
 
-        if (merge) em.merge(edmObject);
+		generateEntity(edmObject, eposDataModelObject, em,edmInstanceId,merge);
+
+        return new LinkedEntity().entityType(entityString)
+                .instanceId(edmInstanceId)
+                .metaId(edmObject.getEdmEntityIdByMetaId().getMetaId())
+                .uid(eposDataModelObject.getUid());
+
+    }
+	
+
+    private void generateEntity(EDMOrganization edmObject, Organization eposDataModelObject, EntityManager em, String instanceId, boolean merge) {
+    	if (merge) em.merge(edmObject);
         else em.persist(edmObject);
 
         if (Objects.nonNull(eposDataModelObject.getGroups())){
@@ -284,13 +306,7 @@ public class OrganizationDBAPI extends AbstractDBAPI<Organization> {
 
         edmObject.setType(eposDataModelObject.getType());
         edmObject.setMaturity(eposDataModelObject.getMaturity());
-
-        return new LinkedEntity().entityType(entityString)
-                .instanceId(edmInstanceId)
-                .metaId(edmObject.getEdmEntityIdByMetaId().getMetaId())
-                .uid(eposDataModelObject.getUid());
-
-    }
+	}
 
     @Override
     protected Organization mapFromDB(Object edmObject) {

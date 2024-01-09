@@ -18,8 +18,19 @@ public class EquipmentDBAPI extends AbstractDBAPI<Equipment> {
     public EquipmentDBAPI() {
         super("equipment", EDMEquipment.class);
     }
-
+    
     @Override
+	public void hardUpdate(String instanceId, Equipment eposDataModelObject, EntityManager em) {
+    	EDMEquipment edmObject = getOneFromDB(em, EDMEquipment.class,
+				"equipment.findByInstanceId",
+				"INSTANCEID", instanceId);
+		if(edmObject.getInstanceId().equals(eposDataModelObject.getInstanceId())) {
+			generateEntity(edmObject, eposDataModelObject, em,instanceId,true);
+			em.merge(edmObject);
+		}
+	}
+
+	@Override
     public LinkedEntity save(Equipment eposDataModelObject, EntityManager em, String edmInstanceId) {
         if (eposDataModelObject.getState().equals(State.PUBLISHED)
                 && isAlreadyPublished(EDMEquipment.class, "equipment.findByUidAndState", em, eposDataModelObject))
@@ -27,8 +38,9 @@ public class EquipmentDBAPI extends AbstractDBAPI<Equipment> {
 
         //search for a existing instance placeholder to be populated
         EDMEquipment edmObject = getOneFromDB(em, EDMEquipment.class,
-                "equipment.findByUid",
-                "UID", eposDataModelObject.getUid());
+                "equipment.findByUidAndState",
+                "UID", eposDataModelObject.getUid(),
+                "STATE", State.PLACEHOLDER.toString());
 
         //if there's a placeholder for the entity check if is passed a specific metaid
         //only if the metaid is the same of the placeholder merge the two (the placeholder and the passed entity)
@@ -63,7 +75,19 @@ public class EquipmentDBAPI extends AbstractDBAPI<Equipment> {
         }
         edmObject.setUid(eposDataModelObject.getUid());
 
-        if (Objects.nonNull(eposDataModelObject.getGroups())){
+        generateEntity(edmObject, eposDataModelObject, em,edmInstanceId,false);
+
+        return new LinkedEntity().entityType(entityString)
+                .instanceId(edmInstanceId)
+                .metaId(edmObject.getEdmEntityIdByMetaId().getMetaId())
+                .uid(eposDataModelObject.getUid());
+
+
+    }
+	
+
+    private void generateEntity(EDMEquipment edmObject, Equipment eposDataModelObject, EntityManager em, String instanceId, boolean merged) {
+    	if (Objects.nonNull(eposDataModelObject.getGroups())){
             for (Group group : eposDataModelObject.getGroups()){
 
                 EDMGroup edmGroup =  getOneFromDB(em, EDMGroup.class, "group.findById",
@@ -313,14 +337,7 @@ public class EquipmentDBAPI extends AbstractDBAPI<Equipment> {
         }
 
         edmObject.setType(eposDataModelObject.getType());
-
-        return new LinkedEntity().entityType(entityString)
-                .instanceId(edmInstanceId)
-                .metaId(edmObject.getEdmEntityIdByMetaId().getMetaId())
-                .uid(eposDataModelObject.getUid());
-
-
-    }
+	}
 
     @Override
     protected Equipment mapFromDB(Object edmObject) {

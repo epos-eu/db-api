@@ -210,13 +210,13 @@ public class DBAPIClient implements DBAPIClientInterface {
         if (transactionModeAuto) startTransaction();
 
         if (query.hardUpdate) {
-            //dbapi.hardUpdate(instance.getInstanceId(), (T) instance, em);
-        	dbapi.save((T)instance, em);
+            dbapi.hardUpdate(instance.getInstanceId(), (T) instance, em);
+        	//dbapi.save((T)instance, em);
         }
 
         if (query.state != null){
-        	dbapi.save((T)instance, em);
-            //dbapi.updateStatus(instance.getInstanceId(), query.state, em);
+        	//dbapi.save((T)instance, em);
+            dbapi.updateStatus(instance.getInstanceId(), query.state, em);
         }
 
         if (transactionModeAuto) closeTransaction(true);

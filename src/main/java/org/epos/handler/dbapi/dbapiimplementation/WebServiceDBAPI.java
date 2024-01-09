@@ -18,8 +18,20 @@ public class WebServiceDBAPI extends AbstractDBAPI<WebService> {
     public WebServiceDBAPI() {
         super("webservice", EDMWebservice.class);
     }
-
+    
     @Override
+	public void hardUpdate(String instanceId, WebService eposDataModelObject, EntityManager em) {
+    	EDMWebservice edmObject = getOneFromDB(em, EDMWebservice.class,
+				"webservice.findByInstanceId",
+				"INSTANCEID", instanceId);
+		if(edmObject.getInstanceId().equals(eposDataModelObject.getInstanceId())) {
+			generateEntity(edmObject, eposDataModelObject, em,instanceId,true);
+			em.merge(edmObject);
+		}
+	}
+
+    
+	@Override
     public LinkedEntity save(WebService eposDataModelObject, EntityManager em, String edmInstanceId) {
         if (eposDataModelObject.getState().equals(State.PUBLISHED)
                 && isAlreadyPublished(EDMWebservice.class, "webservice.findByUidAndState", em, eposDataModelObject))
@@ -27,8 +39,9 @@ public class WebServiceDBAPI extends AbstractDBAPI<WebService> {
 
         //search for a existing instance placeholder to be populated
         EDMWebservice edmObject = getOneFromDB(em, EDMWebservice.class,
-                "webservice.findByUid",
-                "UID", eposDataModelObject.getUid());
+                "webservice.findByUidAndState",
+                "UID", eposDataModelObject.getUid(),
+                "STATE", State.PLACEHOLDER.toString());
 
         //if there's a placeholder for the entity check if is passed a specific metaid
         //only if the metaid is the same of the placeholder merge the two (the placeholder and the passed entity)
@@ -39,7 +52,6 @@ public class WebServiceDBAPI extends AbstractDBAPI<WebService> {
                 (eposDataModelObject.getMetaId() == null || (eposDataModelObject.getMetaId() != null && eposDataModelObject.getMetaId().equals(edmObject.getMetaId())))) {
             //em.merge(edmObject);
             merged = true;
-            edmInstanceId = eposDataModelObject.getInstanceId();
         } else {
             edmObject = new EDMWebservice();
             edmObject.setInstanceId(edmInstanceId);
@@ -64,7 +76,17 @@ public class WebServiceDBAPI extends AbstractDBAPI<WebService> {
         }
         edmObject.setUid(eposDataModelObject.getUid());
 
-        if (Objects.nonNull(eposDataModelObject.getGroups())){
+		generateEntity(edmObject, eposDataModelObject, em,edmInstanceId,merged);
+
+        return new LinkedEntity().entityType(entityString)
+                .instanceId(edmInstanceId)
+                .metaId(edmObject.getEdmEntityIdByMetaId().getMetaId())
+                .uid(eposDataModelObject.getUid());
+
+    }
+	
+	private void generateEntity(EDMWebservice edmObject, WebService eposDataModelObject, EntityManager em, String instanceId, boolean merged) {
+		if (Objects.nonNull(eposDataModelObject.getGroups())){
             for (Group group : eposDataModelObject.getGroups()){
 
                 EDMGroup edmGroup =  getOneFromDB(em, EDMGroup.class, "group.findById",
@@ -381,13 +403,8 @@ public class WebServiceDBAPI extends AbstractDBAPI<WebService> {
         }
 
         edmObject.setAaaitypes(eposDataModelObject.getAaaiTypes());
+	}
 
-        return new LinkedEntity().entityType(entityString)
-                .instanceId(edmInstanceId)
-                .metaId(edmObject.getEdmEntityIdByMetaId().getMetaId())
-                .uid(eposDataModelObject.getUid());
-
-    }
 
     @Override
     protected WebService mapFromDB(Object edmObject) {

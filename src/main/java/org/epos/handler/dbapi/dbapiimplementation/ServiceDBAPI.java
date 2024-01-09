@@ -19,8 +19,19 @@ public class ServiceDBAPI extends AbstractDBAPI<Service> {
     public ServiceDBAPI() {
         super("service", EDMService.class);
     }
-
+    
     @Override
+	public void hardUpdate(String instanceId, Service eposDataModelObject, EntityManager em) {
+    	EDMService edmObject = getOneFromDB(em, EDMService.class,
+				"service.findByInstanceId",
+				"INSTANCEID", instanceId);
+		if(edmObject.getInstanceId().equals(eposDataModelObject.getInstanceId())) {
+			generateEntity(edmObject, eposDataModelObject, em,instanceId,true);
+			em.merge(edmObject);
+		}
+	}
+
+	@Override
     public LinkedEntity save(Service eposDataModelObject, EntityManager em, String edmInstanceId) {
         if (eposDataModelObject.getState().equals(State.PUBLISHED)
                 && isAlreadyPublished(EDMService.class, "service.findByUidAndState", em, eposDataModelObject))
@@ -28,8 +39,9 @@ public class ServiceDBAPI extends AbstractDBAPI<Service> {
 
         //search for a existing instance placeholder to be populated
         EDMService edmObject = getOneFromDB(em, EDMService.class,
-                "service.findByUid",
-                "UID", eposDataModelObject.getUid());
+                "service.findByUidAndState",
+                "UID", eposDataModelObject.getUid(),
+                "STATE", State.PLACEHOLDER.toString());
 
         //if there's a placeholder for the entity check if is passed a specific metaid
         //only if the metaid is the same of the placeholder merge the two (the placeholder and the passed entity)
@@ -64,7 +76,17 @@ public class ServiceDBAPI extends AbstractDBAPI<Service> {
         }
         edmObject.setUid(eposDataModelObject.getUid());
 
-        if (Objects.nonNull(eposDataModelObject.getGroups())){
+		generateEntity(edmObject, eposDataModelObject, em,edmInstanceId,true);
+
+        return new LinkedEntity().entityType(entityString)
+                .instanceId(edmInstanceId)
+                .metaId(edmObject.getEdmEntityIdByMetaId().getMetaId())
+                .uid(eposDataModelObject.getUid());
+
+    }
+	
+	private void generateEntity(EDMService edmObject, Service eposDataModelObject, EntityManager em, String instanceId, boolean merged) {
+		if (Objects.nonNull(eposDataModelObject.getGroups())){
             for (Group group : eposDataModelObject.getGroups()){
 
                 EDMGroup edmGroup =  getOneFromDB(em, EDMGroup.class, "group.findById",
@@ -268,13 +290,7 @@ public class ServiceDBAPI extends AbstractDBAPI<Service> {
 
         edmObject.setType(eposDataModelObject.getType());
         //TODO come fare?
-
-        return new LinkedEntity().entityType(entityString)
-                .instanceId(edmInstanceId)
-                .metaId(edmObject.getEdmEntityIdByMetaId().getMetaId())
-                .uid(eposDataModelObject.getUid());
-
-    }
+	}
 
     @Override
     protected Service mapFromDB(Object edmObject) {

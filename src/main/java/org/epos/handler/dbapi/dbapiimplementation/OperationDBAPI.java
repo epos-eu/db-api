@@ -19,8 +19,19 @@ public class OperationDBAPI extends AbstractDBAPI<Operation> {
     public OperationDBAPI() {
         super("operation", EDMOperation.class);
     }
-
+    
     @Override
+	public void hardUpdate(String instanceId, Operation eposDataModelObject, EntityManager em) {
+    	EDMOperation edmObject = getOneFromDB(em, EDMOperation.class,
+				"operation.findByInstanceId",
+				"INSTANCEID", instanceId);
+		if(edmObject.getInstanceId().equals(eposDataModelObject.getInstanceId())) {
+			generateEntity(edmObject, eposDataModelObject, em,instanceId,true);
+			em.merge(edmObject);
+		}
+	}
+
+	@Override
     public LinkedEntity save(Operation eposDataModelObject, EntityManager em, String edmInstanceId) {
         if (eposDataModelObject.getState().equals(State.PUBLISHED)
                 && isAlreadyPublished(EDMOperation.class, "operation.findByUidAndState", em, eposDataModelObject))
@@ -28,8 +39,9 @@ public class OperationDBAPI extends AbstractDBAPI<Operation> {
 
         //search for a existing instance placeholder to be populated
         EDMOperation edmObject = getOneFromDB(em, EDMOperation.class,
-                "operation.findByUid",
-                "UID", eposDataModelObject.getUid());
+                "operation.findByUidAndState",
+                "UID", eposDataModelObject.getUid(),
+                "STATE", State.PLACEHOLDER.toString());
 
         //if there's a placeholder for the entity check if is passed a specific metaid
         //only if the metaid is the same of the placeholder merge the two (the placeholder and the passed entity)
@@ -41,7 +53,6 @@ public class OperationDBAPI extends AbstractDBAPI<Operation> {
                 (eposDataModelObject.getMetaId() == null || (eposDataModelObject.getMetaId() != null && eposDataModelObject.getMetaId().equals(edmObject.getMetaId())))) {
             //em.merge(edmObject);
             merged = true;
-            edmInstanceId = eposDataModelObject.getInstanceId();
         } else {
             edmObject = new EDMOperation();
             edmObject.setInstanceId(edmInstanceId);
@@ -68,7 +79,18 @@ public class OperationDBAPI extends AbstractDBAPI<Operation> {
 
         edmObject.setUid(eposDataModelObject.getUid() != null ? eposDataModelObject.getUid().replace("file:///app/", "") : null);
 
-        if (eposDataModelObject.getInstanceChangedId() != null) {
+        generateEntity(edmObject, eposDataModelObject, em,edmInstanceId,merged);
+
+        return new LinkedEntity().entityType(entityString)
+                .instanceId(edmInstanceId)
+                .metaId(edmObject.getEdmEntityIdByMetaId().getMetaId())
+                .uid(eposDataModelObject.getUid());
+
+    }
+	
+
+    private void generateEntity(EDMOperation edmObject, Operation eposDataModelObject, EntityManager em, String instanceId, boolean merged) {
+    	if (eposDataModelObject.getInstanceChangedId() != null) {
             EDMOperation changedInstance = getOneFromDB(em, EDMOperation.class, "operation.findByInstanceId",
                     "INSTANCEID", eposDataModelObject.getInstanceChangedId());
             if (changedInstance == null) {
@@ -163,13 +185,7 @@ public class OperationDBAPI extends AbstractDBAPI<Operation> {
         }
 
         edmObject.setTemplate(eposDataModelObject.getTemplate());
-
-        return new LinkedEntity().entityType(entityString)
-                .instanceId(edmInstanceId)
-                .metaId(edmObject.getEdmEntityIdByMetaId().getMetaId())
-                .uid(eposDataModelObject.getUid());
-
-    }
+	}
 
     @Override
     protected Operation mapFromDB(Object edmObject) {

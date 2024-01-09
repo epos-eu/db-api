@@ -1,5 +1,6 @@
 package org.epos.handler.dbapi.dbapiimplementation;
 
+import org.epos.eposdatamodel.DataProduct;
 import org.epos.eposdatamodel.EPOSDataModelEntity;
 import org.epos.eposdatamodel.LinkedEntity;
 import org.epos.eposdatamodel.State;
@@ -323,5 +324,4 @@ public abstract class AbstractDBAPI<T extends EPOSDataModelEntity> implements EP
         em.close();
         return list;
     }
-
 }

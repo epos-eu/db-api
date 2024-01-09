@@ -18,8 +18,19 @@ public class SoftwareApplicationDBAPI extends AbstractDBAPI<SoftwareApplication>
     public SoftwareApplicationDBAPI() {
         super("softwareapplication", EDMSoftwareapplication.class);
     }
-
+    
     @Override
+   	public void hardUpdate(String instanceId, SoftwareApplication eposDataModelObject, EntityManager em) {
+    	EDMSoftwareapplication edmObject = getOneFromDB(em, EDMSoftwareapplication.class,
+   				"softwareapplication.findByInstanceId",
+   				"INSTANCEID", instanceId);
+   		if(edmObject.getInstanceId().equals(eposDataModelObject.getInstanceId())) {
+   			generateEntity(edmObject, eposDataModelObject, em,instanceId,true);
+   			em.merge(edmObject);
+   		}
+   	}
+
+	@Override
     public LinkedEntity save(SoftwareApplication eposDataModelObject, EntityManager em, String edmInstanceId) {
         if (eposDataModelObject.getState().equals(State.PUBLISHED)
                 && isAlreadyPublished(EDMSoftwareapplication.class, "softwareapplication.findByUidAndState", em, eposDataModelObject))
@@ -27,8 +38,9 @@ public class SoftwareApplicationDBAPI extends AbstractDBAPI<SoftwareApplication>
 
         //search for a existing instance placeholder to be populated
         EDMSoftwareapplication edmObject = getOneFromDB(em, EDMSoftwareapplication.class,
-                "softwareapplication.findByUid",
-                "UID", eposDataModelObject.getUid());
+                "softwareapplication.findByUidAndState",
+                "UID", eposDataModelObject.getUid(),
+                "STATE", State.PLACEHOLDER.toString());
 
         //if there's a placeholder for the entity check if is passed a specific metaid
         //only if the metaid is the same of the placeholder merge the two (the placeholder and the passed entity)
@@ -39,7 +51,6 @@ public class SoftwareApplicationDBAPI extends AbstractDBAPI<SoftwareApplication>
         if (edmObject != null &&
                 (eposDataModelObject.getMetaId() == null || (eposDataModelObject.getMetaId() != null && eposDataModelObject.getMetaId().equals(edmObject.getMetaId())))) {
             merge = true;
-            edmInstanceId = eposDataModelObject.getInstanceId();
         } else {
             edmObject = new EDMSoftwareapplication();
             edmObject.setInstanceId(edmInstanceId);
@@ -64,7 +75,17 @@ public class SoftwareApplicationDBAPI extends AbstractDBAPI<SoftwareApplication>
 
         edmObject.setUid(eposDataModelObject.getUid());
 
-        if (merge) em.merge(edmObject);
+		generateEntity(edmObject, eposDataModelObject, em,edmInstanceId,merge);
+
+        return new LinkedEntity().entityType(entityString)
+                .instanceId(edmInstanceId)
+                .metaId(edmObject.getEdmEntityIdByMetaId().getMetaId())
+                .uid(eposDataModelObject.getUid());
+
+    }
+	
+	private void generateEntity(EDMSoftwareapplication edmObject, SoftwareApplication eposDataModelObject, EntityManager em, String instanceId, boolean merge) {
+		if (merge) em.merge(edmObject);
         else em.persist(edmObject);
 
         if (Objects.nonNull(eposDataModelObject.getGroups())){
@@ -285,13 +306,8 @@ public class SoftwareApplicationDBAPI extends AbstractDBAPI<SoftwareApplication>
 
         edmObject.setRequirements(eposDataModelObject.getRequirements());
         edmObject.setSoftwareversion(eposDataModelObject.getSoftwareVersion());
-
-        return new LinkedEntity().entityType(entityString)
-                .instanceId(edmInstanceId)
-                .metaId(edmObject.getEdmEntityIdByMetaId().getMetaId())
-                .uid(eposDataModelObject.getUid());
-
-    }
+		
+	}
 
     @Override
     protected SoftwareApplication mapFromDB(Object edmObject) {

@@ -26,6 +26,17 @@ public class ContactPointDBAPI extends AbstractDBAPI<ContactPoint> {
     }
 
     @Override
+    public void hardUpdate(String instanceId, ContactPoint eposDataModelObject, EntityManager em) {
+    	EDMContactpoint edmObject = getOneFromDB(em, EDMContactpoint.class,
+                "contactpoint.findByInstanceId",
+                "INSTANCEID", instanceId);
+    	if(edmObject.getInstanceId().equals(eposDataModelObject.getInstanceId())) {
+            generateEntity(edmObject, eposDataModelObject, em,instanceId,true);
+    		em.merge(edmObject);
+    	}
+    }
+
+	@Override
     public LinkedEntity save(ContactPoint eposDataModelObject, EntityManager em, String edmInstanceId) {
 
         if (eposDataModelObject.getState().equals(State.PUBLISHED)
@@ -34,8 +45,9 @@ public class ContactPointDBAPI extends AbstractDBAPI<ContactPoint> {
 
         //search for a existing instance placeholder to be populated
         EDMContactpoint edmObject = getOneFromDB(em, EDMContactpoint.class,
-                "contactpoint.findByUid",
-                "UID", eposDataModelObject.getUid());
+                "contactpoint.findByUidAndState",
+                "UID", eposDataModelObject.getUid(),
+                "STATE", State.PLACEHOLDER.toString());
 
         //if there's a placeholder for the entity check if is passed a specific metaid
         //only if the metaid is the same of the placeholder merge the two (the placeholder and the passed entity)
@@ -46,7 +58,6 @@ public class ContactPointDBAPI extends AbstractDBAPI<ContactPoint> {
                 (eposDataModelObject.getMetaId() == null || (eposDataModelObject.getMetaId() != null && eposDataModelObject.getMetaId().equals(edmObject.getMetaId())))) {
             //em.merge(edmObject);
             merged = true;
-            edmInstanceId = eposDataModelObject.getInstanceId();
 
         } else {
             edmObject = new EDMContactpoint();
@@ -74,7 +85,17 @@ public class ContactPointDBAPI extends AbstractDBAPI<ContactPoint> {
 
         edmObject.setUid(eposDataModelObject.getUid());
 
-        if (Objects.nonNull(eposDataModelObject.getGroups())){
+        generateEntity(edmObject, eposDataModelObject, em,edmInstanceId,merged);
+
+        return new LinkedEntity().entityType(entityString)
+                .instanceId(edmInstanceId)
+                .metaId(edmObject.getEdmEntityIdByMetaId().getMetaId())
+                .uid(edmObject.getUid());
+    }
+
+	
+    private void generateEntity(EDMContactpoint edmObject, ContactPoint eposDataModelObject, EntityManager em, String instanceId, boolean merged) {
+    	if (Objects.nonNull(eposDataModelObject.getGroups())){
             for (Group group : eposDataModelObject.getGroups()){
 
                 EDMGroup edmGroup =  getOneFromDB(em, EDMGroup.class, "group.findById",
@@ -233,13 +254,8 @@ public class ContactPointDBAPI extends AbstractDBAPI<ContactPoint> {
             edmObject.setEdmEntityIdByMetaOrganizationId(edmMetaOrganization);
         }
 
-
-        return new LinkedEntity().entityType(entityString)
-                .instanceId(edmInstanceId)
-                .metaId(edmObject.getEdmEntityIdByMetaId().getMetaId())
-                .uid(edmObject.getUid());
-    }
-
+		
+	}
 
     @Override
     protected ContactPoint mapFromDB(Object edmObject) {
