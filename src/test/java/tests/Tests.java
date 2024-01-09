@@ -19,7 +19,6 @@ public class Tests {
 	public static void main(String[] args) {
 		
 		DataProduct dp = new DataProduct();
-		dp.setUid("MOCCABBACCA2");
 
 		ApiResponseMessage message_one = DataProductManager.createDataProduct(dp, true, true);
 		System.out.println(message_one);
@@ -34,6 +33,10 @@ public class Tests {
 		ArrayList<String> titles = new ArrayList<String>();
 		titles.add("TEST");
 		dp.setTitle(titles);
+		
+		DataProductManager.updateDataProduct(dp, true, true);
+		DataProductManager.updateDataProduct(dp, true, true);
+		DataProductManager.updateDataProduct(dp, true, true);
 		
 
 		ApiResponseMessage message_two = DataProductManager.updateDataProduct(dp, true, true);

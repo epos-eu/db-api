@@ -25,9 +25,10 @@ public class OrganizationDBAPI extends AbstractDBAPI<Organization> {
     	EDMOrganization edmObject = getOneFromDB(em, EDMOrganization.class,
 				"organization.findByInstanceId",
 				"INSTANCEID", instanceId);
+		delete(instanceId, em);
 		if(edmObject.getInstanceId().equals(eposDataModelObject.getInstanceId())) {
 			generateEntity(edmObject, eposDataModelObject, em,instanceId,true);
-			em.merge(edmObject);
+			em.persist(edmObject);
 		}
 	}
 

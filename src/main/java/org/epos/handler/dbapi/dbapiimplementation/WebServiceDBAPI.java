@@ -24,9 +24,10 @@ public class WebServiceDBAPI extends AbstractDBAPI<WebService> {
     	EDMWebservice edmObject = getOneFromDB(em, EDMWebservice.class,
 				"webservice.findByInstanceId",
 				"INSTANCEID", instanceId);
+		delete(instanceId, em);
 		if(edmObject.getInstanceId().equals(eposDataModelObject.getInstanceId())) {
 			generateEntity(edmObject, eposDataModelObject, em,instanceId,true);
-			em.merge(edmObject);
+			em.persist(edmObject);
 		}
 	}
 

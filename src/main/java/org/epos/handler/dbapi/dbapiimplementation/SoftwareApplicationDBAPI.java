@@ -24,9 +24,10 @@ public class SoftwareApplicationDBAPI extends AbstractDBAPI<SoftwareApplication>
     	EDMSoftwareapplication edmObject = getOneFromDB(em, EDMSoftwareapplication.class,
    				"softwareapplication.findByInstanceId",
    				"INSTANCEID", instanceId);
+		delete(instanceId, em);
    		if(edmObject.getInstanceId().equals(eposDataModelObject.getInstanceId())) {
    			generateEntity(edmObject, eposDataModelObject, em,instanceId,true);
-   			em.merge(edmObject);
+   			em.persist(edmObject);
    		}
    	}
 

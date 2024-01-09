@@ -25,9 +25,10 @@ public class OperationDBAPI extends AbstractDBAPI<Operation> {
     	EDMOperation edmObject = getOneFromDB(em, EDMOperation.class,
 				"operation.findByInstanceId",
 				"INSTANCEID", instanceId);
+		delete(instanceId, em);
 		if(edmObject.getInstanceId().equals(eposDataModelObject.getInstanceId())) {
 			generateEntity(edmObject, eposDataModelObject, em,instanceId,true);
-			em.merge(edmObject);
+			em.persist(edmObject);
 		}
 	}
 

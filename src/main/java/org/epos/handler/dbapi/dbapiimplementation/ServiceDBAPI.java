@@ -25,9 +25,10 @@ public class ServiceDBAPI extends AbstractDBAPI<Service> {
     	EDMService edmObject = getOneFromDB(em, EDMService.class,
 				"service.findByInstanceId",
 				"INSTANCEID", instanceId);
+		delete(instanceId, em);
 		if(edmObject.getInstanceId().equals(eposDataModelObject.getInstanceId())) {
 			generateEntity(edmObject, eposDataModelObject, em,instanceId,true);
-			em.merge(edmObject);
+			em.persist(edmObject);
 		}
 	}
 

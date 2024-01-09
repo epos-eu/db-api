@@ -24,9 +24,10 @@ public class FacilityDBAPI extends AbstractDBAPI<Facility> {
     	EDMFacility edmObject = getOneFromDB(em, EDMFacility.class,
 				"facility.findByInstanceId",
 				"INSTANCEID", instanceId);
+		delete(instanceId, em);
 		if(edmObject.getInstanceId().equals(eposDataModelObject.getInstanceId())) {
 			generateEntity(edmObject, eposDataModelObject, em,instanceId,true);
-			em.merge(edmObject);
+			em.persist(edmObject);
 		}
 	}
 
