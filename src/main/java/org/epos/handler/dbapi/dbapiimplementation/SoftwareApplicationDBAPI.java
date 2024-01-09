@@ -150,6 +150,7 @@ public class SoftwareApplicationDBAPI extends AbstractDBAPI<SoftwareApplication>
 
 
         if (eposDataModelObject.getCategory() != null) {
+			em.persist(edmObject);
             edmObject.setSoftwareapplicationCategoriesByInstanceId(new ArrayList<>());
             for (String categoryName : eposDataModelObject.getCategory()) {
                 EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByUid",
@@ -177,6 +178,7 @@ public class SoftwareApplicationDBAPI extends AbstractDBAPI<SoftwareApplication>
         }
 
         if (eposDataModelObject.getContactPoint() != null) {
+			em.persist(edmObject);
             edmObject.setContactpointSoftwareapplicationsByInstanceId(new ArrayList<>());
             for (LinkedEntity contactpointLinked : eposDataModelObject.getContactPoint()) {
 
@@ -223,7 +225,7 @@ public class SoftwareApplicationDBAPI extends AbstractDBAPI<SoftwareApplication>
         edmObject.setDownloadurl(eposDataModelObject.getDownloadURL());
 
         if (eposDataModelObject.getIdentifier() != null) {
-
+			em.persist(edmObject);
             edmObject.setSoftwareapplicationIdentifiersByInstanceId(new ArrayList<>());
             for (Identifier identifier : eposDataModelObject.getIdentifier()) {
 
@@ -250,6 +252,7 @@ public class SoftwareApplicationDBAPI extends AbstractDBAPI<SoftwareApplication>
         edmObject.setName(eposDataModelObject.getName());
 
         if (eposDataModelObject.getParameter() != null) {
+			em.persist(edmObject);
             edmObject.setSoftwareapplicationParametersByInstanceId(new ArrayList<>());
             for (Parameter parameter : eposDataModelObject.getParameter()) {
                 EDMSoftwareapplicationParameters edmSoftwareapplicationParameters = new EDMSoftwareapplicationParameters();
@@ -266,6 +269,7 @@ public class SoftwareApplicationDBAPI extends AbstractDBAPI<SoftwareApplication>
         }
 
         if (eposDataModelObject.getRelation() != null) {
+			em.persist(edmObject);
             edmObject.setSoftwareapplicationOperationsByInstanceId(new ArrayList<>());
             for (LinkedEntity linkedEntity : eposDataModelObject.getRelation()) {
                 EDMOperation instance = null;

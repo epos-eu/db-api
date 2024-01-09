@@ -178,6 +178,7 @@ public class DistributionDBAPI extends AbstractDBAPI<Distribution> {
 		}
 
 		if (eposDataModelObject.getAccessURL() != null) {
+			em.persist(edmObject);
 			edmObject.setAccessURLByInstanceId(new ArrayList<>());
 			for (LinkedEntity linkedEntity : eposDataModelObject.getAccessURL()) {
 				EDMOperation instance = null;
@@ -227,6 +228,7 @@ public class DistributionDBAPI extends AbstractDBAPI<Distribution> {
 		}
 
 		if (eposDataModelObject.getDescription() != null) {
+			em.persist(edmObject);
 			edmObject.setDistributionDescriptionsByInstanceId(new ArrayList<>());
 			for (String description : eposDataModelObject.getDescription()) {
 				EDMDistributionDescription edmDistributionDescription = new EDMDistributionDescription();
@@ -240,6 +242,7 @@ public class DistributionDBAPI extends AbstractDBAPI<Distribution> {
 		}
 
 		if (eposDataModelObject.getDownloadURL() != null) {
+			em.persist(edmObject);
 			edmObject.setDistributionDownloadurlsByInstanceId(new ArrayList<>());
 			for (String downloadUrl : eposDataModelObject.getDownloadURL()) {
 				EDMDistributionDownloadurl edmDistributionDownloadURL = new EDMDistributionDownloadurl();
@@ -262,6 +265,7 @@ public class DistributionDBAPI extends AbstractDBAPI<Distribution> {
 		edmObject.setLicense(eposDataModelObject.getLicence());
 
 		if (eposDataModelObject.getTitle() != null) {
+			em.persist(edmObject);
 			edmObject.setDistributionTitlesByInstanceId(new ArrayList<>());
 			for (String description : eposDataModelObject.getTitle()) {
 				EDMDistributionTitle edmDistributionTitle = new EDMDistributionTitle();

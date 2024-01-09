@@ -268,6 +268,7 @@ public class DataProductDBAPI extends AbstractDBAPI<DataProduct> {
 
 		if (eposDataModelObject.getDistribution() != null) {
 			edmObject.setIsDistributionsByInstanceId(new ArrayList<>());
+			em.persist(edmObject);
 			for (LinkedEntity linkedEntity : eposDataModelObject.getDistribution()) {
 
 				EDMDistribution instance = null;
@@ -298,22 +299,24 @@ public class DataProductDBAPI extends AbstractDBAPI<DataProduct> {
 					em.persist(instance);
 				}
 
-
 				EDMIsDistribution isDistribution = getOneFromDB(em, EDMIsDistribution.class, "isDistribution.findByinstanceId",
 						"DPINST", edmObject.getInstanceId(), "DINST", instance.getInstanceId());
+				
+				System.out.println(isDistribution+" "+edmObject.getInstanceId()+" "+instance.getInstanceId());
 
 				if (isDistribution != null) continue;
-
+				
 				EDMIsDistribution edmIsDistribution = new EDMIsDistribution();
 				edmIsDistribution.setDataproductByInstanceDataproductId(edmObject);
 				edmIsDistribution.setDistributionByInstanceDistributionId(instance);
-
+				
 				edmObject.getIsDistributionsByInstanceId().add(edmIsDistribution);
 
 			}
 		}
 
 		if (eposDataModelObject.getHasPart() != null) {
+			em.persist(edmObject);
 			edmObject.setHaspartDataproductsByInstanceId(new ArrayList<>());
 			for (LinkedEntity linkedEntity : eposDataModelObject.getHasPart()) {
 				EDMDataproduct instance = null;
@@ -353,6 +356,7 @@ public class DataProductDBAPI extends AbstractDBAPI<DataProduct> {
 		}
 
 		if (eposDataModelObject.getIdentifier() != null) {
+			em.persist(edmObject);
 
 			edmObject.setDataproductIdentifiersByInstanceId(new ArrayList<>());
 			for (Identifier identifier : eposDataModelObject.getIdentifier()) {
@@ -375,6 +379,7 @@ public class DataProductDBAPI extends AbstractDBAPI<DataProduct> {
 		}
 
 		if (eposDataModelObject.getIsPartOf() != null) {
+			em.persist(edmObject);
 			edmObject.setIspartofDataproductsByInstanceId(new ArrayList<>());
 			for (LinkedEntity linkedEntity : eposDataModelObject.getIsPartOf()) {
 				EDMDataproduct instance = null;
@@ -417,6 +422,7 @@ public class DataProductDBAPI extends AbstractDBAPI<DataProduct> {
 		edmObject.setKeywords(eposDataModelObject.getKeywords());
 
 		if (eposDataModelObject.getProvenance() != null) {
+			em.persist(edmObject);
 			edmObject.setDataproductProvenancesByInstanceId(new ArrayList<>());
 			for (String provenance : eposDataModelObject.getProvenance()) {
 				EDMDataproductProvenance EDMDataproductProvenance = new EDMDataproductProvenance();
@@ -430,6 +436,7 @@ public class DataProductDBAPI extends AbstractDBAPI<DataProduct> {
 		}
 
 		if (eposDataModelObject.getPublisher() != null) {
+			em.persist(edmObject);
 			edmObject.setPublishersByInstanceId(new ArrayList<>());
 			for (String orgUid : eposDataModelObject.getPublisher().stream().map(LinkedEntity::getUid).collect(Collectors.toList())) {
 				List<EDMOrganization> instaceList = getFromDB(em, EDMOrganization.class,
@@ -466,6 +473,7 @@ public class DataProductDBAPI extends AbstractDBAPI<DataProduct> {
 		}
 
 		if (eposDataModelObject.getSpatialExtent() != null) {
+			em.persist(edmObject);
 			edmObject.setDataproductSpatialsByInstanceId(new ArrayList<>());
 			for (Location location : eposDataModelObject.getSpatialExtent()) {
 				if (location.getLocation() == null)
@@ -482,6 +490,7 @@ public class DataProductDBAPI extends AbstractDBAPI<DataProduct> {
 		}
 
 		if (eposDataModelObject.getTemporalExtent() != null) {
+			em.persist(edmObject);
 			edmObject.setDataproductTemporalsByInstanceId(new ArrayList<>());
 			for (PeriodOfTime temporal : eposDataModelObject.getTemporalExtent()) {
 				EDMDataproductTemporal edmDataproductTemporal = new EDMDataproductTemporal();

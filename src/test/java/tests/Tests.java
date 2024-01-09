@@ -34,10 +34,6 @@ public class Tests {
 		titles.add("TEST");
 		dp.setTitle(titles);
 		
-		DataProductManager.updateDataProduct(dp, true, true);
-		DataProductManager.updateDataProduct(dp, true, true);
-		DataProductManager.updateDataProduct(dp, true, true);
-		
 
 		ApiResponseMessage message_two = DataProductManager.updateDataProduct(dp, true, true);
 		System.out.println(message_two);
@@ -49,6 +45,8 @@ public class Tests {
 		ApiResponseMessage message_three = DistributionManager.createDistribution(distr, true, true);
 		System.out.println(message_three);
 		
+
+		DistributionManager.updateDistribution(distr, true, true);
 		
 		System.out.println(DataProductManager.getDataProduct(dataproduct.getMetaId(), dataproduct.getInstanceId()));
 

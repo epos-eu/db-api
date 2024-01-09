@@ -132,6 +132,7 @@ public class OperationDBAPI extends AbstractDBAPI<Operation> {
 
 
         if (eposDataModelObject.getMapping() != null) {
+			em.persist(edmObject);
             edmObject.setMappingsByInstanceId(new ArrayList<>());
             for (Mapping mapping : eposDataModelObject.getMapping()) {
                 EDMMapping edmMapping = new EDMMapping();
@@ -173,6 +174,7 @@ public class OperationDBAPI extends AbstractDBAPI<Operation> {
         edmObject.setMethod(eposDataModelObject.getMethod());
 
         if (eposDataModelObject.getReturns() != null) {
+			em.persist(edmObject);
             edmObject.setOperationReturnsByInstanceId(new ArrayList<>());
             for (String returnString : eposDataModelObject.getReturns()) {
                 EDMOperationReturns edmReturns = new EDMOperationReturns();
