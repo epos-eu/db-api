@@ -142,6 +142,7 @@ public class PersonDBAPI extends AbstractDBAPI<Person> {
 
 
         edmObject.setPersonIdentifiersByInstanceId(new ArrayList<>());
+		em.persist(edmObject);
         if (eposDataModelObject.getIdentifier() != null && !eposDataModelObject.getIdentifier().isEmpty()) {
             for (Identifier identifier : eposDataModelObject.getIdentifier()) {
 
@@ -184,6 +185,7 @@ public class PersonDBAPI extends AbstractDBAPI<Person> {
 
 
         edmObject.setPersonEmailByInstanceId(new ArrayList<>());
+		em.persist(edmObject);
         for (String email : eposDataModelObject.getEmail()) {
             EDMPersonEmail edmEmail = new EDMPersonEmail();
             edmEmail.setId(UUID.randomUUID().toString());
@@ -193,6 +195,7 @@ public class PersonDBAPI extends AbstractDBAPI<Person> {
         }
 
         edmObject.setPersonTelephonesByInstanceId(new ArrayList<>());
+		em.persist(edmObject);
         if (eposDataModelObject.getTelephone() != null) {
             for (String telephone : eposDataModelObject.getTelephone()) {
                 EDMPersonTelephone edmTelephone = new EDMPersonTelephone();
@@ -204,6 +207,7 @@ public class PersonDBAPI extends AbstractDBAPI<Person> {
         }
 
         edmObject.setAffiliationsByInstanceId(new ArrayList<>());
+		em.persist(edmObject);
         if (eposDataModelObject.getAffiliation() != null) {
             for (LinkedEntity linkedEntity : eposDataModelObject.getAffiliation()) {
 

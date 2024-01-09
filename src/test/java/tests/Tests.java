@@ -7,6 +7,7 @@ import org.epos.eposdatamodel.Category;
 import org.epos.eposdatamodel.DataProduct;
 import org.epos.eposdatamodel.Distribution;
 import org.epos.eposdatamodel.LinkedEntity;
+import org.epos.eposdatamodel.PeriodOfTime;
 import org.epos.eposdatamodel.State;
 import org.epos.eposdatamodel.WebService;
 import org.epos.handler.dbapi.DBAPIClient;
@@ -33,6 +34,10 @@ public class Tests {
 		ArrayList<String> titles = new ArrayList<String>();
 		titles.add("TEST");
 		dp.setTitle(titles);
+		PeriodOfTime pot = new PeriodOfTime();
+		pot.setEndDate(null);
+		pot.setStartDate(null);
+		dp.setTemporalExtent(List.of(pot));
 		
 
 		ApiResponseMessage message_two = DataProductManager.updateDataProduct(dp, true, true);
@@ -45,11 +50,23 @@ public class Tests {
 		ApiResponseMessage message_three = DistributionManager.createDistribution(distr, true, true);
 		System.out.println(message_three);
 		
+		distr.setUid(message_three.getEntity().getUid());
+		distr.setInstanceId(message_three.getEntity().getInstanceId());
+		distr.setMetaId(message_three.getEntity().getMetaId());
+		
+		
+		WebService webservice = new WebService();
+		webservice.setDistribution(List.of(message_three.getEntity()));
+		
+		ApiResponseMessage message_four = WebServiceManager.createWebService(webservice, true, true);
+		
+		LinkedEntity webservicelink = message_four.getEntity();
 
-		DistributionManager.updateDistribution(distr, true, true);
+		//DistributionManager.updateDistribution(distr, true, true);
 		
 		System.out.println(DataProductManager.getDataProduct(dataproduct.getMetaId(), dataproduct.getInstanceId()));
-
+		System.out.println(DistributionManager.getDistribution(message_three.getEntity().getMetaId(), message_three.getEntity().getInstanceId()));
+		System.out.println(WebServiceManager.getWebService(webservicelink.getMetaId(), webservicelink.getInstanceId()));
 		/*DataProduct dataproduct = new DataProduct();
 		dataproduct.setEditorId("fixedUser5_metaid");
 

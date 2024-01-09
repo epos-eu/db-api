@@ -24,10 +24,12 @@ public class FacilityDBAPI extends AbstractDBAPI<Facility> {
     	EDMFacility edmObject = getOneFromDB(em, EDMFacility.class,
 				"facility.findByInstanceId",
 				"INSTANCEID", instanceId);
-		delete(instanceId, em);
+		//delete(instanceId, em);
 		if(edmObject.getInstanceId().equals(eposDataModelObject.getInstanceId())) {
-			generateEntity(edmObject, eposDataModelObject, em,instanceId,true);
-			em.persist(edmObject);
+			delete(instanceId, em);
+			save(eposDataModelObject,em,instanceId);
+			//generateEntity(edmObject, eposDataModelObject, em,instanceId,true);
+			//em.persist(edmObject);
 		}
 	}
 
@@ -158,6 +160,7 @@ public class FacilityDBAPI extends AbstractDBAPI<Facility> {
 
         if (eposDataModelObject.getCategory() != null) {
             edmObject.setFacilityCategoriesByInstanceId(new LinkedList<>());
+			em.persist(edmObject);
             for (String categoryName : eposDataModelObject.getCategory()) {
                 EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByUid",
                         "UID", categoryName);
@@ -185,6 +188,7 @@ public class FacilityDBAPI extends AbstractDBAPI<Facility> {
 
         if (eposDataModelObject.getContactPoint() != null) {
             edmObject.setContactpointFacilitiesByInstanceId(new ArrayList<>());
+			em.persist(edmObject);
             for (LinkedEntity contactpointLinked : eposDataModelObject.getContactPoint()) {
 
                 EDMContactpoint edmContactPoint = null;
@@ -231,6 +235,7 @@ public class FacilityDBAPI extends AbstractDBAPI<Facility> {
 
         if (eposDataModelObject.getIsPartOf() != null) {
             edmObject.setFacilityFacilitiesByInstanceId(new ArrayList<>());
+			em.persist(edmObject);
             for (LinkedEntity linkedEntity : eposDataModelObject.getIsPartOf()) {
 
                 EDMFacility instance = null;
@@ -274,6 +279,7 @@ public class FacilityDBAPI extends AbstractDBAPI<Facility> {
 
         if (eposDataModelObject.getPageURL() != null) {
             edmObject.setFacilityPageurlsByInstanceId(new LinkedList<>());
+			em.persist(edmObject);
             for (String item : eposDataModelObject.getPageURL()) {
                 EDMFacilityPageurl edmFacilityPageurl = new EDMFacilityPageurl();
 
@@ -288,6 +294,7 @@ public class FacilityDBAPI extends AbstractDBAPI<Facility> {
 
         if (eposDataModelObject.getRelation() != null) {
             edmObject.setFacilityServicesByInstanceId(new ArrayList<>());
+			em.persist(edmObject);
             for (LinkedEntity linkedEntity : eposDataModelObject.getRelation()) {
 
                 EDMService instance = null;
@@ -331,6 +338,7 @@ public class FacilityDBAPI extends AbstractDBAPI<Facility> {
 
         if (eposDataModelObject.getSpatialExtent() != null) {
             edmObject.setFacilitySpatialsByInstanceId(new ArrayList<>());
+			em.persist(edmObject);
             for (Location location : eposDataModelObject.getSpatialExtent()) {
                 if (location.getLocation() == null)
                     continue;

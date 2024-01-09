@@ -30,10 +30,12 @@ public class ContactPointDBAPI extends AbstractDBAPI<ContactPoint> {
 		EDMContactpoint edmObject = getOneFromDB(em, EDMContactpoint.class,
 				"contactpoint.findByInstanceId",
 				"INSTANCEID", instanceId);
-		delete(instanceId, em);
+		//delete(instanceId, em);
 		if(edmObject.getInstanceId().equals(eposDataModelObject.getInstanceId())) {
-			generateEntity(edmObject, eposDataModelObject, em,instanceId,true);
-			em.persist(edmObject);
+			delete(instanceId, em);
+			save(eposDataModelObject,em,instanceId);
+			//generateEntity(edmObject, eposDataModelObject, em,instanceId,true);
+			//em.persist(edmObject);
 		}
 	}
 
@@ -162,6 +164,7 @@ public class ContactPointDBAPI extends AbstractDBAPI<ContactPoint> {
 
 
 		edmObject.setContactpointEmailsByInstanceId(new ArrayList<>());
+		em.persist(edmObject);
 		if (eposDataModelObject.getEmail() != null)
 			for (String email : eposDataModelObject.getEmail()) {
 				EDMContactpointEmail edmEmail = new EDMContactpointEmail();
@@ -172,6 +175,7 @@ public class ContactPointDBAPI extends AbstractDBAPI<ContactPoint> {
 			}
 
 		edmObject.setContactpointLanguageByInstanceId(new ArrayList<>());
+		em.persist(edmObject);
 		if (eposDataModelObject.getLanguage() != null)
 			for (String ln : eposDataModelObject.getLanguage()) {
 				EDMContactpointLanguage edmContactpointLanguage = new EDMContactpointLanguage();
@@ -184,6 +188,7 @@ public class ContactPointDBAPI extends AbstractDBAPI<ContactPoint> {
 		edmObject.setRole(eposDataModelObject.getRole());
 
 		edmObject.setContactpointTelephonesByInstanceId(new ArrayList<>());
+		em.persist(edmObject);
 		if (eposDataModelObject.getTelephone() != null) {
 			for (String telephone : eposDataModelObject.getTelephone()) {
 				EDMContactpointTelephone edmTelephone = new EDMContactpointTelephone();

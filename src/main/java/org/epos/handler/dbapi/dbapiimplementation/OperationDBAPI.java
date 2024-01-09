@@ -25,10 +25,12 @@ public class OperationDBAPI extends AbstractDBAPI<Operation> {
     	EDMOperation edmObject = getOneFromDB(em, EDMOperation.class,
 				"operation.findByInstanceId",
 				"INSTANCEID", instanceId);
-		delete(instanceId, em);
+		//delete(instanceId, em);
 		if(edmObject.getInstanceId().equals(eposDataModelObject.getInstanceId())) {
-			generateEntity(edmObject, eposDataModelObject, em,instanceId,true);
-			em.persist(edmObject);
+			delete(instanceId, em);
+			save(eposDataModelObject,em,instanceId);
+			//generateEntity(edmObject, eposDataModelObject, em,instanceId,true);
+			//em.persist(edmObject);
 		}
 	}
 
@@ -132,8 +134,8 @@ public class OperationDBAPI extends AbstractDBAPI<Operation> {
 
 
         if (eposDataModelObject.getMapping() != null) {
-			em.persist(edmObject);
             edmObject.setMappingsByInstanceId(new ArrayList<>());
+			em.persist(edmObject);
             for (Mapping mapping : eposDataModelObject.getMapping()) {
                 EDMMapping edmMapping = new EDMMapping();
 
@@ -145,6 +147,7 @@ public class OperationDBAPI extends AbstractDBAPI<Operation> {
                 edmMapping.setMinvalue(mapping.getMinValue());
 
                 edmMapping.setMappingParamvaluesById(new LinkedList<>());
+    			em.persist(edmObject);
 
                 if (mapping.getParamValue() != null) {
                     for (String param : mapping.getParamValue()) {
@@ -174,8 +177,8 @@ public class OperationDBAPI extends AbstractDBAPI<Operation> {
         edmObject.setMethod(eposDataModelObject.getMethod());
 
         if (eposDataModelObject.getReturns() != null) {
-			em.persist(edmObject);
             edmObject.setOperationReturnsByInstanceId(new ArrayList<>());
+			em.persist(edmObject);
             for (String returnString : eposDataModelObject.getReturns()) {
                 EDMOperationReturns edmReturns = new EDMOperationReturns();
 

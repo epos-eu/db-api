@@ -36,8 +36,6 @@ public class DistributionManager {
 			}
 		}
 
-		System.out.println(list);
-
 		return list;
 	}
 
