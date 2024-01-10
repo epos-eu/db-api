@@ -122,19 +122,21 @@ public class DistributionManager {
 
 		dbapi.setTransactionModeAuto(true);
 		dbapi.startTransaction();
+
+		LinkedEntity reference = null;
 		try {
-			dbapi.update(distribution, new UpdateQuery().hardUpdate(true));
+			reference = dbapi.hardUpdate(distribution);
 		} catch (Exception e) {
 			e.printStackTrace();
 			dbapi.rollbackTransaction();
 			return new ApiResponseMessage(ApiResponseMessage.ERROR, "Something went wrong during the persisting of the new instance: "+e.getMessage());
 		}
 
-		LinkedEntity reference = new LinkedEntity();
+		/*LinkedEntity reference = new LinkedEntity();
 		reference.entityType("Distribution");
 		reference.setInstanceId(distribution.getInstanceId());
 		reference.setMetaId(distribution.getMetaId());
-		reference.setUid(distribution.getUid());
+		reference.setUid(distribution.getUid());*/
 
 		dbapi.closeTransaction(true);
 		dbapi.setTransactionModeAuto(true);
@@ -178,14 +180,14 @@ public class DistributionManager {
 				}
 			}
 		}
-		if(sons) {
+		/*if(sons) {
 			if(distribution.getAccessService()!=null) {
 				LinkedEntity le = distribution.getAccessService(); 
 				WebService webService = WebServiceManager.getWebService(le.getMetaId(), le.getInstanceId()).get(0);
 				WebServiceManager.updateWebService(webService, false, true);
 			}
 
-		}
+		}*/
 
 	}
 

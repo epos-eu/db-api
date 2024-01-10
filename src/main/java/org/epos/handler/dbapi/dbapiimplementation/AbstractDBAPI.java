@@ -1,6 +1,5 @@
 package org.epos.handler.dbapi.dbapiimplementation;
 
-import org.epos.eposdatamodel.DataProduct;
 import org.epos.eposdatamodel.EPOSDataModelEntity;
 import org.epos.eposdatamodel.LinkedEntity;
 import org.epos.eposdatamodel.State;
@@ -113,8 +112,17 @@ public abstract class AbstractDBAPI<T extends EPOSDataModelEntity> implements EP
         delete(instanceId, em);
         em.flush();
         //System.out.println(getByInstanceId(instanceId, em));
-        save(eposDataModelObject, em, instanceId);
+        System.out.println(save(eposDataModelObject, em, instanceId));
     }
+    
+	@Override
+    public LinkedEntity hardUpdateWithLink(String instanceId, T eposDataModelObject, EntityManager em) {
+        delete(instanceId, em);
+        em.flush();
+        //System.out.println(getByInstanceId(instanceId, em));
+        return save(eposDataModelObject, em, instanceId);
+    }
+
 
     @Override
     public void delete(String instanceId) {
@@ -324,4 +332,5 @@ public abstract class AbstractDBAPI<T extends EPOSDataModelEntity> implements EP
         em.close();
         return list;
     }
+
 }

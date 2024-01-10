@@ -16,385 +16,365 @@ import static org.epos.handler.dbapi.util.DBUtil.getOneFromDB;
 public class ServiceDBAPI extends AbstractDBAPI<Service> {
 
 
-	public ServiceDBAPI() {
-		super("service", EDMService.class);
-	}
+    public ServiceDBAPI() {
+        super("service", EDMService.class);
+    }
 
-	@Override
-	public void hardUpdate(String instanceId, Service eposDataModelObject, EntityManager em) {
-		EDMService edmObject = getOneFromDB(em, EDMService.class,
-				"service.findByInstanceId",
-				"INSTANCEID", instanceId);
-		//delete(instanceId, em);
-		if(edmObject.getInstanceId().equals(eposDataModelObject.getInstanceId())) {
-			delete(instanceId, em);
-			save(eposDataModelObject,em,instanceId);
-			//generateEntity(edmObject, eposDataModelObject, em,instanceId,true);
-			//em.persist(edmObject);
-		}
-	}
+    @Override
+    public LinkedEntity save(Service eposDataModelObject, EntityManager em, String edmInstanceId) {
+        if (eposDataModelObject.getState().equals(State.PUBLISHED)
+                && isAlreadyPublished(EDMService.class, "service.findByUidAndState", em, eposDataModelObject))
+            return new LinkedEntity();
 
-	@Override
-	public LinkedEntity save(Service eposDataModelObject, EntityManager em, String edmInstanceId) {
-		if (eposDataModelObject.getState().equals(State.PUBLISHED)
-				&& isAlreadyPublished(EDMService.class, "service.findByUidAndState", em, eposDataModelObject))
-			return new LinkedEntity();
+        //search for a existing instance placeholder to be populated
+        EDMService edmObject = getOneFromDB(em, EDMService.class,
+                "service.findByUidAndState",
+                "UID", eposDataModelObject.getUid(),
+                "STATE", State.PLACEHOLDER.toString());
 
-		//search for a existing instance placeholder to be populated
-		EDMService edmObject = getOneFromDB(em, EDMService.class,
-				"service.findByUidAndState",
-				"UID", eposDataModelObject.getUid(),
-				"STATE", State.PLACEHOLDER.toString());
+        //if there's a placeholder for the entity check if is passed a specific metaid
+        //only if the metaid is the same of the placeholder merge the two (the placeholder and the passed entity)
+        EDMEdmEntityId edmMetaId;
 
-		//if there's a placeholder for the entity check if is passed a specific metaid
-		//only if the metaid is the same of the placeholder merge the two (the placeholder and the passed entity)
-		EDMEdmEntityId edmMetaId;
+        if (edmObject != null &&
+                (eposDataModelObject.getMetaId() == null || (eposDataModelObject.getMetaId() != null && eposDataModelObject.getMetaId().equals(edmObject.getMetaId())))) {
+            em.merge(edmObject);
+        } else {
+            edmObject = new EDMService();
+            edmObject.setInstanceId(edmInstanceId);
+            em.persist(edmObject);
 
-		if (edmObject != null &&
-				(eposDataModelObject.getMetaId() == null || (eposDataModelObject.getMetaId() != null && eposDataModelObject.getMetaId().equals(edmObject.getMetaId())))) {
-			em.merge(edmObject);
-		} else {
-			edmObject = new EDMService();
-			edmObject.setInstanceId(edmInstanceId);
-			em.persist(edmObject);
+            if (eposDataModelObject.getMetaId() == null) {
+                edmMetaId = new EDMEdmEntityId();
+                edmMetaId.setMetaId(UUID.randomUUID().toString());
+                em.persist(edmMetaId);
+            } else {
+                edmMetaId = getOneFromDB(em, EDMEdmEntityId.class,
+                        "edmentityid.findByMetaId",
+                        "METAID", eposDataModelObject.getMetaId());
+                if (edmMetaId == null) {
+                    edmMetaId = new EDMEdmEntityId();
+                    edmMetaId.setMetaId(eposDataModelObject.getMetaId());
+                    em.persist(edmMetaId);
+                }
 
-			if (eposDataModelObject.getMetaId() == null) {
-				edmMetaId = new EDMEdmEntityId();
-				edmMetaId.setMetaId(UUID.randomUUID().toString());
-				em.persist(edmMetaId);
-			} else {
-				edmMetaId = getOneFromDB(em, EDMEdmEntityId.class,
-						"edmentityid.findByMetaId",
-						"METAID", eposDataModelObject.getMetaId());
-				if (edmMetaId == null) {
-					edmMetaId = new EDMEdmEntityId();
-					edmMetaId.setMetaId(eposDataModelObject.getMetaId());
-					em.persist(edmMetaId);
-				}
+            }
 
-			}
+            edmObject.setEdmEntityIdByMetaId(edmMetaId);
 
-			edmObject.setEdmEntityIdByMetaId(edmMetaId);
+        }
+        edmObject.setUid(eposDataModelObject.getUid());
 
-		}
-		edmObject.setUid(eposDataModelObject.getUid());
+        if (Objects.nonNull(eposDataModelObject.getGroups())){
+            for (Group group : eposDataModelObject.getGroups()){
 
-		generateEntity(edmObject, eposDataModelObject, em,edmInstanceId,true);
+                EDMGroup edmGroup =  getOneFromDB(em, EDMGroup.class, "group.findById",
+                        "ID", group.getId());
 
-		return new LinkedEntity().entityType(entityString)
-				.instanceId(edmInstanceId)
-				.metaId(edmObject.getEdmEntityIdByMetaId().getMetaId())
-				.uid(eposDataModelObject.getUid());
+                if (Objects.isNull(edmGroup)){
+                    em.getTransaction().rollback();
+                    throw new IllegalArgumentException(LoggerFormat.log(eposDataModelObject, "is involved in a non existing group"));
+                }
 
-	}
+                EDMAuthorization edmAuthorization = getOneFromDB(em, EDMAuthorization.class, "authorization.findByMetaIdAndGroupId",
+                        "GROUPID", group.getId(),
+                        "METAID", edmObject.getEdmEntityIdByMetaId().getMetaId());
 
-	private void generateEntity(EDMService edmObject, Service eposDataModelObject, EntityManager em, String instanceId, boolean merged) {
-		if (Objects.nonNull(eposDataModelObject.getGroups())){
-			for (Group group : eposDataModelObject.getGroups()){
-
-				EDMGroup edmGroup =  getOneFromDB(em, EDMGroup.class, "group.findById",
-						"ID", group.getId());
-
-				if (Objects.isNull(edmGroup)){
-					em.getTransaction().rollback();
-					throw new IllegalArgumentException(LoggerFormat.log(eposDataModelObject, "is involved in a non existing group"));
-				}
-
-				EDMAuthorization edmAuthorization = getOneFromDB(em, EDMAuthorization.class, "authorization.findByMetaIdAndGroupId",
-						"GROUPID", group.getId(),
-						"METAID", edmObject.getEdmEntityIdByMetaId().getMetaId());
-
-				if (Objects.isNull(edmAuthorization)){
-					edmAuthorization = new EDMAuthorization();
-					edmAuthorization.setEdmEntityIdByMetaId(edmObject.getEdmEntityIdByMetaId());
-					edmAuthorization.setGroupByGroupId(edmGroup);
-					em.persist(edmAuthorization);
-				}
-			}
-		}
+                if (Objects.isNull(edmAuthorization)){
+                    edmAuthorization = new EDMAuthorization();
+                    edmAuthorization.setEdmEntityIdByMetaId(edmObject.getEdmEntityIdByMetaId());
+                    edmAuthorization.setGroupByGroupId(edmGroup);
+                    em.persist(edmAuthorization);
+                }
+            }
+        }
 
 
-		if (eposDataModelObject.getInstanceChangedId() != null) {
-			EDMService changedInstance = getOneFromDB(em, EDMService.class, "service.findByInstanceId",
-					"INSTANCEID", eposDataModelObject.getInstanceChangedId());
-			if (changedInstance == null) {
-				em.getTransaction().rollback();
-				throw new IllegalArgumentException("Entity [" + eposDataModelObject.getClass().getSimpleName() + "] with uid: " + edmObject.getUid() + ", state: " + edmObject.getState()
-				+ " and instanceId: " + edmObject.getInstanceId() + ", have an invalid 'InstanceChangedId'.");
-			}
-			edmObject.setServiceByInstanceChangedId(changedInstance);
-		}
+        if (eposDataModelObject.getInstanceChangedId() != null) {
+            EDMService changedInstance = getOneFromDB(em, EDMService.class, "service.findByInstanceId",
+                    "INSTANCEID", eposDataModelObject.getInstanceChangedId());
+            if (changedInstance == null) {
+                em.getTransaction().rollback();
+                throw new IllegalArgumentException("Entity [" + eposDataModelObject.getClass().getSimpleName() + "] with uid: " + edmObject.getUid() + ", state: " + edmObject.getState()
+                        + " and instanceId: " + edmObject.getInstanceId() + ", have an invalid 'InstanceChangedId'.");
+            }
+            edmObject.setServiceByInstanceChangedId(changedInstance);
+        }
 
-		if (eposDataModelObject.getEditorId() == null) {
-			em.getTransaction().rollback();
-			throw new IllegalArgumentException("Entity [" + eposDataModelObject.getClass().getSimpleName() + "] with uid: " + edmObject.getUid() + ", state: " + edmObject.getState()
-			+ " and instanceId: " + edmObject.getInstanceId() + ", doesn't have the editorid.");
-		}
-		EDMEdmEntityId edmMetaIdEditor = getOneFromDB(em, EDMEdmEntityId.class,
-				"edmentityid.findByMetaId",
-				"METAID", eposDataModelObject.getEditorId());
+        if (eposDataModelObject.getEditorId() == null) {
+            em.getTransaction().rollback();
+            throw new IllegalArgumentException("Entity [" + eposDataModelObject.getClass().getSimpleName() + "] with uid: " + edmObject.getUid() + ", state: " + edmObject.getState()
+                    + " and instanceId: " + edmObject.getInstanceId() + ", doesn't have the editorid.");
+        }
+        EDMEdmEntityId edmMetaIdEditor = getOneFromDB(em, EDMEdmEntityId.class,
+                "edmentityid.findByMetaId",
+                "METAID", eposDataModelObject.getEditorId());
 
-		if (edmMetaIdEditor == null) {
-			em.getTransaction().rollback();
-			throw new IllegalArgumentException("Entity [" + eposDataModelObject.getClass().getSimpleName() + "] with uid: " + edmObject.getUid() + ", state: " + eposDataModelObject.getState()
-			+ " and instanceId: " + edmObject.getInstanceId() + ", the editor doesn't exist.");
-		}
+        if (edmMetaIdEditor == null) {
+            em.getTransaction().rollback();
+            throw new IllegalArgumentException("Entity [" + eposDataModelObject.getClass().getSimpleName() + "] with uid: " + edmObject.getUid() + ", state: " + eposDataModelObject.getState()
+                    + " and instanceId: " + edmObject.getInstanceId() + ", the editor doesn't exist.");
+        }
 
-		edmObject.setFileprovenance(eposDataModelObject.getFileProvenance());
-		edmObject.setChangeTimestamp(new Timestamp(System.currentTimeMillis()));
-		edmObject.setOperation(eposDataModelObject.getOperation());
-		edmObject.setChangeComment(eposDataModelObject.getChangeComment());
-		edmObject.setVersion(eposDataModelObject.getVersion());
-		edmObject.setState(eposDataModelObject.getState().toString());
-		edmObject.setToBeDeleted(Boolean.valueOf(eposDataModelObject.getToBeDelete()));
+        edmObject.setFileprovenance(eposDataModelObject.getFileProvenance());
+        edmObject.setChangeTimestamp(new Timestamp(System.currentTimeMillis()));
+        edmObject.setOperation(eposDataModelObject.getOperation());
+        edmObject.setChangeComment(eposDataModelObject.getChangeComment());
+        edmObject.setVersion(eposDataModelObject.getVersion());
+        edmObject.setState(eposDataModelObject.getState().toString());
+        edmObject.setToBeDeleted(Boolean.valueOf(eposDataModelObject.getToBeDelete()));
 
-		if (eposDataModelObject.getCategory() != null) {
-			edmObject.setServiceCategoriesByInstanceId(new LinkedList<>());
-			for (String categoryName : eposDataModelObject.getCategory()) {
-				EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByUid",
-						"UID", categoryName);
+        if (eposDataModelObject.getCategory() != null) {
+            edmObject.setServiceCategoriesByInstanceId(new LinkedList<>());
+            for (String categoryName : eposDataModelObject.getCategory()) {
+                EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByUid",
+                        "UID", categoryName);
 
-				if (edmCategory == null) {
-					edmCategory = new EDMCategory();
-					edmCategory.setUid(categoryName);
-					edmCategory.setId(UUID.randomUUID().toString());
-					em.persist(edmCategory);
-				}
+                if (edmCategory == null) {
+                    edmCategory = new EDMCategory();
+                    edmCategory.setUid(categoryName);
+                    edmCategory.setId(UUID.randomUUID().toString());
+                    em.persist(edmCategory);
+                }
 
-				EDMServiceCategory edmServiceCategory = new EDMServiceCategory();
-				edmServiceCategory.setCategoryByCategoryId(edmCategory);
-				edmServiceCategory.setServiceByInstanceServiceId(edmObject);
+                EDMServiceCategory edmServiceCategory = new EDMServiceCategory();
+                edmServiceCategory.setCategoryByCategoryId(edmCategory);
+                edmServiceCategory.setServiceByInstanceServiceId(edmObject);
 
-				em.persist(edmServiceCategory);
+                em.persist(edmServiceCategory);
 
-				if (edmCategory.getServiceCategoriesById() == null)
-					edmCategory.setServiceCategoriesById(new ArrayList<>());
+                if (edmCategory.getServiceCategoriesById() == null)
+                    edmCategory.setServiceCategoriesById(new ArrayList<>());
 
-				edmCategory.getServiceCategoriesById().add(edmServiceCategory);
-				edmObject.getServiceCategoriesByInstanceId().add(edmServiceCategory);
-			}
-		}
+                edmCategory.getServiceCategoriesById().add(edmServiceCategory);
+                edmObject.getServiceCategoriesByInstanceId().add(edmServiceCategory);
+            }
+        }
 
-		if (eposDataModelObject.getContactPoint() != null) {
-			edmObject.setContactpointServicesByInstanceId(new ArrayList<>());
-			for (LinkedEntity contactpointLinked : eposDataModelObject.getContactPoint()) {
+        if (eposDataModelObject.getContactPoint() != null) {
+            edmObject.setContactpointServicesByInstanceId(new ArrayList<>());
+            for (LinkedEntity contactpointLinked : eposDataModelObject.getContactPoint()) {
 
-				EDMContactpoint edmContactPoint = null;
+                EDMContactpoint edmContactPoint = null;
 
-				// First check if a instanceId is passed, in that case link the connected contactpoint,
-				// Otherwise just use the uid and take an already existing contactpoint (preferably a PUBLISHED one)
-				if (contactpointLinked.getInstanceId() != null) {
-					edmContactPoint = getOneFromDB(em, EDMContactpoint.class,
-							"contactpoint.findByInstanceId", "INSTANCEID", contactpointLinked.getInstanceId());
-				}
-				if (contactpointLinked.getInstanceId() == null || edmContactPoint == null) {
-					List<EDMContactpoint> edmContactPoints = getFromDB(em, EDMContactpoint.class,
-							"contactpoint.findByUid", "UID", contactpointLinked.getUid());
+                // First check if a instanceId is passed, in that case link the connected contactpoint,
+                // Otherwise just use the uid and take an already existing contactpoint (preferably a PUBLISHED one)
+                if (contactpointLinked.getInstanceId() != null) {
+                    edmContactPoint = getOneFromDB(em, EDMContactpoint.class,
+                            "contactpoint.findByInstanceId", "INSTANCEID", contactpointLinked.getInstanceId());
+                }
+                if (contactpointLinked.getInstanceId() == null || edmContactPoint == null) {
+                    List<EDMContactpoint> edmContactPoints = getFromDB(em, EDMContactpoint.class,
+                            "contactpoint.findByUid", "UID", contactpointLinked.getUid());
 
-					edmContactPoints.sort(EDMUtil::compareEntityVersion);
+                    edmContactPoints.sort(EDMUtil::compareEntityVersion);
 
-					edmContactPoint = !edmContactPoints.isEmpty() ? edmContactPoints.get(0) : null;
-				}
+                    edmContactPoint = !edmContactPoints.isEmpty() ? edmContactPoints.get(0) : null;
+                }
 
-				if (edmContactPoint == null) {
-					EDMEdmEntityId edmContactPointMetaId = new EDMEdmEntityId();
-					edmContactPointMetaId.setMetaId(UUID.randomUUID().toString());
-					em.persist(edmContactPointMetaId);
+                if (edmContactPoint == null) {
+                    EDMEdmEntityId edmContactPointMetaId = new EDMEdmEntityId();
+                    edmContactPointMetaId.setMetaId(UUID.randomUUID().toString());
+                    em.persist(edmContactPointMetaId);
 
-					edmContactPoint = new EDMContactpoint();
-					edmContactPoint.setUid(contactpointLinked.getUid());
-					edmContactPoint.setState(State.PLACEHOLDER.toString());
-					edmContactPoint.setInstanceId(UUID.randomUUID().toString());
-					edmContactPoint.setEdmEntityIdByMetaId(edmContactPointMetaId);
-					em.persist(edmContactPoint);
-				}
-
-
-				EDMContactpointService edmContactpointService = new EDMContactpointService();
-				edmContactpointService.setServiceByInstanceServiceId(edmObject);
-				edmContactpointService.setContactpointByInstanceContactpointId(edmContactPoint);
+                    edmContactPoint = new EDMContactpoint();
+                    edmContactPoint.setUid(contactpointLinked.getUid());
+                    edmContactPoint.setState(State.PLACEHOLDER.toString());
+                    edmContactPoint.setInstanceId(UUID.randomUUID().toString());
+                    edmContactPoint.setEdmEntityIdByMetaId(edmContactPointMetaId);
+                    em.persist(edmContactPoint);
+                }
 
 
-				edmObject.getContactpointServicesByInstanceId().add(edmContactpointService);
-			}
-		}
+                EDMContactpointService edmContactpointService = new EDMContactpointService();
+                edmContactpointService.setServiceByInstanceServiceId(edmObject);
+                edmContactpointService.setContactpointByInstanceContactpointId(edmContactPoint);
 
-		edmObject.setDescription(eposDataModelObject.getDescription());
-		edmObject.setIdentifier(eposDataModelObject.getIdentifier());
-		edmObject.setKeywords(eposDataModelObject.getKeywords());
-		edmObject.setName(eposDataModelObject.getName());
-		edmObject.setPageurl(eposDataModelObject.getPageURL());
 
-		if (eposDataModelObject.getProvider() != null) {
-			List<EDMOrganization> edmOrganizations = getFromDB(em, EDMOrganization.class,
-					"organization.findByUid", "UID", eposDataModelObject.getProvider());
+                edmObject.getContactpointServicesByInstanceId().add(edmContactpointService);
+            }
+        }
 
-			edmOrganizations.sort(EDMUtil::compareEntityVersion);
+        edmObject.setDescription(eposDataModelObject.getDescription());
+        edmObject.setIdentifier(eposDataModelObject.getIdentifier());
+        edmObject.setKeywords(eposDataModelObject.getKeywords());
+        edmObject.setName(eposDataModelObject.getName());
+        edmObject.setPageurl(eposDataModelObject.getPageURL());
 
-			EDMOrganization edmOrganization = !edmOrganizations.isEmpty() ?
-					edmOrganizations.get(0) : null;
+        if (eposDataModelObject.getProvider() != null) {
+            List<EDMOrganization> edmOrganizations = getFromDB(em, EDMOrganization.class,
+                    "organization.findByUid", "UID", eposDataModelObject.getProvider());
 
-			EDMEdmEntityId edmMetaOrganization;
+            edmOrganizations.sort(EDMUtil::compareEntityVersion);
 
-			if (edmOrganization == null) {
-				edmOrganization = new EDMOrganization();
-				edmOrganization.setUid(eposDataModelObject.getProvider());
-				edmOrganization.setState(State.PLACEHOLDER.toString());
-				edmOrganization.setInstanceId(UUID.randomUUID().toString());
-				em.persist(edmOrganization);
+            EDMOrganization edmOrganization = !edmOrganizations.isEmpty() ?
+                    edmOrganizations.get(0) : null;
 
-				edmMetaOrganization = new EDMEdmEntityId();
-				edmMetaOrganization.setMetaId(UUID.randomUUID().toString());
-				em.persist(edmMetaOrganization);
+            EDMEdmEntityId edmMetaOrganization;
 
-				edmOrganization.setEdmEntityIdByMetaId(edmMetaOrganization);
-			} else {
-				edmMetaOrganization = edmOrganization.getEdmEntityIdByMetaId();
-			}
+            if (edmOrganization == null) {
+                edmOrganization = new EDMOrganization();
+                edmOrganization.setUid(eposDataModelObject.getProvider());
+                edmOrganization.setState(State.PLACEHOLDER.toString());
+                edmOrganization.setInstanceId(UUID.randomUUID().toString());
+                em.persist(edmOrganization);
 
-			edmObject.setEdmEntityIdByProvider(edmMetaOrganization);
-		}
+                edmMetaOrganization = new EDMEdmEntityId();
+                edmMetaOrganization.setMetaId(UUID.randomUUID().toString());
+                em.persist(edmMetaOrganization);
 
-		if (eposDataModelObject.getSpatialExtent() != null) {
-			edmObject.setServiceSpatialsByInstanceId(new ArrayList<>());
-			for (Location location : eposDataModelObject.getSpatialExtent()) {
-				if (location.getLocation() == null)
-					continue;
+                edmOrganization.setEdmEntityIdByMetaId(edmMetaOrganization);
+            } else {
+                edmMetaOrganization = edmOrganization.getEdmEntityIdByMetaId();
+            }
 
-				EDMServiceSpatial edmServiceSpatial = new EDMServiceSpatial();
+            edmObject.setEdmEntityIdByProvider(edmMetaOrganization);
+        }
 
-				edmServiceSpatial.setId(UUID.randomUUID().toString());
-				edmServiceSpatial.setServiceByInstanceServiceId(edmObject);
-				edmServiceSpatial.setLocation(location.getLocation());
+        if (eposDataModelObject.getSpatialExtent() != null) {
+            edmObject.setServiceSpatialsByInstanceId(new ArrayList<>());
+            for (Location location : eposDataModelObject.getSpatialExtent()) {
+                if (location.getLocation() == null)
+                    continue;
 
-				edmObject.getServiceSpatialsByInstanceId().add(edmServiceSpatial);
-			}
-		}
+                EDMServiceSpatial edmServiceSpatial = new EDMServiceSpatial();
 
-		if (eposDataModelObject.getTemporalExtent() != null) {
-			edmObject.setServiceTemporalsByInstanceId(new ArrayList<>());
-			for (PeriodOfTime temporal : eposDataModelObject.getTemporalExtent()) {
-				if(temporal.getStartDate() != null || temporal.getEndDate() != null) {
-					EDMServiceTemporal edmServiceTemporal = new EDMServiceTemporal();
-					edmServiceTemporal.setId(UUID.randomUUID().toString());
-					edmServiceTemporal.setStartdate(
-							temporal.getStartDate() != null ?
-									Timestamp.valueOf(temporal.getStartDate())
-									: null
-							);
-					edmServiceTemporal.setEnddate(
-							temporal.getEndDate() != null ?
-									Timestamp.valueOf(temporal.getEndDate())
-									: null
-							);
-					edmServiceTemporal.setServiceByInstanceServiceId(edmObject);
-					edmObject.getServiceTemporalsByInstanceId().add(edmServiceTemporal);
-				}
-			}
-		}
+                edmServiceSpatial.setId(UUID.randomUUID().toString());
+                edmServiceSpatial.setServiceByInstanceServiceId(edmObject);
+                edmServiceSpatial.setLocation(location.getLocation());
 
-		edmObject.setType(eposDataModelObject.getType());
-		//TODO come fare?
-	}
+                edmObject.getServiceSpatialsByInstanceId().add(edmServiceSpatial);
+            }
+        }
 
-	@Override
-	protected Service mapFromDB(Object edmObject) {
+        if (eposDataModelObject.getTemporalExtent() != null) {
+            edmObject.setServiceTemporalsByInstanceId(new ArrayList<>());
+            for (PeriodOfTime temporal : eposDataModelObject.getTemporalExtent()) {
+                EDMServiceTemporal edmServiceTemporal = new EDMServiceTemporal();
+                edmServiceTemporal.setId(UUID.randomUUID().toString());
+                edmServiceTemporal.setStartdate(
+                        temporal.getStartDate() != null ?
+                                Timestamp.valueOf(temporal.getStartDate())
+                                : null
+                );
+                edmServiceTemporal.setEnddate(
+                        temporal.getEndDate() != null ?
+                                Timestamp.valueOf(temporal.getEndDate())
+                                : null
+                );
+                edmServiceTemporal.setServiceByInstanceServiceId(edmObject);
+                edmObject.getServiceTemporalsByInstanceId().add(edmServiceTemporal);
+            }
+        }
 
-		EDMService edm = (EDMService) edmObject;
+        edmObject.setType(eposDataModelObject.getType());
+        //TODO come fare?
 
-		Service o = new Service().keywords(edm.getKeywords());
-		if (!metadataMode) {
-			o.setInstanceId(edm.getInstanceId());
-			o.setMetaId(edm.getMetaId());
-			o.setState(State.valueOf(edm.getState()));
-			o.setOperation(edm.getOperation());
-			if (edm.getEdmEntityIdByEditorMetaId() != null ) {
-				o.setEditorId(edm.getEdmEntityIdByEditorMetaId().getMetaId());
-			}
-			o.setVersion(edm.getVersion());
-			o.setChangeTimestamp(
-					edm.getChangeTimestamp() != null ? edm.getChangeTimestamp().toLocalDateTime() : null
-					);
-			o.setChangeComment(edm.getChangeComment());
-			o.setToBeDelete(edm.getToBeDeleted() != null ? edm.getToBeDeleted().toString() : "false");
-			o.setInstanceChangedId(edm.getInstanceChangedId());
-			o.setFileProvenance(edm.getFileprovenance());
-			o.setGroups(
-					edm.getEdmEntityIdByMetaId() != null && edm.getEdmEntityIdByMetaId().getAuthorizationsByMetaId() != null ?
-							edm.getEdmEntityIdByMetaId().getAuthorizationsByMetaId().stream()
-							.map(EDMAuthorization::getGroupByGroupId)
-							.map(e -> {
-								Group group = new Group();
-								group.setName(e.getName());
-								group.setDescription(e.getDescription());
-								group.setId(e.getId());
-								return group;
-							})
-							.collect(Collectors.toList())
-							: null
-					);
-		}
+        return new LinkedEntity().entityType(entityString)
+                .instanceId(edmInstanceId)
+                .metaId(edmObject.getEdmEntityIdByMetaId().getMetaId())
+                .uid(eposDataModelObject.getUid());
 
-		o.setUid(edm.getUid());
-		o.setIdentifier(edm.getIdentifier());
-		o.setCategory(
-				edm.getServiceCategoriesByInstanceId() != null ?
-						edm.getServiceCategoriesByInstanceId().stream()
-						.map(EDMServiceCategory::getCategoryByCategoryId)
-						.map(EDMCategory::getName)
-						.collect(Collectors.toList())
-						: null
-				);
-		if (edm.getContactpointServicesByInstanceId() != null) {
-			o.setContactPoint(new LinkedList<>());
-			edm.getContactpointServicesByInstanceId().stream()
-			.map(EDMContactpointService::getContactpointByInstanceContactpointId)
-			.forEach(e -> o.getContactPoint().add(
-					new LinkedEntity()
-					.metaId(e.getMetaId())
-					.instanceId(e.getInstanceId())
-					.uid(e.getUid())
-					.entityType("ContactPoint")));
-		}
-		o.setDescription(edm.getDescription());
-		o.setName(edm.getName());
-		o.setPageURL(edm.getPageurl());
-		if (edm.getEdmEntityIdByProvider() != null && edm.getEdmEntityIdByProvider().getOrganizationsByMetaId() != null
-				&& !edm.getEdmEntityIdByProvider().getOrganizationsByMetaId().isEmpty()) {
-			List<EDMOrganization> so = new ArrayList<>(edm.getEdmEntityIdByProvider().getOrganizationsByMetaId());
-			so.sort(EDMUtil::compareEntityVersion);
-			o.setProvider(so.get(0).getUid());
-		}
-		o.setSpatialExtent(
-				edm.getServiceSpatialsByInstanceId() != null ?
-						new ArrayList<>(edm.getServiceSpatialsByInstanceId().stream()
-								.map(s -> {
-									Location l = new Location();
-									l.setLocation(s.getLocation());
-									return l;
-								}).collect(Collectors.toList()))
-						: null
-				);
-		o.setTemporalExtent(
-				edm.getServiceTemporalsByInstanceId() != null ?
-						edm.getServiceTemporalsByInstanceId().stream()
-						.map(elem -> {
-							PeriodOfTime periodOfTime = new PeriodOfTime();
-							periodOfTime.setStartDate(
-									elem.getStartdate() != null ?
-											elem.getStartdate().toLocalDateTime() : null
-									);
-							periodOfTime.setEndDate(
-									elem.getEnddate() != null ?
-											elem.getEnddate().toLocalDateTime() : null
-									);
-							return periodOfTime;
-						}).collect(Collectors.toList())
-						: new ArrayList<>()
-				);
-		o.setType(edm.getType());
+    }
 
-		return o;
-	}
+    @Override
+    protected Service mapFromDB(Object edmObject) {
+
+        EDMService edm = (EDMService) edmObject;
+
+        Service o = new Service().keywords(edm.getKeywords());
+        if (!metadataMode) {
+            o.setInstanceId(edm.getInstanceId());
+            o.setMetaId(edm.getMetaId());
+            o.setState(State.valueOf(edm.getState()));
+            o.setOperation(edm.getOperation());
+            if (edm.getEdmEntityIdByEditorMetaId() != null ) {
+                o.setEditorId(edm.getEdmEntityIdByEditorMetaId().getMetaId());
+            }
+            o.setVersion(edm.getVersion());
+            o.setChangeTimestamp(
+                    edm.getChangeTimestamp() != null ? edm.getChangeTimestamp().toLocalDateTime() : null
+            );
+            o.setChangeComment(edm.getChangeComment());
+            o.setToBeDelete(edm.getToBeDeleted() != null ? edm.getToBeDeleted().toString() : "false");
+            o.setInstanceChangedId(edm.getInstanceChangedId());
+            o.setFileProvenance(edm.getFileprovenance());
+            o.setGroups(
+                    edm.getEdmEntityIdByMetaId() != null && edm.getEdmEntityIdByMetaId().getAuthorizationsByMetaId() != null ?
+                            edm.getEdmEntityIdByMetaId().getAuthorizationsByMetaId().stream()
+                                    .map(EDMAuthorization::getGroupByGroupId)
+                                    .map(e -> {
+                                        Group group = new Group();
+                                        group.setName(e.getName());
+                                        group.setDescription(e.getDescription());
+                                        group.setId(e.getId());
+                                        return group;
+                                    })
+                                    .collect(Collectors.toList())
+                            : null
+            );
+        }
+
+        o.setUid(edm.getUid());
+        o.setIdentifier(edm.getIdentifier());
+        o.setCategory(
+                edm.getServiceCategoriesByInstanceId() != null ?
+                        edm.getServiceCategoriesByInstanceId().stream()
+                                .map(EDMServiceCategory::getCategoryByCategoryId)
+                                .map(EDMCategory::getName)
+                                .collect(Collectors.toList())
+                        : null
+        );
+        if (edm.getContactpointServicesByInstanceId() != null) {
+            o.setContactPoint(new LinkedList<>());
+            edm.getContactpointServicesByInstanceId().stream()
+                    .map(EDMContactpointService::getContactpointByInstanceContactpointId)
+                    .forEach(e -> o.getContactPoint().add(
+                            new LinkedEntity()
+                                    .metaId(e.getMetaId())
+                                    .instanceId(e.getInstanceId())
+                                    .uid(e.getUid())
+                                    .entityType("ContactPoint")));
+        }
+        o.setDescription(edm.getDescription());
+        o.setName(edm.getName());
+        o.setPageURL(edm.getPageurl());
+        if (edm.getEdmEntityIdByProvider() != null && edm.getEdmEntityIdByProvider().getOrganizationsByMetaId() != null
+                && !edm.getEdmEntityIdByProvider().getOrganizationsByMetaId().isEmpty()) {
+            List<EDMOrganization> so = new ArrayList<>(edm.getEdmEntityIdByProvider().getOrganizationsByMetaId());
+            so.sort(EDMUtil::compareEntityVersion);
+            o.setProvider(so.get(0).getUid());
+        }
+        o.setSpatialExtent(
+                edm.getServiceSpatialsByInstanceId() != null ?
+                        new ArrayList<>(edm.getServiceSpatialsByInstanceId().stream()
+                                .map(s -> {
+                                    Location l = new Location();
+                                    l.setLocation(s.getLocation());
+                                    return l;
+                                }).collect(Collectors.toList()))
+                        : null
+        );
+        o.setTemporalExtent(
+                edm.getServiceTemporalsByInstanceId() != null ?
+                        edm.getServiceTemporalsByInstanceId().stream()
+                                .map(elem -> {
+                                    PeriodOfTime periodOfTime = new PeriodOfTime();
+                                    periodOfTime.setStartDate(
+                                            elem.getStartdate() != null ?
+                                                    elem.getStartdate().toLocalDateTime() : null
+                                    );
+                                    periodOfTime.setEndDate(
+                                            elem.getEnddate() != null ?
+                                                    elem.getEnddate().toLocalDateTime() : null
+                                    );
+                                    return periodOfTime;
+                                }).collect(Collectors.toList())
+                        : new ArrayList<>()
+        );
+        o.setType(edm.getType());
+
+        return o;
+    }
 
 }

@@ -108,4 +108,6 @@ public interface EPOSDataModel<T extends EPOSDataModelEntity> {
 
     List<T> getAll(EntityManager em);
 
+    LinkedEntity hardUpdateWithLink(String instanceId, T eposDataModelObject, EntityManager em);
+
 }

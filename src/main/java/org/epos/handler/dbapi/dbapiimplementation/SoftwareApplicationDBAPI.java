@@ -18,22 +18,8 @@ public class SoftwareApplicationDBAPI extends AbstractDBAPI<SoftwareApplication>
     public SoftwareApplicationDBAPI() {
         super("softwareapplication", EDMSoftwareapplication.class);
     }
-    
-    @Override
-   	public void hardUpdate(String instanceId, SoftwareApplication eposDataModelObject, EntityManager em) {
-    	EDMSoftwareapplication edmObject = getOneFromDB(em, EDMSoftwareapplication.class,
-   				"softwareapplication.findByInstanceId",
-   				"INSTANCEID", instanceId);
-		//delete(instanceId, em);
-   		if(edmObject.getInstanceId().equals(eposDataModelObject.getInstanceId())) {
-			delete(instanceId, em);
-			save(eposDataModelObject,em,instanceId);
-   			//generateEntity(edmObject, eposDataModelObject, em,instanceId,true);
-   			//em.persist(edmObject);
-   		}
-   	}
 
-	@Override
+    @Override
     public LinkedEntity save(SoftwareApplication eposDataModelObject, EntityManager em, String edmInstanceId) {
         if (eposDataModelObject.getState().equals(State.PUBLISHED)
                 && isAlreadyPublished(EDMSoftwareapplication.class, "softwareapplication.findByUidAndState", em, eposDataModelObject))
@@ -78,17 +64,7 @@ public class SoftwareApplicationDBAPI extends AbstractDBAPI<SoftwareApplication>
 
         edmObject.setUid(eposDataModelObject.getUid());
 
-		generateEntity(edmObject, eposDataModelObject, em,edmInstanceId,merge);
-
-        return new LinkedEntity().entityType(entityString)
-                .instanceId(edmInstanceId)
-                .metaId(edmObject.getEdmEntityIdByMetaId().getMetaId())
-                .uid(eposDataModelObject.getUid());
-
-    }
-	
-	private void generateEntity(EDMSoftwareapplication edmObject, SoftwareApplication eposDataModelObject, EntityManager em, String instanceId, boolean merge) {
-		if (merge) em.merge(edmObject);
+        if (merge) em.merge(edmObject);
         else em.persist(edmObject);
 
         if (Objects.nonNull(eposDataModelObject.getGroups())){
@@ -153,7 +129,6 @@ public class SoftwareApplicationDBAPI extends AbstractDBAPI<SoftwareApplication>
 
         if (eposDataModelObject.getCategory() != null) {
             edmObject.setSoftwareapplicationCategoriesByInstanceId(new ArrayList<>());
-			em.persist(edmObject);
             for (String categoryName : eposDataModelObject.getCategory()) {
                 EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByUid",
                         "UID", categoryName);
@@ -181,7 +156,6 @@ public class SoftwareApplicationDBAPI extends AbstractDBAPI<SoftwareApplication>
 
         if (eposDataModelObject.getContactPoint() != null) {
             edmObject.setContactpointSoftwareapplicationsByInstanceId(new ArrayList<>());
-			em.persist(edmObject);
             for (LinkedEntity contactpointLinked : eposDataModelObject.getContactPoint()) {
 
                 EDMContactpoint edmContactPoint = null;
@@ -227,8 +201,8 @@ public class SoftwareApplicationDBAPI extends AbstractDBAPI<SoftwareApplication>
         edmObject.setDownloadurl(eposDataModelObject.getDownloadURL());
 
         if (eposDataModelObject.getIdentifier() != null) {
+
             edmObject.setSoftwareapplicationIdentifiersByInstanceId(new ArrayList<>());
-			em.persist(edmObject);
             for (Identifier identifier : eposDataModelObject.getIdentifier()) {
 
                 EDMSoftwareapplicationIdentifier edmSoftwareapplicationIdentifier = new EDMSoftwareapplicationIdentifier();
@@ -255,7 +229,6 @@ public class SoftwareApplicationDBAPI extends AbstractDBAPI<SoftwareApplication>
 
         if (eposDataModelObject.getParameter() != null) {
             edmObject.setSoftwareapplicationParametersByInstanceId(new ArrayList<>());
-			em.persist(edmObject);
             for (Parameter parameter : eposDataModelObject.getParameter()) {
                 EDMSoftwareapplicationParameters edmSoftwareapplicationParameters = new EDMSoftwareapplicationParameters();
 
@@ -272,7 +245,6 @@ public class SoftwareApplicationDBAPI extends AbstractDBAPI<SoftwareApplication>
 
         if (eposDataModelObject.getRelation() != null) {
             edmObject.setSoftwareapplicationOperationsByInstanceId(new ArrayList<>());
-			em.persist(edmObject);
             for (LinkedEntity linkedEntity : eposDataModelObject.getRelation()) {
                 EDMOperation instance = null;
 
@@ -313,8 +285,13 @@ public class SoftwareApplicationDBAPI extends AbstractDBAPI<SoftwareApplication>
 
         edmObject.setRequirements(eposDataModelObject.getRequirements());
         edmObject.setSoftwareversion(eposDataModelObject.getSoftwareVersion());
-		
-	}
+
+        return new LinkedEntity().entityType(entityString)
+                .instanceId(edmInstanceId)
+                .metaId(edmObject.getEdmEntityIdByMetaId().getMetaId())
+                .uid(eposDataModelObject.getUid());
+
+    }
 
     @Override
     protected SoftwareApplication mapFromDB(Object edmObject) {

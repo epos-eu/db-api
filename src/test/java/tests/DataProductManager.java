@@ -116,22 +116,25 @@ public class DataProductManager {
 
 		dataProduct.setEditorId("backoffice");
 		dataProduct.setFileProvenance("instance created with the backoffice");
-
+		
+		System.out.println("INTERNAL UPDATE DATAPRODUCT ---> "+dataProduct);
+		System.out.println("INTERNAL UPDATE DATAPRODUCT ---> "+dataProduct.getInstanceId()+" "+dataProduct.getMetaId());
 		dbapi.setTransactionModeAuto(true);
 		dbapi.startTransaction();
+		LinkedEntity reference = null;
 		try {
-			dbapi.update(dataProduct, new UpdateQuery().hardUpdate(true));
+			reference = dbapi.hardUpdate(dataProduct);
 		} catch (Exception e) {
 			e.printStackTrace();
 			dbapi.rollbackTransaction();
 			return new ApiResponseMessage(ApiResponseMessage.ERROR, "Something went wrong during the persisting of the new instance: "+e.getMessage());
 		}
 
-		LinkedEntity reference = new LinkedEntity();
+		/*LinkedEntity reference = new LinkedEntity();
 		reference.entityType("DataProduct");
 		reference.setInstanceId(dataProduct.getInstanceId());
 		reference.setMetaId(dataProduct.getMetaId());
-		reference.setUid(dataProduct.getUid());
+		reference.setUid(dataProduct.getUid());*/
 
 		dbapi.closeTransaction(true);
 		dbapi.setTransactionModeAuto(true);
@@ -165,16 +168,17 @@ public class DataProductManager {
 
 	private static void manageRelations(DataProduct dataProduct, LinkedEntity relation, boolean parents, boolean sons) {
 
-		System.out.println("*************\nManaging relation of: "+dataProduct);
+		System.out.println("*************\nManaging relation of: "+relation);
 		System.out.println("Distribution: "+dataProduct.getDistribution());
-		if(sons) {
+		System.out.println("Updated DataProduct ---> "+dataProduct);
+		/*if(sons) {
 			if(dataProduct.getDistribution()!=null)
 				for(LinkedEntity le : dataProduct.getDistribution()) {
 					Distribution distribution = DistributionManager.getDistribution(le.getMetaId(), le.getInstanceId()).get(0);
 					distribution.getDataProduct().add(relation);
 					DistributionManager.updateDistribution(distribution, false, true);
 				}
-		}
+		}*/
 	}
 
 }
