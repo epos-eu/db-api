@@ -30,6 +30,12 @@ public class FacilityDBAPI extends AbstractDBAPI<Facility> {
                 "facility.findByUidAndState",
                 "UID", eposDataModelObject.getUid(),
                 "STATE", State.PLACEHOLDER.toString());
+        
+        if(edmObject==null) {
+			edmObject = getOneFromDB(em, EDMFacility.class,
+					"facility.findByInstanceId",
+					"INSTANCEID", eposDataModelObject.getInstanceId());
+		}
 
         //if there's a placeholder for the entity check if is passed a specific metaid
         //only if the metaid is the same of the placeholder merge the two (the placeholder and the passed entity)
