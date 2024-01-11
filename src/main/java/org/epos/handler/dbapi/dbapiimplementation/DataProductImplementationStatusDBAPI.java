@@ -1,5 +1,6 @@
 package org.epos.handler.dbapi.dbapiimplementation;
 
+import org.epos.eposdatamodel.CategoryScheme;
 import org.epos.eposdatamodel.DataProductImplementationStatus;
 import org.epos.eposdatamodel.Group;
 import org.epos.eposdatamodel.LinkedEntity;
@@ -22,7 +23,7 @@ public class DataProductImplementationStatusDBAPI extends AbstractDBAPI<DataProd
     public DataProductImplementationStatusDBAPI() {
         super("dataproductimplementationstatus", EDMDataproductImplementationStatus.class);
     }
-
+    
     @Override
     public LinkedEntity save(DataProductImplementationStatus eposDataModelObject, EntityManager em, String edmInstanceId) {
         if (eposDataModelObject.getState().equals(State.PUBLISHED)) {

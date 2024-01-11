@@ -1,5 +1,6 @@
 package org.epos.handler.dbapi.dbapiimplementation;
 
+import org.epos.eposdatamodel.CategoryScheme;
 import org.epos.eposdatamodel.Group;
 import org.epos.eposdatamodel.LinkedEntity;
 import org.epos.eposdatamodel.ServiceImplementationStatus;

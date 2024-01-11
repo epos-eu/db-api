@@ -11,6 +11,7 @@ import org.epos.eposdatamodel.State;
 import org.epos.eposdatamodel.WebService;
 import org.epos.handler.dbapi.DBAPIClient;
 import org.epos.handler.dbapi.DBAPIClient.DeleteQuery;
+import org.epos.handler.dbapi.DBAPIClient.SaveQuery;
 import org.epos.handler.dbapi.DBAPIClient.UpdateQuery;
 
 public class DistributionManager {
@@ -125,7 +126,7 @@ public class DistributionManager {
 
 		LinkedEntity reference = null;
 		try {
-			reference = dbapi.hardUpdate(distribution);
+			reference = dbapi.createUpdate(distribution, new SaveQuery().setInstanceId(distribution.getInstanceId()));
 		} catch (Exception e) {
 			e.printStackTrace();
 			dbapi.rollbackTransaction();

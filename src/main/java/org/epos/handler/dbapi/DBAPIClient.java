@@ -201,6 +201,25 @@ public class DBAPIClient implements DBAPIClientInterface {
 
 		return savedEntityReference;
 	}
+	
+	public <T extends EPOSDataModelEntity> LinkedEntity createUpdate(EPOSDataModelEntity instance, SaveQuery query) {
+		LinkedEntity savedEntityReference;
+
+		EPOSDataModel<T> dbapi = (EPOSDataModel<T>) DBAPI.get(instance.getClass());
+
+		if (transactionModeAuto) startTransaction();
+
+		if (query.instanceId != null) {
+			if (query.instanceId.isBlank()) throw new IllegalArgumentException("the new instanceId can't be blank");
+			savedEntityReference = dbapi.save((T) instance, em, query.instanceId);
+		} else {
+			savedEntityReference = dbapi.save((T) instance, em);
+		}
+
+		if (transactionModeAuto) closeTransaction(true);
+
+		return savedEntityReference;
+	}
 
 	public <T extends EPOSDataModelEntity> void update(EPOSDataModelEntity instance) {
 		update(instance, new UpdateQuery());
@@ -228,6 +247,16 @@ public class DBAPIClient implements DBAPIClientInterface {
 
 		LinkedEntity le = dbapi.hardUpdateWithLink(instance.getInstanceId(), (T) instance, em);
 
+		if (transactionModeAuto) closeTransaction(true);
+		return le;
+	}
+	
+	public <T extends EPOSDataModelEntity> LinkedEntity transparentUpdate(EPOSDataModelEntity instance) {
+		EPOSDataModel<T> dbapi = (EPOSDataModel<T>) DBAPI.get(instance.getClass());
+		if (transactionModeAuto) startTransaction();
+
+		LinkedEntity le = dbapi.transparentUpdate(instance.getInstanceId(), (T) instance, em);
+		
 		if (transactionModeAuto) closeTransaction(true);
 		return le;
 	}

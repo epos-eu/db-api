@@ -19,7 +19,7 @@ public class OrganizationDBAPI extends AbstractDBAPI<Organization> {
     public OrganizationDBAPI() {
         super("organization", EDMOrganization.class);
     }
-
+    
     @Override
     public LinkedEntity save(Organization eposDataModelObject, EntityManager em, String edmInstanceId) {
         if (eposDataModelObject.getState().equals(State.PUBLISHED)

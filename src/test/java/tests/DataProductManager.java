@@ -10,6 +10,7 @@ import org.epos.eposdatamodel.LinkedEntity;
 import org.epos.eposdatamodel.State;
 import org.epos.handler.dbapi.DBAPIClient;
 import org.epos.handler.dbapi.DBAPIClient.DeleteQuery;
+import org.epos.handler.dbapi.DBAPIClient.SaveQuery;
 import org.epos.handler.dbapi.DBAPIClient.UpdateQuery;
 
 public class DataProductManager {
@@ -123,7 +124,8 @@ public class DataProductManager {
 		dbapi.startTransaction();
 		LinkedEntity reference = null;
 		try {
-			reference = dbapi.hardUpdate(dataProduct);
+			//reference = dbapi.transparentUpdate(dataProduct);
+			reference = dbapi.createUpdate(dataProduct, new SaveQuery().setInstanceId(dataProduct.getInstanceId()));
 		} catch (Exception e) {
 			e.printStackTrace();
 			dbapi.rollbackTransaction();

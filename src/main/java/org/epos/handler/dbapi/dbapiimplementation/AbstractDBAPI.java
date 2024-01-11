@@ -1,5 +1,6 @@
 package org.epos.handler.dbapi.dbapiimplementation;
 
+import org.epos.eposdatamodel.ContactPoint;
 import org.epos.eposdatamodel.EPOSDataModelEntity;
 import org.epos.eposdatamodel.LinkedEntity;
 import org.epos.eposdatamodel.State;
@@ -121,6 +122,23 @@ public abstract class AbstractDBAPI<T extends EPOSDataModelEntity> implements EP
         em.flush();
         //System.out.println(getByInstanceId(instanceId, em));
         return save(eposDataModelObject, em, instanceId);
+    }
+	
+	@Override
+	public LinkedEntity transparentUpdate(String instanceId, T eposDataModelObject, EntityManager em) {
+
+		if(!em.getTransaction().isActive())
+			em.getTransaction().begin();
+        em.merge(eposDataModelObject);
+        em.getTransaction().commit();
+		em.close();
+		LinkedEntity returnEntity = new LinkedEntity();
+		returnEntity.setEntityType(eposDataModelObject.getClass().getSimpleName().toLowerCase());
+		returnEntity.setUid(eposDataModelObject.getUid());
+		returnEntity.setInstanceId(eposDataModelObject.getInstanceId());
+		returnEntity.setMetaId(eposDataModelObject.getMetaId());
+        //System.out.println(getByInstanceId(instanceId, em));
+        return returnEntity;
     }
 
 

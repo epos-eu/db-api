@@ -18,7 +18,7 @@ public class SoftwareApplicationDBAPI extends AbstractDBAPI<SoftwareApplication>
     public SoftwareApplicationDBAPI() {
         super("softwareapplication", EDMSoftwareapplication.class);
     }
-
+    
     @Override
     public LinkedEntity save(SoftwareApplication eposDataModelObject, EntityManager em, String edmInstanceId) {
         if (eposDataModelObject.getState().equals(State.PUBLISHED)

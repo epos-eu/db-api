@@ -1,6 +1,7 @@
 package org.epos.handler.dbapi.dbapiimplementation;
 
 
+import org.epos.eposdatamodel.CategoryScheme;
 import org.epos.eposdatamodel.Distribution;
 import org.epos.eposdatamodel.Group;
 import org.epos.eposdatamodel.LinkedEntity;
@@ -31,12 +32,22 @@ public class DistributionDBAPI extends AbstractDBAPI<Distribution> {
         if (eposDataModelObject.getState().equals(State.PUBLISHED)
                 && isAlreadyPublished(EDMDistribution.class, "distribution.findByUidAndState", em, eposDataModelObject))
             return new LinkedEntity();
+        
+        System.out.println("OBJECT DISTRIBUTION: "+eposDataModelObject);
 
         //search for a existing instance placeholder to be populated
         EDMDistribution edmObject = getOneFromDB(em, EDMDistribution.class,
                 "distribution.findByUidAndState",
                 "UID", eposDataModelObject.getUid(),
                 "STATE", State.PLACEHOLDER.toString());
+        
+        if(edmObject==null) {
+			edmObject = getOneFromDB(em, EDMDistribution.class,
+					"distribution.findByInstanceId",
+					"INSTANCEID", eposDataModelObject.getInstanceId());
+		}
+		
+		System.out.println("EDM OBJECT DISTRIBUTION: "+edmObject);
 
         //if there's a placeholder for the entity check if is passed a specific metaid
         //only if the metaid is the same of the placeholder merge the two (the placeholder and the passed entity)

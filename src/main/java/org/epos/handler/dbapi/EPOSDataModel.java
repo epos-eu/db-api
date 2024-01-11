@@ -110,4 +110,6 @@ public interface EPOSDataModel<T extends EPOSDataModelEntity> {
 
     LinkedEntity hardUpdateWithLink(String instanceId, T eposDataModelObject, EntityManager em);
 
+	LinkedEntity transparentUpdate(String instanceId, T eposDataModelObject, EntityManager em);
+
 }
