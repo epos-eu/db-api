@@ -122,6 +122,7 @@ public class DistributionDBAPI extends AbstractDBAPI<Distribution> {
 
 
         if (eposDataModelObject.getAccessService() != null) {
+			
             EDMWebservice instance = null;
 
             LinkedEntity linkedEntity = eposDataModelObject.getAccessService();
@@ -162,6 +163,10 @@ public class DistributionDBAPI extends AbstractDBAPI<Distribution> {
         }
 
         if (eposDataModelObject.getAccessURL() != null) {
+
+        	for(EDMDistributionAccessURL obj : edmObject.getAccessURLByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setAccessURLByInstanceId(new ArrayList<>());
             for (LinkedEntity linkedEntity : eposDataModelObject.getAccessURL()) {
                 EDMOperation instance = null;
@@ -211,6 +216,9 @@ public class DistributionDBAPI extends AbstractDBAPI<Distribution> {
         }
 
         if (eposDataModelObject.getDescription() != null) {
+        	for(EDMDistributionDescription obj : edmObject.getDistributionDescriptionsByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setDistributionDescriptionsByInstanceId(new ArrayList<>());
             for (String description : eposDataModelObject.getDescription()) {
                 EDMDistributionDescription edmDistributionDescription = new EDMDistributionDescription();
@@ -224,6 +232,9 @@ public class DistributionDBAPI extends AbstractDBAPI<Distribution> {
         }
 
         if (eposDataModelObject.getDownloadURL() != null) {
+        	for(EDMDistributionDownloadurl obj : edmObject.getDistributionDownloadurlsByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setDistributionDownloadurlsByInstanceId(new ArrayList<>());
             for (String downloadUrl : eposDataModelObject.getDownloadURL()) {
                 EDMDistributionDownloadurl edmDistributionDownloadURL = new EDMDistributionDownloadurl();
@@ -246,6 +257,9 @@ public class DistributionDBAPI extends AbstractDBAPI<Distribution> {
         edmObject.setLicense(eposDataModelObject.getLicence());
 
         if (eposDataModelObject.getTitle() != null) {
+        	for(EDMDistributionTitle obj : edmObject.getDistributionTitlesByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setDistributionTitlesByInstanceId(new ArrayList<>());
             for (String description : eposDataModelObject.getTitle()) {
                 EDMDistributionTitle edmDistributionTitle = new EDMDistributionTitle();

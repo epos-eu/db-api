@@ -130,6 +130,9 @@ public class EquipmentDBAPI extends AbstractDBAPI<Equipment> {
         edmObject.setToBeDeleted(Boolean.valueOf(eposDataModelObject.getToBeDelete()));
 
         if (eposDataModelObject.getCategory() != null) {
+        	for(EDMEquipmentCategory obj : edmObject.getEquipmentCategoriesByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setEquipmentCategoriesByInstanceId(new LinkedList<>());
             for (String categoryName : eposDataModelObject.getCategory()) {
                 EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByUid",
@@ -157,6 +160,9 @@ public class EquipmentDBAPI extends AbstractDBAPI<Equipment> {
         }
 
         if (eposDataModelObject.getContactPoint() != null) {
+        	for(EDMContactpointEquipment obj : edmObject.getContactpointEquipmentsByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setContactpointEquipmentsByInstanceId(new ArrayList<>());
             for (LinkedEntity contactpointLinked : eposDataModelObject.getContactPoint()) {
 
@@ -206,6 +212,9 @@ public class EquipmentDBAPI extends AbstractDBAPI<Equipment> {
         edmObject.setFilter(eposDataModelObject.getFilter());
 
         if (eposDataModelObject.getIsPartOf() != null) {
+        	for(EDMEquipmentFacility obj : edmObject.getEquipmentFacilitiesByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setEquipmentFacilitiesByInstanceId(new ArrayList<>());
             for (LinkedEntity linkedEntity : eposDataModelObject.getIsPartOf()) {
                 EDMFacility instance = null;
@@ -284,6 +293,9 @@ public class EquipmentDBAPI extends AbstractDBAPI<Equipment> {
         edmObject.setSerialnumber(eposDataModelObject.getSerialNumber());
 
         if (eposDataModelObject.getSpatialExtent() != null) {
+        	for(EDMEquipmentSpatial obj : edmObject.getEquipmentSpatialsByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setEquipmentSpatialsByInstanceId(new ArrayList<>());
             for (Location location : eposDataModelObject.getSpatialExtent()) {
                 if (location.getLocation() == null)
@@ -300,6 +312,9 @@ public class EquipmentDBAPI extends AbstractDBAPI<Equipment> {
         }
 
         if (eposDataModelObject.getTemporalExtent() != null) {
+        	for(EDMEquipmentTemporal obj : edmObject.getEquipmentTemporalsByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setEquipmentTemporalsByInstanceId(new ArrayList<>());
             for (PeriodOfTime temporal : eposDataModelObject.getTemporalExtent()) {
                 EDMEquipmentTemporal edmDataproductTemporal = new EDMEquipmentTemporal();

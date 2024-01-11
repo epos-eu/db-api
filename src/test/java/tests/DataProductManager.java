@@ -173,14 +173,14 @@ public class DataProductManager {
 		System.out.println("*************\nManaging relation of: "+relation);
 		System.out.println("Distribution: "+dataProduct.getDistribution());
 		System.out.println("Updated DataProduct ---> "+dataProduct);
-		/*if(sons) {
+		if(sons) {
 			if(dataProduct.getDistribution()!=null)
 				for(LinkedEntity le : dataProduct.getDistribution()) {
 					Distribution distribution = DistributionManager.getDistribution(le.getMetaId(), le.getInstanceId()).get(0);
 					distribution.getDataProduct().add(relation);
 					DistributionManager.updateDistribution(distribution, false, true);
 				}
-		}*/
+		}
 	}
 
 }

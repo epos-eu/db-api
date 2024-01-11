@@ -6,6 +6,7 @@ import java.util.List;
 import org.epos.eposdatamodel.DataProduct;
 import org.epos.eposdatamodel.Distribution;
 import org.epos.eposdatamodel.LinkedEntity;
+import org.epos.eposdatamodel.WebService;
 
 
 
@@ -59,7 +60,21 @@ public class Tests {
 		distr.setTitle(List.of("STOCAZZO"));
 		message_three = DistributionManager.updateDistribution(distr, true, true);
 		
+		WebService web = new WebService();
+		web.setDistribution(List.of(message_three.getEntity()));
+		web.setEditorId("fixedUser5_metaid");
+		System.out.println("----> CREATE WEBSERVICE");
+		ApiResponseMessage message_four = WebServiceManager.createWebService(web, true, true);
+		System.out.println(message_four);
+		
+		distr = DistributionManager.getDistribution(message_three.getEntity().getMetaId(), message_three.getEntity().getInstanceId()).get(0);
+		distr.setDescription(List.of("TESTONE"));
+		message_three = DistributionManager.updateDistribution(distr, true, true);
+		
 		System.out.println(DataProductManager.getDataProduct(dataproduct.getMetaId(), dataproduct.getInstanceId()));
+		System.out.println(DistributionManager.getDistribution(message_three.getEntity().getMetaId(), message_three.getEntity().getInstanceId()));
+		System.out.println(WebServiceManager.getWebService(message_four.getEntity().getMetaId(), message_four.getEntity().getInstanceId()));
+
 		
 		/*DataProduct dp = new DataProduct();
 

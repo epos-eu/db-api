@@ -181,14 +181,14 @@ public class DistributionManager {
 				}
 			}
 		}
-		/*if(sons) {
+		if(sons) {
 			if(distribution.getAccessService()!=null) {
 				LinkedEntity le = distribution.getAccessService(); 
 				WebService webService = WebServiceManager.getWebService(le.getMetaId(), le.getInstanceId()).get(0);
 				WebServiceManager.updateWebService(webService, false, true);
 			}
 
-		}*/
+		}
 
 	}
 

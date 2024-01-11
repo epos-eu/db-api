@@ -144,6 +144,9 @@ public class OrganizationDBAPI extends AbstractDBAPI<Organization> {
         }
 
         if (eposDataModelObject.getContactPoint() != null) {
+        	for(EDMContactpointOrganization obj : edmObject.getContactpointOrganizationsByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setContactpointOrganizationsByInstanceId(new ArrayList<>());
             for (LinkedEntity contactpointLinked : eposDataModelObject.getContactPoint()) {
 
@@ -184,6 +187,9 @@ public class OrganizationDBAPI extends AbstractDBAPI<Organization> {
         }
 
         if (eposDataModelObject.getEmail() != null) {
+        	for(EDMOrganizationEmail obj : edmObject.getOrganizationEmailsByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setOrganizationEmailsByInstanceId(new ArrayList<>());
             for (String mail : eposDataModelObject.getEmail()) {
                 EDMOrganizationEmail edmOrganizationEmail = new EDMOrganizationEmail();
@@ -197,7 +203,9 @@ public class OrganizationDBAPI extends AbstractDBAPI<Organization> {
         }
 
         if (eposDataModelObject.getIdentifier() != null) {
-
+        	for(EDMOrganizationIdentifier obj : edmObject.getOrganizationIdentifiersByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setOrganizationIdentifiersByInstanceId(new ArrayList<>());
             for (Identifier identifier : eposDataModelObject.getIdentifier()) {
 
@@ -218,6 +226,9 @@ public class OrganizationDBAPI extends AbstractDBAPI<Organization> {
         }
 
         if (eposDataModelObject.getLegalName() != null) {
+        	for(EDMOrganizationLegalname obj : edmObject.getOrganizationLegalnameByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setOrganizationLegalnameByInstanceId(new ArrayList<>());
             for (String legalname : eposDataModelObject.getLegalName()) {
                 EDMOrganizationLegalname edmOrganizationLegalname = new EDMOrganizationLegalname();
@@ -236,6 +247,9 @@ public class OrganizationDBAPI extends AbstractDBAPI<Organization> {
         edmObject.setLogo(eposDataModelObject.getLogo());
 
         if (eposDataModelObject.getMemberOf() != null) {
+        	for(EDMOrganization obj : edmObject.getFather()) {
+				em.remove(obj);
+			}
             edmObject.setFather(new ArrayList<>());
             for (LinkedEntity linkedEntity : eposDataModelObject.getMemberOf()) {
 
@@ -276,6 +290,9 @@ public class OrganizationDBAPI extends AbstractDBAPI<Organization> {
         edmObject.setUrl(eposDataModelObject.getURL());
 
         if (eposDataModelObject.getTelephone() != null) {
+        	for(EDMOrganizationTelephone obj : edmObject.getOrganizationTelephonesByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setOrganizationTelephonesByInstanceId(new ArrayList<>());
             for (String telephone : eposDataModelObject.getTelephone()) {
                 EDMOrganizationTelephone edmOrganizationTelephone = new EDMOrganizationTelephone();

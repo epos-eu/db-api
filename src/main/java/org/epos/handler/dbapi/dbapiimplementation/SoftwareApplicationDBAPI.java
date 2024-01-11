@@ -134,6 +134,9 @@ public class SoftwareApplicationDBAPI extends AbstractDBAPI<SoftwareApplication>
 
 
         if (eposDataModelObject.getCategory() != null) {
+        	for(EDMSoftwareapplicationCategory obj : edmObject.getSoftwareapplicationCategoriesByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setSoftwareapplicationCategoriesByInstanceId(new ArrayList<>());
             for (String categoryName : eposDataModelObject.getCategory()) {
                 EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByUid",
@@ -161,6 +164,9 @@ public class SoftwareApplicationDBAPI extends AbstractDBAPI<SoftwareApplication>
         }
 
         if (eposDataModelObject.getContactPoint() != null) {
+        	for(EDMContactpointSoftwareapplication obj : edmObject.getContactpointSoftwareapplicationsByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setContactpointSoftwareapplicationsByInstanceId(new ArrayList<>());
             for (LinkedEntity contactpointLinked : eposDataModelObject.getContactPoint()) {
 
@@ -207,7 +213,9 @@ public class SoftwareApplicationDBAPI extends AbstractDBAPI<SoftwareApplication>
         edmObject.setDownloadurl(eposDataModelObject.getDownloadURL());
 
         if (eposDataModelObject.getIdentifier() != null) {
-
+        	for(EDMSoftwareapplicationIdentifier obj : edmObject.getSoftwareapplicationIdentifiersByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setSoftwareapplicationIdentifiersByInstanceId(new ArrayList<>());
             for (Identifier identifier : eposDataModelObject.getIdentifier()) {
 
@@ -234,6 +242,9 @@ public class SoftwareApplicationDBAPI extends AbstractDBAPI<SoftwareApplication>
         edmObject.setName(eposDataModelObject.getName());
 
         if (eposDataModelObject.getParameter() != null) {
+        	for(EDMSoftwareapplicationParameters obj : edmObject.getSoftwareapplicationParametersByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setSoftwareapplicationParametersByInstanceId(new ArrayList<>());
             for (Parameter parameter : eposDataModelObject.getParameter()) {
                 EDMSoftwareapplicationParameters edmSoftwareapplicationParameters = new EDMSoftwareapplicationParameters();
@@ -250,6 +261,9 @@ public class SoftwareApplicationDBAPI extends AbstractDBAPI<SoftwareApplication>
         }
 
         if (eposDataModelObject.getRelation() != null) {
+        	for(EDMSoftwareapplicationOperation obj : edmObject.getSoftwareapplicationOperationsByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setSoftwareapplicationOperationsByInstanceId(new ArrayList<>());
             for (LinkedEntity linkedEntity : eposDataModelObject.getRelation()) {
                 EDMOperation instance = null;

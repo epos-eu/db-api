@@ -131,6 +131,9 @@ public class ServiceDBAPI extends AbstractDBAPI<Service> {
         edmObject.setToBeDeleted(Boolean.valueOf(eposDataModelObject.getToBeDelete()));
 
         if (eposDataModelObject.getCategory() != null) {
+        	for(EDMServiceCategory obj : edmObject.getServiceCategoriesByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setServiceCategoriesByInstanceId(new LinkedList<>());
             for (String categoryName : eposDataModelObject.getCategory()) {
                 EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByUid",
@@ -158,6 +161,9 @@ public class ServiceDBAPI extends AbstractDBAPI<Service> {
         }
 
         if (eposDataModelObject.getContactPoint() != null) {
+        	for(EDMContactpointService obj : edmObject.getContactpointServicesByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setContactpointServicesByInstanceId(new ArrayList<>());
             for (LinkedEntity contactpointLinked : eposDataModelObject.getContactPoint()) {
 
@@ -238,6 +244,9 @@ public class ServiceDBAPI extends AbstractDBAPI<Service> {
         }
 
         if (eposDataModelObject.getSpatialExtent() != null) {
+        	for(EDMServiceSpatial obj : edmObject.getServiceSpatialsByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setServiceSpatialsByInstanceId(new ArrayList<>());
             for (Location location : eposDataModelObject.getSpatialExtent()) {
                 if (location.getLocation() == null)
@@ -254,6 +263,9 @@ public class ServiceDBAPI extends AbstractDBAPI<Service> {
         }
 
         if (eposDataModelObject.getTemporalExtent() != null) {
+        	for(EDMServiceTemporal obj : edmObject.getServiceTemporalsByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setServiceTemporalsByInstanceId(new ArrayList<>());
             for (PeriodOfTime temporal : eposDataModelObject.getTemporalExtent()) {
                 EDMServiceTemporal edmServiceTemporal = new EDMServiceTemporal();

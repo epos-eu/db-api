@@ -136,6 +136,9 @@ public class WebServiceDBAPI extends AbstractDBAPI<WebService> {
 
 
         if (eposDataModelObject.getCategory() != null) {
+        	for(EDMWebserviceCategory obj : edmObject.getWebserviceCategoriesByInstanceId()) {
+				em.remove(obj);
+			}
             for (String categoryName : eposDataModelObject.getCategory()) {
                 EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByUid",
                         "UID", categoryName);
@@ -162,6 +165,9 @@ public class WebServiceDBAPI extends AbstractDBAPI<WebService> {
         }
 
         if (eposDataModelObject.getContactPoint() != null) {
+        	for(EDMContactpointWebservice obj : edmObject.getContactpointWebservicesByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setContactpointWebservicesByInstanceId(new ArrayList<>());
             for (LinkedEntity contactpointLinked : eposDataModelObject.getContactPoint()) {
 
@@ -214,6 +220,9 @@ public class WebServiceDBAPI extends AbstractDBAPI<WebService> {
         edmObject.setDescription(eposDataModelObject.getDescription());
 
         if (eposDataModelObject.getDocumentation() != null) {
+        	for(EDMWebserviceDocumentation obj : edmObject.getWebserviceDocumentationsByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setWebserviceDocumentationsByInstanceId(new ArrayList<>());
             for (Documentation documentation : eposDataModelObject.getDocumentation()) {
                 EDMWebserviceDocumentation edmWebserviceDocumentation = new EDMWebserviceDocumentation();
@@ -262,6 +271,9 @@ public class WebServiceDBAPI extends AbstractDBAPI<WebService> {
         }
 
         if (eposDataModelObject.getSpatialExtent() != null) {
+        	for(EDMWebserviceSpatial obj : edmObject.getWebserviceSpatialsByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setWebserviceSpatialsByInstanceId(new ArrayList<>());
             for (Location location : eposDataModelObject.getSpatialExtent()) {
                 if (location.getLocation() == null)
@@ -278,6 +290,9 @@ public class WebServiceDBAPI extends AbstractDBAPI<WebService> {
         }
 
         if (eposDataModelObject.getTemporalExtent() != null) {
+        	for(EDMWebserviceTemporal obj : edmObject.getWebserviceTemporalsByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setWebserviceTemporalsByInstanceId(new ArrayList<>());
             for (PeriodOfTime temporal : eposDataModelObject.getTemporalExtent()) {
                 EDMWebserviceTemporal edmWebserviceTemporal = new EDMWebserviceTemporal();
@@ -298,6 +313,9 @@ public class WebServiceDBAPI extends AbstractDBAPI<WebService> {
         }
 
         if (eposDataModelObject.getSupportedOperation() != null) {
+        	for(EDMSupportedOperation obj : edmObject.getSupportedOperationByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setSupportedOperationByInstanceId(new ArrayList<>());
             for (LinkedEntity linkedEntity : eposDataModelObject.getSupportedOperation()) {
                 EDMOperation instance = null;
@@ -347,6 +365,9 @@ public class WebServiceDBAPI extends AbstractDBAPI<WebService> {
         }
 
         if (eposDataModelObject.getRelation() != null) {
+        	for(EDMWebserviceRelation obj : edmObject.getWebserviceRelationByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setWebserviceRelationByInstanceId(new ArrayList<>());
             for (LinkedEntity linkedEntity : eposDataModelObject.getRelation()) {
                 EDMWebservice instance = null;

@@ -136,6 +136,9 @@ public class SoftwareSourceCodeDBAPI extends AbstractDBAPI<SoftwareSourceCode> {
 
 
         if (eposDataModelObject.getCategory() != null) {
+        	for(EDMSoftwaresourcecodeCategory obj : edmObject.getSoftwaresourcecodeCategoriesByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setSoftwaresourcecodeCategoriesByInstanceId(new ArrayList<>());
             for (String categoryName : eposDataModelObject.getCategory()) {
                 EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByUid",
@@ -163,6 +166,9 @@ public class SoftwareSourceCodeDBAPI extends AbstractDBAPI<SoftwareSourceCode> {
         }
 
         if (eposDataModelObject.getContactPoint() != null) {
+        	for(EDMContactpointSoftwaresourcecode obj : edmObject.getContactpointSoftwaresourcecodesByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setContactpointSoftwaresourcecodesByInstanceId(new ArrayList<>());
             for (LinkedEntity contactpointLinked : eposDataModelObject.getContactPoint()) {
 
@@ -209,7 +215,9 @@ public class SoftwareSourceCodeDBAPI extends AbstractDBAPI<SoftwareSourceCode> {
         edmObject.setDownloadurl(eposDataModelObject.getDownloadURL());
 
         if (eposDataModelObject.getIdentifier() != null) {
-
+        	for(EDMSoftwaresourcecodeIdentifier obj : edmObject.getSoftwaresourcecodeIdentifiersByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setSoftwaresourcecodeIdentifiersByInstanceId(new ArrayList<>());
             for (Identifier identifier : eposDataModelObject.getIdentifier()) {
 
@@ -235,6 +243,9 @@ public class SoftwareSourceCodeDBAPI extends AbstractDBAPI<SoftwareSourceCode> {
         edmObject.setName(eposDataModelObject.getName());
 
         if (eposDataModelObject.getProgrammingLanguage() != null) {
+        	for(EDMSoftwaresourcecodeProgramminglanguage obj : edmObject.getSoftwaresourcecodeProgramminglanguagesByInstanceId()) {
+				em.remove(obj);
+			}
             edmObject.setSoftwaresourcecodeProgramminglanguagesByInstanceId(new ArrayList<>());
             for (String pl : eposDataModelObject.getProgrammingLanguage()) {
                 EDMSoftwaresourcecodeProgramminglanguage edmSoftwaresourcecodeProgramminglanguage = new EDMSoftwaresourcecodeProgramminglanguage();

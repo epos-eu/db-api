@@ -11,6 +11,7 @@ import org.epos.eposdatamodel.LinkedEntity;
 import org.epos.eposdatamodel.State;
 import org.epos.handler.dbapi.DBAPIClient;
 import org.epos.handler.dbapi.DBAPIClient.DeleteQuery;
+import org.epos.handler.dbapi.DBAPIClient.SaveQuery;
 import org.epos.handler.dbapi.DBAPIClient.UpdateQuery;
 
 public class WebServiceManager {
@@ -122,19 +123,16 @@ public class WebServiceManager {
 
 		dbapi.setTransactionModeAuto(true);
 		dbapi.startTransaction();
+		
+		LinkedEntity reference = null;
+		
 		try {
-			dbapi.update(webservice, new UpdateQuery().hardUpdate(true));
+			reference = dbapi.createUpdate(webservice,  new SaveQuery().setInstanceId(webservice.getInstanceId()));
 		} catch (Exception e) {
 			e.printStackTrace();
 			dbapi.rollbackTransaction();
 			return new ApiResponseMessage(ApiResponseMessage.ERROR, "Something went wrong during the persisting of the new instance: "+e.getMessage());
 		}
-
-		LinkedEntity reference = new LinkedEntity();
-		reference.entityType("WebService");
-		reference.setInstanceId(webservice.getInstanceId());
-		reference.setMetaId(webservice.getMetaId());
-		reference.setUid(webservice.getUid());
 
 		dbapi.closeTransaction(true);
 		dbapi.setTransactionModeAuto(true);

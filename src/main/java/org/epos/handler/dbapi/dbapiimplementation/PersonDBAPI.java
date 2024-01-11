@@ -147,8 +147,12 @@ public class PersonDBAPI extends AbstractDBAPI<Person> {
         edmObject.setToBeDeleted(Boolean.valueOf(eposDataModelObject.getToBeDelete()));
 
 
-        edmObject.setPersonIdentifiersByInstanceId(new ArrayList<>());
+        
         if (eposDataModelObject.getIdentifier() != null && !eposDataModelObject.getIdentifier().isEmpty()) {
+        	for(EDMPersonIdentifier obj : edmObject.getPersonIdentifiersByInstanceId()) {
+				em.remove(obj);
+			}
+        	edmObject.setPersonIdentifiersByInstanceId(new ArrayList<>());
             for (Identifier identifier : eposDataModelObject.getIdentifier()) {
 
                 EDMPersonIdentifier edmPersonIdentifier = new EDMPersonIdentifier();
@@ -188,7 +192,6 @@ public class PersonDBAPI extends AbstractDBAPI<Person> {
             edmObject.setAddressByAddressId(edmAddress);
         }
 
-
         edmObject.setPersonEmailByInstanceId(new ArrayList<>());
         for (String email : eposDataModelObject.getEmail()) {
             EDMPersonEmail edmEmail = new EDMPersonEmail();
@@ -209,8 +212,12 @@ public class PersonDBAPI extends AbstractDBAPI<Person> {
             }
         }
 
-        edmObject.setAffiliationsByInstanceId(new ArrayList<>());
+        
         if (eposDataModelObject.getAffiliation() != null) {
+        	for(EDMAffiliation obj : edmObject.getAffiliationsByInstanceId()) {
+				em.remove(obj);
+			}
+        	edmObject.setAffiliationsByInstanceId(new ArrayList<>());
             for (LinkedEntity linkedEntity : eposDataModelObject.getAffiliation()) {
 
                 List<EDMOrganization> edmOrganizations = getFromDB(em, EDMOrganization.class,
