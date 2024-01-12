@@ -146,7 +146,8 @@ public class ContactPointDBAPI extends AbstractDBAPI<ContactPoint> {
 			em.persist(edmObject);
 
 		if (eposDataModelObject.getEmail() != null) {
-			for(EDMContactpointEmail obj : edmObject.getContactpointEmailsByInstanceId()) {
+			if(edmObject.getContactpointEmailsByInstanceId()!=null)
+        		for(EDMContactpointEmail obj : edmObject.getContactpointEmailsByInstanceId()) {
 				em.remove(obj);
 			}
 			edmObject.setContactpointEmailsByInstanceId(new ArrayList<>());
@@ -158,11 +159,10 @@ public class ContactPointDBAPI extends AbstractDBAPI<ContactPoint> {
 				edmObject.getContactpointEmailsByInstanceId().add(edmEmail);
 			}
 		}
-		for(EDMContactpointEmail obj : edmObject.getContactpointEmailsByInstanceId()) {
-			em.remove(obj);
-		}
+		
 		if (eposDataModelObject.getLanguage() != null) {
-			for(EDMContactpointLanguage obj : edmObject.getContactpointLanguageByInstanceId()) {
+			if(edmObject.getContactpointLanguageByInstanceId()!=null)
+        		for(EDMContactpointLanguage obj : edmObject.getContactpointLanguageByInstanceId()) {
 				em.remove(obj);
 			}
 			edmObject.setContactpointLanguageByInstanceId(new ArrayList<>());
@@ -179,7 +179,8 @@ public class ContactPointDBAPI extends AbstractDBAPI<ContactPoint> {
 
 		
 		if (eposDataModelObject.getTelephone() != null) {
-			for(EDMContactpointTelephone obj : edmObject.getContactpointTelephonesByInstanceId()) {
+			if(edmObject.getContactpointTelephonesByInstanceId()!=null)
+        		for(EDMContactpointTelephone obj : edmObject.getContactpointTelephonesByInstanceId()) {
 				em.remove(obj);
 			}
 			edmObject.setContactpointTelephonesByInstanceId(new ArrayList<>());

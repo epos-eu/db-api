@@ -142,9 +142,10 @@ public class FacilityDBAPI extends AbstractDBAPI<Facility> {
 		}
 
 		if (eposDataModelObject.getCategory() != null) {
-			for(EDMFacilityCategory obj : edmObject.getFacilityCategoriesByInstanceId()) {
-				em.remove(obj);
-			}
+			if(edmObject.getFacilityCategoriesByInstanceId()!=null)
+				for(EDMFacilityCategory obj : edmObject.getFacilityCategoriesByInstanceId()) {
+					em.remove(obj);
+				}
 			edmObject.setFacilityCategoriesByInstanceId(new LinkedList<>());
 			for (String categoryName : eposDataModelObject.getCategory()) {
 				EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByUid",
@@ -172,9 +173,10 @@ public class FacilityDBAPI extends AbstractDBAPI<Facility> {
 		}
 
 		if (eposDataModelObject.getContactPoint() != null) {
-			for(EDMContactpointFacility obj : edmObject.getContactpointFacilitiesByInstanceId()) {
-				em.remove(obj);
-			}
+			if(edmObject.getContactpointFacilitiesByInstanceId()!=null)
+				for(EDMContactpointFacility obj : edmObject.getContactpointFacilitiesByInstanceId()) {
+					em.remove(obj);
+				}
 			edmObject.setContactpointFacilitiesByInstanceId(new ArrayList<>());
 			for (LinkedEntity contactpointLinked : eposDataModelObject.getContactPoint()) {
 
@@ -221,9 +223,10 @@ public class FacilityDBAPI extends AbstractDBAPI<Facility> {
 		edmObject.setDescription(eposDataModelObject.getDescription());
 
 		if (eposDataModelObject.getIsPartOf() != null) {
-			for(EDMFacilityFacility obj : edmObject.getFacilityFacilitiesByInstanceId()) {
-				em.remove(obj);
-			}
+			if(edmObject.getFacilityFacilitiesByInstanceId()!=null)
+				for(EDMFacilityFacility obj : edmObject.getFacilityFacilitiesByInstanceId()) {
+					em.remove(obj);
+				}
 			edmObject.setFacilityFacilitiesByInstanceId(new ArrayList<>());
 			for (LinkedEntity linkedEntity : eposDataModelObject.getIsPartOf()) {
 
@@ -267,9 +270,10 @@ public class FacilityDBAPI extends AbstractDBAPI<Facility> {
 
 
 		if (eposDataModelObject.getPageURL() != null) {
-			for(EDMFacilityPageurl obj : edmObject.getFacilityPageurlsByInstanceId()) {
-				em.remove(obj);
-			}
+			if(edmObject.getFacilityPageurlsByInstanceId()!=null)
+				for(EDMFacilityPageurl obj : edmObject.getFacilityPageurlsByInstanceId()) {
+					em.remove(obj);
+				}
 			edmObject.setFacilityPageurlsByInstanceId(new LinkedList<>());
 			for (String item : eposDataModelObject.getPageURL()) {
 				EDMFacilityPageurl edmFacilityPageurl = new EDMFacilityPageurl();
@@ -284,9 +288,10 @@ public class FacilityDBAPI extends AbstractDBAPI<Facility> {
 
 
 		if (eposDataModelObject.getRelation() != null) {
-			for(EDMFacilityService obj : edmObject.getFacilityServicesByInstanceId()) {
-				em.remove(obj);
-			}
+			if(edmObject.getFacilityServicesByInstanceId()!=null)
+				for(EDMFacilityService obj : edmObject.getFacilityServicesByInstanceId()) {
+					em.remove(obj);
+				}
 			edmObject.setFacilityServicesByInstanceId(new ArrayList<>());
 			for (LinkedEntity linkedEntity : eposDataModelObject.getRelation()) {
 
@@ -330,9 +335,10 @@ public class FacilityDBAPI extends AbstractDBAPI<Facility> {
 		}
 
 		if (eposDataModelObject.getSpatialExtent() != null) {
-			for(EDMFacilitySpatial obj : edmObject.getFacilitySpatialsByInstanceId()) {
-				em.remove(obj);
-			}
+			if(edmObject.getFacilitySpatialsByInstanceId()!=null)
+				for(EDMFacilitySpatial obj : edmObject.getFacilitySpatialsByInstanceId()) {
+					em.remove(obj);
+				}
 			edmObject.setFacilitySpatialsByInstanceId(new ArrayList<>());
 			for (Location location : eposDataModelObject.getSpatialExtent()) {
 				if (location.getLocation() == null)

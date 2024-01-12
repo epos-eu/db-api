@@ -29,6 +29,7 @@ public class Tests {
 		ArrayList<String> titles = new ArrayList<String>();
 		titles.add("TEST");
 		dp.setTitle(titles);
+		dp.setDescription(List.of("CIAONE"));
 		System.out.println("----> UPDATE DATAPRODUCT");
 		message_one = DataProductManager.updateDataProduct(dp, true, true);
 		System.out.println(message_one.getEntity());

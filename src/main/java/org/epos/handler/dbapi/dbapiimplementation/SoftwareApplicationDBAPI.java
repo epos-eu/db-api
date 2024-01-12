@@ -15,410 +15,415 @@ import static org.epos.handler.dbapi.util.DBUtil.getOneFromDB;
 
 public class SoftwareApplicationDBAPI extends AbstractDBAPI<SoftwareApplication> {
 
-    public SoftwareApplicationDBAPI() {
-        super("softwareapplication", EDMSoftwareapplication.class);
-    }
-    
-    @Override
-    public LinkedEntity save(SoftwareApplication eposDataModelObject, EntityManager em, String edmInstanceId) {
-        if (eposDataModelObject.getState().equals(State.PUBLISHED)
-                && isAlreadyPublished(EDMSoftwareapplication.class, "softwareapplication.findByUidAndState", em, eposDataModelObject))
-            return new LinkedEntity();
+	public SoftwareApplicationDBAPI() {
+		super("softwareapplication", EDMSoftwareapplication.class);
+	}
 
-        //search for a existing instance placeholder to be populated
-        EDMSoftwareapplication edmObject = getOneFromDB(em, EDMSoftwareapplication.class,
-                "softwareapplication.findByUidAndState",
-                "UID", eposDataModelObject.getUid(),
-                "STATE", State.PLACEHOLDER.toString());
-        
-        if(edmObject==null) {
+	@Override
+	public LinkedEntity save(SoftwareApplication eposDataModelObject, EntityManager em, String edmInstanceId) {
+		if (eposDataModelObject.getState().equals(State.PUBLISHED)
+				&& isAlreadyPublished(EDMSoftwareapplication.class, "softwareapplication.findByUidAndState", em, eposDataModelObject))
+			return new LinkedEntity();
+
+		//search for a existing instance placeholder to be populated
+		EDMSoftwareapplication edmObject = getOneFromDB(em, EDMSoftwareapplication.class,
+				"softwareapplication.findByUidAndState",
+				"UID", eposDataModelObject.getUid(),
+				"STATE", State.PLACEHOLDER.toString());
+
+		if(edmObject==null) {
 			edmObject = getOneFromDB(em, EDMSoftwareapplication.class,
 					"softwareapplication.findByInstanceId",
 					"INSTANCEID", eposDataModelObject.getInstanceId());
 		}
 
-        //if there's a placeholder for the entity check if is passed a specific metaid
-        //only if the metaid is the same of the placeholder merge the two (the placeholder and the passed entity)
-        EDMEdmEntityId edmMetaId;
+		//if there's a placeholder for the entity check if is passed a specific metaid
+		//only if the metaid is the same of the placeholder merge the two (the placeholder and the passed entity)
+		EDMEdmEntityId edmMetaId;
 
-        boolean merge = false;
+		boolean merge = false;
 
-        if (edmObject != null &&
-                (eposDataModelObject.getMetaId() == null || (eposDataModelObject.getMetaId() != null && eposDataModelObject.getMetaId().equals(edmObject.getMetaId())))) {
-            merge = true;
-        } else {
-            edmObject = new EDMSoftwareapplication();
-            edmObject.setInstanceId(edmInstanceId);
+		if (edmObject != null &&
+				(eposDataModelObject.getMetaId() == null || (eposDataModelObject.getMetaId() != null && eposDataModelObject.getMetaId().equals(edmObject.getMetaId())))) {
+			merge = true;
+		} else {
+			edmObject = new EDMSoftwareapplication();
+			edmObject.setInstanceId(edmInstanceId);
 
-            if (eposDataModelObject.getMetaId() == null) {
-                edmMetaId = new EDMEdmEntityId();
-                edmMetaId.setMetaId(UUID.randomUUID().toString());
-                em.persist(edmMetaId);
-            } else {
-                edmMetaId = getOneFromDB(em, EDMEdmEntityId.class,
-                        "edmentityid.findByMetaId",
-                        "METAID", eposDataModelObject.getMetaId());
-                if (edmMetaId == null) {
-                    edmMetaId = new EDMEdmEntityId();
-                    edmMetaId.setMetaId(eposDataModelObject.getMetaId());
-                    em.persist(edmMetaId);
-                }
-            }
-            edmObject.setEdmEntityIdByMetaId(edmMetaId);
-
-        }
-
-        edmObject.setUid(eposDataModelObject.getUid());
-
-        if (merge) em.merge(edmObject);
-        else em.persist(edmObject);
-
-        if (Objects.nonNull(eposDataModelObject.getGroups())){
-            for (Group group : eposDataModelObject.getGroups()){
-
-                EDMGroup edmGroup =  getOneFromDB(em, EDMGroup.class, "group.findById",
-                        "ID", group.getId());
-
-                if (Objects.isNull(edmGroup)){
-                    em.getTransaction().rollback();
-                    throw new IllegalArgumentException(LoggerFormat.log(eposDataModelObject, "is involved in a non existing group"));
-                }
-
-                EDMAuthorization edmAuthorization = getOneFromDB(em, EDMAuthorization.class, "authorization.findByMetaIdAndGroupId",
-                        "GROUPID", group.getId(),
-                        "METAID", edmObject.getEdmEntityIdByMetaId().getMetaId());
-
-                if (Objects.isNull(edmAuthorization)){
-                    edmAuthorization = new EDMAuthorization();
-                    edmAuthorization.setEdmEntityIdByMetaId(edmObject.getEdmEntityIdByMetaId());
-                    edmAuthorization.setGroupByGroupId(edmGroup);
-                    em.persist(edmAuthorization);
-                }
-            }
-        }
-
-
-        if (eposDataModelObject.getInstanceChangedId() != null) {
-            EDMSoftwareapplication changedInstance = getOneFromDB(em, EDMSoftwareapplication.class, "softwareapplication.findByInstanceId",
-                    "INSTANCEID", eposDataModelObject.getInstanceChangedId());
-            if (changedInstance == null) {
-                em.getTransaction().rollback();
-                throw new IllegalArgumentException("Entity [" + eposDataModelObject.getClass().getSimpleName() + "] with uid: " + edmObject.getUid() + ", state: " + edmObject.getState()
-                        + " and instanceId: " + edmObject.getInstanceId() + ", have an invalid 'InstanceChangedId'.");
-            }
-            edmObject.setSoftwareapplicationByInstanceChangedId(changedInstance);
-        }
-
-        if (eposDataModelObject.getEditorId() == null) {
-            em.getTransaction().rollback();
-            throw new IllegalArgumentException("Entity [" + eposDataModelObject.getClass().getSimpleName() + "] with uid: " + edmObject.getUid() + ", state: " + edmObject.getState()
-                    + " and instanceId: " + edmObject.getInstanceId() + ", doesn't have the editorid.");
-        }
-        EDMEdmEntityId edmMetaIdEditor = getOneFromDB(em, EDMEdmEntityId.class,
-                "edmentityid.findByMetaId",
-                "METAID", eposDataModelObject.getEditorId());
-
-        if (edmMetaIdEditor == null) {
-            em.getTransaction().rollback();
-            throw new IllegalArgumentException("Entity [" + eposDataModelObject.getClass().getSimpleName() + "] with uid: " + edmObject.getUid() + ", state: " + eposDataModelObject.getState()
-                    + " and instanceId: " + edmObject.getInstanceId() + ", the editor doesn't exist.");
-        }
-
-        edmObject.setFileprovenance(eposDataModelObject.getFileProvenance());
-        edmObject.setChangeTimestamp(new Timestamp(System.currentTimeMillis()));
-        edmObject.setOperation(eposDataModelObject.getOperation());
-        edmObject.setChangeComment(eposDataModelObject.getChangeComment());
-        edmObject.setVersion(eposDataModelObject.getVersion());
-        edmObject.setState(eposDataModelObject.getState().toString());
-        edmObject.setToBeDeleted(Boolean.valueOf(eposDataModelObject.getToBeDelete()));
-
-
-        if (eposDataModelObject.getCategory() != null) {
-        	for(EDMSoftwareapplicationCategory obj : edmObject.getSoftwareapplicationCategoriesByInstanceId()) {
-				em.remove(obj);
+			if (eposDataModelObject.getMetaId() == null) {
+				edmMetaId = new EDMEdmEntityId();
+				edmMetaId.setMetaId(UUID.randomUUID().toString());
+				em.persist(edmMetaId);
+			} else {
+				edmMetaId = getOneFromDB(em, EDMEdmEntityId.class,
+						"edmentityid.findByMetaId",
+						"METAID", eposDataModelObject.getMetaId());
+				if (edmMetaId == null) {
+					edmMetaId = new EDMEdmEntityId();
+					edmMetaId.setMetaId(eposDataModelObject.getMetaId());
+					em.persist(edmMetaId);
+				}
 			}
-            edmObject.setSoftwareapplicationCategoriesByInstanceId(new ArrayList<>());
-            for (String categoryName : eposDataModelObject.getCategory()) {
-                EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByUid",
-                        "UID", categoryName);
+			edmObject.setEdmEntityIdByMetaId(edmMetaId);
 
-                if (edmCategory == null) {
-                    edmCategory = new EDMCategory();
-                    edmCategory.setUid(categoryName);
-                    edmCategory.setId(UUID.randomUUID().toString());
-                    em.persist(edmCategory);
-                }
+		}
 
-                EDMSoftwareapplicationCategory edmSoftwareapplicationCategory = new EDMSoftwareapplicationCategory();
-                edmSoftwareapplicationCategory.setCategoryByCategoryId(edmCategory);
-                edmSoftwareapplicationCategory.setSoftwareapplicationByInstanceSoftwareapplicationId(edmObject);
+		edmObject.setUid(eposDataModelObject.getUid());
 
-                em.persist(edmSoftwareapplicationCategory);
+		if (merge) em.merge(edmObject);
+		else em.persist(edmObject);
 
-                if (edmCategory.getSoftwareapplicationCategoriesById() == null)
-                    edmCategory.setSoftwareapplicationCategoriesById(new ArrayList<>());
+		if (Objects.nonNull(eposDataModelObject.getGroups())){
+			for (Group group : eposDataModelObject.getGroups()){
 
-                edmCategory.getSoftwareapplicationCategoriesById().add(edmSoftwareapplicationCategory);
-                edmObject.getSoftwareapplicationCategoriesByInstanceId().add(edmSoftwareapplicationCategory);
-            }
-        }
+				EDMGroup edmGroup =  getOneFromDB(em, EDMGroup.class, "group.findById",
+						"ID", group.getId());
 
-        if (eposDataModelObject.getContactPoint() != null) {
-        	for(EDMContactpointSoftwareapplication obj : edmObject.getContactpointSoftwareapplicationsByInstanceId()) {
-				em.remove(obj);
+				if (Objects.isNull(edmGroup)){
+					em.getTransaction().rollback();
+					throw new IllegalArgumentException(LoggerFormat.log(eposDataModelObject, "is involved in a non existing group"));
+				}
+
+				EDMAuthorization edmAuthorization = getOneFromDB(em, EDMAuthorization.class, "authorization.findByMetaIdAndGroupId",
+						"GROUPID", group.getId(),
+						"METAID", edmObject.getEdmEntityIdByMetaId().getMetaId());
+
+				if (Objects.isNull(edmAuthorization)){
+					edmAuthorization = new EDMAuthorization();
+					edmAuthorization.setEdmEntityIdByMetaId(edmObject.getEdmEntityIdByMetaId());
+					edmAuthorization.setGroupByGroupId(edmGroup);
+					em.persist(edmAuthorization);
+				}
 			}
-            edmObject.setContactpointSoftwareapplicationsByInstanceId(new ArrayList<>());
-            for (LinkedEntity contactpointLinked : eposDataModelObject.getContactPoint()) {
+		}
 
-                EDMContactpoint edmContactPoint = null;
 
-                // First check if a instanceId is passed, in that case link the connected contactpoint,
-                // Otherwise just use the uid and take an already existing contactpoint (preferably a PUBLISHED one)
-                if (contactpointLinked.getInstanceId() != null) {
-                    edmContactPoint = getOneFromDB(em, EDMContactpoint.class,
-                            "contactpoint.findByInstanceId", "INSTANCEID", contactpointLinked.getInstanceId());
-                }
-                if (contactpointLinked.getInstanceId() == null || edmContactPoint == null) {
-                    List<EDMContactpoint> edmContactPoints = getFromDB(em, EDMContactpoint.class,
-                            "contactpoint.findByUid", "UID", contactpointLinked.getUid());
-
-                    edmContactPoints.sort(EDMUtil::compareEntityVersion);
-
-                    edmContactPoint = !edmContactPoints.isEmpty() ? edmContactPoints.get(0) : null;
-                }
-
-                if (edmContactPoint == null) {
-                    EDMEdmEntityId edmContactPointMetaId = new EDMEdmEntityId();
-                    edmContactPointMetaId.setMetaId(UUID.randomUUID().toString());
-                    em.persist(edmContactPointMetaId);
-
-                    edmContactPoint = new EDMContactpoint();
-                    edmContactPoint.setUid(contactpointLinked.getUid());
-                    edmContactPoint.setState(State.PLACEHOLDER.toString());
-                    edmContactPoint.setInstanceId(UUID.randomUUID().toString());
-                    edmContactPoint.setEdmEntityIdByMetaId(edmContactPointMetaId);
-                    em.persist(edmContactPoint);
-                }
-
-                EDMContactpointSoftwareapplication edmContactpointSoftwareapplication = new EDMContactpointSoftwareapplication();
-                edmContactpointSoftwareapplication.setSoftwareapplicationByInstanceSoftwareapplicationId(edmObject);
-                edmContactpointSoftwareapplication.setContactpointByInstanceContactpointId(edmContactPoint);
-
-                edmObject.getContactpointSoftwareapplicationsByInstanceId().add(edmContactpointSoftwareapplication);
-            }
-
-        }
-
-        edmObject.setDescription(eposDataModelObject.getDescription());
-        edmObject.setDownloadurl(eposDataModelObject.getDownloadURL());
-
-        if (eposDataModelObject.getIdentifier() != null) {
-        	for(EDMSoftwareapplicationIdentifier obj : edmObject.getSoftwareapplicationIdentifiersByInstanceId()) {
-				em.remove(obj);
+		if (eposDataModelObject.getInstanceChangedId() != null) {
+			EDMSoftwareapplication changedInstance = getOneFromDB(em, EDMSoftwareapplication.class, "softwareapplication.findByInstanceId",
+					"INSTANCEID", eposDataModelObject.getInstanceChangedId());
+			if (changedInstance == null) {
+				em.getTransaction().rollback();
+				throw new IllegalArgumentException("Entity [" + eposDataModelObject.getClass().getSimpleName() + "] with uid: " + edmObject.getUid() + ", state: " + edmObject.getState()
+				+ " and instanceId: " + edmObject.getInstanceId() + ", have an invalid 'InstanceChangedId'.");
 			}
-            edmObject.setSoftwareapplicationIdentifiersByInstanceId(new ArrayList<>());
-            for (Identifier identifier : eposDataModelObject.getIdentifier()) {
+			edmObject.setSoftwareapplicationByInstanceChangedId(changedInstance);
+		}
 
-                EDMSoftwareapplicationIdentifier edmSoftwareapplicationIdentifier = new EDMSoftwareapplicationIdentifier();
+		if (eposDataModelObject.getEditorId() == null) {
+			em.getTransaction().rollback();
+			throw new IllegalArgumentException("Entity [" + eposDataModelObject.getClass().getSimpleName() + "] with uid: " + edmObject.getUid() + ", state: " + edmObject.getState()
+			+ " and instanceId: " + edmObject.getInstanceId() + ", doesn't have the editorid.");
+		}
+		EDMEdmEntityId edmMetaIdEditor = getOneFromDB(em, EDMEdmEntityId.class,
+				"edmentityid.findByMetaId",
+				"METAID", eposDataModelObject.getEditorId());
 
-                edmSoftwareapplicationIdentifier.setId(UUID.randomUUID().toString());
-                edmSoftwareapplicationIdentifier.setType(identifier.getType());
-                edmSoftwareapplicationIdentifier.setIdentifier(identifier.getIdentifier());
-                edmSoftwareapplicationIdentifier.setSoftwareapplicationByInstanceSoftwareapplicationId(edmObject);
+		if (edmMetaIdEditor == null) {
+			em.getTransaction().rollback();
+			throw new IllegalArgumentException("Entity [" + eposDataModelObject.getClass().getSimpleName() + "] with uid: " + edmObject.getUid() + ", state: " + eposDataModelObject.getState()
+			+ " and instanceId: " + edmObject.getInstanceId() + ", the editor doesn't exist.");
+		}
 
-                edmObject.getSoftwareapplicationIdentifiersByInstanceId().add(edmSoftwareapplicationIdentifier);
-            }
+		edmObject.setFileprovenance(eposDataModelObject.getFileProvenance());
+		edmObject.setChangeTimestamp(new Timestamp(System.currentTimeMillis()));
+		edmObject.setOperation(eposDataModelObject.getOperation());
+		edmObject.setChangeComment(eposDataModelObject.getChangeComment());
+		edmObject.setVersion(eposDataModelObject.getVersion());
+		edmObject.setState(eposDataModelObject.getState().toString());
+		edmObject.setToBeDeleted(Boolean.valueOf(eposDataModelObject.getToBeDelete()));
 
-        } else {
-            System.err.println(eposDataModelObject.getClass().getSimpleName() + ": " + eposDataModelObject.getUid() +
-                    " doesn't have any identifier");
-            em.getTransaction().rollback();
-        }
 
-        edmObject.setInstallurl(eposDataModelObject.getInstallURL());
-        edmObject.setKeywords(eposDataModelObject.getKeywords());
-        edmObject.setLicenseurl(eposDataModelObject.getLicenseURL());
-        edmObject.setMainentityofpage(eposDataModelObject.getMainEntityOfPage());
-        edmObject.setName(eposDataModelObject.getName());
+		if (eposDataModelObject.getCategory() != null) {
+			if(edmObject.getSoftwareapplicationCategoriesByInstanceId()!=null)
+				for(EDMSoftwareapplicationCategory obj : edmObject.getSoftwareapplicationCategoriesByInstanceId()) {
+					em.remove(obj);
+				}
+			edmObject.setSoftwareapplicationCategoriesByInstanceId(new ArrayList<>());
+			for (String categoryName : eposDataModelObject.getCategory()) {
+				EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByUid",
+						"UID", categoryName);
 
-        if (eposDataModelObject.getParameter() != null) {
-        	for(EDMSoftwareapplicationParameters obj : edmObject.getSoftwareapplicationParametersByInstanceId()) {
-				em.remove(obj);
+				if (edmCategory == null) {
+					edmCategory = new EDMCategory();
+					edmCategory.setUid(categoryName);
+					edmCategory.setId(UUID.randomUUID().toString());
+					em.persist(edmCategory);
+				}
+
+				EDMSoftwareapplicationCategory edmSoftwareapplicationCategory = new EDMSoftwareapplicationCategory();
+				edmSoftwareapplicationCategory.setCategoryByCategoryId(edmCategory);
+				edmSoftwareapplicationCategory.setSoftwareapplicationByInstanceSoftwareapplicationId(edmObject);
+
+				em.persist(edmSoftwareapplicationCategory);
+
+				if (edmCategory.getSoftwareapplicationCategoriesById() == null)
+					edmCategory.setSoftwareapplicationCategoriesById(new ArrayList<>());
+
+				edmCategory.getSoftwareapplicationCategoriesById().add(edmSoftwareapplicationCategory);
+				edmObject.getSoftwareapplicationCategoriesByInstanceId().add(edmSoftwareapplicationCategory);
 			}
-            edmObject.setSoftwareapplicationParametersByInstanceId(new ArrayList<>());
-            for (Parameter parameter : eposDataModelObject.getParameter()) {
-                EDMSoftwareapplicationParameters edmSoftwareapplicationParameters = new EDMSoftwareapplicationParameters();
+		}
 
-                edmSoftwareapplicationParameters.setId(UUID.randomUUID().toString());
-                edmSoftwareapplicationParameters.setAction(parameter.getAction().toString());
-                edmSoftwareapplicationParameters.setConformsto(parameter.getConformsTo());
-                edmSoftwareapplicationParameters.setEncodingformat(parameter.getEncodingFormat());
+		if (eposDataModelObject.getContactPoint() != null) {
+			if(edmObject.getContactpointSoftwareapplicationsByInstanceId()!=null)
+				for(EDMContactpointSoftwareapplication obj : edmObject.getContactpointSoftwareapplicationsByInstanceId()) {
+					em.remove(obj);
+				}
+			edmObject.setContactpointSoftwareapplicationsByInstanceId(new ArrayList<>());
+			for (LinkedEntity contactpointLinked : eposDataModelObject.getContactPoint()) {
 
-                edmSoftwareapplicationParameters.setSoftwareapplicationByInstanceSoftwareapplicationId(edmObject);
+				EDMContactpoint edmContactPoint = null;
 
-                edmObject.getSoftwareapplicationParametersByInstanceId().add(edmSoftwareapplicationParameters);
-            }
-        }
+				// First check if a instanceId is passed, in that case link the connected contactpoint,
+				// Otherwise just use the uid and take an already existing contactpoint (preferably a PUBLISHED one)
+				if (contactpointLinked.getInstanceId() != null) {
+					edmContactPoint = getOneFromDB(em, EDMContactpoint.class,
+							"contactpoint.findByInstanceId", "INSTANCEID", contactpointLinked.getInstanceId());
+				}
+				if (contactpointLinked.getInstanceId() == null || edmContactPoint == null) {
+					List<EDMContactpoint> edmContactPoints = getFromDB(em, EDMContactpoint.class,
+							"contactpoint.findByUid", "UID", contactpointLinked.getUid());
 
-        if (eposDataModelObject.getRelation() != null) {
-        	for(EDMSoftwareapplicationOperation obj : edmObject.getSoftwareapplicationOperationsByInstanceId()) {
-				em.remove(obj);
+					edmContactPoints.sort(EDMUtil::compareEntityVersion);
+
+					edmContactPoint = !edmContactPoints.isEmpty() ? edmContactPoints.get(0) : null;
+				}
+
+				if (edmContactPoint == null) {
+					EDMEdmEntityId edmContactPointMetaId = new EDMEdmEntityId();
+					edmContactPointMetaId.setMetaId(UUID.randomUUID().toString());
+					em.persist(edmContactPointMetaId);
+
+					edmContactPoint = new EDMContactpoint();
+					edmContactPoint.setUid(contactpointLinked.getUid());
+					edmContactPoint.setState(State.PLACEHOLDER.toString());
+					edmContactPoint.setInstanceId(UUID.randomUUID().toString());
+					edmContactPoint.setEdmEntityIdByMetaId(edmContactPointMetaId);
+					em.persist(edmContactPoint);
+				}
+
+				EDMContactpointSoftwareapplication edmContactpointSoftwareapplication = new EDMContactpointSoftwareapplication();
+				edmContactpointSoftwareapplication.setSoftwareapplicationByInstanceSoftwareapplicationId(edmObject);
+				edmContactpointSoftwareapplication.setContactpointByInstanceContactpointId(edmContactPoint);
+
+				edmObject.getContactpointSoftwareapplicationsByInstanceId().add(edmContactpointSoftwareapplication);
 			}
-            edmObject.setSoftwareapplicationOperationsByInstanceId(new ArrayList<>());
-            for (LinkedEntity linkedEntity : eposDataModelObject.getRelation()) {
-                EDMOperation instance = null;
 
-                if (linkedEntity.getInstanceId() != null) {
-                    instance = getOneFromDB(em, EDMOperation.class,
-                            "operation.findByInstanceId", "INSTANCEID", linkedEntity.getInstanceId());
-                }
-                if (linkedEntity.getInstanceId() == null || instance == null) {
-                    List<EDMOperation> instanceList = getFromDB(em, EDMOperation.class,
-                            "operation.findByUid", "UID", linkedEntity.getUid());
+		}
 
-                    instanceList.sort(EDMUtil::compareEntityVersion);
+		edmObject.setDescription(eposDataModelObject.getDescription());
+		edmObject.setDownloadurl(eposDataModelObject.getDownloadURL());
 
-                    instance = !instanceList.isEmpty() ? instanceList.get(0) : null;
-                }
+		if (eposDataModelObject.getIdentifier() != null) {
+			if(edmObject.getSoftwareapplicationIdentifiersByInstanceId()!=null)
+				for(EDMSoftwareapplicationIdentifier obj : edmObject.getSoftwareapplicationIdentifiersByInstanceId()) {
+					em.remove(obj);
+				}
+			edmObject.setSoftwareapplicationIdentifiersByInstanceId(new ArrayList<>());
+			for (Identifier identifier : eposDataModelObject.getIdentifier()) {
 
-                if (instance == null) {
-                    EDMEdmEntityId edmOpMetaId = new EDMEdmEntityId();
-                    edmOpMetaId.setMetaId(UUID.randomUUID().toString());
-                    em.persist(edmOpMetaId);
+				EDMSoftwareapplicationIdentifier edmSoftwareapplicationIdentifier = new EDMSoftwareapplicationIdentifier();
 
-                    instance = new EDMOperation();
-                    instance.setUid(linkedEntity.getUid());
-                    instance.setState(State.PLACEHOLDER.toString());
-                    instance.setInstanceId(UUID.randomUUID().toString());
-                    instance.setEdmEntityIdByMetaId(edmOpMetaId);
-                    em.persist(instance);
+				edmSoftwareapplicationIdentifier.setId(UUID.randomUUID().toString());
+				edmSoftwareapplicationIdentifier.setType(identifier.getType());
+				edmSoftwareapplicationIdentifier.setIdentifier(identifier.getIdentifier());
+				edmSoftwareapplicationIdentifier.setSoftwareapplicationByInstanceSoftwareapplicationId(edmObject);
 
-                }
+				edmObject.getSoftwareapplicationIdentifiersByInstanceId().add(edmSoftwareapplicationIdentifier);
+			}
 
-                EDMSoftwareapplicationOperation edmSoftwareapplicationOperation = new EDMSoftwareapplicationOperation();
-                edmSoftwareapplicationOperation.setSoftwareapplicationByInstanceSoftwareapplicationId(edmObject);
-                edmSoftwareapplicationOperation.setOperationByInstanceOperationId(instance);
+		} else {
+			System.err.println(eposDataModelObject.getClass().getSimpleName() + ": " + eposDataModelObject.getUid() +
+					" doesn't have any identifier");
+			em.getTransaction().rollback();
+		}
 
-                edmObject.getSoftwareapplicationOperationsByInstanceId().add(edmSoftwareapplicationOperation);
-            }
-        }
+		edmObject.setInstallurl(eposDataModelObject.getInstallURL());
+		edmObject.setKeywords(eposDataModelObject.getKeywords());
+		edmObject.setLicenseurl(eposDataModelObject.getLicenseURL());
+		edmObject.setMainentityofpage(eposDataModelObject.getMainEntityOfPage());
+		edmObject.setName(eposDataModelObject.getName());
 
-        edmObject.setRequirements(eposDataModelObject.getRequirements());
-        edmObject.setSoftwareversion(eposDataModelObject.getSoftwareVersion());
+		if (eposDataModelObject.getParameter() != null) {
+			if(edmObject.getSoftwareapplicationParametersByInstanceId()!=null)
+				for(EDMSoftwareapplicationParameters obj : edmObject.getSoftwareapplicationParametersByInstanceId()) {
+					em.remove(obj);
+				}
+			edmObject.setSoftwareapplicationParametersByInstanceId(new ArrayList<>());
+			for (Parameter parameter : eposDataModelObject.getParameter()) {
+				EDMSoftwareapplicationParameters edmSoftwareapplicationParameters = new EDMSoftwareapplicationParameters();
 
-        return new LinkedEntity().entityType(entityString)
-                .instanceId(edmInstanceId)
-                .metaId(edmObject.getEdmEntityIdByMetaId().getMetaId())
-                .uid(eposDataModelObject.getUid());
+				edmSoftwareapplicationParameters.setId(UUID.randomUUID().toString());
+				edmSoftwareapplicationParameters.setAction(parameter.getAction().toString());
+				edmSoftwareapplicationParameters.setConformsto(parameter.getConformsTo());
+				edmSoftwareapplicationParameters.setEncodingformat(parameter.getEncodingFormat());
 
-    }
+				edmSoftwareapplicationParameters.setSoftwareapplicationByInstanceSoftwareapplicationId(edmObject);
 
-    @Override
-    protected SoftwareApplication mapFromDB(Object edmObject) {
+				edmObject.getSoftwareapplicationParametersByInstanceId().add(edmSoftwareapplicationParameters);
+			}
+		}
 
-        EDMSoftwareapplication edm = (EDMSoftwareapplication) edmObject;
+		if (eposDataModelObject.getRelation() != null) {
+			if(edmObject.getSoftwareapplicationOperationsByInstanceId()!=null)
+				for(EDMSoftwareapplicationOperation obj : edmObject.getSoftwareapplicationOperationsByInstanceId()) {
+					em.remove(obj);
+				}
+			edmObject.setSoftwareapplicationOperationsByInstanceId(new ArrayList<>());
+			for (LinkedEntity linkedEntity : eposDataModelObject.getRelation()) {
+				EDMOperation instance = null;
 
-        SoftwareApplication o = new SoftwareApplication().keywords(edm.getKeywords());
-        if (!metadataMode) {
-            o.setInstanceId(edm.getInstanceId());
-            o.setMetaId(edm.getMetaId());
-            o.setState(State.valueOf(edm.getState()));
-            o.setOperation(edm.getOperation());
-            if (edm.getEdmEntityIdByEditorMetaId() != null ) {
-                o.setEditorId(edm.getEdmEntityIdByEditorMetaId().getMetaId());
-            }
-            o.setVersion(edm.getVersion());
-            o.setChangeTimestamp(
-                    edm.getChangeTimestamp() != null ? edm.getChangeTimestamp().toLocalDateTime() : null
-            );
-            o.setChangeComment(edm.getChangeComment());
-            o.setToBeDelete(edm.getToBeDeleted() != null ? edm.getToBeDeleted().toString() : "false");
-            o.setInstanceChangedId(edm.getInstanceChangedId());
-            o.setFileProvenance(edm.getFileprovenance());
-            o.setGroups(
-                    edm.getEdmEntityIdByMetaId() != null && edm.getEdmEntityIdByMetaId().getAuthorizationsByMetaId() != null ?
-                            edm.getEdmEntityIdByMetaId().getAuthorizationsByMetaId().stream()
-                                    .map(EDMAuthorization::getGroupByGroupId)
-                                    .map(e -> {
-                                        Group group = new Group();
-                                        group.setName(e.getName());
-                                        group.setDescription(e.getDescription());
-                                        group.setId(e.getId());
-                                        return group;
-                                    })
-                                    .collect(Collectors.toList())
-                            : null
-            );
-        }
+				if (linkedEntity.getInstanceId() != null) {
+					instance = getOneFromDB(em, EDMOperation.class,
+							"operation.findByInstanceId", "INSTANCEID", linkedEntity.getInstanceId());
+				}
+				if (linkedEntity.getInstanceId() == null || instance == null) {
+					List<EDMOperation> instanceList = getFromDB(em, EDMOperation.class,
+							"operation.findByUid", "UID", linkedEntity.getUid());
 
-        o.setUid(edm.getUid());
-        o.setCategory(
-                edm.getSoftwareapplicationCategoriesByInstanceId() != null ?
-                        edm.getSoftwareapplicationCategoriesByInstanceId().stream()
-                                .map(EDMSoftwareapplicationCategory::getCategoryByCategoryId)
-                                .map(EDMCategory::getName)
-                                .collect(Collectors.toList())
-                        : null
-        );
-        if (edm.getContactpointSoftwareapplicationsByInstanceId() != null) {
-            o.setContactPoint(new LinkedList<>());
-            edm.getContactpointSoftwareapplicationsByInstanceId().stream()
-                    .map(EDMContactpointSoftwareapplication::getContactpointByInstanceContactpointId)
-                    .forEach(e -> o.getContactPoint().add(
-                            new LinkedEntity()
-                                    .metaId(e.getMetaId())
-                                    .instanceId(e.getInstanceId())
-                                    .uid(e.getUid())
-                                    .entityType("ContactPoint")));
-        }
-        if (edm.getSoftwareapplicationOperationsByInstanceId() != null) {
-            o.setRelation(new LinkedList<>());
-            edm.getSoftwareapplicationOperationsByInstanceId().stream()
-                    .map(EDMSoftwareapplicationOperation::getOperationByInstanceOperationId)
-                    .forEach(e -> o.getRelation().add(
-                            new LinkedEntity()
-                                    .metaId(e.getMetaId())
-                                    .instanceId(e.getInstanceId())
-                                    .uid(e.getUid())
-                                    .entityType("Operation")));
-        }
+					instanceList.sort(EDMUtil::compareEntityVersion);
 
-        //only one description?
-        o.setDescription(edm.getDescription());
-        o.setDownloadURL(edm.getDownloadurl());
-        o.setIdentifier(
-                edm.getSoftwareapplicationIdentifiersByInstanceId() != null ?
-                        edm.getSoftwareapplicationIdentifiersByInstanceId().stream()
-                                .map(i -> {
-                                    Identifier identifier = new Identifier();
-                                    identifier.setIdentifier(i.getIdentifier());
-                                    identifier.setType(i.getType());
-                                    return identifier;
-                                })
-                                .collect(Collectors.toList())
-                        : null
-        );
-        o.setLicenseURL(edm.getLicenseurl());
-        o.setMainEntityOfPage(edm.getMainentityofpage());
-        o.setName(edm.getName());
-        ArrayList<Parameter> parameterList = new ArrayList<>();
-        if (edm.getSoftwareapplicationParametersByInstanceId() != null) {
-            edm.getSoftwareapplicationParametersByInstanceId().stream()
-                    .map(elem -> {
-                        Parameter parameter = new Parameter();
-                        parameter.setEncodingFormat(elem.getEncodingformat());
-                        parameter.setAction(Parameter.ActionEnum.fromValue(elem.getAction()));
-                        parameter.setConformsTo(elem.getConformsto());
-                        return parameter;
-                    })
-                    .forEach(parameterList::add);
-        }
-        o.setParameter(parameterList);
-        o.setRequirements(edm.getRequirements());
-        o.setSoftwareVersion(edm.getSoftwareversion());
-        o.setInstallURL(edm.getInstallurl());
+					instance = !instanceList.isEmpty() ? instanceList.get(0) : null;
+				}
 
-        return o;
-    }
+				if (instance == null) {
+					EDMEdmEntityId edmOpMetaId = new EDMEdmEntityId();
+					edmOpMetaId.setMetaId(UUID.randomUUID().toString());
+					em.persist(edmOpMetaId);
+
+					instance = new EDMOperation();
+					instance.setUid(linkedEntity.getUid());
+					instance.setState(State.PLACEHOLDER.toString());
+					instance.setInstanceId(UUID.randomUUID().toString());
+					instance.setEdmEntityIdByMetaId(edmOpMetaId);
+					em.persist(instance);
+
+				}
+
+				EDMSoftwareapplicationOperation edmSoftwareapplicationOperation = new EDMSoftwareapplicationOperation();
+				edmSoftwareapplicationOperation.setSoftwareapplicationByInstanceSoftwareapplicationId(edmObject);
+				edmSoftwareapplicationOperation.setOperationByInstanceOperationId(instance);
+
+				edmObject.getSoftwareapplicationOperationsByInstanceId().add(edmSoftwareapplicationOperation);
+			}
+		}
+
+		edmObject.setRequirements(eposDataModelObject.getRequirements());
+		edmObject.setSoftwareversion(eposDataModelObject.getSoftwareVersion());
+
+		return new LinkedEntity().entityType(entityString)
+				.instanceId(edmInstanceId)
+				.metaId(edmObject.getEdmEntityIdByMetaId().getMetaId())
+				.uid(eposDataModelObject.getUid());
+
+	}
+
+	@Override
+	protected SoftwareApplication mapFromDB(Object edmObject) {
+
+		EDMSoftwareapplication edm = (EDMSoftwareapplication) edmObject;
+
+		SoftwareApplication o = new SoftwareApplication().keywords(edm.getKeywords());
+		if (!metadataMode) {
+			o.setInstanceId(edm.getInstanceId());
+			o.setMetaId(edm.getMetaId());
+			o.setState(State.valueOf(edm.getState()));
+			o.setOperation(edm.getOperation());
+			if (edm.getEdmEntityIdByEditorMetaId() != null ) {
+				o.setEditorId(edm.getEdmEntityIdByEditorMetaId().getMetaId());
+			}
+			o.setVersion(edm.getVersion());
+			o.setChangeTimestamp(
+					edm.getChangeTimestamp() != null ? edm.getChangeTimestamp().toLocalDateTime() : null
+					);
+			o.setChangeComment(edm.getChangeComment());
+			o.setToBeDelete(edm.getToBeDeleted() != null ? edm.getToBeDeleted().toString() : "false");
+			o.setInstanceChangedId(edm.getInstanceChangedId());
+			o.setFileProvenance(edm.getFileprovenance());
+			o.setGroups(
+					edm.getEdmEntityIdByMetaId() != null && edm.getEdmEntityIdByMetaId().getAuthorizationsByMetaId() != null ?
+							edm.getEdmEntityIdByMetaId().getAuthorizationsByMetaId().stream()
+							.map(EDMAuthorization::getGroupByGroupId)
+							.map(e -> {
+								Group group = new Group();
+								group.setName(e.getName());
+								group.setDescription(e.getDescription());
+								group.setId(e.getId());
+								return group;
+							})
+							.collect(Collectors.toList())
+							: null
+					);
+		}
+
+		o.setUid(edm.getUid());
+		o.setCategory(
+				edm.getSoftwareapplicationCategoriesByInstanceId() != null ?
+						edm.getSoftwareapplicationCategoriesByInstanceId().stream()
+						.map(EDMSoftwareapplicationCategory::getCategoryByCategoryId)
+						.map(EDMCategory::getName)
+						.collect(Collectors.toList())
+						: null
+				);
+		if (edm.getContactpointSoftwareapplicationsByInstanceId() != null) {
+			o.setContactPoint(new LinkedList<>());
+			edm.getContactpointSoftwareapplicationsByInstanceId().stream()
+			.map(EDMContactpointSoftwareapplication::getContactpointByInstanceContactpointId)
+			.forEach(e -> o.getContactPoint().add(
+					new LinkedEntity()
+					.metaId(e.getMetaId())
+					.instanceId(e.getInstanceId())
+					.uid(e.getUid())
+					.entityType("ContactPoint")));
+		}
+		if (edm.getSoftwareapplicationOperationsByInstanceId() != null) {
+			o.setRelation(new LinkedList<>());
+			edm.getSoftwareapplicationOperationsByInstanceId().stream()
+			.map(EDMSoftwareapplicationOperation::getOperationByInstanceOperationId)
+			.forEach(e -> o.getRelation().add(
+					new LinkedEntity()
+					.metaId(e.getMetaId())
+					.instanceId(e.getInstanceId())
+					.uid(e.getUid())
+					.entityType("Operation")));
+		}
+
+		//only one description?
+		o.setDescription(edm.getDescription());
+		o.setDownloadURL(edm.getDownloadurl());
+		o.setIdentifier(
+				edm.getSoftwareapplicationIdentifiersByInstanceId() != null ?
+						edm.getSoftwareapplicationIdentifiersByInstanceId().stream()
+						.map(i -> {
+							Identifier identifier = new Identifier();
+							identifier.setIdentifier(i.getIdentifier());
+							identifier.setType(i.getType());
+							return identifier;
+						})
+						.collect(Collectors.toList())
+						: null
+				);
+		o.setLicenseURL(edm.getLicenseurl());
+		o.setMainEntityOfPage(edm.getMainentityofpage());
+		o.setName(edm.getName());
+		ArrayList<Parameter> parameterList = new ArrayList<>();
+		if (edm.getSoftwareapplicationParametersByInstanceId() != null) {
+			edm.getSoftwareapplicationParametersByInstanceId().stream()
+			.map(elem -> {
+				Parameter parameter = new Parameter();
+				parameter.setEncodingFormat(elem.getEncodingformat());
+				parameter.setAction(Parameter.ActionEnum.fromValue(elem.getAction()));
+				parameter.setConformsTo(elem.getConformsto());
+				return parameter;
+			})
+			.forEach(parameterList::add);
+		}
+		o.setParameter(parameterList);
+		o.setRequirements(edm.getRequirements());
+		o.setSoftwareVersion(edm.getSoftwareversion());
+		o.setInstallURL(edm.getInstallurl());
+
+		return o;
+	}
 
 }
