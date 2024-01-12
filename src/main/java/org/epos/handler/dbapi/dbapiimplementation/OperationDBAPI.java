@@ -134,7 +134,8 @@ public class OperationDBAPI extends AbstractDBAPI<Operation> {
 
 				if (mapping.getParamValue() != null) {
 					for (String param : mapping.getParamValue()) {
-						em.remove(edmMapping.getMappingParamvaluesById());
+						if(edmMapping.getMappingParamvaluesById()!=null &&
+								!edmMapping.getMappingParamvaluesById().isEmpty()) em.remove(edmMapping.getMappingParamvaluesById());
 						EDMMappingParamvalue edmMappingParamvalue = new EDMMappingParamvalue();
 						edmMappingParamvalue.setParamvalue(param);
 						edmMappingParamvalue.setId(UUID.randomUUID().toString());
