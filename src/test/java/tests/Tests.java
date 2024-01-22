@@ -6,6 +6,8 @@ import java.util.List;
 import org.epos.eposdatamodel.DataProduct;
 import org.epos.eposdatamodel.Distribution;
 import org.epos.eposdatamodel.LinkedEntity;
+import org.epos.eposdatamodel.Mapping;
+import org.epos.eposdatamodel.Operation;
 import org.epos.eposdatamodel.WebService;
 
 
@@ -67,7 +69,6 @@ public class Tests {
 		System.out.println("----> CREATE WEBSERVICE");
 		ApiResponseMessage message_four = WebServiceManager.createWebService(web, true, true);
 		System.out.println(message_four);
-		
 		distr = DistributionManager.getDistribution(message_three.getEntity().getMetaId(), message_three.getEntity().getInstanceId()).get(0);
 		distr.setDescription(List.of("TESTONE"));
 		message_three = DistributionManager.updateDistribution(distr, true, true);
