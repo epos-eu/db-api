@@ -52,6 +52,7 @@ public class CategorySchemeDBAPI extends AbstractDBAPI<CategoryScheme> {
         edmObject.setUid(eposDataModelObject.getUid());
         edmObject.setName(eposDataModelObject.getTitle());
         edmObject.setDescription(eposDataModelObject.getDescription());
+        edmObject.setCode(eposDataModelObject.getCode());
 
         System.out.println(edmObject);
 
@@ -71,6 +72,7 @@ public class CategorySchemeDBAPI extends AbstractDBAPI<CategoryScheme> {
         o.setUid(edm.getUid());
         o.setTitle(edm.getName());
         o.setDescription(edm.getDescription());
+        o.setCode(edm.getCode());
 
         return o;
     }

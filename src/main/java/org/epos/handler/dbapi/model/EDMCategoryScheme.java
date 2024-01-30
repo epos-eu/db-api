@@ -15,6 +15,8 @@ public class EDMCategoryScheme {
     private String uid;
     private String description;
     private String name;
+    private String code;
+
 
     @Id
     @Column(name = "id")
@@ -54,6 +56,16 @@ public class EDMCategoryScheme {
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+    @Basic
+    @Column(name = "code")
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     @Override
