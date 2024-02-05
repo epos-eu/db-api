@@ -4,6 +4,9 @@ import org.epos.eposdatamodel.CategoryScheme;
 import org.epos.eposdatamodel.LinkedEntity;
 import org.epos.handler.dbapi.model.*;
 import javax.persistence.EntityManager;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import static org.epos.handler.dbapi.util.DBUtil.getOneFromDB;
 
@@ -71,16 +74,16 @@ public class CategorySchemeDBAPI extends AbstractDBAPI<CategoryScheme> {
 					EDMHasTopConcept edmHasTopConcept = new EDMHasTopConcept();
 					edmHasTopConcept.setCategoryId(edmCategory.getId());
 					edmHasTopConcept.setCategoryByCategoryId(edmCategory);
-					edmHasTopConcept.setCategorySchemeId(edmInstanceId);
-					edmHasTopConcept.setCategorySchemeByCategorySchemeId(edmObject);
+					edmHasTopConcept.setCategoryschemeId(edmInstanceId);
+					edmHasTopConcept.setCategoryByCategorySchemeId(edmObject);
 					
 					em.persist(edmHasTopConcept);
 				} else {
 					EDMHasTopConcept edmHasTopConcept = new EDMHasTopConcept();
 					edmHasTopConcept.setCategoryId(edmCategory.getId());
 					edmHasTopConcept.setCategoryByCategoryId(edmCategory);
-					edmHasTopConcept.setCategorySchemeId(edmInstanceId);
-					edmHasTopConcept.setCategorySchemeByCategorySchemeId(edmObject);
+					edmHasTopConcept.setCategoryschemeId(edmInstanceId);
+					edmHasTopConcept.setCategoryByCategorySchemeId(edmObject);
 					
 					em.merge(edmHasTopConcept);
 				}
@@ -110,6 +113,14 @@ public class CategorySchemeDBAPI extends AbstractDBAPI<CategoryScheme> {
         o.setLogo(edm.getLogo());
         o.setColor(edm.getColor());
         o.setOrderitemnumber(edm.getOrderitemnumber());
+        
+        if(edm.getHasTopConceptCategorySchemeId().size()>0) {
+			ArrayList<String> topConcepts = new ArrayList<>();
+			for(EDMHasTopConcept ed : ((List<EDMHasTopConcept>)edm.getHasTopConceptCategorySchemeId())) {
+				topConcepts.add(ed.getCategoryId());
+			}
+			o.setTopConcepts(topConcepts);
+		}
 
         return o;
     }

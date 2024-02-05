@@ -1,25 +1,21 @@
 package org.epos.handler.dbapi.model;
 
+import java.util.Objects;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "hastopconcept", schema = "public")
 @IdClass(EDMHasTopConceptPK.class)
+@NamedQueries({
+        @NamedQuery(name = "EDMHasTopConcept.findAll", query = "SELECT c FROM EDMHasTopConcept c")
+})
 public class EDMHasTopConcept {
     private String categoryschemeId;
     private String categoryId;
     private EDMCategoryScheme categoryByCategorySchemeId;
     private EDMCategory categoryByCategoryId;
 
-    @Id
-    @Column(name = "category_scheme_id", insertable = false, updatable = false)
-    public String getCategorySchemeId() {
-        return categoryschemeId;
-    }
-
-    public void setCategorySchemeId(String categoryschemeId) {
-        this.categoryschemeId = categoryschemeId;
-    }
 
     @Id
     @Column(name = "category_id", insertable = false, updatable = false)
@@ -31,34 +27,6 @@ public class EDMHasTopConcept {
         this.categoryId = categoryId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        EDMHasTopConcept that = (EDMHasTopConcept) o;
-
-        if (categoryschemeId != null ? !categoryschemeId.equals(that.categoryschemeId) : that.categoryschemeId != null) return false;
-        return categoryId != null ? categoryId.equals(that.categoryId) : that.categoryId == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = categoryschemeId != null ? categoryschemeId.hashCode() : 0;
-        result = 31 * result + (categoryId != null ? categoryId.hashCode() : 0);
-        return result;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "category_scheme_id", referencedColumnName = "id", nullable = false)
-    public EDMCategoryScheme getCategorySchemeByCategorySchemeId() {
-        return categoryByCategorySchemeId;
-    }
-
-    public void setCategorySchemeByCategorySchemeId(EDMCategoryScheme categoryByCategorySchemeId) {
-        this.categoryByCategorySchemeId = categoryByCategorySchemeId;
-    }
-
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
     public EDMCategory getCategoryByCategoryId() {
@@ -68,4 +36,52 @@ public class EDMHasTopConcept {
     public void setCategoryByCategoryId(EDMCategory categoryByCategoryId) {
         this.categoryByCategoryId = categoryByCategoryId;
     }
+    
+    @Id
+    @Column(name = "category_scheme_id", insertable = false, updatable = false)
+	public String getCategoryschemeId() {
+		return categoryschemeId;
+	}
+
+	public void setCategoryschemeId(String categoryschemeId) {
+		this.categoryschemeId = categoryschemeId;
+	}
+
+	@ManyToOne
+    @JoinColumn(name = "category_scheme_id", referencedColumnName = "id", nullable = false)
+	public EDMCategoryScheme getCategoryByCategorySchemeId() {
+		return categoryByCategorySchemeId;
+	}
+
+	public void setCategoryByCategorySchemeId(EDMCategoryScheme categoryByCategorySchemeId) {
+		this.categoryByCategorySchemeId = categoryByCategorySchemeId;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(categoryByCategoryId, categoryByCategorySchemeId, categoryId, categoryschemeId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EDMHasTopConcept other = (EDMHasTopConcept) obj;
+		return Objects.equals(categoryByCategoryId, other.categoryByCategoryId)
+				&& Objects.equals(categoryByCategorySchemeId, other.categoryByCategorySchemeId)
+				&& Objects.equals(categoryId, other.categoryId)
+				&& Objects.equals(categoryschemeId, other.categoryschemeId);
+	}
+
+	@Override
+	public String toString() {
+		return "EDMHasTopConcept [categoryschemeId=" + categoryschemeId + ", categoryId=" + categoryId
+				+ ", categoryByCategorySchemeId=" + categoryByCategorySchemeId + ", categoryByCategoryId="
+				+ categoryByCategoryId + "]";
+	}
+    
 }

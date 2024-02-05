@@ -3,15 +3,15 @@ package org.epos.handler.dbapi.model;
 import java.io.Serializable;
 
 public class EDMHasTopConceptPK implements Serializable {
-    private String categorySchemeId;
+    private String categoryschemeId;
     private String categoryId;
 
-    public String getCategorySchemeId() {
-		return categorySchemeId;
+    public String getCategoryschemeId() {
+		return categoryschemeId;
 	}
 
-	public void setCategorySchemeId(String categorySchemeId) {
-		this.categorySchemeId = categorySchemeId;
+	public void setCategoryschemeId(String categoryschemeId) {
+		this.categoryschemeId = categoryschemeId;
 	}
 
 	public String getCategoryId() {
@@ -29,13 +29,13 @@ public class EDMHasTopConceptPK implements Serializable {
 
         EDMHasTopConceptPK that = (EDMHasTopConceptPK) o;
 
-        if (categorySchemeId != null ? !categorySchemeId.equals(that.categorySchemeId) : that.categorySchemeId != null) return false;
+        if (categoryschemeId != null ? !categoryschemeId.equals(that.categoryschemeId) : that.categoryschemeId != null) return false;
         return categoryId != null ? categoryId.equals(that.categoryId) : that.categoryId == null;
     }
 
     @Override
     public int hashCode() {
-        int result = categorySchemeId != null ? categorySchemeId.hashCode() : 0;
+        int result = categoryschemeId != null ? categoryschemeId.hashCode() : 0;
         result = 31 * result + (categoryId != null ? categoryId.hashCode() : 0);
         return result;
     }
