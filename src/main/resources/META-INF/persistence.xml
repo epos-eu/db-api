@@ -53,6 +53,7 @@
         <class>org.epos.handler.dbapi.model.EDMGroup</class>
         <class>org.epos.handler.dbapi.model.EDMGroupUser</class>
         <class>org.epos.handler.dbapi.model.EDMHaspartDataproduct</class>
+        <class>org.epos.handler.dbapi.model.EDMHasTopConcept</class>
         <class>org.epos.handler.dbapi.model.EDMIsDistribution</class>
         <class>org.epos.handler.dbapi.model.EDMIspartofCategory</class>
         <class>org.epos.handler.dbapi.model.EDMIspartofDataproduct</class>

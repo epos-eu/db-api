@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class EDMContactpointSoftwaresourcecodePK implements Serializable {
     private String instanceSoftwaresourcecodeId;
-    private String metaContactpointId;
+    private String instanceContactpointId;
 
     public String getInstanceSoftwaresourcecodeId() {
         return instanceSoftwaresourcecodeId;
@@ -15,11 +15,11 @@ public class EDMContactpointSoftwaresourcecodePK implements Serializable {
     }
 
     public String getInstanceContactpointId() {
-        return metaContactpointId;
+        return instanceContactpointId;
     }
 
     public void setInstanceContactpointId(String metaContactpointId) {
-        this.metaContactpointId = metaContactpointId;
+        this.instanceContactpointId = metaContactpointId;
     }
 
     @Override
@@ -31,13 +31,13 @@ public class EDMContactpointSoftwaresourcecodePK implements Serializable {
 
         if (instanceSoftwaresourcecodeId != null ? !instanceSoftwaresourcecodeId.equals(that.instanceSoftwaresourcecodeId) : that.instanceSoftwaresourcecodeId != null)
             return false;
-        return metaContactpointId != null ? metaContactpointId.equals(that.metaContactpointId) : that.metaContactpointId == null;
+        return instanceContactpointId != null ? instanceContactpointId.equals(that.instanceContactpointId) : that.instanceContactpointId == null;
     }
 
     @Override
     public int hashCode() {
         int result = instanceSoftwaresourcecodeId != null ? instanceSoftwaresourcecodeId.hashCode() : 0;
-        result = 31 * result + (metaContactpointId != null ? metaContactpointId.hashCode() : 0);
+        result = 31 * result + (instanceContactpointId != null ? instanceContactpointId.hashCode() : 0);
         return result;
     }
 }

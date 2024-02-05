@@ -53,6 +53,40 @@ public class CategorySchemeDBAPI extends AbstractDBAPI<CategoryScheme> {
         edmObject.setName(eposDataModelObject.getTitle());
         edmObject.setDescription(eposDataModelObject.getDescription());
         edmObject.setCode(eposDataModelObject.getCode());
+        edmObject.setHomepage(eposDataModelObject.getHomepage());
+        edmObject.setLogo(eposDataModelObject.getLogo());
+        edmObject.setColor(eposDataModelObject.getColor());
+        edmObject.setOrderitemnumber(eposDataModelObject.getOrderitemnumber());
+        
+        if (eposDataModelObject.getTopConcepts() != null) {
+			for (String categoryName : eposDataModelObject.getTopConcepts()) {
+				EDMCategory edmCategory = getOneFromDB(em, EDMCategory.class, "EDMCategory.findByUid",
+						"UID", categoryName);
+
+				if (edmCategory == null) {
+					edmCategory = new EDMCategory();
+					edmCategory.setUid(categoryName);
+					edmCategory.setId(UUID.randomUUID().toString());
+					em.persist(edmCategory);
+					
+					EDMHasTopConcept edmHasTopConcept = new EDMHasTopConcept();
+					edmHasTopConcept.setCategoryId(edmCategory.getId());
+					edmHasTopConcept.setCategoryByCategoryId(edmCategory);
+					edmHasTopConcept.setCategorySchemeId(edmInstanceId);
+					edmHasTopConcept.setCategorySchemeByCategorySchemeId(edmObject);
+					
+					em.persist(edmHasTopConcept);
+				} else {
+					EDMHasTopConcept edmHasTopConcept = new EDMHasTopConcept();
+					edmHasTopConcept.setCategoryId(edmCategory.getId());
+					edmHasTopConcept.setCategoryByCategoryId(edmCategory);
+					edmHasTopConcept.setCategorySchemeId(edmInstanceId);
+					edmHasTopConcept.setCategorySchemeByCategorySchemeId(edmObject);
+					
+					em.merge(edmHasTopConcept);
+				}
+			}
+		}
 
         System.out.println(edmObject);
 
@@ -73,6 +107,10 @@ public class CategorySchemeDBAPI extends AbstractDBAPI<CategoryScheme> {
         o.setTitle(edm.getName());
         o.setDescription(edm.getDescription());
         o.setCode(edm.getCode());
+        o.setHomepage(edm.getHomepage());
+        o.setLogo(edm.getLogo());
+        o.setColor(edm.getColor());
+        o.setOrderitemnumber(edm.getOrderitemnumber());
 
         return o;
     }

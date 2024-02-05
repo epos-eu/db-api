@@ -27,6 +27,7 @@ public class EDMCategory {
     private Collection<EDMSoftwaresourcecodeCategory> softwaresourcecodeCategoriesById;
     private Collection<EDMWebserviceCategory> webserviceCategoriesById;
     private Collection<EDMFacilityCategory> facilityCategoriesById;
+    private Collection<EDMHasTopConcept> hasTopConceptCategoriesById;
 
     @Id
     @Column(name = "id")
@@ -180,4 +181,14 @@ public class EDMCategory {
     public void setFacilityCategoriesById(Collection<EDMFacilityCategory> facilityCategoriesById) {
         this.facilityCategoriesById = facilityCategoriesById;
     }
+
+    @OneToMany(mappedBy = "categoryByCategoryId", fetch=FetchType.LAZY)
+	public Collection<EDMHasTopConcept> getHasTopConceptCategoriesById() {
+		return hasTopConceptCategoriesById;
+	}
+
+	public void setHasTopConceptCategoriesById(Collection<EDMHasTopConcept> hasTopConceptCategoriesById) {
+		this.hasTopConceptCategoriesById = hasTopConceptCategoriesById;
+	}
+
 }

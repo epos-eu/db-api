@@ -1,6 +1,8 @@
 package org.epos.handler.dbapi.model;
 
 import javax.persistence.*;
+
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -16,7 +18,12 @@ public class EDMCategoryScheme {
     private String description;
     private String name;
     private String code;
-
+    private String logo;
+    private String homepage;
+    private String color;
+    private String orderitemnumber;
+    private Collection<EDMHasTopConcept> hasTopConceptCategoriesById;
+   
 
     @Id
     @Column(name = "id")
@@ -67,17 +74,83 @@ public class EDMCategoryScheme {
     public void setCode(String code) {
         this.code = code;
     }
+    
+    @Basic
+    @Column(name = "logo")
+    public String getLogo() {
+		return logo;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        EDMCategoryScheme that = (EDMCategoryScheme) o;
-        return Objects.equals(id, that.id) && Objects.equals(description, that.description) && Objects.equals(name, that.name);
-    }
+	public void setLogo(String logo) {
+		this.logo = logo;
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, description, name);
-    }
+	@Basic
+	@Column(name = "homepage")
+	public String getHomepage() {
+		return homepage;
+	}
+
+	public void setHomepage(String homepage) {
+		this.homepage = homepage;
+	}
+
+	@Basic
+    @Column(name = "color")
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	@Basic
+	@Column(name = "orderitemnumber")
+	public String getOrderitemnumber() {
+		return orderitemnumber;
+	}
+
+	public void setOrderitemnumber(String orderitemnumber) {
+		this.orderitemnumber = orderitemnumber;
+	}
+	
+    @OneToMany(mappedBy = "categoryByCategoryId", fetch=FetchType.LAZY)
+	public Collection<EDMHasTopConcept> getHasTopConceptCategoriesById() {
+		return hasTopConceptCategoriesById;
+	}
+
+	public void setHasTopConceptCategoriesById(Collection<EDMHasTopConcept> hasTopConceptCategoriesById) {
+		this.hasTopConceptCategoriesById = hasTopConceptCategoriesById;
+	}
+
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(code, color, description, homepage, id, logo, name, orderitemnumber, uid);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EDMCategoryScheme other = (EDMCategoryScheme) obj;
+		return Objects.equals(code, other.code) && Objects.equals(color, other.color)
+				&& Objects.equals(description, other.description) && Objects.equals(homepage, other.homepage)
+				&& Objects.equals(id, other.id) && Objects.equals(logo, other.logo) && Objects.equals(name, other.name)
+				&& Objects.equals(orderitemnumber, other.orderitemnumber) && Objects.equals(uid, other.uid);
+	}
+
+	@Override
+	public String toString() {
+		return "EDMCategoryScheme [id=" + id + ", uid=" + uid + ", description=" + description + ", name=" + name
+				+ ", code=" + code + ", logo=" + logo + ", homepage=" + homepage + ", color=" + color
+				+ ", orderitemnumber=" + orderitemnumber + "]";
+	}
+
+	
 }
