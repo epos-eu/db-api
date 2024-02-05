@@ -1031,7 +1031,8 @@ public class APITests {
 
 	public static void main(String[] args) {
 
-		DBAPIClient dbapi = new DBAPIClient();
+		testCategories();
+		/*DBAPIClient dbapi = new DBAPIClient();
 		
 		WebService a = new WebService();
 		a.setUid("a");
@@ -1051,7 +1052,7 @@ public class APITests {
 		b.setRelation(les);
 		
 		LinkedEntity leB = dbapi.create(b);
-		System.out.println(leB);
+		System.out.println(leB);*/
 		
 		/*DataProduct dp = new DataProduct();
 		dp.setUid("prova-vv");

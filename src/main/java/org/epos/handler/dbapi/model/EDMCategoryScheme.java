@@ -22,7 +22,6 @@ public class EDMCategoryScheme {
     private String homepage;
     private String color;
     private String orderitemnumber;
-    private Collection<EDMHasTopConcept> hasTopConceptCategoriesById;
    
 
     @Id
@@ -114,16 +113,6 @@ public class EDMCategoryScheme {
 	public void setOrderitemnumber(String orderitemnumber) {
 		this.orderitemnumber = orderitemnumber;
 	}
-	
-    @OneToMany(mappedBy = "categoryByCategoryId", fetch=FetchType.LAZY)
-	public Collection<EDMHasTopConcept> getHasTopConceptCategoriesById() {
-		return hasTopConceptCategoriesById;
-	}
-
-	public void setHasTopConceptCategoriesById(Collection<EDMHasTopConcept> hasTopConceptCategoriesById) {
-		this.hasTopConceptCategoriesById = hasTopConceptCategoriesById;
-	}
-
 
 	@Override
 	public int hashCode() {

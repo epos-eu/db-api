@@ -1,6 +1,5 @@
 package org.epos.handler.dbapi.dbapiimplementation;
 
-import org.epos.eposdatamodel.Category;
 import org.epos.eposdatamodel.CategoryScheme;
 import org.epos.eposdatamodel.LinkedEntity;
 import org.epos.handler.dbapi.model.*;
