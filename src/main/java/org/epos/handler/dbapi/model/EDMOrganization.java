@@ -47,6 +47,7 @@ public class EDMOrganization {
     private Collection<EDMOrganizationIdentifier> organizationIdentifiersByInstanceId;
     private Collection<EDMOrganizationTelephone> organizationTelephonesByInstanceId;
     private Collection<EDMOrganizationLegalname> organizationLegalnameByInstanceId;
+    private Collection<EDMOrganizationOwner> ownsByInstanceId;
 
     @Basic
     @Column(name = "uid")
@@ -408,4 +409,14 @@ public class EDMOrganization {
     public void setOrganizationLegalnameByInstanceId(Collection<EDMOrganizationLegalname> organizationLegalnameByInstanceId) {
         this.organizationLegalnameByInstanceId = organizationLegalnameByInstanceId;
     }
+
+    @OneToMany(mappedBy = "organizationByInstanceOrganizationId", cascade = CascadeType.ALL)
+	public Collection<EDMOrganizationOwner> getOwnsByInstanceId() {
+		return ownsByInstanceId;
+	}
+
+	public void setOwnsByInstanceId(Collection<EDMOrganizationOwner> ownsByInstanceId) {
+		this.ownsByInstanceId = ownsByInstanceId;
+	}
+
 }

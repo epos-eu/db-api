@@ -356,7 +356,7 @@ public class FacilityDBAPI extends AbstractDBAPI<Facility> {
 
 		edmObject.setTitle(eposDataModelObject.getTitle());
 		edmObject.setType(eposDataModelObject.getType());
-
+	
 		return new LinkedEntity().entityType(entityString)
 				.instanceId(edmInstanceId)
 				.metaId(edmObject.getEdmEntityIdByMetaId().getMetaId())

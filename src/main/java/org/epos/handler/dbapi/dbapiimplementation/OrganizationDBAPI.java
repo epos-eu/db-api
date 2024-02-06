@@ -310,7 +310,83 @@ public class OrganizationDBAPI extends AbstractDBAPI<Organization> {
 				edmObject.getOrganizationTelephonesByInstanceId().add(edmOrganizationTelephone);
 			}
 		}
+		
+		if (eposDataModelObject.getOwns() != null) {
+			if(edmObject.getOwnsByInstanceId()!=null)
+				for(EDMOrganizationOwner obj : edmObject.getOwnsByInstanceId()) {
+					em.remove(obj);
+				}
+			edmObject.setOwnsByInstanceId(new ArrayList<>());
+			for (LinkedEntity el : eposDataModelObject.getOwns()) {
+				
+				if(el.getEntityType().equalsIgnoreCase("facility")) {
+					List<EDMFacility> instaceList = getFromDB(em, EDMFacility.class,
+							"facility.findByUid", "UID", el.getUid());
 
+					instaceList.sort(EDMUtil::compareEntityVersion);
+
+					EDMFacility instance = !instaceList.isEmpty() ? instaceList.get(0) : null;
+
+					EDMEdmEntityId edmInstaceMetaId;
+
+					if (instance == null) {
+						edmInstaceMetaId = new EDMEdmEntityId();
+						edmInstaceMetaId.setMetaId(UUID.randomUUID().toString());
+						em.persist(edmInstaceMetaId);
+
+						instance = new EDMFacility();
+						instance.setUid(el.getUid());
+						instance.setState(State.PLACEHOLDER.toString());
+						instance.setInstanceId(UUID.randomUUID().toString());
+						instance.setEdmEntityIdByMetaId(edmInstaceMetaId);
+						em.persist(instance);
+
+					} else {
+						edmInstaceMetaId = instance.getEdmEntityIdByMetaId();
+					}
+
+					EDMOrganizationOwner edmLink = new EDMOrganizationOwner();
+					edmLink.setOrganizationByInstanceOrganizationId(edmObject);
+					edmLink.setEdmEntityIdByMetaEntityId(edmInstaceMetaId);
+
+					edmObject.getOwnsByInstanceId().add(edmLink);
+				}
+				if(el.getEntityType().equalsIgnoreCase("equipment")) {
+					List<EDMEquipment> instaceList = getFromDB(em, EDMEquipment.class,
+							"equipment.findByUid", "UID", el.getUid());
+
+					instaceList.sort(EDMUtil::compareEntityVersion);
+
+					EDMEquipment instance = !instaceList.isEmpty() ? instaceList.get(0) : null;
+
+					EDMEdmEntityId edmInstaceMetaId;
+
+					if (instance == null) {
+						edmInstaceMetaId = new EDMEdmEntityId();
+						edmInstaceMetaId.setMetaId(UUID.randomUUID().toString());
+						em.persist(edmInstaceMetaId);
+
+						instance = new EDMEquipment();
+						instance.setUid(el.getUid());
+						instance.setState(State.PLACEHOLDER.toString());
+						instance.setInstanceId(UUID.randomUUID().toString());
+						instance.setEdmEntityIdByMetaId(edmInstaceMetaId);
+						em.persist(instance);
+
+					} else {
+						edmInstaceMetaId = instance.getEdmEntityIdByMetaId();
+					}
+
+					EDMOrganizationOwner edmLink = new EDMOrganizationOwner();
+					edmLink.setOrganizationByInstanceOrganizationId(edmObject);
+					edmLink.setEdmEntityIdByMetaEntityId(edmInstaceMetaId);
+
+					edmObject.getOwnsByInstanceId().add(edmLink);
+				}
+				
+			}
+		}
+		
 		edmObject.setType(eposDataModelObject.getType());
 		edmObject.setMaturity(eposDataModelObject.getMaturity());
 
@@ -424,6 +500,21 @@ public class OrganizationDBAPI extends AbstractDBAPI<Organization> {
 		o.setURL(edm.getUrl());
 		o.setType(edm.getType());
 		o.setMaturity(edm.getMaturity());
+		if (edm.getOwnsByInstanceId() != null) {
+			o.setOwns(new ArrayList<LinkedEntity>());
+			for (EDMEdmEntityId edmMetaId : edm.getOwnsByInstanceId().stream().map(EDMOrganizationOwner::getEdmEntityIdByMetaEntityId).collect(Collectors.toList())) {
+				if (edmMetaId.getFacilitiesByMetaId() != null && !edmMetaId.getFacilitiesByMetaId().isEmpty()) {
+					ArrayList<EDMFacility> list = new ArrayList<>(edmMetaId.getFacilitiesByMetaId());
+					list.sort(EDMUtil::compareEntityVersion);
+					o.getOwns().add(new LinkedEntity().entityType("facility").instanceId(list.get(0).getInstanceId()).metaId(list.get(0).getMetaId()).uid(list.get(0).getUid()));
+				}
+				if (edmMetaId.getEquipmentByMetaId() != null && !edmMetaId.getEquipmentByMetaId().isEmpty()) {
+					ArrayList<EDMEquipment> list = new ArrayList<>(edmMetaId.getEquipmentByMetaId());
+					list.sort(EDMUtil::compareEntityVersion);
+					o.getOwns().add(new LinkedEntity().entityType("equipment").instanceId(list.get(0).getInstanceId()).metaId(list.get(0).getMetaId()).uid(list.get(0).getUid()));
+				}
+			}
+		}
 
 		return o;
 	}
