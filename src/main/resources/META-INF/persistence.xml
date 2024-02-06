@@ -67,6 +67,7 @@
         <class>org.epos.handler.dbapi.model.EDMOrganizationIdentifier</class>
         <class>org.epos.handler.dbapi.model.EDMOrganizationLegalname</class>
         <class>org.epos.handler.dbapi.model.EDMOrganizationTelephone</class>
+        <class>org.epos.handler.dbapi.model.EDMOrganizationOwner</class>
         <class>org.epos.handler.dbapi.model.EDMPerson</class>
         <class>org.epos.handler.dbapi.model.EDMPersonEmail</class>
         <class>org.epos.handler.dbapi.model.EDMPersonIdentifier</class>
