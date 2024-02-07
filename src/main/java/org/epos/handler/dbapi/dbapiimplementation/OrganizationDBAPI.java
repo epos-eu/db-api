@@ -310,7 +310,7 @@ public class OrganizationDBAPI extends AbstractDBAPI<Organization> {
 				edmObject.getOrganizationTelephonesByInstanceId().add(edmOrganizationTelephone);
 			}
 		}
-		
+
 		if (eposDataModelObject.getOwns() != null) {
 			if(edmObject.getOwnsByInstanceId()!=null)
 				for(EDMOrganizationOwner obj : edmObject.getOwnsByInstanceId()) {
@@ -318,75 +318,102 @@ public class OrganizationDBAPI extends AbstractDBAPI<Organization> {
 				}
 			edmObject.setOwnsByInstanceId(new ArrayList<>());
 			for (LinkedEntity el : eposDataModelObject.getOwns()) {
-				
-				if(el.getEntityType().equalsIgnoreCase("facility")) {
-					List<EDMFacility> instaceList = getFromDB(em, EDMFacility.class,
-							"facility.findByUid", "UID", el.getUid());
+				if(el.getEntityType()!=null) {
+					if(el.getEntityType().equalsIgnoreCase("facility")) {
+						List<EDMFacility> instaceList = getFromDB(em, EDMFacility.class,
+								"facility.findByUid", "UID", el.getUid());
 
-					instaceList.sort(EDMUtil::compareEntityVersion);
+						instaceList.sort(EDMUtil::compareEntityVersion);
 
-					EDMFacility instance = !instaceList.isEmpty() ? instaceList.get(0) : null;
+						EDMFacility instance = !instaceList.isEmpty() ? instaceList.get(0) : null;
 
-					EDMEdmEntityId edmInstaceMetaId;
+						EDMEdmEntityId edmInstaceMetaId;
 
-					if (instance == null) {
-						edmInstaceMetaId = new EDMEdmEntityId();
-						edmInstaceMetaId.setMetaId(UUID.randomUUID().toString());
-						em.persist(edmInstaceMetaId);
+						if (instance == null) {
+							edmInstaceMetaId = new EDMEdmEntityId();
+							edmInstaceMetaId.setMetaId(UUID.randomUUID().toString());
+							em.persist(edmInstaceMetaId);
 
-						instance = new EDMFacility();
-						instance.setUid(el.getUid());
-						instance.setState(State.PLACEHOLDER.toString());
-						instance.setInstanceId(UUID.randomUUID().toString());
-						instance.setEdmEntityIdByMetaId(edmInstaceMetaId);
-						em.persist(instance);
+							instance = new EDMFacility();
+							instance.setUid(el.getUid());
+							instance.setState(State.PLACEHOLDER.toString());
+							instance.setInstanceId(UUID.randomUUID().toString());
+							instance.setEdmEntityIdByMetaId(edmInstaceMetaId);
+							em.persist(instance);
 
-					} else {
-						edmInstaceMetaId = instance.getEdmEntityIdByMetaId();
+						} else {
+							edmInstaceMetaId = instance.getEdmEntityIdByMetaId();
+						}
+
+						EDMOrganizationOwner edmLink = new EDMOrganizationOwner();
+						edmLink.setOrganizationByInstanceOrganizationId(edmObject);
+						edmLink.setEdmEntityIdByMetaEntityId(edmInstaceMetaId);
+
+						edmObject.getOwnsByInstanceId().add(edmLink);
 					}
+					if(el.getEntityType().equalsIgnoreCase("equipment")) {
+						List<EDMEquipment> instaceList = getFromDB(em, EDMEquipment.class,
+								"equipment.findByUid", "UID", el.getUid());
 
+						instaceList.sort(EDMUtil::compareEntityVersion);
+
+						EDMEquipment instance = !instaceList.isEmpty() ? instaceList.get(0) : null;
+
+						EDMEdmEntityId edmInstaceMetaId;
+
+						if (instance == null) {
+							edmInstaceMetaId = new EDMEdmEntityId();
+							edmInstaceMetaId.setMetaId(UUID.randomUUID().toString());
+							em.persist(edmInstaceMetaId);
+
+							instance = new EDMEquipment();
+							instance.setUid(el.getUid());
+							instance.setState(State.PLACEHOLDER.toString());
+							instance.setInstanceId(UUID.randomUUID().toString());
+							instance.setEdmEntityIdByMetaId(edmInstaceMetaId);
+							em.persist(instance);
+
+						} else {
+							edmInstaceMetaId = instance.getEdmEntityIdByMetaId();
+						}
+
+						EDMOrganizationOwner edmLink = new EDMOrganizationOwner();
+						edmLink.setOrganizationByInstanceOrganizationId(edmObject);
+						edmLink.setEdmEntityIdByMetaEntityId(edmInstaceMetaId);
+
+						edmObject.getOwnsByInstanceId().add(edmLink);
+					}
+				}else {
+					EDMEdmEntityId edmInstaceMetaId = new EDMEdmEntityId();
+					edmInstaceMetaId.setMetaId(UUID.randomUUID().toString());
+					em.persist(edmInstaceMetaId);
+					
+					//NEED TO GUESS THE TYPE
+					EDMFacility guessFacility = new EDMFacility();
+					guessFacility.setUid(el.getUid());
+					guessFacility.setState(State.PLACEHOLDER.toString());
+					guessFacility.setInstanceId(UUID.randomUUID().toString());
+					guessFacility.setEdmEntityIdByMetaId(edmInstaceMetaId);
+					em.persist(guessFacility);
+					
+					
+
+					EDMEquipment guessEquipment = new EDMEquipment();
+					guessEquipment.setUid(el.getUid());
+					guessEquipment.setState(State.PLACEHOLDER.toString());
+					guessEquipment.setInstanceId(UUID.randomUUID().toString());
+					guessEquipment.setEdmEntityIdByMetaId(edmInstaceMetaId);
+					em.persist(guessEquipment);
+					
 					EDMOrganizationOwner edmLink = new EDMOrganizationOwner();
 					edmLink.setOrganizationByInstanceOrganizationId(edmObject);
 					edmLink.setEdmEntityIdByMetaEntityId(edmInstaceMetaId);
 
-					edmObject.getOwnsByInstanceId().add(edmLink);
+					edmObject.getOwnsByInstanceId().add(edmLink);					
 				}
-				if(el.getEntityType().equalsIgnoreCase("equipment")) {
-					List<EDMEquipment> instaceList = getFromDB(em, EDMEquipment.class,
-							"equipment.findByUid", "UID", el.getUid());
-
-					instaceList.sort(EDMUtil::compareEntityVersion);
-
-					EDMEquipment instance = !instaceList.isEmpty() ? instaceList.get(0) : null;
-
-					EDMEdmEntityId edmInstaceMetaId;
-
-					if (instance == null) {
-						edmInstaceMetaId = new EDMEdmEntityId();
-						edmInstaceMetaId.setMetaId(UUID.randomUUID().toString());
-						em.persist(edmInstaceMetaId);
-
-						instance = new EDMEquipment();
-						instance.setUid(el.getUid());
-						instance.setState(State.PLACEHOLDER.toString());
-						instance.setInstanceId(UUID.randomUUID().toString());
-						instance.setEdmEntityIdByMetaId(edmInstaceMetaId);
-						em.persist(instance);
-
-					} else {
-						edmInstaceMetaId = instance.getEdmEntityIdByMetaId();
-					}
-
-					EDMOrganizationOwner edmLink = new EDMOrganizationOwner();
-					edmLink.setOrganizationByInstanceOrganizationId(edmObject);
-					edmLink.setEdmEntityIdByMetaEntityId(edmInstaceMetaId);
-
-					edmObject.getOwnsByInstanceId().add(edmLink);
-				}
-				
 			}
 		}
-		
+
 		edmObject.setType(eposDataModelObject.getType());
 		edmObject.setMaturity(eposDataModelObject.getMaturity());
 
