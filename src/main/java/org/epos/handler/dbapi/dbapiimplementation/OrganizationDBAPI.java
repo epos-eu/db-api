@@ -310,6 +310,7 @@ public class OrganizationDBAPI extends AbstractDBAPI<Organization> {
 				edmObject.getOrganizationTelephonesByInstanceId().add(edmOrganizationTelephone);
 			}
 		}
+		
 
 		if (eposDataModelObject.getOwns() != null) {
 			if(edmObject.getOwnsByInstanceId()!=null)
@@ -317,13 +318,9 @@ public class OrganizationDBAPI extends AbstractDBAPI<Organization> {
 					em.remove(obj);
 				}
 			edmObject.setOwnsByInstanceId(new ArrayList<>());
-			for (LinkedEntity el : eposDataModelObject.getOwns()) {
-				List<EDMFacility> instaceList = getFromDB(em, EDMFacility.class,
-						"facility.findByUid", "UID", el.getUid());
-
-				instaceList.sort(EDMUtil::compareEntityVersion);
-
-				EDMFacility instance = !instaceList.isEmpty() ? instaceList.get(0) : null;
+			for (String owns : eposDataModelObject.getOwns()) {
+				EDMFacility instance = getOneFromDB(em, EDMFacility.class,
+						"facility.findByUid", "UID", owns);
 
 				EDMEdmEntityId edmInstaceMetaId;
 
@@ -333,7 +330,7 @@ public class OrganizationDBAPI extends AbstractDBAPI<Organization> {
 					em.persist(edmInstaceMetaId);
 
 					instance = new EDMFacility();
-					instance.setUid(el.getUid());
+					instance.setUid(owns);
 					instance.setState(State.PLACEHOLDER.toString());
 					instance.setInstanceId(UUID.randomUUID().toString());
 					instance.setEdmEntityIdByMetaId(edmInstaceMetaId);
@@ -466,17 +463,12 @@ public class OrganizationDBAPI extends AbstractDBAPI<Organization> {
 		o.setType(edm.getType());
 		o.setMaturity(edm.getMaturity());
 		if (edm.getOwnsByInstanceId() != null) {
-			o.setOwns(new ArrayList<LinkedEntity>());
+			o.setOwns(new ArrayList<String>());
 			for (EDMEdmEntityId edmMetaId : edm.getOwnsByInstanceId().stream().map(EDMOrganizationOwner::getEdmEntityIdByMetaEntityId).collect(Collectors.toList())) {
 				if (edmMetaId.getFacilitiesByMetaId() != null && !edmMetaId.getFacilitiesByMetaId().isEmpty()) {
 					ArrayList<EDMFacility> list = new ArrayList<>(edmMetaId.getFacilitiesByMetaId());
 					list.sort(EDMUtil::compareEntityVersion);
-					o.getOwns().add(new LinkedEntity().entityType("facility").instanceId(list.get(0).getInstanceId()).metaId(list.get(0).getMetaId()).uid(list.get(0).getUid()));
-				}
-				if (edmMetaId.getEquipmentByMetaId() != null && !edmMetaId.getEquipmentByMetaId().isEmpty()) {
-					ArrayList<EDMEquipment> list = new ArrayList<>(edmMetaId.getEquipmentByMetaId());
-					list.sort(EDMUtil::compareEntityVersion);
-					o.getOwns().add(new LinkedEntity().entityType("equipment").instanceId(list.get(0).getInstanceId()).metaId(list.get(0).getMetaId()).uid(list.get(0).getUid()));
+					o.getOwns().add(list.get(0).getMetaId());
 				}
 			}
 		}

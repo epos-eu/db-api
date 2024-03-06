@@ -21,7 +21,7 @@ public class Tests {
 		organization.setState(State.PUBLISHED);
 		LinkedEntity le = new LinkedEntity();
 		le.setUid("facility/test/1");
-		organization.setOwns(List.of(le));
+		organization.setOwns(List.of(le.getUid()));
 		
 		
 		DBAPIClient dbapi = new DBAPIClient();
