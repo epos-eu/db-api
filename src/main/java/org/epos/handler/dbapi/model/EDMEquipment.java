@@ -17,6 +17,7 @@ import java.util.Collection;
 })
 public class EDMEquipment {
     private String uid;
+    private String identifier;
     private String description;
     private String name;
     private String type;
@@ -64,6 +65,16 @@ public class EDMEquipment {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+    
+    @Basic
+    @Column(name = "identifier")
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 
     @Basic

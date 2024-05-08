@@ -213,6 +213,7 @@ public class EquipmentDBAPI extends AbstractDBAPI<Equipment> {
 		edmObject.setDynamicrange(eposDataModelObject.getDynamicRange());
 		edmObject.setFilter(eposDataModelObject.getFilter());
 		edmObject.setKeywords(eposDataModelObject.getKeywords());
+		edmObject.setIdentifier(eposDataModelObject.getIdentifier());
 
 		if (eposDataModelObject.getIsPartOf() != null) {
 			if(edmObject.getEquipmentFacilitiesByInstanceId()!=null)
@@ -414,6 +415,7 @@ public class EquipmentDBAPI extends AbstractDBAPI<Equipment> {
 		o.setDescription(edm.getDescription());
 		o.setDynamicRange(edm.getDynamicrange());
 		o.setFilter(edm.getFilter());
+		o.setIdentifier(edm.getIdentifier());
 
 		if (edm.getEquipmentFacilitiesByInstanceId() != null) {
 			o.setIsPartOf(new LinkedList<>());

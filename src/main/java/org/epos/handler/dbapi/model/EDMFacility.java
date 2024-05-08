@@ -17,6 +17,7 @@ import java.util.Collection;
 })
 public class EDMFacility {
     private String uid;
+    private String identifier;
     private String description;
     private String title;
     private String type;
@@ -57,6 +58,16 @@ public class EDMFacility {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+    
+    @Basic
+    @Column(name = "identifier")
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 
     @Basic
