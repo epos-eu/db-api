@@ -212,6 +212,7 @@ public class EquipmentDBAPI extends AbstractDBAPI<Equipment> {
 		edmObject.setDescription(eposDataModelObject.getDescription());
 		edmObject.setDynamicrange(eposDataModelObject.getDynamicRange());
 		edmObject.setFilter(eposDataModelObject.getFilter());
+		edmObject.setKeywords(eposDataModelObject.getKeywords());
 
 		if (eposDataModelObject.getIsPartOf() != null) {
 			if(edmObject.getEquipmentFacilitiesByInstanceId()!=null)
@@ -438,6 +439,7 @@ public class EquipmentDBAPI extends AbstractDBAPI<Equipment> {
 		o.setOrientation(edm.getOrientation());
 		o.setSamplePeriod(edm.getSampleperiod());
 		o.setSerialNumber(edm.getSerialnumber());
+		o.addKeywords(edm.getKeywords());
 		o.setSpatialExtent(
 				edm.getEquipmentSpatialsByInstanceId() != null ?
 						new ArrayList<>(edm.getEquipmentSpatialsByInstanceId().stream()

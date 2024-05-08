@@ -221,6 +221,7 @@ public class FacilityDBAPI extends AbstractDBAPI<Facility> {
 		}
 
 		edmObject.setDescription(eposDataModelObject.getDescription());
+		edmObject.setKeywords(eposDataModelObject.getKeywords());
 
 		if (eposDataModelObject.getIsPartOf() != null) {
 			if(edmObject.getFacilityFacilitiesByInstanceId()!=null)
@@ -434,7 +435,7 @@ public class FacilityDBAPI extends AbstractDBAPI<Facility> {
 					.entityType("ContactPoint")));
 		}
 		o.setDescription(edm.getDescription());
-
+		o.addKeywords(edm.getKeywords());
 		if (edm.getFacilityFacilitiesByInstanceId() != null) {
 			o.setIsPartOf(new LinkedList<>());
 			edm.getFacilityFacilitiesByInstanceId().stream()
