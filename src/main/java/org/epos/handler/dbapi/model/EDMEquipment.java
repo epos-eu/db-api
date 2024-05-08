@@ -28,6 +28,7 @@ public class EDMEquipment {
     private String resolution;
     private String sampleperiod;
     private String owner;
+    private String keywords;
     private String serialnumber;
     private String fileprovenance;
     private String instanceId;
@@ -173,6 +174,16 @@ public class EDMEquipment {
 
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+    
+    @Basic
+    @Column(name = "keywords")
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
     }
 
     @Basic

@@ -22,6 +22,7 @@ public class EDMFacility {
     private String type;
     private String addressId;
     private String owner;
+    private String keywords;
     private String fileprovenance;
     private String instanceId;
     private String metaId;
@@ -106,6 +107,16 @@ public class EDMFacility {
 
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+    
+    @Basic
+    @Column(name = "keywords")
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
     }
 
     @Basic
