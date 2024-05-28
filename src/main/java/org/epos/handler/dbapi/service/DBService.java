@@ -1,9 +1,7 @@
 package org.epos.handler.dbapi.service;
 
 
-import org.epos.handler.dbapi.EntityManagerHandler;
-
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 public class DBService implements EntityManagerHandler {
     public DBService() {

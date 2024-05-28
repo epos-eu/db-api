@@ -4,8 +4,8 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.eclipse.persistence.config.PersistenceUnitProperties;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import javax.sql.DataSource;
 import java.util.HashMap;
 
@@ -40,6 +40,7 @@ public class EntityManagerFactoryProvider {
             hikariConfig.setMaximumPoolSize(Integer.parseInt(pool_max_size));
             hikariConfig.setMaxLifetime(Long.parseLong(max_connection_lifetime));
             hikariConfig.setKeepaliveTime(Long.parseLong(keep_alive_time));
+            hikariConfig.setAutoCommit(false);
 
             hikariConfig.setDriverClassName("org.postgresql.Driver");
             hikariConfig.setPoolName("cerif");
