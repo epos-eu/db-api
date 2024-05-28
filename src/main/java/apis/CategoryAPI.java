@@ -18,12 +18,8 @@ public class CategoryAPI extends AbstractAPI<org.epos.eposdatamodel.Category> {
 
         if(obj.getInstanceId()!=null) {
             List<Category> returnList = getDbaccess().getOneFromDBByInstanceId(obj.getInstanceId(), getEdmClass());
-
             if (!returnList.isEmpty()) {
-                edmobj = returnList.get(0);
-            }
-            else {
-                edmobj = new Category();
+                return update(obj);
             }
         } else {
             edmobj = new Category();
@@ -37,14 +33,9 @@ public class CategoryAPI extends AbstractAPI<org.epos.eposdatamodel.Category> {
 
         getDbaccess().createObject(edmobj);
 
-        CategoryAPI api = new CategoryAPI("Category", Category.class);
-        org.epos.eposdatamodel.Category childObj = null;
-
         if(Objects.nonNull(obj.getBroader())) createBroaders(obj.getBroader(), edmobj);
         if(Objects.nonNull(obj.getNarrower())) createNarrowers(obj.getNarrower(), edmobj);
         if(Objects.nonNull(obj.getInScheme())) createInscheme(obj.getInScheme(), edmobj);
-
-
 
         return new LinkedEntity().entityType(entityName)
                 .instanceId(edmobj.getInstanceId())
@@ -99,12 +90,69 @@ public class CategoryAPI extends AbstractAPI<org.epos.eposdatamodel.Category> {
 
     @Override
     public LinkedEntity update(org.epos.eposdatamodel.Category obj) {
-        return null;
+
+        Category edmobj = null;
+
+        if(obj.getInstanceId()!=null) {
+            List<Category> returnList = getDbaccess().getOneFromDBByInstanceId(obj.getInstanceId(), getEdmClass());
+            if (!returnList.isEmpty()) {
+                edmobj = returnList.get(0);
+            }
+        } else {
+            return create(obj);
+        }
+
+        edmobj.setInstanceId(obj.getInstanceId());
+        edmobj.setMetaId(obj.getMetaId());
+        edmobj.setUid(obj.getUid());
+        edmobj.setName(Optional.ofNullable(obj.getName()).orElse(""));
+        edmobj.setDescription(Optional.ofNullable(obj.getDescription()).orElse(""));
+
+        getDbaccess().updateObject(edmobj);
+
+        if(Objects.nonNull(obj.getBroader())) createBroaders(obj.getBroader(), edmobj);
+        if(Objects.nonNull(obj.getNarrower())) createNarrowers(obj.getNarrower(), edmobj);
+        if(Objects.nonNull(obj.getInScheme())) createInscheme(obj.getInScheme(), edmobj);
+
+        return new LinkedEntity().entityType(entityName)
+                .instanceId(edmobj.getInstanceId())
+                .metaId(edmobj.getMetaId())
+                .uid(edmobj.getUid());
     }
 
     @Override
     public org.epos.eposdatamodel.Category retrieve(String instanceId) {
-        return null;
+        Category edmobj = (Category) getDbaccess().getOneFromDBByInstanceId(instanceId, Category.class).get(0);
+
+        org.epos.eposdatamodel.Category o = new org.epos.eposdatamodel.Category();
+        o.setInstanceId(edmobj.getInstanceId());
+        o.setMetaId(edmobj.getMetaId());
+        o.setUid(edmobj.getUid());
+        o.setName(edmobj.getName());
+        o.setDescription(edmobj.getDescription());
+        o.setInScheme(edmobj.getInScheme());
+
+
+        edmobj.getCategoryIspartofsByInstanceId_0().isEmpty();
+        edmobj.getCategoryIspartofsByInstanceId().isEmpty();
+
+        if(edmobj.getCategoryIspartofsByInstanceId_0().size()>0) {
+            ArrayList<String> broaders = new ArrayList<>();
+            for(CategoryIspartof ed : edmobj.getCategoryIspartofsByInstanceId_0()) {
+                broaders.add(ed.getCategory1InstanceId());
+            }
+            o.setBroader(broaders);
+        }
+
+        if(edmobj.getCategoryIspartofsByInstanceId().size()>0) {
+            ArrayList<String> narrowers = new ArrayList<>();
+            for(CategoryIspartof ed : edmobj.getCategoryIspartofsByInstanceId()) {
+                narrowers.add(ed.getCategory2InstanceId());
+            }
+            o.setNarrower(narrowers);
+        }
+
+        return o;
     }
 
 }
