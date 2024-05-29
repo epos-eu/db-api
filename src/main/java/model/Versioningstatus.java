@@ -1,6 +1,8 @@
 package model;
 
 import jakarta.persistence.*;
+import org.eclipse.persistence.annotations.ObjectTypeConverter;
+
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -17,8 +19,8 @@ public class Versioningstatus {
     @Column(name = "meta_id", nullable = true, length = 100)
     private String metaId;
     @Basic
-    @Column(name = "table_name", nullable = true, length = 1024)
-    private String tableName;
+    @Column(name = "instance_change_id", nullable = true, length = 1024)
+    private String instanceChangeId;
     @Basic
     @Column(name = "provenance", nullable = true, length = 1024)
     private String provenance;
@@ -42,6 +44,7 @@ public class Versioningstatus {
     private String version;
     @Basic
     @Column(name = "status", nullable = true)
+    @Enumerated(EnumType.STRING)
     private StatusType status;
     @OneToMany(mappedBy = "versioningstatusByVersionId")
     private Collection<Address> addressesByVersionId;
@@ -122,12 +125,12 @@ public class Versioningstatus {
         this.metaId = metaId;
     }
 
-    public String getTableName() {
-        return tableName;
+    public String getInstanceChangeId() {
+        return instanceChangeId;
     }
 
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
+    public void setInstanceChangeId(String instanceChangeId) {
+        this.instanceChangeId = instanceChangeId;
     }
 
     public String getProvenance() {
@@ -204,7 +207,7 @@ public class Versioningstatus {
         if (versionId != null ? !versionId.equals(that.versionId) : that.versionId != null) return false;
         if (instanceId != null ? !instanceId.equals(that.instanceId) : that.instanceId != null) return false;
         if (metaId != null ? !metaId.equals(that.metaId) : that.metaId != null) return false;
-        if (tableName != null ? !tableName.equals(that.tableName) : that.tableName != null) return false;
+        if (instanceChangeId != null ? !instanceChangeId.equals(that.instanceChangeId) : that.instanceChangeId != null) return false;
         if (provenance != null ? !provenance.equals(that.provenance) : that.provenance != null) return false;
         if (editorId != null ? !editorId.equals(that.editorId) : that.editorId != null) return false;
         if (reviewerId != null ? !reviewerId.equals(that.reviewerId) : that.reviewerId != null) return false;
@@ -225,7 +228,7 @@ public class Versioningstatus {
         int result = versionId != null ? versionId.hashCode() : 0;
         result = 31 * result + (instanceId != null ? instanceId.hashCode() : 0);
         result = 31 * result + (metaId != null ? metaId.hashCode() : 0);
-        result = 31 * result + (tableName != null ? tableName.hashCode() : 0);
+        result = 31 * result + (instanceChangeId != null ? instanceChangeId.hashCode() : 0);
         result = 31 * result + (provenance != null ? provenance.hashCode() : 0);
         result = 31 * result + (editorId != null ? editorId.hashCode() : 0);
         result = 31 * result + (reviewerId != null ? reviewerId.hashCode() : 0);

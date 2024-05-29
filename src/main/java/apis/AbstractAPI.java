@@ -1,13 +1,12 @@
 package apis;
 
 import dao.EposDataModelDAO;
-import model.Category;
 import model.StatusType;
 import model.Versioningstatus;
+import org.epos.eposdatamodel.EPOSDataModelEntity;
 import org.epos.eposdatamodel.LinkedEntity;
 
 import java.util.List;
-import java.util.Objects;
 
 public abstract class AbstractAPI<T> {
 
@@ -43,9 +42,11 @@ public abstract class AbstractAPI<T> {
 
     public abstract LinkedEntity create(T obj);
 
-    public abstract LinkedEntity update(T obj);
-
     public abstract T retrieve(String instanceId);
+
+    public void checkVersioningStatus(EPOSDataModelEntity obj){
+
+    }
 
     public void updateVersioningStatus(String versionInfo, StatusType status){
         List<Versioningstatus> returnList = getDbaccess().getVersionsFromDBByVersionId(versionInfo);
