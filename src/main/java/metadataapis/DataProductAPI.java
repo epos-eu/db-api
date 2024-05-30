@@ -107,7 +107,7 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
                 DataproductDescription pi = new DataproductDescription();
                 pi.setInstanceId(UUID.randomUUID().toString());
                 pi.setMetaId(UUID.randomUUID().toString());
-                pi.setUid("Title/"+UUID.randomUUID().toString());
+                pi.setUid("Description/"+UUID.randomUUID().toString());
                 pi.setVersionId(null);
                 pi.setDescription(description);
                 pi.setDataproductByDataproductInstanceId(edmobj);
@@ -300,21 +300,6 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
                     .uid(edmobj.getUid());
 
     }
-
-    private void createInnerElement(ElementType elementType, String value, Equipment edmobj){
-        org.epos.eposdatamodel.Element element = new org.epos.eposdatamodel.Element();
-        element.setType(elementType);
-        element.setValue(value);
-        ElementAPI api = new ElementAPI("Element", Element.class);
-        LinkedEntity le = api.create(element);
-        List<Element> el = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Element.class);
-        EquipmentElement ce = new EquipmentElement();
-        ce.setEquipmentByEquipmentInstanceId(edmobj);
-        ce.setEquipmentInstanceId(edmobj.getInstanceId());
-        ce.setElementByElementInstanceId(el.get(0));
-        ce.setElementInstanceId(el.get(0).getInstanceId());
-    }
-
 
     @Override
     public org.epos.eposdatamodel.DataProduct retrieve(String instanceId) {

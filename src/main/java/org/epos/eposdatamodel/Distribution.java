@@ -7,19 +7,14 @@ import java.util.Objects;
 
 /**
  * Distribution: A physical embodiment of the Data and Data Product in a particular format.
+ *
  */
 public class Distribution extends EPOSDataModelEntity {
 
     /**
      * This property refers to the WebService which supports selection of an extract, sub-set, or combination of data
      */
-    private LinkedEntity accessService;
-
-    /**
-     * This property contains a URL that gives access to a Distribution of the Data Product. The resource at the access
-     * URL may contain information about how to get the Data Product.
-     **/
-    private List<LinkedEntity> accessURL = new ArrayList<>();
+    private List<String> accessURL;
 
     /**
      * This property contains a free-text account of the Distribution. This property can be repeated for parallel language
@@ -69,15 +64,9 @@ public class Distribution extends EPOSDataModelEntity {
     private String dataPolicy;
 
     /**
-     * This property is used to indicate the model, schema, ontology, view or profile
-     * that this representation of a dataset conforms to (e.g., xsd, json schema).
-     */
-    private String conformsTo;
-
-    /**
      * Reverse reference to the related dataproduct.
      */
-    private List<LinkedEntity> dataProduct;
+    private List<DataProduct> dataProduct;
 
 
     public void addTitle(String title) {
@@ -108,40 +97,6 @@ public class Distribution extends EPOSDataModelEntity {
         } else {
             this.getDownloadURL().add(downloadURL);
         }
-    }
-
-    public void addAccessURL(LinkedEntity accessURL) {
-        if (this.getAccessURL() == null) {
-            ArrayList<LinkedEntity> accessURLList = new ArrayList<>();
-            accessURLList.add(accessURL);
-            this.setAccessURL(accessURLList);
-        } else {
-            this.getAccessURL().add(accessURL);
-        }
-    }
-
-
-    public Distribution accessURL(List<LinkedEntity> accessURL) {
-        this.accessURL = accessURL;
-        return this;
-    }
-
-    public Distribution addAccessURLItem(LinkedEntity accessURLItem) {
-        this.accessURL.add(accessURLItem);
-        return this;
-    }
-
-    /**
-     * This property contains a URL that gives access to a Distribution of the Data Product. The resource at the access URL may contain information about how to get the Data Product.
-     *
-     * @return accessURL
-     **/
-    public List<LinkedEntity> getAccessURL() {
-        return accessURL;
-    }
-
-    public void setAccessURL(List<LinkedEntity> accessURL) {
-        this.accessURL = accessURL;
     }
 
     public Distribution description(List<String> description) {
@@ -319,15 +274,21 @@ public class Distribution extends EPOSDataModelEntity {
     }
 
 
-    public LinkedEntity getAccessService() {
-        return accessService;
+    public List<String> getAccessURL() {
+        return accessURL;
     }
 
-    public void setAccessService(LinkedEntity accessService) {
-        this.accessService = accessService;
+    public void setAccessURL(List<String> accessURL) {
+        this.accessURL = accessURL;
     }
 
-
+    public Distribution addAccessURL(String accessURL) {
+        if (this.accessURL == null) {
+            this.accessURL = new ArrayList<>();
+        }
+        this.accessURL.add(accessURL);
+        return this;
+    }
     public String getDataPolicy() {
         return dataPolicy;
     }
@@ -336,28 +297,30 @@ public class Distribution extends EPOSDataModelEntity {
         this.dataPolicy = dataPolicy;
     }
 
-    public String getConformsTo() {
-        return conformsTo;
-    }
-
-    public void setConformsTo(String conformsTo) {
-        this.conformsTo = conformsTo;
-    }
-
-    public List<LinkedEntity> getDataProduct() {
+    public List<DataProduct> getDataProduct() {
         return dataProduct;
     }
 
-    public Distribution setDataProduct(List<LinkedEntity> dataProduct) {
+    public Distribution setDataProduct(List<DataProduct> dataProduct) {
         this.dataProduct = dataProduct;
         return this;
     }
 
+    public void addDataproduct(DataProduct dataProduct) {
+        if (this.getDataProduct() == null) {
+            ArrayList<DataProduct> dataproductList = new ArrayList<>();
+            dataproductList.add(dataProduct);
+            this.setDataProduct(dataproductList);
+        } else {
+            this.getDataProduct().add(dataProduct);
+        }
+    }
+
+
     @Override
     public String toString() {
         return "Distribution{" +
-                "accessService=" + accessService +
-                ", accessURL=" + accessURL +
+                "accessService=" + accessURL +
                 ", description=" + description +
                 ", downloadURL=" + downloadURL +
                 ", format='" + format + '\'' +
@@ -367,7 +330,6 @@ public class Distribution extends EPOSDataModelEntity {
                 ", title=" + title +
                 ", type='" + type + '\'' +
                 ", dataPolicy='" + dataPolicy + '\'' +
-                ", conformsTo='" + conformsTo + '\'' +
                 ", dataProduct=" + dataProduct +
                 "} " + super.toString();
     }
@@ -378,11 +340,11 @@ public class Distribution extends EPOSDataModelEntity {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Distribution that = (Distribution) o;
-        return Objects.equals(getAccessService(), that.getAccessService()) && Objects.equals(getAccessURL(), that.getAccessURL()) && Objects.equals(getDescription(), that.getDescription()) && Objects.equals(getDownloadURL(), that.getDownloadURL()) && Objects.equals(getFormat(), that.getFormat()) && Objects.equals(getIssued(), that.getIssued()) && Objects.equals(getLicence(), that.getLicence()) && Objects.equals(getModified(), that.getModified()) && Objects.equals(getTitle(), that.getTitle()) && Objects.equals(getType(), that.getType()) && Objects.equals(getDataPolicy(), that.getDataPolicy()) && Objects.equals(getConformsTo(), that.getConformsTo()) && Objects.equals(getDataProduct(), that.getDataProduct());
+        return Objects.equals(getAccessURL(), that.getAccessURL()) && Objects.equals(getDescription(), that.getDescription()) && Objects.equals(getDownloadURL(), that.getDownloadURL()) && Objects.equals(getFormat(), that.getFormat()) && Objects.equals(getIssued(), that.getIssued()) && Objects.equals(getLicence(), that.getLicence()) && Objects.equals(getModified(), that.getModified()) && Objects.equals(getTitle(), that.getTitle()) && Objects.equals(getType(), that.getType()) && Objects.equals(getDataPolicy(), that.getDataPolicy()) && Objects.equals(getDataProduct(), that.getDataProduct());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getAccessService(), getAccessURL(), getDescription(), getDownloadURL(), getFormat(), getIssued(), getLicence(), getModified(), getTitle(), getType(), getDataPolicy(), getConformsTo(), getDataProduct());
+        return Objects.hash(super.hashCode(), getAccessURL(), getDescription(), getDownloadURL(), getFormat(), getIssued(), getLicence(), getModified(), getTitle(), getType(), getDataPolicy(), getDataProduct());
     }
 }

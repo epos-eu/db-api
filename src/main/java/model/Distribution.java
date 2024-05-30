@@ -1,47 +1,132 @@
 package model;
 
 import jakarta.persistence.*;
+
 import java.sql.Timestamp;
 import java.util.Collection;
 
 @Entity
 public class Distribution {
+
     @Id
     @Column(name = "instance_id", nullable = false, length = 100)
     private String instanceId;
+
+    public String getInstanceId() {
+        return instanceId;
+    }
+
+    public void setInstanceId(String instanceId) {
+        this.instanceId = instanceId;
+    }
+
     @Basic
     @Column(name = "meta_id", nullable = true, length = 100)
     private String metaId;
+
+    public String getMetaId() {
+        return metaId;
+    }
+
+    public void setMetaId(String metaId) {
+        this.metaId = metaId;
+    }
+
     @Basic
     @Column(name = "uid", nullable = true, length = 100)
     private String uid;
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
     @Basic
     @Column(name = "version_id", nullable = true, length = 100)
     private String versionId;
+
+    public String getVersionId() {
+        return versionId;
+    }
+
+    public void setVersionId(String versionId) {
+        this.versionId = versionId;
+    }
+
     @Basic
     @Column(name = "issued", nullable = true)
     private Timestamp issued;
+
+    public Timestamp getIssued() {
+        return issued;
+    }
+
+    public void setIssued(Timestamp issued) {
+        this.issued = issued;
+    }
+
     @Basic
     @Column(name = "modified", nullable = true)
     private Timestamp modified;
+
+    public Timestamp getModified() {
+        return modified;
+    }
+
+    public void setModified(Timestamp modified) {
+        this.modified = modified;
+    }
+
     @Basic
     @Column(name = "type", nullable = true, length = 1024)
     private String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Basic
     @Column(name = "format", nullable = true, length = 1024)
     private String format;
+
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
     @Basic
     @Column(name = "license", nullable = true, length = 1024)
     private String license;
-    @Basic
-    @Column(name = "access_service", nullable = true, length = 1024)
-    private String accessService;
+
+    public String getLicense() {
+        return license;
+    }
+
+    public void setLicense(String license) {
+        this.license = license;
+    }
+
     @Basic
     @Column(name = "datapolicy", nullable = true, length = 1024)
     private String datapolicy;
-    @Basic
-    @Column(name = "conformsto", nullable = true, length = 1024)
-    private String conformsto;
+
+    public String getDatapolicy() {
+        return datapolicy;
+    }
+
+    public void setDatapolicy(String datapolicy) {
+        this.datapolicy = datapolicy;
+    }
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "version_id", referencedColumnName = "version_id")
     private Versioningstatus versioningstatusByVersionId;
@@ -55,102 +140,6 @@ public class Distribution {
     private Collection<DistributionTitle> distributionTitlesByInstanceId;
     @OneToMany(mappedBy = "distributionByDistributionInstanceId")
     private Collection<OperationDistribution> operationDistributionsByInstanceId;
-
-    public String getInstanceId() {
-        return instanceId;
-    }
-
-    public void setInstanceId(String instanceId) {
-        this.instanceId = instanceId;
-    }
-
-    public String getMetaId() {
-        return metaId;
-    }
-
-    public void setMetaId(String metaId) {
-        this.metaId = metaId;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
-    public String getVersionId() {
-        return versionId;
-    }
-
-    public void setVersionId(String versionId) {
-        this.versionId = versionId;
-    }
-
-    public Timestamp getIssued() {
-        return issued;
-    }
-
-    public void setIssued(Timestamp issued) {
-        this.issued = issued;
-    }
-
-    public Timestamp getModified() {
-        return modified;
-    }
-
-    public void setModified(Timestamp modified) {
-        this.modified = modified;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getFormat() {
-        return format;
-    }
-
-    public void setFormat(String format) {
-        this.format = format;
-    }
-
-    public String getLicense() {
-        return license;
-    }
-
-    public void setLicense(String license) {
-        this.license = license;
-    }
-
-    public String getAccessService() {
-        return accessService;
-    }
-
-    public void setAccessService(String accessService) {
-        this.accessService = accessService;
-    }
-
-    public String getDatapolicy() {
-        return datapolicy;
-    }
-
-    public void setDatapolicy(String datapolicy) {
-        this.datapolicy = datapolicy;
-    }
-
-    public String getConformsto() {
-        return conformsto;
-    }
-
-    public void setConformsto(String conformsto) {
-        this.conformsto = conformsto;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -168,10 +157,7 @@ public class Distribution {
         if (type != null ? !type.equals(that.type) : that.type != null) return false;
         if (format != null ? !format.equals(that.format) : that.format != null) return false;
         if (license != null ? !license.equals(that.license) : that.license != null) return false;
-        if (accessService != null ? !accessService.equals(that.accessService) : that.accessService != null)
-            return false;
         if (datapolicy != null ? !datapolicy.equals(that.datapolicy) : that.datapolicy != null) return false;
-        if (conformsto != null ? !conformsto.equals(that.conformsto) : that.conformsto != null) return false;
 
         return true;
     }
@@ -187,9 +173,7 @@ public class Distribution {
         result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (format != null ? format.hashCode() : 0);
         result = 31 * result + (license != null ? license.hashCode() : 0);
-        result = 31 * result + (accessService != null ? accessService.hashCode() : 0);
         result = 31 * result + (datapolicy != null ? datapolicy.hashCode() : 0);
-        result = 31 * result + (conformsto != null ? conformsto.hashCode() : 0);
         return result;
     }
 

@@ -6,6 +6,7 @@ public enum ElementType {
     EMAIL,
     LANGUAGE,
     DOWNLOADURL,
+    ACCESSURL,
     DOCUMENTATION,
     RETURNS,
     PARAMVALUE,

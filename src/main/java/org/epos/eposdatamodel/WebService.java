@@ -75,7 +75,7 @@ public class WebService extends EPOSDataModelEntity {
     /**
      * This property refers to an Organisation responsible for making the Web Service available.
      **/
-    private LinkedEntity provider;
+    private Organization provider;
 
     /**
      * This property refers to a geographical area covered by the Web Service.
@@ -424,7 +424,7 @@ public class WebService extends EPOSDataModelEntity {
         this.name = name;
     }
 
-    public WebService provider(LinkedEntity provider) {
+    public WebService provider(Organization provider) {
         this.provider = provider;
         return this;
     }
@@ -435,11 +435,11 @@ public class WebService extends EPOSDataModelEntity {
      * @return provider
      **/
 
-    public LinkedEntity getProvider() {
+    public Organization getProvider() {
         return provider;
     }
 
-    public void setProvider(LinkedEntity provider) {
+    public void setProvider(Organization provider) {
         this.provider = provider;
     }
 
