@@ -7,7 +7,7 @@ import java.util.Objects;
  * scheme; an optional identifier for the version of the identifier scheme; an optional identifier for the agency that
  * manages the identifier scheme.
  */
-public class Identifier {
+public class Identifier extends EPOSDataModelEntity{
 
     /**
      * This property refers the identifier scheme referenced by its datatype (e.g., DDSS-ID, DOI, etc.).

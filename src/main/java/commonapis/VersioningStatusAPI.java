@@ -1,12 +1,9 @@
-package apis;
+package commonapis;
 
 import dao.EposDataModelDAO;
 import model.*;
-import org.eclipse.persistence.jpa.jpql.parser.DateTime;
 import org.epos.eposdatamodel.EPOSDataModelEntity;
-import org.epos.eposdatamodel.LinkedEntity;
 
-import javax.swing.text.html.Option;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.*;

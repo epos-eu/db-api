@@ -1,11 +1,11 @@
-package apis;
+package metadataapis;
 
-import model.Category;
+import abstractapis.AbstractAPI;
+import commonapis.VersioningStatusAPI;
 import model.CategoryScheme;
 import org.epos.eposdatamodel.LinkedEntity;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 

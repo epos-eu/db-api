@@ -1,6 +1,6 @@
 package integrationtests;
 
-import apis.CategoryAPI;
+import metadataapis.CategoryAPI;
 import model.Category;
 import org.epos.eposdatamodel.LinkedEntity;
 

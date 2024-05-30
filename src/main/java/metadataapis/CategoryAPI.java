@@ -1,5 +1,7 @@
-package apis;
+package metadataapis;
 
+import abstractapis.AbstractAPI;
+import commonapis.VersioningStatusAPI;
 import model.*;
 import org.epos.eposdatamodel.LinkedEntity;
 

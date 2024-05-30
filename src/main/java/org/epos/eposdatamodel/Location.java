@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * A spatial region specified by using geographic coordinates.
  */
-public class Location {
+public class Location extends EPOSDataModelEntity{
 
     /**
      * This property associates any resource with the corresponding geometry.

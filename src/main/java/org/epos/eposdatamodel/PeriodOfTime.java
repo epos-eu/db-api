@@ -6,7 +6,7 @@ import java.util.Objects;
 /**
  * An interval of time that is named or defined by its start and end dates.
  */
-public class PeriodOfTime {
+public class PeriodOfTime extends EPOSDataModelEntity{
 
     /**
      * This property contains the END of the period
