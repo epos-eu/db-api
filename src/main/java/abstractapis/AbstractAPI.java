@@ -44,13 +44,4 @@ public abstract class AbstractAPI<T> {
 
     public abstract T retrieve(String instanceId);
 
-    public void checkVersioningStatus(EPOSDataModelEntity obj){
-
-    }
-
-    public void updateVersioningStatus(String versionInfo, StatusType status){
-        List<Versioningstatus> returnList = getDbaccess().getVersionsFromDBByVersionId(versionInfo);
-    }
-
-
 }

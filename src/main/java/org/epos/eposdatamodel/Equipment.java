@@ -12,12 +12,12 @@ public class Equipment extends EPOSDataModelEntity {
 	/**
 	 * This property refers to a category of the Equipment. An Equipment may be associated with multiple categories.
 	 **/
-	private List<String> category;
+	private List<Category> category;
 
 	/**
 	 * This property contains contact information (i.e. Role) that can be used for sending comments about the Equipment.
 	 */
-	private List<LinkedEntity> contactPoint;
+	private List<ContactPoint> contactPoint;
 
 	/**
 	 * This property contains a free-text description of the Equipment.
@@ -37,12 +37,17 @@ public class Equipment extends EPOSDataModelEntity {
 	/**
 	 * This property refers to an Equipment or a Facility in which the described Equipment is included.
 	 */
-	private List<LinkedEntity> isPartOf;
+	private List<Equipment> isPartOfEquipment;
+
+	/**
+	 * This property refers to an Equipment or a Facility in which the described Equipment is included.
+	 */
+	private List<Facility> isPartOfFacility;
 
 	/**
 	 * This property refers to an Organization responsible for manufacturing the Equipment.
 	 */
-	private LinkedEntity manufacturer;
+	private Organization manufacturer;
 
 	/**
 	 * This property contains a name given to the Equipment.
@@ -101,19 +106,29 @@ public class Equipment extends EPOSDataModelEntity {
 	 **/
 	private String type;
 
-	public void addIsPartOf(LinkedEntity isPartOf) {
-		if (this.getIsPartOf() == null) {
-			ArrayList<LinkedEntity> isPartOfList = new ArrayList<>();
+	public void addIsPartOfEquipment(Equipment isPartOf) {
+		if (this.getIsPartOfEquipment() == null) {
+			ArrayList<Equipment> isPartOfList = new ArrayList<>();
 			isPartOfList.add(isPartOf);
-			this.setIsPartOf(isPartOfList);
+			this.setIsPartOfEquipment(isPartOfList);
 		} else {
-			this.getIsPartOf().add(isPartOf);
+			this.getIsPartOfEquipment().add(isPartOf);
 		}
 	}
 
-	public void addContactPoint(LinkedEntity contactPoint) {
+	public void addIsPartOfFacility(Facility isPartOf) {
+		if (this.getIsPartOfFacility() == null) {
+			ArrayList<Facility> isPartOfList = new ArrayList<>();
+			isPartOfList.add(isPartOf);
+			this.setIsPartOfFacility(isPartOfList);
+		} else {
+			this.getIsPartOfFacility().add(isPartOf);
+		}
+	}
+
+	public void addContactPoint(ContactPoint contactPoint) {
 		if (this.getContactPoint() == null) {
-			ArrayList<LinkedEntity> contactPointList = new ArrayList<>();
+			ArrayList<ContactPoint> contactPointList = new ArrayList<>();
 			contactPointList.add(contactPoint);
 			this.setContactPoint(contactPointList);
 		} else {
@@ -141,9 +156,9 @@ public class Equipment extends EPOSDataModelEntity {
 		}
 	}
 
-	public void addCategory(String category) {
+	public void addCategory(Category category) {
 		if (this.getCategory() == null) {
-			ArrayList<String> categoryList = new ArrayList<>();
+			ArrayList<Category> categoryList = new ArrayList<>();
 			categoryList.add(category);
 			this.setCategory(categoryList);
 		} else {
@@ -151,12 +166,12 @@ public class Equipment extends EPOSDataModelEntity {
 		}
 	}
 
-	public Equipment category(List<String> category) {
+	public Equipment category(List<Category> category) {
 		this.category = category;
 		return this;
 	}
 
-	public Equipment addCategoryItem(String categoryItem) {
+	public Equipment addCategoryItem(Category categoryItem) {
 		if (this.category == null) {
 			this.category = new ArrayList<>();
 		}
@@ -170,11 +185,11 @@ public class Equipment extends EPOSDataModelEntity {
 	 * @return category
 	 **/
 
-	public List<String> getCategory() {
+	public List<Category> getCategory() {
 		return category;
 	}
 
-	public void setCategory(List<String> category) {
+	public void setCategory(List<Category> category) {
 		this.category = category;
 	}
 
@@ -442,27 +457,35 @@ public class Equipment extends EPOSDataModelEntity {
 		this.type = type;
 	}
 
-	public List<LinkedEntity> getContactPoint() {
+	public List<ContactPoint> getContactPoint() {
 		return contactPoint;
 	}
 
-	public void setContactPoint(List<LinkedEntity> contactPoint) {
+	public void setContactPoint(List<ContactPoint> contactPoint) {
 		this.contactPoint = contactPoint;
 	}
 
-	public List<LinkedEntity> getIsPartOf() {
-		return isPartOf;
+	public List<Equipment> getIsPartOfEquipment() {
+		return isPartOfEquipment;
 	}
 
-	public void setIsPartOf(List<LinkedEntity> isPartOf) {
-		this.isPartOf = isPartOf;
+	public void setIsPartOfEquipment(List<Equipment> isPartOf) {
+		this.isPartOfEquipment = isPartOf;
 	}
 
-	public LinkedEntity getManufacturer() {
+	public List<Facility> getIsPartOfFacility() {
+		return isPartOfFacility;
+	}
+
+	public void setIsPartOfFacility(List<Facility> isPartOf) {
+		this.isPartOfFacility = isPartOf;
+	}
+
+	public Organization getManufacturer() {
 		return manufacturer;
 	}
 
-	public void setManufacturer(LinkedEntity manufacturer) {
+	public void setManufacturer(Organization manufacturer) {
 		this.manufacturer = manufacturer;
 	}
 
@@ -506,7 +529,8 @@ public class Equipment extends EPOSDataModelEntity {
 				", description='" + description + '\'' +
 				", dynamicRange='" + dynamicRange + '\'' +
 				", filter='" + filter + '\'' +
-				", isPartOf=" + isPartOf +
+				", isPartOfEquipment=" + isPartOfEquipment +
+				", isPartOfFacility=" + isPartOfFacility +
 				", manufacturer=" + manufacturer +
 				", name='" + name + '\'' +
 				", pageURL='" + pageURL + '\'' +
@@ -527,11 +551,11 @@ public class Equipment extends EPOSDataModelEntity {
 		if (o == null || getClass() != o.getClass()) return false;
 		if (!super.equals(o)) return false;
 		Equipment equipment = (Equipment) o;
-		return Objects.equals(getUid(), equipment.getUid()) && Objects.equals(getCategory(), equipment.getCategory()) && Objects.equals(getContactPoint(), equipment.getContactPoint()) && Objects.equals(getDescription(), equipment.getDescription()) && Objects.equals(getDynamicRange(), equipment.getDynamicRange()) && Objects.equals(getFilter(), equipment.getFilter()) && Objects.equals(getIsPartOf(), equipment.getIsPartOf()) && Objects.equals(getManufacturer(), equipment.getManufacturer()) && Objects.equals(getName(), equipment.getName()) && Objects.equals(getPageURL(), equipment.getPageURL()) && Objects.equals(getOrientation(), equipment.getOrientation()) && Objects.equals(getRelation(), equipment.getRelation()) && Objects.equals(getResolution(), equipment.getResolution()) && Objects.equals(getSamplePeriod(), equipment.getSamplePeriod()) && Objects.equals(getSerialNumber(), equipment.getSerialNumber()) && Objects.equals(getSpatialExtent(), equipment.getSpatialExtent()) && Objects.equals(getTemporalExtent(), equipment.getTemporalExtent()) && Objects.equals(getType(), equipment.getType());
+		return Objects.equals(getUid(), equipment.getUid()) && Objects.equals(getCategory(), equipment.getCategory()) && Objects.equals(getContactPoint(), equipment.getContactPoint()) && Objects.equals(getDescription(), equipment.getDescription()) && Objects.equals(getDynamicRange(), equipment.getDynamicRange()) && Objects.equals(getFilter(), equipment.getFilter()) && Objects.equals(getIsPartOfEquipment(), equipment.getIsPartOfEquipment()) && Objects.equals(getManufacturer(), equipment.getManufacturer()) && Objects.equals(getName(), equipment.getName()) && Objects.equals(getPageURL(), equipment.getPageURL()) && Objects.equals(getOrientation(), equipment.getOrientation()) && Objects.equals(getRelation(), equipment.getRelation()) && Objects.equals(getResolution(), equipment.getResolution()) && Objects.equals(getSamplePeriod(), equipment.getSamplePeriod()) && Objects.equals(getSerialNumber(), equipment.getSerialNumber()) && Objects.equals(getSpatialExtent(), equipment.getSpatialExtent()) && Objects.equals(getTemporalExtent(), equipment.getTemporalExtent()) && Objects.equals(getType(), equipment.getType());
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(super.hashCode(), getCategory(), getContactPoint(), getDescription(), getDynamicRange(), getFilter(), getIsPartOf(), getManufacturer(), getName(), getPageURL(), getOrientation(), getRelation(), getResolution(), getSamplePeriod(), getSerialNumber(), getSpatialExtent(), getTemporalExtent(), getType());
+		return Objects.hash(super.hashCode(), getCategory(), getContactPoint(), getDescription(), getDynamicRange(), getFilter(), getIsPartOfEquipment(), getIsPartOfFacility(), getManufacturer(), getName(), getPageURL(), getOrientation(), getRelation(), getResolution(), getSamplePeriod(), getSerialNumber(), getSpatialExtent(), getTemporalExtent(), getType());
 	}
 }

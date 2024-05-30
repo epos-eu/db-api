@@ -1,6 +1,7 @@
 package metadataapis;
 
 import abstractapis.AbstractAPI;
+import commonapis.AddressAPI;
 import commonapis.ElementAPI;
 import commonapis.IdentifierAPI;
 import commonapis.VersioningStatusAPI;
@@ -46,6 +47,19 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
         edmobj.setCvurl(obj.getCVURL());
         edmobj.setQualifications(String.join(", ", obj.getQualifications()));
 
+        /** ADDRESS **/
+        if (obj.getAddress() != null) {
+            List<Address> identifierList = getDbaccess().getAllFromDB(Address.class);
+            for(Address item : identifierList){
+                if(item.getInstanceId().equals(obj.getAddress().getInstanceId())){
+                    getDbaccess().deleteObject(item);
+                }
+            }
+            AddressAPI addressAPI = new AddressAPI("Address", Address.class);
+            LinkedEntity le = addressAPI.create(obj.getAddress());
+            edmobj.setAddressId(le.getInstanceId());
+        }
+
         if(returnList.isEmpty()) getDbaccess().createObject(edmobj);
         else getDbaccess().updateObject(edmobj);
 
@@ -70,26 +84,7 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
             }
         }
 
-        /** TODO: ADDRESS **/
-        /*if (obj.getIdentifier() != null && !obj.getIdentifier().isEmpty()) {
-            List<PersonIdentifier> identifierList = getDbaccess().getAllFromDB(PersonIdentifier.class);
-            for(PersonIdentifier item : identifierList){
-                if(item.getPersonByPersonInstanceId().equals(obj.getInstanceId())){
-                    getDbaccess().deleteObject(item);
-                    List<Identifier> list2 = getDbaccess().getOneFromDBByInstanceId(item.getIdentifierInstanceId(), Identifier.class);
-                    getDbaccess().deleteObject(list2.get(0));
-                }
-            }
-            IdentifierAPI identifierAPI = new IdentifierAPI("Identifier", Identifier.class);
-            for(org.epos.eposdatamodel.Identifier identifier : obj.getIdentifier()){
-                LinkedEntity le = identifierAPI.create(identifier);
-                PersonIdentifier pi = new PersonIdentifier();
-                pi.setPersonByPersonInstanceId(edmobj);
-                pi.setPersonInstanceId(edmobj.getInstanceId());
-                pi.setIdentifierInstanceId(le.getInstanceId());
-                pi.setIdentifierByIdentifierInstanceId((Identifier) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(),Identifier.class).get(0));
-            }
-        }*/
+
         /** TODO: AFFILIATION **/
         /*if (obj.getIdentifier() != null && !obj.getIdentifier().isEmpty()) {
             List<PersonIdentifier> identifierList = getDbaccess().getAllFromDB(PersonIdentifier.class);
@@ -176,17 +171,17 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
 
         o.setFamilyName(edmobj.getFamilyname());
         o.setGivenName(edmobj.getGivenname());
-        /** TODO: ADDRESS
-        if (edm.getAddressByAddressId() != null) {
-            EDMAddress edmAddress = edm.getAddressByAddressId();
-            Address address = new Address();
-            address.setCountry(edmAddress.getCountry());
-            address.setLocality(edmAddress.getLocality());
-            address.setStreet(edmAddress.getStreet());
-            address.setPostalCode(edmAddress.getPostalCode());
-            address.setCountryCode(edmAddress.getCountrycode());
-            o.setAddress(address);
-        } else o.setAddress(null);**/
+
+        if(edmobj.getAddressByAddressId()!=null) {
+            Address address = edmobj.getAddressByAddressId();
+            org.epos.eposdatamodel.Address address1 = new org.epos.eposdatamodel.Address();
+            address1.setLocality(address.getLocality());
+            address1.setCountryCode(address.getCountrycode());
+            address1.setCountry(address.getCountry());
+            address1.setPostalCode(address.getPostalCode());
+            address1.setStreet(address.getStreet());
+            o.setAddress(address1);
+        }
 
         if(edmobj.getPersonElementsByInstanceId().size()>0) {
             for(PersonElement ed : edmobj.getPersonElementsByInstanceId()) {
