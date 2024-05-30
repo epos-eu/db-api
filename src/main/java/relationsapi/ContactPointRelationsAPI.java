@@ -58,4 +58,29 @@ public class ContactPointRelationsAPI extends AbstractRelationsAPI {
             pi.setContactpointByContactpointInstanceId(contactPoint1);
         }
     }
+
+    public static void createRelation(Dataproduct edmobj, org.epos.eposdatamodel.DataProduct obj) {
+        List<DataproductContactpoint> dataproductContactpointList = getDbaccess().getAllFromDB(DataproductContactpoint.class);
+        for(DataproductContactpoint item : dataproductContactpointList){
+            if(item.getDataproductInstanceId().equals(obj.getInstanceId())){
+                getDbaccess().deleteObject(item);
+            }
+        }
+        ContactPointAPI contactPointAPI = new ContactPointAPI("ContactPoint", Contactpoint.class);
+        for(org.epos.eposdatamodel.ContactPoint contactPoint : obj.getContactPoint()){
+            List<Contactpoint> list = dbaccess.getOneFromDBByInstanceId(contactPoint.getInstanceId(),Contactpoint.class);
+            Contactpoint contactPoint1 = null;
+            if(list.isEmpty()){
+                LinkedEntity le = contactPointAPI.create(contactPoint);
+                contactPoint1 = (Contactpoint) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Contactpoint.class).get(0);
+            } else {
+                contactPoint1 = list.get(0);
+            }
+            DataproductContactpoint pi = new DataproductContactpoint();
+            pi.setDataproductByDataproductInstanceId(edmobj);
+            pi.setDataproductInstanceId(edmobj.getInstanceId());
+            pi.setContactpointInstanceId(contactPoint1.getInstanceId());
+            pi.setContactpointByContactpointInstanceId(contactPoint1);
+        }
+    }
 }

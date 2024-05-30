@@ -129,7 +129,7 @@ public class Dataproduct {
         this.identifier = identifier;
     }
 
-    public Object getCreated() {
+    public Timestamp getCreated() {
         return created;
     }
 
