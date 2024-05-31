@@ -108,4 +108,54 @@ public class ContactPointRelationsAPI extends AbstractRelationsAPI {
             pi.setContactpointByContactpointInstanceId(contactPoint1);
         }
     }
+
+    public static void createRelation(Softwaresourcecode edmobj, org.epos.eposdatamodel.SoftwareSourceCode obj){
+        List<SoftwaresourcecodeContactpoint> softwaresourcecodeContactpointList = getDbaccess().getAllFromDB(SoftwaresourcecodeContactpoint.class);
+        for(SoftwaresourcecodeContactpoint item : softwaresourcecodeContactpointList){
+            if(item.getSoftwaresourcecodeInstanceId().equals(obj.getInstanceId())){
+                getDbaccess().deleteObject(item);
+            }
+        }
+        ContactPointAPI contactPointAPI = new ContactPointAPI("ContactPoint", Contactpoint.class);
+        for(org.epos.eposdatamodel.ContactPoint contactPoint : obj.getContactPoint()){
+            List<Contactpoint> list = dbaccess.getOneFromDBByInstanceId(contactPoint.getInstanceId(),Contactpoint.class);
+            Contactpoint contactPoint1 = null;
+            if(list.isEmpty()){
+                LinkedEntity le = contactPointAPI.create(contactPoint);
+                contactPoint1 = (Contactpoint) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Contactpoint.class).get(0);
+            } else {
+                contactPoint1 = list.get(0);
+            }
+            SoftwaresourcecodeContactpoint pi = new SoftwaresourcecodeContactpoint();
+            pi.setSoftwaresourcecodeBySoftwaresourcecodeInstanceId(edmobj);
+            pi.setSoftwaresourcecodeInstanceId(edmobj.getInstanceId());
+            pi.setContactpointInstanceId(contactPoint1.getInstanceId());
+            pi.setContactpointByContactpointInstanceId(contactPoint1);
+        }
+    }
+
+    public static void createRelation(Softwareapplication edmobj, org.epos.eposdatamodel.SoftwareApplication obj){
+        List<SoftwareapplicationContactpoint> softwaresourcecodeContactpointList = getDbaccess().getAllFromDB(SoftwareapplicationContactpoint.class);
+        for(SoftwareapplicationContactpoint item : softwaresourcecodeContactpointList){
+            if(item.getSoftwareapplicationInstanceId().equals(obj.getInstanceId())){
+                getDbaccess().deleteObject(item);
+            }
+        }
+        ContactPointAPI contactPointAPI = new ContactPointAPI("ContactPoint", Contactpoint.class);
+        for(org.epos.eposdatamodel.ContactPoint contactPoint : obj.getContactPoint()){
+            List<Contactpoint> list = dbaccess.getOneFromDBByInstanceId(contactPoint.getInstanceId(),Contactpoint.class);
+            Contactpoint contactPoint1 = null;
+            if(list.isEmpty()){
+                LinkedEntity le = contactPointAPI.create(contactPoint);
+                contactPoint1 = (Contactpoint) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Contactpoint.class).get(0);
+            } else {
+                contactPoint1 = list.get(0);
+            }
+            SoftwareapplicationContactpoint pi = new SoftwareapplicationContactpoint();
+            pi.setSoftwareapplicationBySoftwareapplicationInstanceId(edmobj);
+            pi.setSoftwareapplicationInstanceId(edmobj.getInstanceId());
+            pi.setContactpointInstanceId(contactPoint1.getInstanceId());
+            pi.setContactpointByContactpointInstanceId(contactPoint1);
+        }
+    }
 }

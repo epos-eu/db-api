@@ -12,7 +12,7 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
     public static void createRelation(Equipment edmobj, org.epos.eposdatamodel.Equipment obj){
         List<EquipmentCategory> facilityCategoryList = getDbaccess().getAllFromDB(EquipmentCategory.class);
         for(EquipmentCategory item : facilityCategoryList){
-            if(item.getEquipmentInstanceId().equals(obj.getInstanceId())){
+            if(item.getCategoryInstanceId().equals(obj.getInstanceId())){
                 getDbaccess().deleteObject(item);
             }
         }
@@ -104,6 +104,56 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
             WebserviceCategory pi = new WebserviceCategory();
             pi.setWebserviceByWebserviceInstanceId(edmobj);
             pi.setWebserviceInstanceId(edmobj.getInstanceId());
+            pi.setCategoryInstanceId(category1.getInstanceId());
+            pi.setCategoryByCategoryInstanceId(category1);
+        }
+    }
+
+    public static void createRelation(Softwaresourcecode edmobj, org.epos.eposdatamodel.SoftwareSourceCode obj) {
+        List<SoftwaresourcecodeCategory> softwaresourcecodeCategoryList = getDbaccess().getAllFromDB(SoftwaresourcecodeCategory.class);
+        for (SoftwaresourcecodeCategory item : softwaresourcecodeCategoryList) {
+            if (item.getSoftwaresourcecodeInstanceId().equals(obj.getInstanceId())) {
+                getDbaccess().deleteObject(item);
+            }
+        }
+        CategoryAPI categoryAPI = new CategoryAPI("Category", Category.class);
+        for (org.epos.eposdatamodel.Category category : obj.getCategory()) {
+            List<Category> list = dbaccess.getOneFromDBByInstanceId(category.getInstanceId(), Category.class);
+            Category category1 = null;
+            if (list.isEmpty()) {
+                LinkedEntity le = categoryAPI.create(category);
+                category1 = (Category) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Category.class).get(0);
+            } else {
+                category1 = list.get(0);
+            }
+            SoftwaresourcecodeCategory pi = new SoftwaresourcecodeCategory();
+            pi.setSoftwaresourcecodeBySoftwaresourcecodeInstanceId(edmobj);
+            pi.setSoftwaresourcecodeInstanceId(edmobj.getInstanceId());
+            pi.setCategoryInstanceId(category1.getInstanceId());
+            pi.setCategoryByCategoryInstanceId(category1);
+        }
+    }
+
+    public static void createRelation(Softwareapplication edmobj, org.epos.eposdatamodel.SoftwareApplication obj) {
+        List<SoftwareapplicationCategory> softwareapplicationCategoryList = getDbaccess().getAllFromDB(SoftwareapplicationCategory.class);
+        for (SoftwareapplicationCategory item : softwareapplicationCategoryList) {
+            if (item.getSoftwareapplicationInstanceId().equals(obj.getInstanceId())) {
+                getDbaccess().deleteObject(item);
+            }
+        }
+        CategoryAPI categoryAPI = new CategoryAPI("Category", Category.class);
+        for (org.epos.eposdatamodel.Category category : obj.getCategory()) {
+            List<Category> list = dbaccess.getOneFromDBByInstanceId(category.getInstanceId(), Category.class);
+            Category category1 = null;
+            if (list.isEmpty()) {
+                LinkedEntity le = categoryAPI.create(category);
+                category1 = (Category) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Category.class).get(0);
+            } else {
+                category1 = list.get(0);
+            }
+            SoftwareapplicationCategory pi = new SoftwareapplicationCategory();
+            pi.setSoftwareapplicationBySoftwareapplicationInstanceId(edmobj);
+            pi.setSoftwareapplicationInstanceId(edmobj.getInstanceId());
             pi.setCategoryInstanceId(category1.getInstanceId());
             pi.setCategoryByCategoryInstanceId(category1);
         }
