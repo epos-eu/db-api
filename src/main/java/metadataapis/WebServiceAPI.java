@@ -183,7 +183,6 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
 
         if (obj.getRelation() != null && !obj.getRelation().isEmpty()) {
             for(LinkedEntity le : obj.getRelation()){
-                Object object = LinkedEntityAPI.retrieveLinkedEntity(le);
                 WebserviceRelation pi = new WebserviceRelation();
                 pi.setResourceEntity(EntityNames.valueOf(le.getEntityType()).name());
                 pi.setEntityInstanceId(le.getInstanceId());
