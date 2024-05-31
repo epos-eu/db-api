@@ -9,7 +9,7 @@ import java.util.Objects;
  * variable is required or not. The syntax of the template literal is specified by its datatype and defaults to the
  * [RFC6570] URI Template syntax, which can be explicitly indicated by hydra:Rfc6570Template.
  */
-public class Mapping {
+public class Mapping extends EPOSDataModelEntity {
 
     /**
      * This property contains the default value of the parameter.

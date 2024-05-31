@@ -24,13 +24,13 @@ public class WebService extends EPOSDataModelEntity {
     /**
      * This property refers to a category of the Web Service. A Web Service may be associated with multiple categories.
      **/
-    private List<String> category;
+    private List<Category> category;
 
     /**
      * This property contains contact information (i.e. Role) that can be used for
      * sending comments about the Web Service.
      */
-    private List<LinkedEntity> contactPoint;
+    private List<ContactPoint> contactPoint;
 
     /**
      * This property contains the most recent date on which the Web Service was modified.
@@ -86,7 +86,7 @@ public class WebService extends EPOSDataModelEntity {
      * This property refers to a web service operation supported by the
      * Web Service.
      */
-    private List<LinkedEntity> supportedOperation;
+    private List<Operation> supportedOperation;
 
     /**
      * This property refers to a temporal period (i.e. startDate, endDate) that the Web Service covers.
@@ -131,9 +131,9 @@ public class WebService extends EPOSDataModelEntity {
         }
     }
 
-    public void addCategory(String category) {
+    public void addCategory(Category category) {
         if (this.getCategory() == null) {
-            ArrayList<String> categoryList = new ArrayList<>();
+            ArrayList<Category> categoryList = new ArrayList<>();
             categoryList.add(category);
             this.setCategory(categoryList);
         } else {
@@ -141,9 +141,9 @@ public class WebService extends EPOSDataModelEntity {
         }
     }
 
-    public void addContactPoint(LinkedEntity contactPoint) {
+    public void addContactPoint(ContactPoint contactPoint) {
         if (this.getContactPoint() == null) {
-            ArrayList<LinkedEntity> contactPointList = new ArrayList<>();
+            ArrayList<ContactPoint> contactPointList = new ArrayList<>();
             contactPointList.add(contactPoint);
             this.setContactPoint(contactPointList);
         } else {
@@ -151,9 +151,9 @@ public class WebService extends EPOSDataModelEntity {
         }
     }
 
-    public void addSupportedOperation(LinkedEntity supportedOperation) {
+    public void addSupportedOperation(Operation supportedOperation) {
         if (this.getSupportedOperation() == null) {
-            ArrayList<LinkedEntity> supportedOperationList = new ArrayList<>();
+            ArrayList<Operation> supportedOperationList = new ArrayList<>();
             supportedOperationList.add(supportedOperation);
             this.setSupportedOperation(supportedOperationList);
         } else {
@@ -232,12 +232,12 @@ public class WebService extends EPOSDataModelEntity {
         this.identifier = identifier;
     }
 
-    public WebService category(List<String> category) {
+    public WebService category(List<Category> category) {
         this.category = category;
         return this;
     }
 
-    public WebService addCategoryItem(String categoryItem) {
+    public WebService addCategoryItem(Category categoryItem) {
         if (this.category == null) {
             this.category = new ArrayList<>();
         }
@@ -251,11 +251,11 @@ public class WebService extends EPOSDataModelEntity {
      * @return category
      **/
 
-    public List<String> getCategory() {
+    public List<Category> getCategory() {
         return category;
     }
 
-    public void setCategory(List<String> category) {
+    public void setCategory(List<Category> category) {
         this.category = category;
     }
 
@@ -496,19 +496,19 @@ public class WebService extends EPOSDataModelEntity {
         this.temporalExtent = temporalExtent;
     }
 
-    public List<LinkedEntity> getContactPoint() {
+    public List<ContactPoint> getContactPoint() {
         return contactPoint;
     }
 
-    public void setContactPoint(List<LinkedEntity> contactPoint) {
+    public void setContactPoint(List<ContactPoint> contactPoint) {
         this.contactPoint = contactPoint;
     }
 
-    public List<LinkedEntity> getSupportedOperation() {
+    public List<Operation> getSupportedOperation() {
         return supportedOperation;
     }
 
-    public void setSupportedOperation(List<LinkedEntity> supportedOperation) {
+    public void setSupportedOperation(List<Operation> supportedOperation) {
         this.supportedOperation = supportedOperation;
     }
 

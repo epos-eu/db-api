@@ -32,7 +32,7 @@ public class Operation extends EPOSDataModelEntity {
     /**
      * Reverse reference to the related webservice.
      */
-    private List<LinkedEntity> webservice;
+    private List<WebService> webservice;
 
 
     public void addMapping(Mapping mapping) {
@@ -134,6 +134,7 @@ public class Operation extends EPOSDataModelEntity {
         return this;
     }
 
+
     /**
      * A variable-to-property mapping of the IRI template.
      *
@@ -148,12 +149,20 @@ public class Operation extends EPOSDataModelEntity {
     }
 
 
-    public List<LinkedEntity> getWebservice() {
+    public List<WebService> getWebservice() {
         return webservice;
     }
 
-    public Operation setWebservice(List<LinkedEntity> webservice) {
+    public Operation setWebservice(List<WebService> webservice) {
         this.webservice = webservice;
+        return this;
+    }
+
+    public Operation addWebservice(WebService webservice) {
+        if (this.webservice == null) {
+            this.webservice = new ArrayList<>();
+        }
+        this.webservice.add(webservice);
         return this;
     }
 

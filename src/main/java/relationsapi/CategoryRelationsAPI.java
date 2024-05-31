@@ -83,4 +83,29 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
             pi.setCategoryByCategoryInstanceId(category1);
         }
     }
+
+    public static void createRelation(Webservice edmobj, org.epos.eposdatamodel.WebService obj) {
+        List<WebserviceCategory> webserviceCategoryList = getDbaccess().getAllFromDB(WebserviceCategory.class);
+        for (WebserviceCategory item : webserviceCategoryList) {
+            if (item.getWebserviceInstanceId().equals(obj.getInstanceId())) {
+                getDbaccess().deleteObject(item);
+            }
+        }
+        CategoryAPI categoryAPI = new CategoryAPI("Category", Category.class);
+        for (org.epos.eposdatamodel.Category category : obj.getCategory()) {
+            List<Category> list = dbaccess.getOneFromDBByInstanceId(category.getInstanceId(), Category.class);
+            Category category1 = null;
+            if (list.isEmpty()) {
+                LinkedEntity le = categoryAPI.create(category);
+                category1 = (Category) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Category.class).get(0);
+            } else {
+                category1 = list.get(0);
+            }
+            WebserviceCategory pi = new WebserviceCategory();
+            pi.setWebserviceByWebserviceInstanceId(edmobj);
+            pi.setWebserviceInstanceId(edmobj.getInstanceId());
+            pi.setCategoryInstanceId(category1.getInstanceId());
+            pi.setCategoryByCategoryInstanceId(category1);
+        }
+    }
 }
