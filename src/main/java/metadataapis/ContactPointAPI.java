@@ -118,4 +118,17 @@ public class ContactPointAPI extends AbstractAPI<ContactPoint> {
         return o;
     }
 
+    @Override
+    public LinkedEntity retrieveLinkedEntity(String instanceId) {
+        Contactpoint edmobj = (Contactpoint) getDbaccess().getOneFromDBByInstanceId(instanceId, Contactpoint.class).get(0);
+
+        LinkedEntity o = new LinkedEntity();
+        o.setInstanceId(edmobj.getInstanceId());
+        o.setMetaId(edmobj.getMetaId());
+        o.setUid(edmobj.getUid());
+        o.setEntityType(EntityNames.CONTACTPOINT.name());
+
+        return o;
+    }
+
 }

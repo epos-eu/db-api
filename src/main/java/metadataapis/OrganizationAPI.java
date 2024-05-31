@@ -338,4 +338,17 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
         return o;
     }
 
+    @Override
+    public LinkedEntity retrieveLinkedEntity(String instanceId) {
+        Organization edmobj = (Organization) getDbaccess().getOneFromDBByInstanceId(instanceId, Organization.class).get(0);
+
+        LinkedEntity o = new LinkedEntity();
+        o.setInstanceId(edmobj.getInstanceId());
+        o.setMetaId(edmobj.getMetaId());
+        o.setUid(edmobj.getUid());
+        o.setEntityType(EntityNames.ORGANIZATION.name());
+
+        return o;
+    }
+
 }

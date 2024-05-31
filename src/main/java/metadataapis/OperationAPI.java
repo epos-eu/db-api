@@ -158,4 +158,17 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
         return o;
     }
 
+    @Override
+    public LinkedEntity retrieveLinkedEntity(String instanceId) {
+        Operation edmobj = (Operation) getDbaccess().getOneFromDBByInstanceId(instanceId, Operation.class).get(0);
+
+        LinkedEntity o = new LinkedEntity();
+        o.setInstanceId(edmobj.getInstanceId());
+        o.setMetaId(edmobj.getMetaId());
+        o.setUid(edmobj.getUid());
+        o.setEntityType(EntityNames.OPERATION.name());
+
+        return o;
+    }
+
 }

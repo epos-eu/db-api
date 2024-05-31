@@ -214,4 +214,17 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
         return o;
     }
 
+    @Override
+    public LinkedEntity retrieveLinkedEntity(String instanceId) {
+        Distribution edmobj = (Distribution) getDbaccess().getOneFromDBByInstanceId(instanceId, Distribution.class).get(0);
+
+        LinkedEntity o = new LinkedEntity();
+        o.setInstanceId(edmobj.getInstanceId());
+        o.setMetaId(edmobj.getMetaId());
+        o.setUid(edmobj.getUid());
+        o.setEntityType(EntityNames.DISTRIBUTION.name());
+
+        return o;
+    }
+
 }

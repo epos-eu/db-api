@@ -211,4 +211,17 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
         return o;
     }
 
+    @Override
+    public LinkedEntity retrieveLinkedEntity(String instanceId) {
+        Person edmobj = (Person) getDbaccess().getOneFromDBByInstanceId(instanceId, Person.class).get(0);
+
+        LinkedEntity o = new LinkedEntity();
+        o.setInstanceId(edmobj.getInstanceId());
+        o.setMetaId(edmobj.getMetaId());
+        o.setUid(edmobj.getUid());
+        o.setEntityType(EntityNames.PERSON.name());
+
+        return o;
+    }
+
 }

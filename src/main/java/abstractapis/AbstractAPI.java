@@ -44,4 +44,6 @@ public abstract class AbstractAPI<T> {
 
     public abstract T retrieve(String instanceId);
 
+    public abstract LinkedEntity retrieveLinkedEntity(String instanceId);
+
 }

@@ -3,10 +3,7 @@ package metadataapis;
 import abstractapis.AbstractAPI;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import commonapis.ElementAPI;
-import commonapis.SpatialAPI;
-import commonapis.TemporalAPI;
-import commonapis.VersioningStatusAPI;
+import commonapis.*;
 import model.*;
 import org.epos.eposdatamodel.ContactPoint;
 import org.epos.eposdatamodel.Documentation;
@@ -184,7 +181,19 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
             }
         }
 
-        /** TODO: RELATION **/
+        if (obj.getRelation() != null && !obj.getRelation().isEmpty()) {
+            for(LinkedEntity le : obj.getRelation()){
+                Object object = LinkedEntityAPI.retrieveLinkedEntity(le);
+                WebserviceRelation pi = new WebserviceRelation();
+                pi.setResourceEntity(EntityNames.valueOf(le.getEntityType()).name());
+                pi.setEntityInstanceId(le.getInstanceId());
+                pi.setWebserviceByWebserviceInstanceId(edmobj);
+                pi.setWebserviceInstanceId(edmobj.getInstanceId());
+
+                dbaccess.createObject(pi);
+            }
+        }
+
 
         return new LinkedEntity().entityType(entityName)
                     .instanceId(edmobj.getInstanceId())
@@ -288,6 +297,20 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
             }
         }
         /** TODO: RELATION **/
+
+        return o;
+    }
+
+    @Override
+    public LinkedEntity retrieveLinkedEntity(String instanceId) {
+        Webservice edmobj = (Webservice) getDbaccess().getOneFromDBByInstanceId(instanceId, Webservice.class).get(0);
+
+        LinkedEntity o = new LinkedEntity();
+        o.setInstanceId(edmobj.getInstanceId());
+        o.setMetaId(edmobj.getMetaId());
+        o.setUid(edmobj.getUid());
+        o.setEntityType(EntityNames.WEBSERVICE.name());
+
         return o;
     }
 

@@ -117,4 +117,17 @@ public class MappingAPI extends AbstractAPI<org.epos.eposdatamodel.Mapping> {
         return o;
     }
 
+    @Override
+    public LinkedEntity retrieveLinkedEntity(String instanceId) {
+        Mapping edmobj = (Mapping) getDbaccess().getOneFromDBByInstanceId(instanceId, Mapping.class).get(0);
+
+        LinkedEntity o = new LinkedEntity();
+        o.setInstanceId(edmobj.getInstanceId());
+        o.setMetaId(edmobj.getMetaId());
+        o.setUid(edmobj.getUid());
+        o.setEntityType(EntityNames.MAPPING.name());
+
+        return o;
+    }
+
 }

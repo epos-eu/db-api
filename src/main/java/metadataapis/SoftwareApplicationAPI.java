@@ -1,12 +1,14 @@
 package metadataapis;
 
 import abstractapis.AbstractAPI;
-import commonapis.ElementAPI;
 import commonapis.IdentifierAPI;
+import commonapis.LinkedEntityAPI;
 import commonapis.VersioningStatusAPI;
 import model.*;
 import model.Category;
 import model.Identifier;
+import model.Operation;
+import model.Person;
 import org.epos.eposdatamodel.*;
 import relationsapi.CategoryRelationsAPI;
 import relationsapi.ContactPointRelationsAPI;
@@ -113,9 +115,20 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
             }
         }
 
+        if (obj.getRelation() != null && !obj.getRelation().isEmpty()) {
+            for(LinkedEntity le : obj.getRelation()){
+                Object object = LinkedEntityAPI.retrieveLinkedEntity(le);
+                if(object instanceof Operation){
+                    SoftwareapplicationOperation pi = new SoftwareapplicationOperation();
+                    pi.setSoftwareapplicationBySoftwareapplicationInstanceId(edmobj);
+                    pi.setSoftwareapplicationInstanceId(edmobj.getInstanceId());
+                    pi.setOperationInstanceId(((Operation) object).getInstanceId());
+                    pi.setOperationByOperationInstanceId((Operation) object);
 
-
-        /** TODO: RELATION **/
+                    dbaccess.createObject(pi);
+                }
+            }
+        }
 
         return new LinkedEntity().entityType(entityName)
                     .instanceId(edmobj.getInstanceId())
@@ -179,6 +192,31 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
                 o.addParameter(p);
             }
         }
+
+        if(edmobj.getSoftwareapplicationOperationsByInstanceId().size()>0) {
+            for(SoftwareapplicationOperation ed : edmobj.getSoftwareapplicationOperationsByInstanceId()) {
+                Operation op = ed.getOperationByOperationInstanceId();
+                LinkedEntity le = new LinkedEntity();
+                le.setInstanceId(op.getInstanceId());
+                le.setUid(op.getUid());
+                le.setMetaId(op.getMetaId());
+                le.setEntityType(EntityNames.OPERATION.name());
+                o.addRelation(le);
+            }
+        }
+        return o;
+    }
+
+    @Override
+    public LinkedEntity retrieveLinkedEntity(String instanceId) {
+        Softwareapplication edmobj = (Softwareapplication) getDbaccess().getOneFromDBByInstanceId(instanceId, Softwareapplication.class).get(0);
+
+        LinkedEntity o = new LinkedEntity();
+        o.setInstanceId(edmobj.getInstanceId());
+        o.setMetaId(edmobj.getMetaId());
+        o.setUid(edmobj.getUid());
+        o.setEntityType(EntityNames.SOFTWAREAPPLICATION.name());
+
         return o;
     }
 

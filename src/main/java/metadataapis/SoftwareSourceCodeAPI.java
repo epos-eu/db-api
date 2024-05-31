@@ -174,5 +174,16 @@ public class SoftwareSourceCodeAPI extends AbstractAPI<org.epos.eposdatamodel.So
         }
         return o;
     }
+    @Override
+    public LinkedEntity retrieveLinkedEntity(String instanceId) {
+        Softwaresourcecode edmobj = (Softwaresourcecode) getDbaccess().getOneFromDBByInstanceId(instanceId, Softwaresourcecode.class).get(0);
 
+        LinkedEntity o = new LinkedEntity();
+        o.setInstanceId(edmobj.getInstanceId());
+        o.setMetaId(edmobj.getMetaId());
+        o.setUid(edmobj.getUid());
+        o.setEntityType(EntityNames.SOFTWARESOURCECODE.name());
+
+        return o;
+    }
 }

@@ -2,6 +2,7 @@ package metadataapis;
 
 import abstractapis.AbstractAPI;
 import commonapis.VersioningStatusAPI;
+import model.Category;
 import model.CategoryScheme;
 import org.epos.eposdatamodel.LinkedEntity;
 
@@ -76,5 +77,16 @@ public class CategorySchemeAPI extends AbstractAPI<org.epos.eposdatamodel.Catego
         return o;
     }
 
+    @Override
+    public LinkedEntity retrieveLinkedEntity(String instanceId) {
+        CategoryScheme edmobj = (CategoryScheme) getDbaccess().getOneFromDBByInstanceId(instanceId, CategoryScheme.class).get(0);
 
+        LinkedEntity o = new LinkedEntity();
+        o.setInstanceId(edmobj.getInstanceId());
+        o.setMetaId(edmobj.getMetaId());
+        o.setUid(edmobj.getUid());
+        o.setEntityType(EntityNames.CATEGORYSCHEME.name());
+
+        return o;
+    }
 }

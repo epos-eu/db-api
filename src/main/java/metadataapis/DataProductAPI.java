@@ -410,4 +410,17 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
         return o;
     }
 
+    @Override
+    public LinkedEntity retrieveLinkedEntity(String instanceId) {
+        Dataproduct edmobj = (Dataproduct) getDbaccess().getOneFromDBByInstanceId(instanceId, Dataproduct.class).get(0);
+
+        LinkedEntity o = new LinkedEntity();
+        o.setInstanceId(edmobj.getInstanceId());
+        o.setMetaId(edmobj.getMetaId());
+        o.setUid(edmobj.getUid());
+        o.setEntityType(EntityNames.DATAPRODUCT.name());
+
+        return o;
+    }
+
 }

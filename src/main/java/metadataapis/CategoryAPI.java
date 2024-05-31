@@ -3,6 +3,7 @@ package metadataapis;
 import abstractapis.AbstractAPI;
 import commonapis.VersioningStatusAPI;
 import model.*;
+import org.eclipse.persistence.internal.jpa.rs.metadata.model.Link;
 import org.epos.eposdatamodel.LinkedEntity;
 
 import java.util.*;
@@ -153,6 +154,19 @@ public class CategoryAPI extends AbstractAPI<org.epos.eposdatamodel.Category> {
             }
             o.setNarrower(narrowers);
         }
+
+        return o;
+    }
+
+    @Override
+    public LinkedEntity retrieveLinkedEntity(String instanceId) {
+        Category edmobj = (Category) getDbaccess().getOneFromDBByInstanceId(instanceId, Category.class).get(0);
+
+        LinkedEntity o = new LinkedEntity();
+        o.setInstanceId(edmobj.getInstanceId());
+        o.setMetaId(edmobj.getMetaId());
+        o.setUid(edmobj.getUid());
+        o.setEntityType(EntityNames.CATEGORY.name());
 
         return o;
     }
