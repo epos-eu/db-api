@@ -103,11 +103,5 @@
 		<class>model.WebserviceIdentifier</class>
 		<class>model.WebserviceSpatial</class>
 		<class>model.WebserviceTemporal</class>
-        <properties>
-            <property name="eclipselink.jdbc.url" value="jdbc:postgresql://localhost:5432/cerif"/>
-            <property name="eclipselink.jdbc.driver" value="org.postgresql.Driver"/>
-            <property name="eclipselink.jdbc.user" value="postgres"/>
-            <property name="eclipselink.jdbc.password" value="changeme"/>
-        </properties>
     </persistence-unit>
 </persistence>

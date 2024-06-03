@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.util.Collection;
 
 @Entity
+@Table(name = "metadata_user", schema = "public", catalog = "cerif")
 public class User {
     @Id
     @Column(name = "auth_identifier", nullable = false, length = 1024)
