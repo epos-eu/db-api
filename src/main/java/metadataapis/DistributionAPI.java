@@ -42,6 +42,9 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
         edmobj.setVersionId(obj.getVersionId());
         edmobj.setInstanceId(obj.getInstanceId());
         edmobj.setMetaId(obj.getMetaId());
+
+        getDbaccess().updateObject(edmobj);
+
         edmobj.setUid(Optional.ofNullable(obj.getUid()).orElse(getEdmClass().getSimpleName()+"/"+UUID.randomUUID().toString()));
         edmobj.setFormat(obj.getFormat());
         edmobj.setLicense(obj.getLicence());
@@ -75,7 +78,7 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
 
                 edmobj.getDistributionTitlesByInstanceId().add(pi);
 
-                dbaccess.createObject(pi);
+                dbaccess.updateObject(pi);
             }
         }
 
@@ -101,7 +104,7 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
 
                 edmobj.getDistributionDescriptionsByInstanceId().add(pi);
 
-                dbaccess.createObject(pi);
+                dbaccess.updateObject(pi);
             }
         }
 
@@ -133,7 +136,7 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
 
                 edmobj.getDistributionDataproductsByInstanceId().add(pi);
 
-                dbaccess.createObject(pi);
+                dbaccess.updateObject(pi);
             }
         }
 
@@ -145,15 +148,13 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
             }
         }
 
-        if(!obj.getDownloadURL().isEmpty()){
-            for(String downloadurl : obj.getAccessURL()) {
+        if(!obj.getDownloadURL().isEmpty()) {
+            for (String downloadurl : obj.getAccessURL()) {
                 createInnerElement(ElementType.DOWNLOADURL, downloadurl, edmobj);
             }
         }
 
-
-        if(returnList.isEmpty()) getDbaccess().createObject(edmobj);
-        else getDbaccess().updateObject(edmobj);
+        getDbaccess().updateObject(edmobj);
 
         return new LinkedEntity().entityType(entityName)
                     .instanceId(edmobj.getInstanceId())
@@ -177,7 +178,7 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
 
         edmobj.getDistributionElementsByInstanceId().add(ce);
 
-        dbaccess.createObject(ce);
+        dbaccess.updateObject(ce);
     }
 
 

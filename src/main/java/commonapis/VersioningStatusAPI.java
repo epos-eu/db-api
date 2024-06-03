@@ -83,7 +83,7 @@ public class VersioningStatusAPI {
             edmobj.setProvenance(Optional.ofNullable(obj.getFileProvenance()).orElse(null));
             edmobj.setVersion(Optional.ofNullable(obj.getVersion()).orElse(null));
 
-            getDbaccess().createObject(edmobj);
+            getDbaccess().updateObject(edmobj);
 
             return obj;
         }

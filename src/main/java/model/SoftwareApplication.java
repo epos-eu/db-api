@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import java.util.Collection;
 
 @Entity
-public class Softwareapplication {
+@Table(name = "softwareapplication", schema = "public", catalog = "cerif")
+public class SoftwareApplication {
     @Id
     @Column(name = "instance_id", nullable = false, length = 100)
     private String instanceId;
@@ -47,15 +48,15 @@ public class Softwareapplication {
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "version_id", referencedColumnName = "version_id")
     private Versioningstatus versioningstatusByVersionId;
-    @OneToMany(mappedBy = "softwareapplicationBySoftwareapplicationInstanceId")
+    @OneToMany(mappedBy = "softwareapplicationBySoftwareApplicationInstanceId")
     private Collection<SoftwareapplicationCategory> softwareapplicationCategoriesByInstanceId;
-    @OneToMany(mappedBy = "softwareapplicationBySoftwareapplicationInstanceId")
+    @OneToMany(mappedBy = "softwareapplicationBySoftwareApplicationInstanceId")
     private Collection<SoftwareapplicationContactpoint> softwareapplicationContactpointsByInstanceId;
-    @OneToMany(mappedBy = "softwareapplicationBySoftwareapplicationInstanceId")
+    @OneToMany(mappedBy = "softwareapplicationBySoftwareApplicationInstanceId")
     private Collection<SoftwareapplicationIdentifier> softwareapplicationIdentifiersByInstanceId;
-    @OneToMany(mappedBy = "softwareapplicationBySoftwareapplicationInstanceId")
+    @OneToMany(mappedBy = "softwareapplicationBySoftwareApplicationInstanceId")
     private Collection<SoftwareapplicationOperation> softwareapplicationOperationsByInstanceId;
-    @OneToMany(mappedBy = "softwareapplicationBySoftwareapplicationInstanceId")
+    @OneToMany(mappedBy = "softwareapplicationBySoftwareApplicationInstanceId")
     private Collection<SoftwareapplicationParameters> softwareapplicationParametersByInstanceId;
 
     public String getInstanceId() {
@@ -167,7 +168,7 @@ public class Softwareapplication {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Softwareapplication that = (Softwareapplication) o;
+        SoftwareApplication that = (SoftwareApplication) o;
 
         if (instanceId != null ? !instanceId.equals(that.instanceId) : that.instanceId != null) return false;
         if (metaId != null ? !metaId.equals(that.metaId) : that.metaId != null) return false;

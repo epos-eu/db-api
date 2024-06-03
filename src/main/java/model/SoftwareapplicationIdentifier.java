@@ -14,7 +14,7 @@ public class SoftwareapplicationIdentifier {
     private String identifierInstanceId;
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "softwareapplication_instance_id", referencedColumnName = "instance_id")
-    private Softwareapplication softwareapplicationBySoftwareapplicationInstanceId;
+    private SoftwareApplication softwareapplicationBySoftwareApplicationInstanceId;
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "identifier_instance_id", referencedColumnName = "instance_id")
     private Identifier identifierByIdentifierInstanceId;
@@ -57,12 +57,12 @@ public class SoftwareapplicationIdentifier {
         return result;
     }
 
-    public Softwareapplication getSoftwareapplicationBySoftwareapplicationInstanceId() {
-        return softwareapplicationBySoftwareapplicationInstanceId;
+    public SoftwareApplication getSoftwareapplicationBySoftwareapplicationInstanceId() {
+        return softwareapplicationBySoftwareApplicationInstanceId;
     }
 
-    public void setSoftwareapplicationBySoftwareapplicationInstanceId(Softwareapplication softwareapplicationBySoftwareapplicationInstanceId) {
-        this.softwareapplicationBySoftwareapplicationInstanceId = softwareapplicationBySoftwareapplicationInstanceId;
+    public void setSoftwareapplicationBySoftwareapplicationInstanceId(SoftwareApplication softwareapplicationBySoftwareApplicationInstanceId) {
+        this.softwareapplicationBySoftwareApplicationInstanceId = softwareapplicationBySoftwareApplicationInstanceId;
     }
 
     public Identifier getIdentifierByIdentifierInstanceId() {

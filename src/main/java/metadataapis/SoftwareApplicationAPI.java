@@ -8,7 +8,7 @@ import model.*;
 import model.Category;
 import model.Identifier;
 import model.Operation;
-import model.Person;
+import model.SoftwareApplication;
 import org.epos.eposdatamodel.*;
 import relationsapi.CategoryRelationsAPI;
 import relationsapi.ContactPointRelationsAPI;
@@ -25,9 +25,9 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
     }
 
     @Override
-    public LinkedEntity create(SoftwareApplication obj) {
+    public LinkedEntity create(org.epos.eposdatamodel.SoftwareApplication obj) {
 
-        List<Softwareapplication> returnList = getDbaccess().getOneFromDB(
+        List<SoftwareApplication> returnList = getDbaccess().getOneFromDB(
                 obj.getInstanceId(),
                 obj.getMetaId(),
                 obj.getUid(),
@@ -41,13 +41,16 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
             obj.setVersionId(returnList.get(0).getVersionId());
         }
 
-        obj = (SoftwareApplication) VersioningStatusAPI.checkVersion(obj);
+        obj = (org.epos.eposdatamodel.SoftwareApplication) VersioningStatusAPI.checkVersion(obj);
 
-        Softwareapplication edmobj = new Softwareapplication();
+        SoftwareApplication edmobj = new SoftwareApplication();
 
         edmobj.setVersionId(obj.getVersionId());
         edmobj.setInstanceId(obj.getInstanceId());
         edmobj.setMetaId(obj.getMetaId());
+
+        getDbaccess().updateObject(edmobj);
+
         edmobj.setUid(Optional.ofNullable(obj.getUid()).orElse(getEdmClass().getSimpleName()+"/"+UUID.randomUUID().toString()));
         edmobj.setName(obj.getName());
         edmobj.setDescription(obj.getDescription());
@@ -89,7 +92,7 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
 
                 edmobj.getSoftwareapplicationIdentifiersByInstanceId().add(pi);
 
-                dbaccess.createObject(pi);
+                dbaccess.updateObject(pi);
             }
         }
 
@@ -115,7 +118,7 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
 
                 edmobj.getSoftwareapplicationParametersByInstanceId().add(pi);
 
-                dbaccess.createObject(pi);
+                dbaccess.updateObject(pi);
             }
         }
 
@@ -132,13 +135,12 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
 
                     edmobj.getSoftwareapplicationOperationsByInstanceId().add(pi);
 
-                    dbaccess.createObject(pi);
+                    dbaccess.updateObject(pi);
                 }
             }
         }
 
-        if(returnList.isEmpty()) getDbaccess().createObject(edmobj);
-        else getDbaccess().updateObject(edmobj);
+        getDbaccess().updateObject(edmobj);
 
         return new LinkedEntity().entityType(entityName)
                     .instanceId(edmobj.getInstanceId())
@@ -151,7 +153,7 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
 
     @Override
     public org.epos.eposdatamodel.SoftwareApplication retrieve(String instanceId) {
-        Softwareapplication edmobj = (Softwareapplication) getDbaccess().getOneFromDBByInstanceId(instanceId, Softwareapplication.class).get(0);
+        SoftwareApplication edmobj = (SoftwareApplication) getDbaccess().getOneFromDBByInstanceId(instanceId, SoftwareApplication.class).get(0);
 
         org.epos.eposdatamodel.SoftwareApplication o = new org.epos.eposdatamodel.SoftwareApplication();
         o.setInstanceId(edmobj.getInstanceId());
@@ -219,7 +221,7 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
 
     @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
-        Softwareapplication edmobj = (Softwareapplication) getDbaccess().getOneFromDBByInstanceId(instanceId, Softwareapplication.class).get(0);
+        SoftwareApplication edmobj = (SoftwareApplication) getDbaccess().getOneFromDBByInstanceId(instanceId, SoftwareApplication.class).get(0);
 
         LinkedEntity o = new LinkedEntity();
         o.setInstanceId(edmobj.getInstanceId());

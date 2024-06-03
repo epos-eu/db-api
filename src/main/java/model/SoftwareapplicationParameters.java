@@ -31,7 +31,7 @@ public class SoftwareapplicationParameters {
     private String softwareapplicationInstanceId;
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "softwareapplication_instance_id", referencedColumnName = "instance_id")
-    private Softwareapplication softwareapplicationBySoftwareapplicationInstanceId;
+    private SoftwareApplication softwareapplicationBySoftwareApplicationInstanceId;
 
     public String getInstanceId() {
         return instanceId;
@@ -131,11 +131,11 @@ public class SoftwareapplicationParameters {
         return result;
     }
 
-    public Softwareapplication getSoftwareapplicationBySoftwareapplicationInstanceId() {
-        return softwareapplicationBySoftwareapplicationInstanceId;
+    public SoftwareApplication getSoftwareapplicationBySoftwareapplicationInstanceId() {
+        return softwareapplicationBySoftwareApplicationInstanceId;
     }
 
-    public void setSoftwareapplicationBySoftwareapplicationInstanceId(Softwareapplication softwareapplicationBySoftwareapplicationInstanceId) {
-        this.softwareapplicationBySoftwareapplicationInstanceId = softwareapplicationBySoftwareapplicationInstanceId;
+    public void setSoftwareapplicationBySoftwareapplicationInstanceId(SoftwareApplication softwareapplicationBySoftwareApplicationInstanceId) {
+        this.softwareapplicationBySoftwareApplicationInstanceId = softwareapplicationBySoftwareApplicationInstanceId;
     }
 }

@@ -14,7 +14,7 @@ public class SoftwaresourcecodeIdentifier {
     private String identifierInstanceId;
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "softwaresourcecode_instance_id", referencedColumnName = "instance_id")
-    private Softwaresourcecode softwaresourcecodeBySoftwaresourcecodeInstanceId;
+    private SoftwareSourceCode softwaresourcecodeBySoftwareSourceCodeInstanceId;
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "identifier_instance_id", referencedColumnName = "instance_id")
     private Identifier identifierByIdentifierInstanceId;
@@ -57,12 +57,12 @@ public class SoftwaresourcecodeIdentifier {
         return result;
     }
 
-    public Softwaresourcecode getSoftwaresourcecodeBySoftwaresourcecodeInstanceId() {
-        return softwaresourcecodeBySoftwaresourcecodeInstanceId;
+    public SoftwareSourceCode getSoftwaresourcecodeBySoftwaresourcecodeInstanceId() {
+        return softwaresourcecodeBySoftwareSourceCodeInstanceId;
     }
 
-    public void setSoftwaresourcecodeBySoftwaresourcecodeInstanceId(Softwaresourcecode softwaresourcecodeBySoftwaresourcecodeInstanceId) {
-        this.softwaresourcecodeBySoftwaresourcecodeInstanceId = softwaresourcecodeBySoftwaresourcecodeInstanceId;
+    public void setSoftwaresourcecodeBySoftwaresourcecodeInstanceId(SoftwareSourceCode softwaresourcecodeBySoftwareSourceCodeInstanceId) {
+        this.softwaresourcecodeBySoftwareSourceCodeInstanceId = softwaresourcecodeBySoftwareSourceCodeInstanceId;
     }
 
     public Identifier getIdentifierByIdentifierInstanceId() {

@@ -41,6 +41,9 @@ public class MappingAPI extends AbstractAPI<org.epos.eposdatamodel.Mapping> {
         edmobj.setVersionId(obj.getVersionId());
         edmobj.setInstanceId(obj.getInstanceId());
         edmobj.setMetaId(obj.getMetaId());
+
+        getDbaccess().updateObject(edmobj);
+
         edmobj.setUid(Optional.ofNullable(obj.getUid()).orElse(getEdmClass().getSimpleName()+"/"+UUID.randomUUID().toString()));
         edmobj.setLabel(obj.getLabel());
         edmobj.setValuepattern(obj.getValuePattern());
@@ -63,9 +66,7 @@ public class MappingAPI extends AbstractAPI<org.epos.eposdatamodel.Mapping> {
             }
         }
 
-
-        if(returnList.isEmpty()) getDbaccess().createObject(edmobj);
-        else getDbaccess().updateObject(edmobj);
+        getDbaccess().updateObject(edmobj);
 
         return new LinkedEntity().entityType(entityName)
                     .instanceId(edmobj.getInstanceId())
@@ -89,7 +90,7 @@ public class MappingAPI extends AbstractAPI<org.epos.eposdatamodel.Mapping> {
 
         edmobj.getMappingElementsByInstanceId().add(ce);
 
-        dbaccess.createObject(ce);
+        dbaccess.updateObject(ce);
     }
 
 

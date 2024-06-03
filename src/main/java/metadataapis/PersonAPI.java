@@ -41,6 +41,9 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
         edmobj.setVersionId(obj.getVersionId());
         edmobj.setInstanceId(obj.getInstanceId());
         edmobj.setMetaId(obj.getMetaId());
+
+        getDbaccess().updateObject(edmobj);
+
         edmobj.setUid(Optional.ofNullable(obj.getUid()).orElse(getEdmClass().getSimpleName()+"/"+UUID.randomUUID().toString()));
         edmobj.setFamilyname(obj.getFamilyName());
         edmobj.setGivenname(obj.getGivenName());
@@ -82,7 +85,7 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
 
                 edmobj.getPersonIdentifiersByInstanceId().add(pi);
 
-                dbaccess.createObject(pi);
+                dbaccess.updateObject(pi);
             }
         }
 
@@ -107,7 +110,7 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
 
                 edmobj.getOrganizationAffiliationsByInstanceId().add(pi);
 
-                dbaccess.createObject(pi);
+                dbaccess.updateObject(pi);
             }
         }
 
@@ -134,8 +137,7 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
             }
         }
 
-        if(returnList.isEmpty()) getDbaccess().createObject(edmobj);
-        else getDbaccess().updateObject(edmobj);
+        getDbaccess().updateObject(edmobj);
 
         return new LinkedEntity().entityType(entityName)
                     .instanceId(edmobj.getInstanceId())
@@ -159,7 +161,7 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
 
         edmobj.getPersonElementsByInstanceId().add(ce);
 
-        dbaccess.createObject(ce);
+        dbaccess.updateObject(ce);
     }
 
 

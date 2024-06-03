@@ -6,12 +6,8 @@ import metadataapis.*;
 import model.*;
 import org.epos.eposdatamodel.LinkedEntity;
 
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 public class LinkedEntityAPI {
 
@@ -70,11 +66,11 @@ public class LinkedEntityAPI {
                 api = new CategorySchemeAPI(obj.getEntityType(), edmClass);
                 break;
             case SOFTWARESOURCECODE:
-                edmClass = Softwaresourcecode.class;
+                edmClass = SoftwareSourceCode.class;
                 api = new SoftwareSourceCodeAPI(obj.getEntityType(), edmClass);
                 break;
             case SOFTWAREAPPLICATION:
-                edmClass = Softwareapplication.class;
+                edmClass = SoftwareApplication.class;
                 api = new SoftwareApplicationAPI(obj.getEntityType(), edmClass);
                 break;
             case ADDRESS:

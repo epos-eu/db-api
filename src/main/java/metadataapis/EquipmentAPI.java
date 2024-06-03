@@ -44,6 +44,9 @@ public class EquipmentAPI extends AbstractAPI<org.epos.eposdatamodel.Equipment> 
         edmobj.setVersionId(obj.getVersionId());
         edmobj.setInstanceId(obj.getInstanceId());
         edmobj.setMetaId(obj.getMetaId());
+
+        getDbaccess().updateObject(edmobj);
+
         edmobj.setUid(Optional.ofNullable(obj.getUid()).orElse(getEdmClass().getSimpleName()+"/"+UUID.randomUUID().toString()));
         edmobj.setType(obj.getType());
         edmobj.setIdentifier(obj.getIdentifier());
@@ -91,7 +94,7 @@ public class EquipmentAPI extends AbstractAPI<org.epos.eposdatamodel.Equipment> 
                 pi.setEntityInstanceId(equipment1.getInstanceId());
                 pi.setResourceEntity(EntityNames.EQUIPMENT.name());
                 edmobj.setEquipmentIspartofByInstanceId(pi);
-                dbaccess.createObject(pi);
+                dbaccess.updateObject(pi);
             }
         }
 
@@ -120,7 +123,7 @@ public class EquipmentAPI extends AbstractAPI<org.epos.eposdatamodel.Equipment> 
                 pi.setEntityInstanceId(facility1.getInstanceId());
                 pi.setResourceEntity(EntityNames.FACILITY.name());
                 edmobj.setEquipmentIspartofByInstanceId(pi);
-                dbaccess.createObject(pi);
+                dbaccess.updateObject(pi);
             }
         }
 
@@ -150,7 +153,7 @@ public class EquipmentAPI extends AbstractAPI<org.epos.eposdatamodel.Equipment> 
                 pi.setSpatialBySpatialInstanceId(spatial);
 
                 edmobj.getEquipmentSpatialsByInstanceId().add(pi);
-                dbaccess.createObject(pi);
+                dbaccess.updateObject(pi);
             }
         }
 
@@ -180,7 +183,7 @@ public class EquipmentAPI extends AbstractAPI<org.epos.eposdatamodel.Equipment> 
                 pi.setTemporalByTemporalInstanceId(temporal);
 
                 edmobj.getEquipmentTemporalsByInstanceId().add(pi);
-                dbaccess.createObject(pi);
+                dbaccess.updateObject(pi);
             }
         }
 
@@ -199,9 +202,7 @@ public class EquipmentAPI extends AbstractAPI<org.epos.eposdatamodel.Equipment> 
             createInnerElement(ElementType.PAGEURL, obj.getPageURL(), edmobj);
         }
 
-
-        if(returnList.isEmpty()) getDbaccess().createObject(edmobj);
-        else getDbaccess().updateObject(edmobj);
+        getDbaccess().updateObject(edmobj);
 
         return new LinkedEntity().entityType(entityName)
                     .instanceId(edmobj.getInstanceId())
@@ -225,7 +226,7 @@ public class EquipmentAPI extends AbstractAPI<org.epos.eposdatamodel.Equipment> 
 
         edmobj.getEquipmentElementsByInstanceId().add(ce);
 
-        dbaccess.createObject(ce);
+        dbaccess.updateObject(ce);
     }
 
 

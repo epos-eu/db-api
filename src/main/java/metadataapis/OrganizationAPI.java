@@ -43,6 +43,9 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
         edmobj.setVersionId(obj.getVersionId());
         edmobj.setInstanceId(obj.getInstanceId());
         edmobj.setMetaId(obj.getMetaId());
+
+        getDbaccess().updateObject(edmobj);
+
         edmobj.setUid(Optional.ofNullable(obj.getUid()).orElse(getEdmClass().getSimpleName()+"/"+UUID.randomUUID().toString()));
         edmobj.setLogo(obj.getLogo());
         edmobj.setType(obj.getType());
@@ -83,7 +86,7 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
 
                 edmobj.getOrganizationContactpointsByInstanceId().add(pi);
 
-                dbaccess.createObject(pi);
+                dbaccess.updateObject(pi);
             }
         }
 
@@ -109,7 +112,7 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
 
                 edmobj.getOrganizationIdentifiersByInstanceId().add(pi);
 
-                dbaccess.createObject(pi);
+                dbaccess.updateObject(pi);
             }
         }
 
@@ -159,7 +162,7 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
                 pi.setLanguage(null);
                 pi.setLegalname(legalname.getLegalname());
                 edmobj.getOrganizationLegalnamesByInstanceId().add(pi);
-                dbaccess.createObject(pi);
+                dbaccess.updateObject(pi);
             }
         }
 
@@ -184,7 +187,7 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
                 pi.setOrganizationByOrganization2InstanceId(list2.get(0));
                 pi.setOrganization2InstanceId(list2.get(0).getInstanceId());
                 edmobj.getOrganizationMemberofsByInstanceId().add(pi);
-                dbaccess.createObject(pi);
+                dbaccess.updateObject(pi);
             }
         }
 
@@ -213,7 +216,7 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
                 pi.setResourceEntity(EntityNames.FACILITY.name());
                 pi.setEntityInstanceId(facility1.getInstanceId());
                 edmobj.setOrganizationOwnsByInstanceId(pi);
-                dbaccess.createObject(pi);
+                dbaccess.updateObject(pi);
             }
         }
 
@@ -243,12 +246,11 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
                 pi.setEntityInstanceId(equipment.getInstanceId());
                 pi.setResourceEntity(EntityNames.EQUIPMENT.name());
                 edmobj.setOrganizationOwnsByInstanceId(pi);
-                dbaccess.createObject(pi);
+                dbaccess.updateObject(pi);
             }
         }
 
-        if(returnList.isEmpty()) getDbaccess().createObject(edmobj);
-        else getDbaccess().updateObject(edmobj);
+        getDbaccess().updateObject(edmobj);
 
         return new LinkedEntity().entityType(entityName)
                     .instanceId(edmobj.getInstanceId())
@@ -272,7 +274,7 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
 
         edmobj.getOrganizationElementsByInstanceId().add(ce);
 
-        dbaccess.createObject(ce);
+        dbaccess.updateObject(ce);
     }
 
 

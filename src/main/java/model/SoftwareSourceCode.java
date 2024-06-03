@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import java.util.Collection;
 
 @Entity
-public class Softwaresourcecode {
+@Table(name = "softwaresourcecode", schema = "public", catalog = "cerif")
+public class SoftwareSourceCode {
     @Id
     @Column(name = "instance_id", nullable = false, length = 100)
     private String instanceId;
@@ -47,13 +48,13 @@ public class Softwaresourcecode {
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "version_id", referencedColumnName = "version_id")
     private Versioningstatus versioningstatusByVersionId;
-    @OneToMany(mappedBy = "softwaresourcecodeBySoftwaresourcecodeInstanceId")
+    @OneToMany(mappedBy = "softwaresourcecodeBySoftwareSourceCodeInstanceId")
     private Collection<SoftwaresourcecodeCategory> softwaresourcecodeCategoriesByInstanceId;
-    @OneToMany(mappedBy = "softwaresourcecodeBySoftwaresourcecodeInstanceId")
+    @OneToMany(mappedBy = "softwaresourcecodeBySoftwareSourceCodeInstanceId")
     private Collection<SoftwaresourcecodeContactpoint> softwaresourcecodeContactpointsByInstanceId;
-    @OneToMany(mappedBy = "softwaresourcecodeBySoftwaresourcecodeInstanceId")
+    @OneToMany(mappedBy = "softwaresourcecodeBySoftwareSourceCodeInstanceId")
     private Collection<SoftwaresourcecodeElement> softwaresourcecodeElementsByInstanceId;
-    @OneToMany(mappedBy = "softwaresourcecodeBySoftwaresourcecodeInstanceId")
+    @OneToMany(mappedBy = "softwaresourcecodeBySoftwareSourceCodeInstanceId")
     private Collection<SoftwaresourcecodeIdentifier> softwaresourcecodeIdentifiersByInstanceId;
 
     public String getInstanceId() {
@@ -165,7 +166,7 @@ public class Softwaresourcecode {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Softwaresourcecode that = (Softwaresourcecode) o;
+        SoftwareSourceCode that = (SoftwareSourceCode) o;
 
         if (instanceId != null ? !instanceId.equals(that.instanceId) : that.instanceId != null) return false;
         if (metaId != null ? !metaId.equals(that.metaId) : that.metaId != null) return false;

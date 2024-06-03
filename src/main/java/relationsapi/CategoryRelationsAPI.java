@@ -126,7 +126,7 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
         }
     }
 
-    public static void createRelation(Softwaresourcecode edmobj, org.epos.eposdatamodel.SoftwareSourceCode obj) {
+    public static void createRelation(SoftwareSourceCode edmobj, org.epos.eposdatamodel.SoftwareSourceCode obj) {
         List<SoftwaresourcecodeCategory> softwaresourcecodeCategoryList = getDbaccess().getAllFromDB(SoftwaresourcecodeCategory.class);
         for (SoftwaresourcecodeCategory item : softwaresourcecodeCategoryList) {
             if (item.getSoftwaresourcecodeInstanceId().equals(obj.getInstanceId())) {
@@ -154,7 +154,7 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
         }
     }
 
-    public static void createRelation(Softwareapplication edmobj, org.epos.eposdatamodel.SoftwareApplication obj) {
+    public static void createRelation(SoftwareApplication edmobj, org.epos.eposdatamodel.SoftwareApplication obj) {
         List<SoftwareapplicationCategory> softwareapplicationCategoryList = getDbaccess().getAllFromDB(SoftwareapplicationCategory.class);
         for (SoftwareapplicationCategory item : softwareapplicationCategoryList) {
             if (item.getSoftwareapplicationInstanceId().equals(obj.getInstanceId())) {

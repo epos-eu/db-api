@@ -48,8 +48,7 @@ public class AddressAPI extends AbstractAPI<org.epos.eposdatamodel.Address> {
         edmobj.setPostalCode(Optional.ofNullable(obj.getPostalCode()).orElse(null));
         edmobj.setLocality(Optional.ofNullable(obj.getLocality()).orElse(null));
 
-        if(returnList.isEmpty()) getDbaccess().createObject(edmobj);
-        else getDbaccess().updateObject(edmobj);
+        getDbaccess().updateObject(edmobj);
 
         return new LinkedEntity().entityType(entityName)
                 .instanceId(edmobj.getInstanceId())

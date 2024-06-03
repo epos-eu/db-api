@@ -39,6 +39,9 @@ public class CategorySchemeAPI extends AbstractAPI<org.epos.eposdatamodel.Catego
         edmobj.setVersionId(obj.getVersionId());
         edmobj.setInstanceId(obj.getInstanceId());
         edmobj.setMetaId(obj.getMetaId());
+
+        getDbaccess().updateObject(edmobj);
+
         edmobj.setUid(Optional.ofNullable(obj.getUid()).orElse(getEdmClass().getSimpleName()+"/"+UUID.randomUUID().toString()));
         edmobj.setName(Optional.ofNullable(obj.getTitle()).orElse(""));
         edmobj.setDescription(Optional.ofNullable(obj.getDescription()).orElse(""));
@@ -48,8 +51,7 @@ public class CategorySchemeAPI extends AbstractAPI<org.epos.eposdatamodel.Catego
         edmobj.setOrderitemnumber(Optional.ofNullable(obj.getOrderitemnumber()).orElse(""));
         edmobj.setLogo(Optional.ofNullable(obj.getLogo()).orElse(""));
 
-        if(returnList.isEmpty()) getDbaccess().createObject(edmobj);
-        else getDbaccess().updateObject(edmobj);
+        getDbaccess().updateObject(edmobj);
 
         return new LinkedEntity().entityType(entityName)
                 .instanceId(edmobj.getInstanceId())

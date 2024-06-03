@@ -131,7 +131,7 @@ public class ContactPointRelationsAPI extends AbstractRelationsAPI {
         }
     }
 
-    public static void createRelation(Softwaresourcecode edmobj, org.epos.eposdatamodel.SoftwareSourceCode obj){
+    public static void createRelation(SoftwareSourceCode edmobj, org.epos.eposdatamodel.SoftwareSourceCode obj){
         List<SoftwaresourcecodeContactpoint> softwaresourcecodeContactpointList = getDbaccess().getAllFromDB(SoftwaresourcecodeContactpoint.class);
         for(SoftwaresourcecodeContactpoint item : softwaresourcecodeContactpointList){
             if(item.getSoftwaresourcecodeInstanceId().equals(obj.getInstanceId())){
@@ -161,7 +161,7 @@ public class ContactPointRelationsAPI extends AbstractRelationsAPI {
         }
     }
 
-    public static void createRelation(Softwareapplication edmobj, org.epos.eposdatamodel.SoftwareApplication obj){
+    public static void createRelation(SoftwareApplication edmobj, org.epos.eposdatamodel.SoftwareApplication obj){
         List<SoftwareapplicationContactpoint> softwaresourcecodeContactpointList = getDbaccess().getAllFromDB(SoftwareapplicationContactpoint.class);
         for(SoftwareapplicationContactpoint item : softwaresourcecodeContactpointList){
             if(item.getSoftwareapplicationInstanceId().equals(obj.getInstanceId())){

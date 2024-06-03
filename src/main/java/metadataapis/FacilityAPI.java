@@ -45,15 +45,15 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
         edmobj.setVersionId(obj.getVersionId());
         edmobj.setInstanceId(obj.getInstanceId());
         edmobj.setMetaId(obj.getMetaId());
+
+        getDbaccess().updateObject(edmobj);
+
         edmobj.setUid(Optional.ofNullable(obj.getUid()).orElse(getEdmClass().getSimpleName()+"/"+UUID.randomUUID().toString()));
         edmobj.setType(obj.getType());
         edmobj.setIdentifier(obj.getIdentifier());
         edmobj.setDescription(obj.getDescription());
         edmobj.setTitle(obj.getTitle());
         edmobj.setKeywords(obj.getKeywords());
-
-        if(returnList.isEmpty()) getDbaccess().createObject(edmobj);
-        else getDbaccess().updateObject(edmobj);
 
         /** CATEGORY **/
         if (obj.getCategory() != null && !obj.getCategory().isEmpty())
@@ -91,7 +91,7 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
 
                 edmobj.getFacilityAddressesByInstanceId().add(pi);
 
-                dbaccess.createObject(pi);
+                dbaccess.updateObject(pi);
             }
         }
 
@@ -121,7 +121,7 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
 
                 edmobj.getFacilityIspartofsByInstanceId().add(pi);
 
-                dbaccess.createObject(pi);
+                dbaccess.updateObject(pi);
             }
         }
 
@@ -152,7 +152,7 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
 
                 edmobj.getFacilitySpatialsByInstanceId().add(pi);
 
-                dbaccess.createObject(pi);
+                dbaccess.updateObject(pi);
             }
         }
 
@@ -171,6 +171,8 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
                 createInnerElement(ElementType.PAGEURL, pageurl, edmobj);
             }
         }
+
+        getDbaccess().updateObject(edmobj);
 
         return new LinkedEntity().entityType(entityName)
                     .instanceId(edmobj.getInstanceId())
@@ -194,7 +196,7 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
 
         edmobj.getFacilityElementsByInstanceId().add(ce);
 
-        dbaccess.createObject(ce);
+        dbaccess.updateObject(ce);
     }
 
 

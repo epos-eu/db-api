@@ -14,7 +14,7 @@ public class SoftwaresourcecodeElement {
     private String elementInstanceId;
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "softwaresourcecode_instance_id", referencedColumnName = "instance_id")
-    private Softwaresourcecode softwaresourcecodeBySoftwaresourcecodeInstanceId;
+    private SoftwareSourceCode softwaresourcecodeBySoftwareSourceCodeInstanceId;
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "element_instance_id", referencedColumnName = "instance_id")
     private Element elementByElementInstanceId;
@@ -57,12 +57,12 @@ public class SoftwaresourcecodeElement {
         return result;
     }
 
-    public Softwaresourcecode getSoftwaresourcecodeBySoftwaresourcecodeInstanceId() {
-        return softwaresourcecodeBySoftwaresourcecodeInstanceId;
+    public SoftwareSourceCode getSoftwaresourcecodeBySoftwaresourcecodeInstanceId() {
+        return softwaresourcecodeBySoftwareSourceCodeInstanceId;
     }
 
-    public void setSoftwaresourcecodeBySoftwaresourcecodeInstanceId(Softwaresourcecode softwaresourcecodeBySoftwaresourcecodeInstanceId) {
-        this.softwaresourcecodeBySoftwaresourcecodeInstanceId = softwaresourcecodeBySoftwaresourcecodeInstanceId;
+    public void setSoftwaresourcecodeBySoftwaresourcecodeInstanceId(SoftwareSourceCode softwaresourcecodeBySoftwareSourceCodeInstanceId) {
+        this.softwaresourcecodeBySoftwareSourceCodeInstanceId = softwaresourcecodeBySoftwareSourceCodeInstanceId;
     }
 
     public Element getElementByElementInstanceId() {

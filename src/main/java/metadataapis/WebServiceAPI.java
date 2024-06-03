@@ -47,6 +47,9 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
         edmobj.setVersionId(obj.getVersionId());
         edmobj.setInstanceId(obj.getInstanceId());
         edmobj.setMetaId(obj.getMetaId());
+
+        getDbaccess().updateObject(edmobj);
+
         edmobj.setUid(Optional.ofNullable(obj.getUid()).orElse(getEdmClass().getSimpleName()+"/"+UUID.randomUUID().toString()));
         edmobj.setName(obj.getName());
         edmobj.setDescription(obj.getDescription());
@@ -123,7 +126,7 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
 
                 edmobj.getWebserviceSpatialsByInstanceId().add(pi);
 
-                dbaccess.createObject(pi);
+                dbaccess.updateObject(pi);
             }
         }
 
@@ -154,7 +157,7 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
 
                 edmobj.getWebserviceTemporalsByInstanceId().add(pi);
 
-                dbaccess.createObject(pi);
+                dbaccess.updateObject(pi);
             }
         }
 
@@ -185,7 +188,7 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
 
                 edmobj.getOperationWebservicesByInstanceId().add(pi);
 
-                dbaccess.createObject(pi);
+                dbaccess.updateObject(pi);
             }
         }
 
@@ -199,12 +202,11 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
 
                 edmobj.setWebserviceRelationByInstanceId(pi);
 
-                dbaccess.createObject(pi);
+                dbaccess.updateObject(pi);
             }
         }
 
-        if(returnList.isEmpty()) getDbaccess().createObject(edmobj);
-        else getDbaccess().updateObject(edmobj);
+        getDbaccess().updateObject(edmobj);
 
         return new LinkedEntity().entityType(entityName)
                     .instanceId(edmobj.getInstanceId())
@@ -228,7 +230,7 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
 
         edmobj.getWebserviceElementsByInstanceId().add(ce);
 
-        dbaccess.createObject(ce);
+        dbaccess.updateObject(ce);
     }
 
 

@@ -43,8 +43,7 @@ public class IdentifierAPI extends AbstractAPI<org.epos.eposdatamodel.Identifier
         edmobj.setType(Optional.ofNullable(obj.getType()).orElse(null));
         edmobj.setValue(Optional.ofNullable(obj.getIdentifier()).orElse(null));
 
-        if(returnList.isEmpty()) getDbaccess().createObject(edmobj);
-        else getDbaccess().updateObject(edmobj);
+        getDbaccess().updateObject(edmobj);
 
         return new LinkedEntity().entityType(entityName)
                 .instanceId(edmobj.getInstanceId())

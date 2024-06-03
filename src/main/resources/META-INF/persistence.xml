@@ -35,9 +35,9 @@
     	<class>model.Publication</class>
     	<class>model.Service</class>
     	<class>model.ServiceProvider</class>
-    	<class>model.Softwareapplication</class>
+    	<class>model.SoftwareApplication</class>
     	<class>model.SoftwareapplicationParameters</class>
-    	<class>model.Softwaresourcecode</class>
+    	<class>model.SoftwareSourceCode</class>
     	<class>model.Spatial</class>
     	<class>model.Temporal</class>
     	<class>model.User</class>

@@ -17,7 +17,7 @@ public class SoftwaresourcecodeCategory {
     private Category categoryByCategoryInstanceId;
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "softwaresourcecode_instance_id", referencedColumnName = "instance_id")
-    private Softwaresourcecode softwaresourcecodeBySoftwaresourcecodeInstanceId;
+    private SoftwareSourceCode softwaresourcecodeBySoftwareSourceCodeInstanceId;
 
     public String getCategoryInstanceId() {
         return categoryInstanceId;
@@ -65,11 +65,11 @@ public class SoftwaresourcecodeCategory {
         this.categoryByCategoryInstanceId = categoryByCategoryInstanceId;
     }
 
-    public Softwaresourcecode getSoftwaresourcecodeBySoftwaresourcecodeInstanceId() {
-        return softwaresourcecodeBySoftwaresourcecodeInstanceId;
+    public SoftwareSourceCode getSoftwaresourcecodeBySoftwaresourcecodeInstanceId() {
+        return softwaresourcecodeBySoftwareSourceCodeInstanceId;
     }
 
-    public void setSoftwaresourcecodeBySoftwaresourcecodeInstanceId(Softwaresourcecode softwaresourcecodeBySoftwaresourcecodeInstanceId) {
-        this.softwaresourcecodeBySoftwaresourcecodeInstanceId = softwaresourcecodeBySoftwaresourcecodeInstanceId;
+    public void setSoftwaresourcecodeBySoftwaresourcecodeInstanceId(SoftwareSourceCode softwaresourcecodeBySoftwareSourceCodeInstanceId) {
+        this.softwaresourcecodeBySoftwareSourceCodeInstanceId = softwaresourcecodeBySoftwareSourceCodeInstanceId;
     }
 }

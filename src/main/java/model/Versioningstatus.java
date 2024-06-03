@@ -1,9 +1,7 @@
 package model;
 
 import jakarta.persistence.*;
-import org.eclipse.persistence.annotations.ObjectTypeConverter;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Collection;
 
@@ -91,9 +89,9 @@ public class Versioningstatus {
     @OneToMany(mappedBy = "versioningstatusByVersionId")
     private Collection<Service> servicesByVersionId;
     @OneToMany(mappedBy = "versioningstatusByVersionId")
-    private Collection<Softwareapplication> softwareapplicationsByVersionId;
+    private Collection<SoftwareApplication> softwareapplicationsByVersionId;
     @OneToMany(mappedBy = "versioningstatusByVersionId")
-    private Collection<Softwaresourcecode> softwaresourcecodesByVersionId;
+    private Collection<SoftwareSourceCode> softwaresourcecodesByVersionId;
     @OneToMany(mappedBy = "versioningstatusByVersionId")
     private Collection<Spatial> spatialsByVersionId;
     @OneToMany(mappedBy = "versioningstatusByVersionId")
@@ -416,19 +414,19 @@ public class Versioningstatus {
         this.servicesByVersionId = servicesByVersionId;
     }
 
-    public Collection<Softwareapplication> getSoftwareapplicationsByVersionId() {
+    public Collection<SoftwareApplication> getSoftwareapplicationsByVersionId() {
         return softwareapplicationsByVersionId;
     }
 
-    public void setSoftwareapplicationsByVersionId(Collection<Softwareapplication> softwareapplicationsByVersionId) {
+    public void setSoftwareapplicationsByVersionId(Collection<SoftwareApplication> softwareapplicationsByVersionId) {
         this.softwareapplicationsByVersionId = softwareapplicationsByVersionId;
     }
 
-    public Collection<Softwaresourcecode> getSoftwaresourcecodesByVersionId() {
+    public Collection<SoftwareSourceCode> getSoftwaresourcecodesByVersionId() {
         return softwaresourcecodesByVersionId;
     }
 
-    public void setSoftwaresourcecodesByVersionId(Collection<Softwaresourcecode> softwaresourcecodesByVersionId) {
+    public void setSoftwaresourcecodesByVersionId(Collection<SoftwareSourceCode> softwaresourcecodesByVersionId) {
         this.softwaresourcecodesByVersionId = softwaresourcecodesByVersionId;
     }
 

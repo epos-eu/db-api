@@ -47,6 +47,9 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
         edmobj.setVersionId(obj.getVersionId());
         edmobj.setInstanceId(obj.getInstanceId());
         edmobj.setMetaId(obj.getMetaId());
+
+        getDbaccess().updateObject(edmobj);
+
         edmobj.setUid(Optional.ofNullable(obj.getUid()).orElse(getEdmClass().getSimpleName()+"/"+UUID.randomUUID().toString()));
         edmobj.setMethod(obj.getMethod());
         edmobj.setTemplate(obj.getTemplate());
@@ -95,7 +98,7 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
 
                 edmobj.getOperationWebservicesByInstanceId().add(pi);
 
-                dbaccess.createObject(pi);
+                dbaccess.updateObject(pi);
             }
         }
 
@@ -107,9 +110,7 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
             }
         }
 
-
-        if(returnList.isEmpty()) getDbaccess().createObject(edmobj);
-        else getDbaccess().updateObject(edmobj);
+        getDbaccess().updateObject(edmobj);
 
         return new LinkedEntity().entityType(entityName)
                     .instanceId(edmobj.getInstanceId())
@@ -133,7 +134,7 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
 
         edmobj.getOperationElementsByInstanceId().add(ce);
 
-        dbaccess.createObject(ce);
+        dbaccess.updateObject(ce);
     }
 
 
