@@ -44,11 +44,13 @@ public class CategoryAPI extends AbstractAPI<org.epos.eposdatamodel.Category> {
 
         if (Objects.nonNull(obj.getInScheme())) createInscheme(obj.getInScheme(), edmobj);
 
-        if(returnList.isEmpty()) getDbaccess().createObject(edmobj);
-        else getDbaccess().updateObject(edmobj);
+        edmobj.setCategoryIspartofsByInstanceId(new ArrayList<>());
 
         if (Objects.nonNull(obj.getBroader())) createBroaders(obj.getBroader(), edmobj);
         if (Objects.nonNull(obj.getNarrower())) createNarrowers(obj.getNarrower(), edmobj);
+
+        if(returnList.isEmpty()) getDbaccess().createObject(edmobj);
+        else getDbaccess().updateObject(edmobj);
 
         return new LinkedEntity().entityType(entityName)
                     .instanceId(edmobj.getInstanceId())
@@ -58,7 +60,7 @@ public class CategoryAPI extends AbstractAPI<org.epos.eposdatamodel.Category> {
     }
 
     private void createInscheme(org.epos.eposdatamodel.CategoryScheme inscheme, Category edmobj){
-        CategorySchemeAPI api = new CategorySchemeAPI("CategoryScheme", CategoryScheme.class);
+        CategorySchemeAPI api = new CategorySchemeAPI(EntityNames.CATEGORYSCHEME.name(), CategoryScheme.class);
         org.epos.eposdatamodel.CategoryScheme childObj = new org.epos.eposdatamodel.CategoryScheme();
         childObj.setInstanceId(inscheme.getInstanceId());
         childObj.setMetaId(inscheme.getMetaId());
@@ -90,12 +92,14 @@ public class CategoryAPI extends AbstractAPI<org.epos.eposdatamodel.Category> {
             categoryIspartof.setCategoryByCategory1InstanceId((Category) getDbaccess().getOneFromDBByInstanceId(le.getInstanceId(), Category.class).get(0));
             categoryIspartof.setCategoryByCategory2InstanceId(edmobj);
 
+            edmobj.getCategoryIspartofsByInstanceId().add(categoryIspartof);
+
             getDbaccess().createObject(categoryIspartof);
         }
     }
 
     private void createNarrowers(List<org.epos.eposdatamodel.Category> narrowers, Category edmobj){
-        CategoryAPI api = new CategoryAPI("Category", Category.class);
+        CategoryAPI api = new CategoryAPI(EntityNames.CATEGORY.name(), Category.class);
         for(org.epos.eposdatamodel.Category narrower : narrowers) {
             org.epos.eposdatamodel.Category childObj = new org.epos.eposdatamodel.Category();
             childObj.setInstanceId(narrower.getInstanceId());
@@ -117,6 +121,8 @@ public class CategoryAPI extends AbstractAPI<org.epos.eposdatamodel.Category> {
             categoryIspartof.setCategoryByCategory1InstanceId(edmobj);
             categoryIspartof.setCategoryByCategory2InstanceId((Category) getDbaccess().getOneFromDBByInstanceId(le.getInstanceId(), Category.class).get(0));
 
+            edmobj.getCategoryIspartofsByInstanceId().add(categoryIspartof);
+
             getDbaccess().createObject(categoryIspartof);
         }
     }
@@ -132,7 +138,7 @@ public class CategoryAPI extends AbstractAPI<org.epos.eposdatamodel.Category> {
         o.setName(edmobj.getName());
         o.setDescription(edmobj.getDescription());
         if(edmobj.getInScheme()!=null){
-            CategorySchemeAPI csapi = new CategorySchemeAPI("CategoryScheme", CategoryScheme.class);
+            CategorySchemeAPI csapi = new CategorySchemeAPI(EntityNames.CATEGORYSCHEME.name(), CategoryScheme.class);
             o.setInScheme(csapi.retrieve(edmobj.getInScheme()));
         }
 

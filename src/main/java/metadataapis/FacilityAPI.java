@@ -10,6 +10,7 @@ import org.epos.eposdatamodel.LinkedEntity;
 import relationsapi.CategoryRelationsAPI;
 import relationsapi.ContactPointRelationsAPI;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -71,7 +72,8 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
                     getDbaccess().deleteObject(item);
                 }
             }
-            AddressAPI addressAPI = new AddressAPI("Address", Address.class);
+            AddressAPI addressAPI = new AddressAPI(EntityNames.ADDRESS.name(), Address.class);
+            edmobj.setFacilityAddressesByInstanceId(new ArrayList<>());
             for(org.epos.eposdatamodel.Address address : obj.getAddress()){
                 List<Address> list = dbaccess.getOneFromDBByInstanceId(address.getInstanceId(),Address.class);
                 Address address1 = null;
@@ -86,6 +88,10 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
                 pi.setFacilityInstanceId(edmobj.getInstanceId());
                 pi.setAddressInstanceId(address1.getInstanceId());
                 pi.setAddressByAddressInstanceId(address1);
+
+                edmobj.getFacilityAddressesByInstanceId().add(pi);
+
+                dbaccess.createObject(pi);
             }
         }
 
@@ -97,6 +103,7 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
                     getDbaccess().deleteObject(item);
                 }
             }
+            edmobj.setFacilityIspartofsByInstanceId(new ArrayList<>());
             for(org.epos.eposdatamodel.Facility facility : obj.getIsPartOf()){
                 List<Facility> list = dbaccess.getOneFromDBByInstanceId(facility.getInstanceId(),Facility.class);
                 Facility facility1 = null;
@@ -111,6 +118,10 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
                 pi.setFacility1InstanceId(edmobj.getInstanceId());
                 pi.setFacility2InstanceId(facility1.getInstanceId());
                 pi.setFacilityByFacility2InstanceId(facility1);
+
+                edmobj.getFacilityIspartofsByInstanceId().add(pi);
+
+                dbaccess.createObject(pi);
             }
         }
 
@@ -122,7 +133,8 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
                     getDbaccess().deleteObject(item);
                 }
             }
-            SpatialAPI spatialAPI = new SpatialAPI("Spatial", Spatial.class);
+            SpatialAPI spatialAPI = new SpatialAPI(EntityNames.SPATIAL.name(), Spatial.class);
+            edmobj.setFacilitySpatialsByInstanceId(new ArrayList<>());
             for(org.epos.eposdatamodel.Location location : obj.getSpatialExtent()){
                 List<Spatial> list = dbaccess.getOneFromDBByInstanceId(location.getInstanceId(),Spatial.class);
                 Spatial spatial = null;
@@ -137,10 +149,15 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
                 pi.setFacilityInstanceId(edmobj.getInstanceId());
                 pi.setSpatialInstanceId(spatial.getInstanceId());
                 pi.setSpatialBySpatialInstanceId(spatial);
+
+                edmobj.getFacilitySpatialsByInstanceId().add(pi);
+
+                dbaccess.createObject(pi);
             }
         }
 
         List<FacilityElement> elementslist = getDbaccess().getAllFromDB(FacilityElement.class);
+        edmobj.setFacilityElementsByInstanceId(new ArrayList<>());
         for(FacilityElement item : elementslist){
             if(item.getFacilityInstanceId().equals(obj.getInstanceId())){
                 getDbaccess().deleteObject(item);
@@ -166,7 +183,7 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
         org.epos.eposdatamodel.Element element = new org.epos.eposdatamodel.Element();
         element.setType(elementType);
         element.setValue(value);
-        ElementAPI api = new ElementAPI("Element", Element.class);
+        ElementAPI api = new ElementAPI(EntityNames.ELEMENT.name(), Element.class);
         LinkedEntity le = api.create(element);
         List<Element> el = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Element.class);
         FacilityElement ce = new FacilityElement();
@@ -174,6 +191,10 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
         ce.setFacilityInstanceId(edmobj.getInstanceId());
         ce.setElementByElementInstanceId(el.get(0));
         ce.setElementInstanceId(el.get(0).getInstanceId());
+
+        edmobj.getFacilityElementsByInstanceId().add(ce);
+
+        dbaccess.createObject(ce);
     }
 
 
@@ -193,7 +214,7 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
 
         if(edmobj.getFacilityCategoriesByInstanceId().size()>0) {
             for(FacilityCategory ed : edmobj.getFacilityCategoriesByInstanceId()) {
-                CategoryAPI api = new CategoryAPI("Category", Category.class);
+                CategoryAPI api = new CategoryAPI(EntityNames.CATEGORY.name(), Category.class);
                 org.epos.eposdatamodel.Category cp = api.retrieve(ed.getCategoryInstanceId());
                 o.addCategory(cp);
             }
@@ -201,7 +222,7 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
 
         if(edmobj.getFacilityContactpointsByInstanceId().size()>0) {
             for(FacilityContactpoint ed : edmobj.getFacilityContactpointsByInstanceId()) {
-                ContactPointAPI api = new ContactPointAPI("ContactPoint", Contactpoint.class);
+                ContactPointAPI api = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), Contactpoint.class);
                 ContactPoint cp = api.retrieve(ed.getContactpointInstanceId());
                 o.addContactPoint(cp);
             }
@@ -209,7 +230,7 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
 
         if(edmobj.getFacilityAddressesByInstanceId().size()>0) {
             for(FacilityAddress ed : edmobj.getFacilityAddressesByInstanceId()) {
-                AddressAPI api = new AddressAPI("Address", Address.class);
+                AddressAPI api = new AddressAPI(EntityNames.ADDRESS.name(), Address.class);
                 org.epos.eposdatamodel.Address cp = api.retrieve(ed.getAddressInstanceId());
                 o.addAddress(cp);
             }
@@ -224,7 +245,7 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
 
         if(edmobj.getFacilitySpatialsByInstanceId().size()>0) {
             for(FacilitySpatial ed : edmobj.getFacilitySpatialsByInstanceId()) {
-                SpatialAPI api = new SpatialAPI("Spatial", Spatial.class);
+                SpatialAPI api = new SpatialAPI(EntityNames.SPATIAL.name(), Spatial.class);
                 org.epos.eposdatamodel.Location cp = api.retrieve(ed.getSpatialInstanceId());
                 o.addSpatialExtentItem(cp);
             }

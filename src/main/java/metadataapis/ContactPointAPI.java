@@ -42,17 +42,16 @@ public class ContactPointAPI extends AbstractAPI<ContactPoint> {
         edmobj.setUid(Optional.ofNullable(obj.getUid()).orElse(getEdmClass().getSimpleName()+"/"+UUID.randomUUID().toString()));
         edmobj.setRole(obj.getRole());
 
-        if(returnList.isEmpty()) getDbaccess().createObject(edmobj);
-        else getDbaccess().updateObject(edmobj);
 
         List<ContactpointElement> elementslist = getDbaccess().getAllFromDB(ContactpointElement.class);
         for(ContactpointElement item : elementslist){
             if(item.getContactpointInstanceId().equals(obj.getInstanceId())){
                 getDbaccess().deleteObject(item);
-                List<Element> list2 = getDbaccess().getOneFromDBByInstanceId(item.getElementInstanceId(), Element.class);
-                getDbaccess().deleteObject(list2.get(0));
             }
         }
+
+        edmobj.setContactpointElementsByInstanceId(new ArrayList<>());
+
         /* LANGUAGE */
         if(!obj.getLanguage().isEmpty()){
             for(String lang : obj.getLanguage()) {
@@ -74,6 +73,10 @@ public class ContactPointAPI extends AbstractAPI<ContactPoint> {
             }
         }
 
+
+        if(returnList.isEmpty()) getDbaccess().createObject(edmobj);
+        else getDbaccess().updateObject(edmobj);
+
         return new LinkedEntity().entityType(entityName)
                     .instanceId(edmobj.getInstanceId())
                     .metaId(edmobj.getMetaId())
@@ -85,7 +88,7 @@ public class ContactPointAPI extends AbstractAPI<ContactPoint> {
         org.epos.eposdatamodel.Element element = new org.epos.eposdatamodel.Element();
         element.setType(elementType);
         element.setValue(value);
-        ElementAPI api = new ElementAPI("Element", Element.class);
+        ElementAPI api = new ElementAPI(EntityNames.ELEMENT.name(), Element.class);
         LinkedEntity le = api.create(element);
         List<Element> el = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Element.class);
         ContactpointElement ce = new ContactpointElement();
@@ -93,6 +96,10 @@ public class ContactPointAPI extends AbstractAPI<ContactPoint> {
         ce.setContactpointInstanceId(edmobj.getInstanceId());
         ce.setElementByElementInstanceId(el.get(0));
         ce.setElementInstanceId(el.get(0).getInstanceId());
+
+        edmobj.getContactpointElementsByInstanceId().add(ce);
+
+        dbaccess.createObject(ce);
     }
 
 

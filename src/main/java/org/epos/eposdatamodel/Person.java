@@ -20,7 +20,7 @@ public class Person extends EPOSDataModelEntity {
      * This property refers to the organization to which the person is
      * affiliated.
      */
-    private List<LinkedEntity> affiliation;
+    private List<Organization> affiliation;
 
     /**
      * This property refers to the URL of the Person curriculum vitae.
@@ -88,9 +88,9 @@ public class Person extends EPOSDataModelEntity {
         }
     }
 
-    public void addAffiliation(LinkedEntity affiliation) {
+    public void addAffiliation(Organization affiliation) {
         if (this.affiliation == null) {
-            ArrayList<LinkedEntity> affiliationList = new ArrayList<>();
+            ArrayList<Organization> affiliationList = new ArrayList<>();
             affiliationList.add(affiliation);
             this.setAffiliation(affiliationList);
         } else {
@@ -293,11 +293,11 @@ public class Person extends EPOSDataModelEntity {
         this.telephone = telephone;
     }
 
-    public List<LinkedEntity> getAffiliation() {
+    public List<Organization> getAffiliation() {
         return affiliation;
     }
 
-    public void setAffiliation(List<LinkedEntity> affiliation) {
+    public void setAffiliation(List<Organization> affiliation) {
         this.affiliation = affiliation;
     }
     @Override

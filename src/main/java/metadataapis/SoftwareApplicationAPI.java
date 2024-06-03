@@ -13,6 +13,7 @@ import org.epos.eposdatamodel.*;
 import relationsapi.CategoryRelationsAPI;
 import relationsapi.ContactPointRelationsAPI;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -58,11 +59,6 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
         edmobj.setRequirements(obj.getRequirements());
         edmobj.setSoftwareversion(obj.getSoftwareVersion());
 
-
-
-        if(returnList.isEmpty()) getDbaccess().createObject(edmobj);
-        else getDbaccess().updateObject(edmobj);
-
         /** CATEGORY **/
         if (obj.getCategory() != null && !obj.getCategory().isEmpty())
             CategoryRelationsAPI.createRelation(edmobj,obj);
@@ -81,7 +77,8 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
                     getDbaccess().deleteObject(list2.get(0));
                 }
             }
-            IdentifierAPI identifierAPI = new IdentifierAPI("Identifier", Identifier.class);
+            IdentifierAPI identifierAPI = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
+            edmobj.setSoftwareapplicationIdentifiersByInstanceId(new ArrayList<>());
             for(org.epos.eposdatamodel.Identifier identifier : obj.getIdentifier()){
                 LinkedEntity le = identifierAPI.create(identifier);
                 SoftwareapplicationIdentifier pi = new SoftwareapplicationIdentifier();
@@ -89,6 +86,9 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
                 pi.setSoftwareapplicationInstanceId(edmobj.getInstanceId());
                 pi.setIdentifierInstanceId(le.getInstanceId());
                 pi.setIdentifierByIdentifierInstanceId((Identifier) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(),Identifier.class).get(0));
+
+                edmobj.getSoftwareapplicationIdentifiersByInstanceId().add(pi);
+
                 dbaccess.createObject(pi);
             }
         }
@@ -100,6 +100,7 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
                     getDbaccess().deleteObject(item);
                 }
             }
+            edmobj.setSoftwareapplicationParametersByInstanceId(new ArrayList<>());
             for(org.epos.eposdatamodel.Parameter parameter : obj.getParameter()){
                 SoftwareapplicationParameters pi = new SoftwareapplicationParameters();
                 pi.setInstanceId(UUID.randomUUID().toString());
@@ -111,10 +112,14 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
                 pi.setEncodingformat(parameter.getEncodingFormat());
                 pi.setSoftwareapplicationBySoftwareapplicationInstanceId(edmobj);
                 pi.setSoftwareapplicationInstanceId(edmobj.getInstanceId());
+
+                edmobj.getSoftwareapplicationParametersByInstanceId().add(pi);
+
                 dbaccess.createObject(pi);
             }
         }
 
+        edmobj.setSoftwareapplicationOperationsByInstanceId(new ArrayList<>());
         if (obj.getRelation() != null && !obj.getRelation().isEmpty()) {
             for(LinkedEntity le : obj.getRelation()){
                 Object object = LinkedEntityAPI.retrieveLinkedEntity(le);
@@ -125,10 +130,15 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
                     pi.setOperationInstanceId(((Operation) object).getInstanceId());
                     pi.setOperationByOperationInstanceId((Operation) object);
 
+                    edmobj.getSoftwareapplicationOperationsByInstanceId().add(pi);
+
                     dbaccess.createObject(pi);
                 }
             }
         }
+
+        if(returnList.isEmpty()) getDbaccess().createObject(edmobj);
+        else getDbaccess().updateObject(edmobj);
 
         return new LinkedEntity().entityType(entityName)
                     .instanceId(edmobj.getInstanceId())
@@ -161,7 +171,7 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
 
         if(edmobj.getSoftwareapplicationCategoriesByInstanceId().size()>0) {
             for(SoftwareapplicationCategory ed : edmobj.getSoftwareapplicationCategoriesByInstanceId()) {
-                CategoryAPI api = new CategoryAPI("Category", Category.class);
+                CategoryAPI api = new CategoryAPI(EntityNames.CATEGORY.name(), Category.class);
                 org.epos.eposdatamodel.Category cp = api.retrieve(ed.getCategoryInstanceId());
                 o.addCategory(cp);
             }
@@ -169,7 +179,7 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
 
         if(edmobj.getSoftwareapplicationContactpointsByInstanceId().size()>0) {
             for(SoftwareapplicationContactpoint ed : edmobj.getSoftwareapplicationContactpointsByInstanceId()) {
-                ContactPointAPI api = new ContactPointAPI("ContactPoint", Contactpoint.class);
+                ContactPointAPI api = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), Contactpoint.class);
                 ContactPoint cp = api.retrieve(ed.getContactpointInstanceId());
                 o.addContactPoint(cp);
             }
@@ -177,7 +187,7 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
 
         if(edmobj.getSoftwareapplicationIdentifiersByInstanceId().size()>0) {
             for(SoftwareapplicationIdentifier ed : edmobj.getSoftwareapplicationIdentifiersByInstanceId()) {
-                IdentifierAPI api = new IdentifierAPI("Identifier", Identifier.class);
+                IdentifierAPI api = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
                 org.epos.eposdatamodel.Identifier cp = api.retrieve(ed.getIdentifierInstanceId());
                 o.addIdentifier(cp);
             }

@@ -5,6 +5,7 @@ import metadataapis.CategoryAPI;
 import model.*;
 import org.epos.eposdatamodel.LinkedEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryRelationsAPI extends AbstractRelationsAPI {
@@ -17,6 +18,7 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
             }
         }
         CategoryAPI categoryAPI = new CategoryAPI("Category", Category.class);
+        edmobj.setEquipmentCategoriesByInstanceId(new ArrayList<>());
         for(org.epos.eposdatamodel.Category category : obj.getCategory()){
             List<Category> list = dbaccess.getOneFromDBByInstanceId(category.getInstanceId(),Category.class);
             Category category1 = null;
@@ -31,6 +33,10 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
             pi.setEquipmentInstanceId(edmobj.getInstanceId());
             pi.setCategoryInstanceId(category1.getInstanceId());
             pi.setCategoryByCategoryInstanceId(category1);
+
+            edmobj.getEquipmentCategoriesByInstanceId().add(pi);
+
+            dbaccess.createObject(pi);
         }
     }
 
@@ -42,6 +48,7 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
             }
         }
         CategoryAPI categoryAPI = new CategoryAPI("Category", Category.class);
+        edmobj.setFacilityCategoriesByInstanceId(new ArrayList<>());
         for (org.epos.eposdatamodel.Category category : obj.getCategory()) {
             List<Category> list = dbaccess.getOneFromDBByInstanceId(category.getInstanceId(), Category.class);
             Category category1 = null;
@@ -56,6 +63,10 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
             pi.setFacilityInstanceId(edmobj.getInstanceId());
             pi.setCategoryInstanceId(category1.getInstanceId());
             pi.setCategoryByCategoryInstanceId(category1);
+
+            edmobj.getFacilityCategoriesByInstanceId().add(pi);
+
+            dbaccess.createObject(pi);
         }
     }
 
@@ -67,6 +78,7 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
             }
         }
         CategoryAPI categoryAPI = new CategoryAPI("Category", Category.class);
+        edmobj.setDataproductCategoriesByInstanceId(new ArrayList<>());
         for (org.epos.eposdatamodel.Category category : obj.getCategory()) {
             List<Category> list = dbaccess.getOneFromDBByInstanceId(category.getInstanceId(), Category.class);
             Category category1 = null;
@@ -81,6 +93,8 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
             pi.setDataproductInstanceId(edmobj.getInstanceId());
             pi.setCategoryInstanceId(category1.getInstanceId());
             pi.setCategoryByCategoryInstanceId(category1);
+            edmobj.getDataproductCategoriesByInstanceId().add(pi);
+            dbaccess.createObject(pi);
         }
     }
 
@@ -92,6 +106,7 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
             }
         }
         CategoryAPI categoryAPI = new CategoryAPI("Category", Category.class);
+        edmobj.setWebserviceCategoriesByInstanceId(new ArrayList<>());
         for (org.epos.eposdatamodel.Category category : obj.getCategory()) {
             List<Category> list = dbaccess.getOneFromDBByInstanceId(category.getInstanceId(), Category.class);
             Category category1 = null;
@@ -106,6 +121,8 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
             pi.setWebserviceInstanceId(edmobj.getInstanceId());
             pi.setCategoryInstanceId(category1.getInstanceId());
             pi.setCategoryByCategoryInstanceId(category1);
+            edmobj.getWebserviceCategoriesByInstanceId().add(pi);
+            dbaccess.createObject(pi);
         }
     }
 
@@ -117,6 +134,7 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
             }
         }
         CategoryAPI categoryAPI = new CategoryAPI("Category", Category.class);
+        edmobj.setSoftwaresourcecodeCategoriesByInstanceId(new ArrayList<>());
         for (org.epos.eposdatamodel.Category category : obj.getCategory()) {
             List<Category> list = dbaccess.getOneFromDBByInstanceId(category.getInstanceId(), Category.class);
             Category category1 = null;
@@ -131,6 +149,8 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
             pi.setSoftwaresourcecodeInstanceId(edmobj.getInstanceId());
             pi.setCategoryInstanceId(category1.getInstanceId());
             pi.setCategoryByCategoryInstanceId(category1);
+            edmobj.getSoftwaresourcecodeCategoriesByInstanceId().add(pi);
+            dbaccess.createObject(pi);
         }
     }
 
@@ -142,6 +162,7 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
             }
         }
         CategoryAPI categoryAPI = new CategoryAPI("Category", Category.class);
+        edmobj.setSoftwareapplicationCategoriesByInstanceId(new ArrayList<>());
         for (org.epos.eposdatamodel.Category category : obj.getCategory()) {
             List<Category> list = dbaccess.getOneFromDBByInstanceId(category.getInstanceId(), Category.class);
             Category category1 = null;
@@ -156,6 +177,8 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
             pi.setSoftwareapplicationInstanceId(edmobj.getInstanceId());
             pi.setCategoryInstanceId(category1.getInstanceId());
             pi.setCategoryByCategoryInstanceId(category1);
+            edmobj.getSoftwareapplicationCategoriesByInstanceId().add(pi);
+            dbaccess.createObject(pi);
         }
     }
 }

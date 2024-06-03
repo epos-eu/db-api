@@ -6,6 +6,7 @@ import commonapis.VersioningStatusAPI;
 import model.*;
 import org.epos.eposdatamodel.LinkedEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -53,16 +54,18 @@ public class MappingAPI extends AbstractAPI<org.epos.eposdatamodel.Mapping> {
         edmobj.setProperty(obj.getProperty());
 
 
-        if(returnList.isEmpty()) getDbaccess().createObject(edmobj);
-        else getDbaccess().updateObject(edmobj);
-
-
         /** RETURNS **/
+
+        edmobj.setMappingElementsByInstanceId(new ArrayList<>());
         if(!obj.getParamValue().isEmpty()){
             for(String paramvalue : obj.getParamValue()) {
                 createInnerElement(ElementType.PARAMVALUE, paramvalue, edmobj);
             }
         }
+
+
+        if(returnList.isEmpty()) getDbaccess().createObject(edmobj);
+        else getDbaccess().updateObject(edmobj);
 
         return new LinkedEntity().entityType(entityName)
                     .instanceId(edmobj.getInstanceId())
@@ -75,7 +78,7 @@ public class MappingAPI extends AbstractAPI<org.epos.eposdatamodel.Mapping> {
         org.epos.eposdatamodel.Element element = new org.epos.eposdatamodel.Element();
         element.setType(elementType);
         element.setValue(value);
-        ElementAPI api = new ElementAPI("Element", Element.class);
+        ElementAPI api = new ElementAPI(EntityNames.ELEMENT.name(), Element.class);
         LinkedEntity le = api.create(element);
         List<Element> el = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Element.class);
         MappingElement ce = new MappingElement();
@@ -83,6 +86,10 @@ public class MappingAPI extends AbstractAPI<org.epos.eposdatamodel.Mapping> {
         ce.setMappingInstanceId(edmobj.getInstanceId());
         ce.setElementByElementInstanceId(el.get(0));
         ce.setElementInstanceId(el.get(0).getInstanceId());
+
+        edmobj.getMappingElementsByInstanceId().add(ce);
+
+        dbaccess.createObject(ce);
     }
 
 

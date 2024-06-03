@@ -12,6 +12,7 @@ import relationsapi.CategoryRelationsAPI;
 import relationsapi.ContactPointRelationsAPI;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -61,8 +62,7 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
 
         /** PUBLISHER **/
         if (obj.getProvider() != null) {
-            List<DataproductPublisher> dataproductPublisherList = getDbaccess().getAllFromDB(DataproductPublisher.class);
-            OrganizationAPI organizationAPI = new OrganizationAPI("Organization", Organization.class);
+            OrganizationAPI organizationAPI = new OrganizationAPI(EntityNames.ORGANIZATION.name(), Organization.class);
             List<Organization> list = dbaccess.getOneFromDBByInstanceId(obj.getProvider().getInstanceId(),Organization.class);
             Organization organization1 = null;
             if(list.isEmpty()){
@@ -75,10 +75,6 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
             edmobj.setProvider(organization1.getInstanceId());
         }
 
-
-        if(returnList.isEmpty()) getDbaccess().createObject(edmobj);
-        else getDbaccess().updateObject(edmobj);
-
         /** CATEGORY **/
         if (obj.getCategory() != null && !obj.getCategory().isEmpty())
             CategoryRelationsAPI.createRelation(edmobj,obj);
@@ -89,6 +85,7 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
 
         /** DOCUMENTATION **/
         if(!obj.getDocumentation().isEmpty()){
+            edmobj.setWebserviceElementsByInstanceId(new ArrayList<>());
             for(Documentation documentation : obj.getDocumentation()) {
                 JsonObject documentationObj = new JsonObject();
                 documentationObj.addProperty("Title", documentation.getTitle());
@@ -107,7 +104,8 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
                     getDbaccess().deleteObject(item);
                 }
             }
-            SpatialAPI spatialAPI = new SpatialAPI("Spatial", Spatial.class);
+            SpatialAPI spatialAPI = new SpatialAPI(EntityNames.SPATIAL.name(), Spatial.class);
+            edmobj.setWebserviceSpatialsByInstanceId(new ArrayList<>());
             for(org.epos.eposdatamodel.Location location : obj.getSpatialExtent()){
                 List<Spatial> list = dbaccess.getOneFromDBByInstanceId(location.getInstanceId(),Spatial.class);
                 Spatial spatial = null;
@@ -122,6 +120,9 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
                 pi.setWebserviceInstanceId(edmobj.getInstanceId());
                 pi.setSpatialInstanceId(spatial.getInstanceId());
                 pi.setSpatialBySpatialInstanceId(spatial);
+
+                edmobj.getWebserviceSpatialsByInstanceId().add(pi);
+
                 dbaccess.createObject(pi);
             }
         }
@@ -134,7 +135,8 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
                     getDbaccess().deleteObject(item);
                 }
             }
-            TemporalAPI temporalAPI = new TemporalAPI("Temporal", Temporal.class);
+            TemporalAPI temporalAPI = new TemporalAPI(EntityNames.TEMPORAL.name(), Temporal.class);
+            edmobj.setWebserviceTemporalsByInstanceId(new ArrayList<>());
             for(org.epos.eposdatamodel.PeriodOfTime periodOfTime : obj.getTemporalExtent()){
                 List<Temporal> list = dbaccess.getOneFromDBByInstanceId(periodOfTime.getInstanceId(),Temporal.class);
                 Temporal temporal = null;
@@ -149,6 +151,9 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
                 pi.setWebserviceInstanceId(edmobj.getInstanceId());
                 pi.setTemporalInstanceId(temporal.getInstanceId());
                 pi.setTemporalByTemporalInstanceId(temporal);
+
+                edmobj.getWebserviceTemporalsByInstanceId().add(pi);
+
                 dbaccess.createObject(pi);
             }
         }
@@ -161,7 +166,8 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
                     getDbaccess().deleteObject(item);
                 }
             }
-            OperationAPI webServiceAPI = new OperationAPI("Operation", Operation.class);
+            OperationAPI webServiceAPI = new OperationAPI(EntityNames.OPERATION.name(), Operation.class);
+            edmobj.setOperationWebservicesByInstanceId(new ArrayList<>());
             for(org.epos.eposdatamodel.Operation operation : obj.getSupportedOperation()){
                 List<Operation> list = dbaccess.getOneFromDBByInstanceId(operation.getInstanceId(),Operation.class);
                 Operation operation1 = null;
@@ -177,6 +183,8 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
                 pi.setWebserviceInstanceId(edmobj.getInstanceId());
                 pi.setWebserviceByWebserviceInstanceId(edmobj);
 
+                edmobj.getOperationWebservicesByInstanceId().add(pi);
+
                 dbaccess.createObject(pi);
             }
         }
@@ -189,10 +197,14 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
                 pi.setWebserviceByWebserviceInstanceId(edmobj);
                 pi.setWebserviceInstanceId(edmobj.getInstanceId());
 
+                edmobj.setWebserviceRelationByInstanceId(pi);
+
                 dbaccess.createObject(pi);
             }
         }
 
+        if(returnList.isEmpty()) getDbaccess().createObject(edmobj);
+        else getDbaccess().updateObject(edmobj);
 
         return new LinkedEntity().entityType(entityName)
                     .instanceId(edmobj.getInstanceId())
@@ -205,7 +217,7 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
         org.epos.eposdatamodel.Element element = new org.epos.eposdatamodel.Element();
         element.setType(elementType);
         element.setValue(value);
-        ElementAPI api = new ElementAPI("Element", Element.class);
+        ElementAPI api = new ElementAPI(EntityNames.ELEMENT.name(), Element.class);
         LinkedEntity le = api.create(element);
         List<Element> el = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Element.class);
         WebserviceElement ce = new WebserviceElement();
@@ -213,6 +225,9 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
         ce.setWebserviceInstanceId(edmobj.getInstanceId());
         ce.setElementByElementInstanceId(el.get(0));
         ce.setElementInstanceId(el.get(0).getInstanceId());
+
+        edmobj.getWebserviceElementsByInstanceId().add(ce);
+
         dbaccess.createObject(ce);
     }
 
@@ -239,7 +254,7 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
 
         if(edmobj.getWebserviceCategoriesByInstanceId().size()>0) {
             for(WebserviceCategory ed : edmobj.getWebserviceCategoriesByInstanceId()) {
-                CategoryAPI api = new CategoryAPI("Category", Category.class);
+                CategoryAPI api = new CategoryAPI(EntityNames.CATEGORY.name(), Category.class);
                 org.epos.eposdatamodel.Category cp = api.retrieve(ed.getCategoryInstanceId());
                 o.addCategory(cp);
             }
@@ -247,14 +262,14 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
 
         if(edmobj.getWebserviceContactpointsByInstanceId().size()>0) {
             for(WebserviceContactpoint ed : edmobj.getWebserviceContactpointsByInstanceId()) {
-                ContactPointAPI api = new ContactPointAPI("ContactPoint", Contactpoint.class);
+                ContactPointAPI api = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), Contactpoint.class);
                 ContactPoint cp = api.retrieve(ed.getContactpointInstanceId());
                 o.addContactPoint(cp);
             }
         }
 
         if(edmobj.getProvider()!=null) {
-            OrganizationAPI api = new OrganizationAPI("Organization", Organization.class);
+            OrganizationAPI api = new OrganizationAPI(EntityNames.ORGANIZATION.name(), Organization.class);
             o.setProvider(api.retrieve(edmobj.getProvider()));
         }
 
@@ -274,7 +289,7 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
 
         if(edmobj.getWebserviceSpatialsByInstanceId().size()>0) {
             for(WebserviceSpatial ed : edmobj.getWebserviceSpatialsByInstanceId()) {
-                SpatialAPI api = new SpatialAPI("Spatial", Spatial.class);
+                SpatialAPI api = new SpatialAPI(EntityNames.SPATIAL.name(), Spatial.class);
                 org.epos.eposdatamodel.Location cp = api.retrieve(ed.getSpatialInstanceId());
                 o.addSpatialExtentItem(cp);
             }
@@ -282,7 +297,7 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
 
         if(edmobj.getWebserviceTemporalsByInstanceId().size()>0) {
             for(WebserviceTemporal ed : edmobj.getWebserviceTemporalsByInstanceId()) {
-                TemporalAPI api = new TemporalAPI("Temporal", Temporal.class);
+                TemporalAPI api = new TemporalAPI(EntityNames.TEMPORAL.name(), Temporal.class);
                 org.epos.eposdatamodel.PeriodOfTime cp = api.retrieve(ed.getTemporalInstanceId());
                 o.addTemporalExtent(cp);
             }
@@ -290,7 +305,7 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
 
         if(edmobj.getOperationWebservicesByInstanceId().size()>0) {
             for(OperationWebservice ed : edmobj.getOperationWebservicesByInstanceId()) {
-                OperationAPI api = new OperationAPI("Operation", Operation.class);
+                OperationAPI api = new OperationAPI(EntityNames.OPERATION.name(), Operation.class);
                 org.epos.eposdatamodel.Operation cp = api.retrieve(ed.getOperationInstanceId());
                 o.addSupportedOperation(cp);
             }

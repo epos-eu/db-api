@@ -13,6 +13,7 @@ import relationsapi.CategoryRelationsAPI;
 import relationsapi.ContactPointRelationsAPI;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -58,10 +59,6 @@ public class SoftwareSourceCodeAPI extends AbstractAPI<org.epos.eposdatamodel.So
         edmobj.setSoftwareversion(obj.getSoftwareVersion());
         edmobj.setCoderepository(obj.getCodeRepository());
 
-
-        if(returnList.isEmpty()) getDbaccess().createObject(edmobj);
-        else getDbaccess().updateObject(edmobj);
-
         /** CATEGORY **/
         if (obj.getCategory() != null && !obj.getCategory().isEmpty())
             CategoryRelationsAPI.createRelation(edmobj,obj);
@@ -80,7 +77,8 @@ public class SoftwareSourceCodeAPI extends AbstractAPI<org.epos.eposdatamodel.So
                     getDbaccess().deleteObject(list2.get(0));
                 }
             }
-            IdentifierAPI identifierAPI = new IdentifierAPI("Identifier", Identifier.class);
+            IdentifierAPI identifierAPI = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
+            edmobj.setSoftwaresourcecodeIdentifiersByInstanceId(new ArrayList<>());
             for(org.epos.eposdatamodel.Identifier identifier : obj.getIdentifier()){
                 LinkedEntity le = identifierAPI.create(identifier);
                 SoftwaresourcecodeIdentifier pi = new SoftwaresourcecodeIdentifier();
@@ -88,16 +86,23 @@ public class SoftwareSourceCodeAPI extends AbstractAPI<org.epos.eposdatamodel.So
                 pi.setSoftwaresourcecodeInstanceId(edmobj.getInstanceId());
                 pi.setIdentifierInstanceId(le.getInstanceId());
                 pi.setIdentifierByIdentifierInstanceId((Identifier) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(),Identifier.class).get(0));
+
+                edmobj.getSoftwaresourcecodeIdentifiersByInstanceId().add(pi);
+
                 dbaccess.createObject(pi);
             }
         }
 
+        edmobj.setSoftwaresourcecodeElementsByInstanceId(new ArrayList<>());
         /** PROGRAMMING LANGUAGE **/
         if(!obj.getProgrammingLanguage().isEmpty()){
             for(String returns : obj.getProgrammingLanguage()) {
                 createInnerElement(ElementType.PROGRAMMINGLANGUAGE, returns, edmobj);
             }
         }
+
+        if(returnList.isEmpty()) getDbaccess().createObject(edmobj);
+        else getDbaccess().updateObject(edmobj);
 
         return new LinkedEntity().entityType(entityName)
                     .instanceId(edmobj.getInstanceId())
@@ -110,7 +115,7 @@ public class SoftwareSourceCodeAPI extends AbstractAPI<org.epos.eposdatamodel.So
         org.epos.eposdatamodel.Element element = new org.epos.eposdatamodel.Element();
         element.setType(elementType);
         element.setValue(value);
-        ElementAPI api = new ElementAPI("Element", Element.class);
+        ElementAPI api = new ElementAPI(EntityNames.ELEMENT.name(), Element.class);
         LinkedEntity le = api.create(element);
         List<Element> el = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Element.class);
         SoftwaresourcecodeElement ce = new SoftwaresourcecodeElement();
@@ -118,6 +123,9 @@ public class SoftwareSourceCodeAPI extends AbstractAPI<org.epos.eposdatamodel.So
         ce.setSoftwaresourcecodeInstanceId(edmobj.getInstanceId());
         ce.setElementByElementInstanceId(el.get(0));
         ce.setElementInstanceId(el.get(0).getInstanceId());
+
+        edmobj.getSoftwaresourcecodeElementsByInstanceId().add(ce);
+
         dbaccess.createObject(ce);
     }
 
@@ -143,7 +151,7 @@ public class SoftwareSourceCodeAPI extends AbstractAPI<org.epos.eposdatamodel.So
 
         if(edmobj.getSoftwaresourcecodeCategoriesByInstanceId().size()>0) {
             for(SoftwaresourcecodeCategory ed : edmobj.getSoftwaresourcecodeCategoriesByInstanceId()) {
-                CategoryAPI api = new CategoryAPI("Category", Category.class);
+                CategoryAPI api = new CategoryAPI(EntityNames.CATEGORY.name(), Category.class);
                 org.epos.eposdatamodel.Category cp = api.retrieve(ed.getCategoryInstanceId());
                 o.addCategory(cp);
             }
@@ -151,7 +159,7 @@ public class SoftwareSourceCodeAPI extends AbstractAPI<org.epos.eposdatamodel.So
 
         if(edmobj.getSoftwaresourcecodeContactpointsByInstanceId().size()>0) {
             for(SoftwaresourcecodeContactpoint ed : edmobj.getSoftwaresourcecodeContactpointsByInstanceId()) {
-                ContactPointAPI api = new ContactPointAPI("ContactPoint", Contactpoint.class);
+                ContactPointAPI api = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), Contactpoint.class);
                 ContactPoint cp = api.retrieve(ed.getContactpointInstanceId());
                 o.addContactPoint(cp);
             }
@@ -159,7 +167,7 @@ public class SoftwareSourceCodeAPI extends AbstractAPI<org.epos.eposdatamodel.So
 
         if(edmobj.getSoftwaresourcecodeIdentifiersByInstanceId().size()>0) {
             for(SoftwaresourcecodeIdentifier ed : edmobj.getSoftwaresourcecodeIdentifiersByInstanceId()) {
-                IdentifierAPI api = new IdentifierAPI("Identifier", Identifier.class);
+                IdentifierAPI api = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
                 org.epos.eposdatamodel.Identifier cp = api.retrieve(ed.getIdentifierInstanceId());
                 o.addIdentifier(cp);
             }

@@ -53,7 +53,7 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
 
         /** MAPPING TODO: CHECK IF DELETE **/
         if (obj.getMapping() != null && !obj.getMapping().isEmpty()) {
-            MappingAPI mappingAPI = new MappingAPI("Mapping", Mapping.class);
+            MappingAPI mappingAPI = new MappingAPI(EntityNames.MAPPING.name(), Mapping.class);
             List<Mapping> mappingList = new ArrayList<>();
             for(org.epos.eposdatamodel.Mapping mapping : obj.getMapping()){
                 List<Mapping> list = dbaccess.getOneFromDBByInstanceId(mapping.getInstanceId(),Mapping.class);
@@ -69,10 +69,6 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
             edmobj.setMappingsByInstanceId(mappingList);
         }
 
-
-        if(returnList.isEmpty()) getDbaccess().createObject(edmobj);
-        else getDbaccess().updateObject(edmobj);
-
         if (obj.getWebservice() != null && !obj.getWebservice().isEmpty()) {
             List<OperationWebservice> operationWebserviceList = getDbaccess().getAllFromDB(OperationWebservice.class);
             for(OperationWebservice item : operationWebserviceList){
@@ -80,7 +76,8 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
                     getDbaccess().deleteObject(item);
                 }
             }
-            WebServiceAPI webServiceAPI = new WebServiceAPI("WebService", Webservice.class);
+            WebServiceAPI webServiceAPI = new WebServiceAPI(EntityNames.WEBSERVICE.name(), Webservice.class);
+            edmobj.setOperationWebservicesByInstanceId(new ArrayList<>());
             for(org.epos.eposdatamodel.WebService webService : obj.getWebservice()){
                 List<Webservice> list = dbaccess.getOneFromDBByInstanceId(webService.getInstanceId(),Webservice.class);
                 Webservice webservice = null;
@@ -95,15 +92,24 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
                 pi.setOperationInstanceId(edmobj.getInstanceId());
                 pi.setWebserviceInstanceId(webservice.getInstanceId());
                 pi.setWebserviceByWebserviceInstanceId(webservice);
+
+                edmobj.getOperationWebservicesByInstanceId().add(pi);
+
+                dbaccess.createObject(pi);
             }
         }
 
+        edmobj.setOperationElementsByInstanceId(new ArrayList<>());
         /** RETURNS **/
         if(!obj.getReturns().isEmpty()){
             for(String returns : obj.getReturns()) {
                 createInnerElement(ElementType.RETURNS, returns, edmobj);
             }
         }
+
+
+        if(returnList.isEmpty()) getDbaccess().createObject(edmobj);
+        else getDbaccess().updateObject(edmobj);
 
         return new LinkedEntity().entityType(entityName)
                     .instanceId(edmobj.getInstanceId())
@@ -116,7 +122,7 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
         org.epos.eposdatamodel.Element element = new org.epos.eposdatamodel.Element();
         element.setType(elementType);
         element.setValue(value);
-        ElementAPI api = new ElementAPI("Element", Element.class);
+        ElementAPI api = new ElementAPI(EntityNames.ELEMENT.name(), Element.class);
         LinkedEntity le = api.create(element);
         List<Element> el = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Element.class);
         OperationElement ce = new OperationElement();
@@ -124,6 +130,10 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
         ce.setOperationInstanceId(edmobj.getInstanceId());
         ce.setElementByElementInstanceId(el.get(0));
         ce.setElementInstanceId(el.get(0).getInstanceId());
+
+        edmobj.getOperationElementsByInstanceId().add(ce);
+
+        dbaccess.createObject(ce);
     }
 
 
@@ -150,7 +160,7 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
         if(edmobj.getMappingsByInstanceId().size()>0) {
             for(Mapping ed : edmobj.getMappingsByInstanceId()) {
 
-                MappingAPI api = new MappingAPI("Mapping", Mapping.class);
+                MappingAPI api = new MappingAPI(EntityNames.MAPPING.name(), Mapping.class);
                 o.addMapping(api.retrieve(ed.getInstanceId()));
             }
         }
