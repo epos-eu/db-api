@@ -1,6 +1,8 @@
 package commonapis;
 
 import abstractapis.AbstractAPI;
+import metadataapis.EntityNames;
+import model.Address;
 import model.Element;
 import org.epos.eposdatamodel.LinkedEntity;
 
@@ -61,6 +63,19 @@ public class ElementAPI extends AbstractAPI<org.epos.eposdatamodel.Element> {
         o.setUid(edmobj.getUid());
         o.setType(edmobj.getType());
         o.setValue(edmobj.getValue());
+
+        return o;
+    }
+
+    @Override
+    public LinkedEntity retrieveLinkedEntity(String instanceId) {
+        Address edmobj = (Address) getDbaccess().getOneFromDBByInstanceId(instanceId, Address.class).get(0);
+
+        LinkedEntity o = new LinkedEntity();
+        o.setInstanceId(edmobj.getInstanceId());
+        o.setMetaId(edmobj.getMetaId());
+        o.setUid(edmobj.getUid());
+        o.setEntityType(EntityNames.ELEMENT.name());
 
         return o;
     }

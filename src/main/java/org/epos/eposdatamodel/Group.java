@@ -1,12 +1,26 @@
 package org.epos.eposdatamodel;
 
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import model.AuthorizationGroup;
+import model.MetadataGroupUser;
+
+import java.util.Collection;
 import java.util.Objects;
 
 public class Group {
-    private String name;
+
     private String id;
+    private String name;
     private String description;
-    private Role role;
+
+    public Group(String id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
 
     public String getId() {
         return id;
@@ -32,34 +46,25 @@ public class Group {
         this.description = description;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    @Override
-    public String toString() {
-        return "Group{" +
-                "name='" + name + '\'' +
-                ", id='" + id + '\'' +
-                ", description='" + description + '\'' +
-                ", role=" + role +
-                '}';
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Group group = (Group) o;
-        return Objects.equals(getName(), group.getName()) && Objects.equals(getId(), group.getId()) && Objects.equals(getDescription(), group.getDescription()) && getRole() == group.getRole();
+        return Objects.equals(id, group.id) && Objects.equals(name, group.name) && Objects.equals(description, group.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getId(), getDescription(), getRole());
+        return Objects.hash(id, name, description);
+    }
+
+    @Override
+    public String toString() {
+        return "Group{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

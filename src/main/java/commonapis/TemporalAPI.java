@@ -1,6 +1,8 @@
 package commonapis;
 
 import abstractapis.AbstractAPI;
+import metadataapis.EntityNames;
+import model.Address;
 import model.Element;
 import model.Spatial;
 import model.Temporal;
@@ -63,6 +65,19 @@ public class TemporalAPI extends AbstractAPI<org.epos.eposdatamodel.PeriodOfTime
         o.setUid(edmobj.getUid());
         o.setStartDate(edmobj.getStartdate().toLocalDateTime());
         o.setEndDate(edmobj.getEnddate().toLocalDateTime());
+
+        return o;
+    }
+
+    @Override
+    public LinkedEntity retrieveLinkedEntity(String instanceId) {
+        Temporal edmobj = (Temporal) getDbaccess().getOneFromDBByInstanceId(instanceId, Temporal.class).get(0);
+
+        LinkedEntity o = new LinkedEntity();
+        o.setInstanceId(edmobj.getInstanceId());
+        o.setMetaId(edmobj.getMetaId());
+        o.setUid(edmobj.getUid());
+        o.setEntityType(EntityNames.TEMPORAL.name());
 
         return o;
     }

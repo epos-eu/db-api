@@ -77,6 +77,26 @@ public class LinkedEntityAPI {
                 edmClass = Softwareapplication.class;
                 api = new SoftwareApplicationAPI(obj.getEntityType(), edmClass);
                 break;
+            case ADDRESS:
+                edmClass = Address.class;
+                api = new AddressAPI(obj.getEntityType(), edmClass);
+                break;
+            case ELEMENT:
+                edmClass = Element.class;
+                api = new ElementAPI(obj.getEntityType(), edmClass);
+                break;
+            case SPATIAL:
+                edmClass = Spatial.class;
+                api = new SpatialAPI(obj.getEntityType(), edmClass);
+                break;
+            case TEMPORAL:
+                edmClass = Temporal.class;
+                api = new TemporalAPI(obj.getEntityType(), edmClass);
+                break;
+            case IDENTIFIER:
+                edmClass = Identifier.class;
+                api = new IdentifierAPI(obj.getEntityType(), edmClass);
+                break;
         }
 
         List<Versioningstatus> returnList = getDbaccess().getOneFromDB(

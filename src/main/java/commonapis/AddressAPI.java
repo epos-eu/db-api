@@ -1,8 +1,11 @@
 package commonapis;
 
 import abstractapis.AbstractAPI;
+import metadataapis.EntityNames;
 import model.Address;
+import model.Category;
 import model.Identifier;
+import org.apache.commons.math3.analysis.function.Add;
 import org.epos.eposdatamodel.LinkedEntity;
 
 import java.util.List;
@@ -66,6 +69,19 @@ public class AddressAPI extends AbstractAPI<org.epos.eposdatamodel.Address> {
         o.setPostalCode(edmobj.getPostalCode());
         o.setCountryCode(edmobj.getCountrycode());
         o.setLocality(edmobj.getLocality());
+
+        return o;
+    }
+
+    @Override
+    public LinkedEntity retrieveLinkedEntity(String instanceId) {
+        Address edmobj = (Address) getDbaccess().getOneFromDBByInstanceId(instanceId, Address.class).get(0);
+
+        LinkedEntity o = new LinkedEntity();
+        o.setInstanceId(edmobj.getInstanceId());
+        o.setMetaId(edmobj.getMetaId());
+        o.setUid(edmobj.getUid());
+        o.setEntityType(EntityNames.ADDRESS.name());
 
         return o;
     }

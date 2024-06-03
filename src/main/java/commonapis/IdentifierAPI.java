@@ -1,6 +1,8 @@
 package commonapis;
 
 import abstractapis.AbstractAPI;
+import metadataapis.EntityNames;
+import model.Address;
 import model.Identifier;
 import org.epos.eposdatamodel.LinkedEntity;
 
@@ -62,6 +64,17 @@ public class IdentifierAPI extends AbstractAPI<org.epos.eposdatamodel.Identifier
 
         return o;
     }
+    @Override
+    public LinkedEntity retrieveLinkedEntity(String instanceId) {
+        Identifier edmobj = (Identifier) getDbaccess().getOneFromDBByInstanceId(instanceId, Identifier.class).get(0);
 
+        LinkedEntity o = new LinkedEntity();
+        o.setInstanceId(edmobj.getInstanceId());
+        o.setMetaId(edmobj.getMetaId());
+        o.setUid(edmobj.getUid());
+        o.setEntityType(EntityNames.IDENTIFIER.name());
+
+        return o;
+    }
 
 }

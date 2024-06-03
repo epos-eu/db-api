@@ -1,5 +1,7 @@
 package org.epos.eposdatamodel;
 
+import model.RoleType;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -55,21 +57,6 @@ public class Person extends EPOSDataModelEntity {
      * This property contains the telephone number of the Person.
      **/
     private List<String> telephone;
-
-    /**
-     * Role of the person/user this is a temporary property
-     */
-    private Role role;
-
-    /**
-     * Auth Identifier of the person/user, it is the eduIdentifier assigned by the AAAI
-     */
-    private String authIdentifier;
-
-    /**
-     * list of group of the user
-     */
-    private List<Group> authorizedGroup;
 
     public void addQualifications(String qualification) {
         if (this.qualifications == null) {
@@ -313,31 +300,6 @@ public class Person extends EPOSDataModelEntity {
     public void setAffiliation(List<LinkedEntity> affiliation) {
         this.affiliation = affiliation;
     }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public String getAuthIdentifier() {
-        return authIdentifier;
-    }
-
-    public void setAuthIdentifier(String authIdentifier) {
-        this.authIdentifier = authIdentifier;
-    }
-
-    public List<Group> getAuthorizedGroup() {
-        return authorizedGroup;
-    }
-
-    public void setAuthorizedGroup(List<Group> authorizedGroup) {
-        this.authorizedGroup = authorizedGroup;
-    }
-
     @Override
     public String toString() {
         return "Person{" +
@@ -350,9 +312,6 @@ public class Person extends EPOSDataModelEntity {
                 ", identifier=" + identifier +
                 ", qualifications=" + qualifications +
                 ", telephone=" + telephone +
-                ", role='" + role + '\'' +
-                ", authIdentifier='" + authIdentifier + '\'' +
-                ", authorizedGroup=" + authorizedGroup +
                 "} " + super.toString();
     }
 
@@ -362,11 +321,11 @@ public class Person extends EPOSDataModelEntity {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Person person = (Person) o;
-        return Objects.equals(getAddress(), person.getAddress()) && Objects.equals(getAffiliation(), person.getAffiliation()) && Objects.equals(getCVURL(), person.getCVURL()) && Objects.equals(getEmail(), person.getEmail()) && Objects.equals(getFamilyName(), person.getFamilyName()) && Objects.equals(getGivenName(), person.getGivenName()) && Objects.equals(getIdentifier(), person.getIdentifier()) && Objects.equals(getQualifications(), person.getQualifications()) && Objects.equals(getTelephone(), person.getTelephone()) && Objects.equals(getRole(), person.getRole()) && Objects.equals(getAuthIdentifier(), person.getAuthIdentifier());
+        return Objects.equals(getAddress(), person.getAddress()) && Objects.equals(getAffiliation(), person.getAffiliation()) && Objects.equals(getCVURL(), person.getCVURL()) && Objects.equals(getEmail(), person.getEmail()) && Objects.equals(getFamilyName(), person.getFamilyName()) && Objects.equals(getGivenName(), person.getGivenName()) && Objects.equals(getIdentifier(), person.getIdentifier()) && Objects.equals(getQualifications(), person.getQualifications()) && Objects.equals(getTelephone(), person.getTelephone());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getAddress(), getAffiliation(), getCVURL(), getEmail(), getFamilyName(), getGivenName(), getIdentifier(), getQualifications(), getTelephone(), getRole(), getAuthIdentifier());
+        return Objects.hash(super.hashCode(), getAddress(), getAffiliation(), getCVURL(), getEmail(), getFamilyName(), getGivenName(), getIdentifier(), getQualifications(), getTelephone());
     }
 }

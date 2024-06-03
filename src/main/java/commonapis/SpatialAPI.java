@@ -1,6 +1,8 @@
 package commonapis;
 
 import abstractapis.AbstractAPI;
+import metadataapis.EntityNames;
+import model.Address;
 import model.Element;
 import model.Spatial;
 import org.epos.eposdatamodel.LinkedEntity;
@@ -63,5 +65,17 @@ public class SpatialAPI extends AbstractAPI<org.epos.eposdatamodel.Location> {
         return o;
     }
 
+    @Override
+    public LinkedEntity retrieveLinkedEntity(String instanceId) {
+        Spatial edmobj = (Spatial) getDbaccess().getOneFromDBByInstanceId(instanceId, Spatial.class).get(0);
+
+        LinkedEntity o = new LinkedEntity();
+        o.setInstanceId(edmobj.getInstanceId());
+        o.setMetaId(edmobj.getMetaId());
+        o.setUid(edmobj.getUid());
+        o.setEntityType(EntityNames.SPATIAL.name());
+
+        return o;
+    }
 
 }

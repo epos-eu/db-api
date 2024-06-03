@@ -27,14 +27,12 @@
     	<class>model.Mapping</class>
     	<class>model.MetadataGroup</class>
     	<class>model.MetadataGroupUser</class>
-    	<class>model.MetadataGroupUserPK</class>
     	<class>model.Operation</class>
     	<class>model.Organization</class>
     	<class>model.OrganizationLegalname</class>
     	<class>model.OrganizationOwns</class>
     	<class>model.Person</class>
     	<class>model.Publication</class>
-    	<class>model.Role</class>
     	<class>model.Service</class>
     	<class>model.ServiceProvider</class>
     	<class>model.Softwareapplication</class>
@@ -105,121 +103,6 @@
 		<class>model.WebserviceIdentifier</class>
 		<class>model.WebserviceSpatial</class>
 		<class>model.WebserviceTemporal</class>
-        <class>temp.PgForeignDataWrappers</class>
-        <class>temp.Address</class>
-        <class>temp.AuthorizationGroup</class>
-        <class>temp.Category</class>
-        <class>temp.CategoryHastopconcept</class>
-        <class>temp.CategoryIspartof</class>
-        <class>temp.CategoryScheme</class>
-        <class>temp.Contactpoint</class>
-        <class>temp.ContactpointElement</class>
-        <class>temp.ConvDesc</class>
-        <class>temp.ConvInvocationDesc</class>
-        <class>temp.Dataproduct</class>
-        <class>temp.DataproductCategory</class>
-        <class>temp.DataproductContactpoint</class>
-        <class>temp.DataproductDescription</class>
-        <class>temp.DataproductHaspart</class>
-        <class>temp.DataproductIdentifier</class>
-        <class>temp.DataproductIspartof</class>
-        <class>temp.DataproductProvenance</class>
-        <class>temp.DataproductPublisher</class>
-        <class>temp.DataproductRelation</class>
-        <class>temp.DataproductSpatial</class>
-        <class>temp.DataproductTemporal</class>
-        <class>temp.DataproductTitle</class>
-        <class>temp.Distribution</class>
-        <class>temp.DistributionDataproduct</class>
-        <class>temp.DistributionDescription</class>
-        <class>temp.DistributionElement</class>
-        <class>temp.DistributionTitle</class>
-        <class>temp.EdmEntityId</class>
-        <class>temp.Element</class>
-        <class>temp.Equipment</class>
-        <class>temp.EquipmentCategory</class>
-        <class>temp.EquipmentContactpoint</class>
-        <class>temp.EquipmentElement</class>
-        <class>temp.EquipmentIspartof</class>
-        <class>temp.EquipmentRelation</class>
-        <class>temp.EquipmentSpatial</class>
-        <class>temp.EquipmentTemporal</class>
-        <class>temp.Facility</class>
-        <class>temp.FacilityAddress</class>
-        <class>temp.FacilityCategory</class>
-        <class>temp.FacilityContactpoint</class>
-        <class>temp.FacilityElement</class>
-        <class>temp.FacilityIspartof</class>
-        <class>temp.FacilitySpatial</class>
-        <class>temp.Identifier</class>
-        <class>temp.Mapping</class>
-        <class>temp.MappingElement</class>
-        <class>temp.MetadataGroup</class>
-        <class>temp.MetadataGroupUser</class>
-        <class>temp.Operation</class>
-        <class>temp.OperationDistribution</class>
-        <class>temp.OperationElement</class>
-        <class>temp.OperationWebservice</class>
-        <class>temp.Organization</class>
-        <class>temp.OrganizationAffiliation</class>
-        <class>temp.OrganizationContactpoint</class>
-        <class>temp.OrganizationElement</class>
-        <class>temp.OrganizationIdentifier</class>
-        <class>temp.OrganizationLegalname</class>
-        <class>temp.OrganizationMemberof</class>
-        <class>temp.OrganizationOwns</class>
-        <class>temp.Person</class>
-        <class>temp.PersonElement</class>
-        <class>temp.PersonIdentifier</class>
-        <class>temp.PluginHeader</class>
-        <class>temp.PluginStatus</class>
-        <class>temp.ProcessingUnit</class>
-        <class>temp.Publication</class>
-        <class>temp.PublicationCategory</class>
-        <class>temp.PublicationContributor</class>
-        <class>temp.PublicationIdentifier</class>
-        <class>temp.RepoPluginArtifact</class>
-        <class>temp.ResourceItem</class>
-        <class>temp.Role</class>
-        <class>temp.Service</class>
-        <class>temp.ServiceCategory</class>
-        <class>temp.ServiceContactpoint</class>
-        <class>temp.ServiceIdentifier</class>
-        <class>temp.ServiceProvider</class>
-        <class>temp.ServiceSpatial</class>
-        <class>temp.ServiceTemporal</class>
-        <class>temp.Softwareapplication</class>
-        <class>temp.SoftwareapplicationCategory</class>
-        <class>temp.SoftwareapplicationContactpoint</class>
-        <class>temp.SoftwareapplicationIdentifier</class>
-        <class>temp.SoftwareapplicationOperation</class>
-        <class>temp.SoftwareapplicationParameters</class>
-        <class>temp.Softwaresourcecode</class>
-        <class>temp.SoftwaresourcecodeCategory</class>
-        <class>temp.SoftwaresourcecodeContactpoint</class>
-        <class>temp.SoftwaresourcecodeElement</class>
-        <class>temp.SoftwaresourcecodeIdentifier</class>
-        <class>temp.Spatial</class>
-        <class>temp.SpatialRefSys</class>
-        <class>temp.Temporal</class>
-        <class>temp.UsGaz</class>
-        <class>temp.UsLex</class>
-        <class>temp.UsRules</class>
-        <class>temp.User</class>
-        <class>temp.Versioningstatus</class>
-        <class>temp.Webservice</class>
-        <class>temp.WebserviceCategory</class>
-        <class>temp.WebserviceContactpoint</class>
-        <class>temp.WebserviceDistribution</class>
-        <class>temp.WebserviceElement</class>
-        <class>temp.WebserviceIdentifier</class>
-        <class>temp.WebserviceRelation</class>
-        <class>temp.WebserviceSpatial</class>
-        <class>temp.WebserviceTemporal</class>
-        <class>temp.GeographyColumns</class>
-        <class>temp.GeometryColumns</class>
-        <class>temp.RasterColumns</class>
-        <class>temp.RasterOverviews</class>
         <properties>
             <property name="eclipselink.jdbc.url" value="jdbc:postgresql://localhost:5432/cerif"/>
             <property name="eclipselink.jdbc.driver" value="org.postgresql.Driver"/>
