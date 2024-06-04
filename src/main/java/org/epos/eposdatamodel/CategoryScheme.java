@@ -35,9 +35,9 @@ public class CategoryScheme extends EPOSDataModelEntity {
     
     
     /**
-     * This property contains a name of the category scheme.
+     *  Relates a list of resources of type CATEGORY
      */
-    private List<String> topconcepts;
+    private List<LinkedEntity> topconcepts;
     
     
     /**
@@ -110,17 +110,17 @@ public class CategoryScheme extends EPOSDataModelEntity {
 		this.orderitemnumber = orderitemnumber;
 	}
 
-	public List<String> getTopConcepts() {
+	public List<LinkedEntity> getTopConcepts() {
 		return topconcepts;
 	}
 
-	public void setTopConcepts(List<String> topconcepts) {
+	public void setTopConcepts(List<LinkedEntity> topconcepts) {
 		this.topconcepts = topconcepts;
 	}
 	
-	public void addTopConcepts(String topconcepts) {
+	public void addTopConcepts(LinkedEntity topconcepts) {
         if (this.getTopConcepts() == null) {
-            ArrayList<String> broaders = new ArrayList<>();
+            ArrayList<LinkedEntity> broaders = new ArrayList<>();
             broaders.add(topconcepts);
             this.setTopConcepts(broaders);
         } else {

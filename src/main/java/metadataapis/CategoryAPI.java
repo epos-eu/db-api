@@ -61,7 +61,7 @@ public class CategoryAPI extends AbstractAPI<org.epos.eposdatamodel.Category> {
 
     }
 
-    private void createInscheme(org.epos.eposdatamodel.CategoryScheme inscheme, Category edmobj){
+    private void createInscheme(LinkedEntity inscheme, Category edmobj){
         CategorySchemeAPI api = new CategorySchemeAPI(EntityNames.CATEGORYSCHEME.name(), CategoryScheme.class);
         org.epos.eposdatamodel.CategoryScheme childObj = new org.epos.eposdatamodel.CategoryScheme();
         childObj.setInstanceId(inscheme.getInstanceId());
@@ -72,8 +72,8 @@ public class CategoryAPI extends AbstractAPI<org.epos.eposdatamodel.Category> {
 
     }
 
-    private void createBroaders(List<org.epos.eposdatamodel.Category> broaders, Category edmobj){
-        for(org.epos.eposdatamodel.Category broader : broaders) {
+    private void createBroaders(List<LinkedEntity> broaders, Category edmobj){
+        for(LinkedEntity broader : broaders) {
             org.epos.eposdatamodel.Category childObj = new org.epos.eposdatamodel.Category();
             childObj.setInstanceId(broader.getInstanceId());
             childObj.setMetaId(broader.getMetaId());
@@ -100,9 +100,9 @@ public class CategoryAPI extends AbstractAPI<org.epos.eposdatamodel.Category> {
         }
     }
 
-    private void createNarrowers(List<org.epos.eposdatamodel.Category> narrowers, Category edmobj){
+    private void createNarrowers(List<LinkedEntity> narrowers, Category edmobj){
         CategoryAPI api = new CategoryAPI(EntityNames.CATEGORY.name(), Category.class);
-        for(org.epos.eposdatamodel.Category narrower : narrowers) {
+        for(LinkedEntity narrower : narrowers) {
             org.epos.eposdatamodel.Category childObj = new org.epos.eposdatamodel.Category();
             childObj.setInstanceId(narrower.getInstanceId());
             childObj.setMetaId(narrower.getMetaId());
@@ -141,24 +141,24 @@ public class CategoryAPI extends AbstractAPI<org.epos.eposdatamodel.Category> {
         o.setDescription(edmobj.getDescription());
         if(edmobj.getInScheme()!=null){
             CategorySchemeAPI csapi = new CategorySchemeAPI(EntityNames.CATEGORYSCHEME.name(), CategoryScheme.class);
-            o.setInScheme(csapi.retrieve(edmobj.getInScheme()));
+            o.setInScheme(csapi.retrieveLinkedEntity(edmobj.getInScheme()));
         }
 
         edmobj.getCategoryIspartofsByInstanceId_0().isEmpty();
         edmobj.getCategoryIspartofsByInstanceId().isEmpty();
 
         if(edmobj.getCategoryIspartofsByInstanceId_0().size()>0) {
-            ArrayList<org.epos.eposdatamodel.Category> broaders = new ArrayList<>();
+            ArrayList<LinkedEntity> broaders = new ArrayList<>();
             for(CategoryIspartof ed : edmobj.getCategoryIspartofsByInstanceId_0()) {
-                broaders.add(retrieve(ed.getCategory1InstanceId()));
+                broaders.add(retrieveLinkedEntity(ed.getCategory1InstanceId()));
             }
             o.setBroader(broaders);
         }
 
         if(edmobj.getCategoryIspartofsByInstanceId().size()>0) {
-            ArrayList<org.epos.eposdatamodel.Category> narrowers = new ArrayList<>();
+            ArrayList<LinkedEntity> narrowers = new ArrayList<>();
             for(CategoryIspartof ed : edmobj.getCategoryIspartofsByInstanceId()) {
-                narrowers.add(retrieve(ed.getCategory2InstanceId()));
+                narrowers.add(retrieveLinkedEntity(ed.getCategory2InstanceId()));
             }
             o.setNarrower(narrowers);
         }

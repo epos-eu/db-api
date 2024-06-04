@@ -104,11 +104,11 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
                 }
             }
             edmobj.setFacilityIspartofsByInstanceId(new ArrayList<>());
-            for(org.epos.eposdatamodel.Facility facility : obj.getIsPartOf()){
+            for(LinkedEntity facility : obj.getIsPartOf()){
                 List<Facility> list = dbaccess.getOneFromDBByInstanceId(facility.getInstanceId(),Facility.class);
                 Facility facility1 = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = create(facility);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(facility);
                     facility1 = (Facility) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Facility.class).get(0);
                 } else {
                     facility1 = list.get(0);
@@ -217,7 +217,7 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
         if(edmobj.getFacilityCategoriesByInstanceId().size()>0) {
             for(FacilityCategory ed : edmobj.getFacilityCategoriesByInstanceId()) {
                 CategoryAPI api = new CategoryAPI(EntityNames.CATEGORY.name(), Category.class);
-                org.epos.eposdatamodel.Category cp = api.retrieve(ed.getCategoryInstanceId());
+                LinkedEntity cp = api.retrieveLinkedEntity(ed.getCategoryInstanceId());
                 o.addCategory(cp);
             }
         }
@@ -225,7 +225,7 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
         if(edmobj.getFacilityContactpointsByInstanceId().size()>0) {
             for(FacilityContactpoint ed : edmobj.getFacilityContactpointsByInstanceId()) {
                 ContactPointAPI api = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), Contactpoint.class);
-                ContactPoint cp = api.retrieve(ed.getContactpointInstanceId());
+                LinkedEntity cp = api.retrieveLinkedEntity(ed.getContactpointInstanceId());
                 o.addContactPoint(cp);
             }
         }
@@ -240,7 +240,7 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
 
         if(edmobj.getFacilityIspartofsByInstanceId().size()>0) {
             for(FacilityIspartof ed : edmobj.getFacilityIspartofsByInstanceId()) {
-                org.epos.eposdatamodel.Facility cp = retrieve(ed.getFacility2InstanceId());
+                LinkedEntity cp = retrieveLinkedEntity(ed.getFacility2InstanceId());
                 o.addIsPartOf(cp);
             }
         }

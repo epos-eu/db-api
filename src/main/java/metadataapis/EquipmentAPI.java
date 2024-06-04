@@ -79,11 +79,11 @@ public class EquipmentAPI extends AbstractAPI<org.epos.eposdatamodel.Equipment> 
                     getDbaccess().deleteObject(item);
                 }
             }
-            for(org.epos.eposdatamodel.Equipment equipment : obj.getIsPartOfEquipment()){
+            for(LinkedEntity equipment : obj.getIsPartOfEquipment()){
                 List<Equipment> list = dbaccess.getOneFromDBByInstanceId(equipment.getInstanceId(),Equipment.class);
                 Equipment equipment1 = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = create(equipment);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(equipment);
                     equipment1 = (Equipment) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Equipment.class).get(0);
                 } else {
                     equipment1 = list.get(0);
@@ -108,11 +108,11 @@ public class EquipmentAPI extends AbstractAPI<org.epos.eposdatamodel.Equipment> 
                 }
             }
             FacilityAPI facilityAPI = new FacilityAPI(EntityNames.FACILITY.name(), Facility.class);
-            for(org.epos.eposdatamodel.Facility facility : obj.getIsPartOfFacility()){
+            for(LinkedEntity facility : obj.getIsPartOfFacility()){
                 List<Facility> list = dbaccess.getOneFromDBByInstanceId(facility.getInstanceId(),Facility.class);
                 Facility facility1 = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = facilityAPI.create(facility);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(facility);
                     facility1 = (Facility) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Equipment.class).get(0);
                 } else {
                     facility1 = list.get(0);
@@ -254,7 +254,7 @@ public class EquipmentAPI extends AbstractAPI<org.epos.eposdatamodel.Equipment> 
         if(edmobj.getEquipmentCategoriesByInstanceId().size()>0) {
             for(EquipmentCategory ed : edmobj.getEquipmentCategoriesByInstanceId()) {
                 CategoryAPI api = new CategoryAPI(EntityNames.CATEGORY.name(), Category.class);
-                org.epos.eposdatamodel.Category cp = api.retrieve(ed.getCategoryInstanceId());
+                LinkedEntity cp = api.retrieveLinkedEntity(ed.getCategoryInstanceId());
                 o.addCategory(cp);
             }
         }
@@ -262,7 +262,7 @@ public class EquipmentAPI extends AbstractAPI<org.epos.eposdatamodel.Equipment> 
         if(edmobj.getEquipmentContactpointsByInstanceId().size()>0) {
             for(EquipmentContactpoint ed : edmobj.getEquipmentContactpointsByInstanceId()) {
                 ContactPointAPI api = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), Contactpoint.class);
-                ContactPoint cp = api.retrieve(ed.getContactpointInstanceId());
+                LinkedEntity cp = api.retrieveLinkedEntity(ed.getContactpointInstanceId());
                 o.addContactPoint(cp);
             }
         }
@@ -272,11 +272,11 @@ public class EquipmentAPI extends AbstractAPI<org.epos.eposdatamodel.Equipment> 
             for(EquipmentIspartof ed : equipmentIspartofList) {
                 if(ed.getResourceEntity().equals(EntityNames.FACILITY.name())){
                     FacilityAPI api = new FacilityAPI(EntityNames.FACILITY.name(), Facility.class);
-                    o.addIsPartOfFacility(api.retrieve(ed.getEntityInstanceId()));
+                    o.addIsPartOfFacility(api.retrieveLinkedEntity(ed.getEntityInstanceId()));
                 }
                 if(ed.getResourceEntity().equals(EntityNames.EQUIPMENT.name())){
                     EquipmentAPI api = new EquipmentAPI(EntityNames.EQUIPMENT.name(), Equipment.class);
-                    o.addIsPartOfEquipment(api.retrieve(ed.getEntityInstanceId()));
+                    o.addIsPartOfEquipment(api.retrieveLinkedEntity(ed.getEntityInstanceId()));
                 }
             }
         }

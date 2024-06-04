@@ -28,7 +28,6 @@ public class VariousTests {
         dp.setType("Dataproduct");
         dp.setAccessRight("Dataproduct accessrights");
         dp.setUid("DataProductUID");
-        dp.setCategory(List.of(cat));
         dp.setDescription(List.of("Test dataproduct description"));
         dp.addTitle("DataProductTitle");
         dp.setIdentifier(List.of(identifier));

@@ -103,5 +103,6 @@
 		<class>model.WebserviceIdentifier</class>
 		<class>model.WebserviceSpatial</class>
 		<class>model.WebserviceTemporal</class>
+        <class>model.Ontologies</class>
     </persistence-unit>
 </persistence>

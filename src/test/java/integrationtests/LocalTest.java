@@ -1,6 +1,7 @@
 package integrationtests;
 
 import metadataapis.CategoryAPI;
+import metadataapis.EntityNames;
 import model.Category;
 import org.epos.eposdatamodel.LinkedEntity;
 
@@ -10,14 +11,17 @@ public class LocalTest {
 
     public static void main(String[] args){
 
-        org.epos.eposdatamodel.Category broader = new org.epos.eposdatamodel.Category();
+        LinkedEntity broader = new LinkedEntity();
         broader.setUid("BROADERUID");
+        broader.setEntityType(EntityNames.CATEGORY.name());
 
-        org.epos.eposdatamodel.Category narrower = new org.epos.eposdatamodel.Category();
+        LinkedEntity narrower = new LinkedEntity();
         narrower.setUid("NARROWERUID");
+        broader.setEntityType(EntityNames.CATEGORY.name());
 
-        org.epos.eposdatamodel.CategoryScheme scheme = new org.epos.eposdatamodel.CategoryScheme();
+        LinkedEntity scheme = new LinkedEntity();
         scheme.setUid("SCHEMEUID");
+        broader.setEntityType(EntityNames.CATEGORYSCHEME.name());
 
         org.epos.eposdatamodel.Category cat = new org.epos.eposdatamodel.Category();
         cat.setName("CIAO");

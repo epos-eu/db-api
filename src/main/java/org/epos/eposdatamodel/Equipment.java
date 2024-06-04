@@ -12,12 +12,12 @@ public class Equipment extends EPOSDataModelEntity {
 	/**
 	 * This property refers to a category of the Equipment. An Equipment may be associated with multiple categories.
 	 **/
-	private List<Category> category;
+	private List<LinkedEntity> category;
 
 	/**
 	 * This property contains contact information (i.e. Role) that can be used for sending comments about the Equipment.
 	 */
-	private List<ContactPoint> contactPoint;
+	private List<LinkedEntity> contactPoint;
 
 	/**
 	 * This property contains a free-text description of the Equipment.
@@ -37,17 +37,17 @@ public class Equipment extends EPOSDataModelEntity {
 	/**
 	 * This property refers to an Equipment or a Facility in which the described Equipment is included.
 	 */
-	private List<Equipment> isPartOfEquipment;
+	private List<LinkedEntity> isPartOfEquipment;
 
 	/**
 	 * This property refers to an Equipment or a Facility in which the described Equipment is included.
 	 */
-	private List<Facility> isPartOfFacility;
+	private List<LinkedEntity> isPartOfFacility;
 
 	/**
-	 * This property refers to an Organization responsible for manufacturing the Equipment.
+	 * This property refers to an ORGANIZATION responsible for manufacturing the Equipment.
 	 */
-	private Organization manufacturer;
+	private LinkedEntity manufacturer;
 
 	/**
 	 * This property contains a name given to the Equipment.
@@ -106,9 +106,9 @@ public class Equipment extends EPOSDataModelEntity {
 	 **/
 	private String type;
 
-	public void addIsPartOfEquipment(Equipment isPartOf) {
+	public void addIsPartOfEquipment(LinkedEntity isPartOf) {
 		if (this.getIsPartOfEquipment() == null) {
-			ArrayList<Equipment> isPartOfList = new ArrayList<>();
+			ArrayList<LinkedEntity> isPartOfList = new ArrayList<>();
 			isPartOfList.add(isPartOf);
 			this.setIsPartOfEquipment(isPartOfList);
 		} else {
@@ -116,9 +116,9 @@ public class Equipment extends EPOSDataModelEntity {
 		}
 	}
 
-	public void addIsPartOfFacility(Facility isPartOf) {
+	public void addIsPartOfFacility(LinkedEntity isPartOf) {
 		if (this.getIsPartOfFacility() == null) {
-			ArrayList<Facility> isPartOfList = new ArrayList<>();
+			ArrayList<LinkedEntity> isPartOfList = new ArrayList<>();
 			isPartOfList.add(isPartOf);
 			this.setIsPartOfFacility(isPartOfList);
 		} else {
@@ -126,9 +126,9 @@ public class Equipment extends EPOSDataModelEntity {
 		}
 	}
 
-	public void addContactPoint(ContactPoint contactPoint) {
+	public void addContactPoint(LinkedEntity contactPoint) {
 		if (this.getContactPoint() == null) {
-			ArrayList<ContactPoint> contactPointList = new ArrayList<>();
+			ArrayList<LinkedEntity> contactPointList = new ArrayList<>();
 			contactPointList.add(contactPoint);
 			this.setContactPoint(contactPointList);
 		} else {
@@ -156,9 +156,9 @@ public class Equipment extends EPOSDataModelEntity {
 		}
 	}
 
-	public void addCategory(Category category) {
+	public void addCategory(LinkedEntity category) {
 		if (this.getCategory() == null) {
-			ArrayList<Category> categoryList = new ArrayList<>();
+			ArrayList<LinkedEntity> categoryList = new ArrayList<>();
 			categoryList.add(category);
 			this.setCategory(categoryList);
 		} else {
@@ -166,12 +166,12 @@ public class Equipment extends EPOSDataModelEntity {
 		}
 	}
 
-	public Equipment category(List<Category> category) {
+	public Equipment category(List<LinkedEntity> category) {
 		this.category = category;
 		return this;
 	}
 
-	public Equipment addCategoryItem(Category categoryItem) {
+	public Equipment addCategoryItem(LinkedEntity categoryItem) {
 		if (this.category == null) {
 			this.category = new ArrayList<>();
 		}
@@ -185,11 +185,11 @@ public class Equipment extends EPOSDataModelEntity {
 	 * @return category
 	 **/
 
-	public List<Category> getCategory() {
+	public List<LinkedEntity> getCategory() {
 		return category;
 	}
 
-	public void setCategory(List<Category> category) {
+	public void setCategory(List<LinkedEntity> category) {
 		this.category = category;
 	}
 
@@ -457,35 +457,35 @@ public class Equipment extends EPOSDataModelEntity {
 		this.type = type;
 	}
 
-	public List<ContactPoint> getContactPoint() {
+	public List<LinkedEntity> getContactPoint() {
 		return contactPoint;
 	}
 
-	public void setContactPoint(List<ContactPoint> contactPoint) {
+	public void setContactPoint(List<LinkedEntity> contactPoint) {
 		this.contactPoint = contactPoint;
 	}
 
-	public List<Equipment> getIsPartOfEquipment() {
+	public List<LinkedEntity> getIsPartOfEquipment() {
 		return isPartOfEquipment;
 	}
 
-	public void setIsPartOfEquipment(List<Equipment> isPartOf) {
+	public void setIsPartOfEquipment(List<LinkedEntity> isPartOf) {
 		this.isPartOfEquipment = isPartOf;
 	}
 
-	public List<Facility> getIsPartOfFacility() {
+	public List<LinkedEntity> getIsPartOfFacility() {
 		return isPartOfFacility;
 	}
 
-	public void setIsPartOfFacility(List<Facility> isPartOf) {
+	public void setIsPartOfFacility(List<LinkedEntity> isPartOf) {
 		this.isPartOfFacility = isPartOf;
 	}
 
-	public Organization getManufacturer() {
+	public LinkedEntity getManufacturer() {
 		return manufacturer;
 	}
 
-	public void setManufacturer(Organization manufacturer) {
+	public void setManufacturer(LinkedEntity manufacturer) {
 		this.manufacturer = manufacturer;
 	}
 

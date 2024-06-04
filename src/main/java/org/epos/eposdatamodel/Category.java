@@ -14,9 +14,9 @@ public class Category extends EPOSDataModelEntity {
     private String description;
 
     /**
-     * Relates a resource (for example a concept) to a concept scheme in which it is included.
+     * Relates a resource of type CATEGORYSCHEME
      */
-    private CategoryScheme inScheme;
+    private LinkedEntity inScheme;
 
     /**
      * This property contains a preferred label of the category
@@ -29,14 +29,14 @@ public class Category extends EPOSDataModelEntity {
     private String uid;
     
     /**
-     * This property contains a name of the category scheme.
+     * Relates a list of resources of type CATEGORY
      */
-    private List<Category> broader;
+    private List<LinkedEntity> broader;
     
     /**
-     * This property contains a name of the category scheme.
+     * Relates a list of resources of type CATEGORY
      */
-    private List<Category> narrower;
+    private List<LinkedEntity> narrower;
 
 
     public String getDescription() {
@@ -47,11 +47,11 @@ public class Category extends EPOSDataModelEntity {
         this.description = description;
     }
 
-    public CategoryScheme getInScheme() {
+    public LinkedEntity getInScheme() {
         return inScheme;
     }
 
-    public void setInScheme(CategoryScheme inScheme) {
+    public void setInScheme(LinkedEntity inScheme) {
         this.inScheme = inScheme;
     }
 
@@ -71,25 +71,25 @@ public class Category extends EPOSDataModelEntity {
         this.uid = uid;
     }
 
-    public List<Category> getBroader() {
+    public List<LinkedEntity> getBroader() {
 		return broader;
 	}
 
-	public void setBroader(List<Category> broader) {
+	public void setBroader(List<LinkedEntity> broader) {
 		this.broader = broader;
 	}
 
-	public List<Category> getNarrower() {
+	public List<LinkedEntity> getNarrower() {
 		return narrower;
 	}
 
-	public void setNarrower(List<Category> narrower) {
+	public void setNarrower(List<LinkedEntity> narrower) {
 		this.narrower = narrower;
 	}
 	
-	public void addNarrower(Category narrower) {
+	public void addNarrower(LinkedEntity narrower) {
         if (this.getNarrower() == null) {
-            ArrayList<Category> narrowers = new ArrayList<>();
+            ArrayList<LinkedEntity> narrowers = new ArrayList<>();
             narrowers.add(narrower);
             this.setNarrower(narrowers);
         } else {
@@ -97,9 +97,9 @@ public class Category extends EPOSDataModelEntity {
         }
     }
 	
-	public void addBroader(Category broader) {
+	public void addBroader(LinkedEntity broader) {
         if (this.getBroader() == null) {
-            ArrayList<Category> broaders = new ArrayList<>();
+            ArrayList<LinkedEntity> broaders = new ArrayList<>();
             broaders.add(broader);
             this.setBroader(broaders);
         } else {

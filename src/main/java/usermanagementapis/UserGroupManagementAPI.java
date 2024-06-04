@@ -66,6 +66,14 @@ public class UserGroupManagementAPI {
         }
     }
 
+    public static void addMetadataToGroup(String metaId, String groupId){
+
+        AuthorizationGroup authorizationGroup = new AuthorizationGroup();
+        authorizationGroup.setGroupId(groupId);
+        authorizationGroup.setMetaId(metaId);
+        authorizationGroup.setId(UUID.randomUUID().toString());
+        getDbaccess().createObject(authorizationGroup);
+    }
 
     private static EposDataModelDAO getDbaccess() {
         return new EposDataModelDAO();

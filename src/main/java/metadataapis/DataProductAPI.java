@@ -131,11 +131,11 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
                 }
             }
             edmobj.setDataproductHaspartsByInstanceId(new ArrayList<>());
-            for(org.epos.eposdatamodel.DataProduct dataProduct : obj.getHasPart()){
+            for(LinkedEntity dataProduct : obj.getHasPart()){
                 List<Dataproduct> list = dbaccess.getOneFromDBByInstanceId(dataProduct.getInstanceId(),Dataproduct.class);
                 Dataproduct dataproduct = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = create(dataProduct);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(dataProduct);
                     dataproduct = (Dataproduct) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Dataproduct.class).get(0);
                 } else {
                     dataproduct = list.get(0);
@@ -159,11 +159,11 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
                 }
             }
             edmobj.setDataproductIspartofsByInstanceId(new ArrayList<>());
-            for(org.epos.eposdatamodel.DataProduct dataProduct : obj.getIsPartOf()){
+            for(LinkedEntity dataProduct : obj.getIsPartOf()){
                 List<Dataproduct> list = dbaccess.getOneFromDBByInstanceId(dataProduct.getInstanceId(),Dataproduct.class);
                 Dataproduct dataproduct = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = create(dataProduct);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(dataProduct);
                     dataproduct = (Dataproduct) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Dataproduct.class).get(0);
                 } else {
                     dataproduct = list.get(0);
@@ -233,11 +233,11 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
             }
             OrganizationAPI organizationAPI = new OrganizationAPI(EntityNames.ORGANIZATION.name(), Organization.class);
             edmobj.setDataproductPublishersByInstanceId(new ArrayList<>());
-            for(org.epos.eposdatamodel.Organization organization : obj.getPublisher()){
+            for(LinkedEntity organization : obj.getPublisher()){
                 List<Organization> list = dbaccess.getOneFromDBByInstanceId(organization.getInstanceId(),Organization.class);
                 Organization organization1 = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = organizationAPI.create(organization);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(organization);
                     organization1 = (Organization) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Organization.class).get(0);
                 } else {
                     organization1 = list.get(0);
@@ -347,7 +347,7 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
         if(edmobj.getDataproductCategoriesByInstanceId().size()>0) {
             for(DataproductCategory ed : edmobj.getDataproductCategoriesByInstanceId()) {
                 CategoryAPI api = new CategoryAPI(EntityNames.CATEGORY.name(), Category.class);
-                org.epos.eposdatamodel.Category cp = api.retrieve(ed.getCategoryInstanceId());
+                LinkedEntity cp = api.retrieveLinkedEntity(ed.getCategoryInstanceId());
                 o.addCategory(cp);
             }
         }
@@ -355,7 +355,7 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
         if(edmobj.getDataproductContactpointsByInstanceId().size()>0) {
             for(DataproductContactpoint ed : edmobj.getDataproductContactpointsByInstanceId()) {
                 ContactPointAPI api = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), Contactpoint.class);
-                ContactPoint cp = api.retrieve(ed.getContactpointInstanceId());
+                LinkedEntity cp = api.retrieveLinkedEntity(ed.getContactpointInstanceId());
                 o.addContactPoint(cp);
             }
         }
@@ -381,14 +381,14 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
 
         if(edmobj.getDataproductHaspartsByInstanceId().size()>0) {
             for(DataproductHaspart ed : edmobj.getDataproductHaspartsByInstanceId()) {
-                org.epos.eposdatamodel.DataProduct cp = retrieve(ed.getDataproduct2InstanceId());
+                LinkedEntity cp = retrieveLinkedEntity(ed.getDataproduct2InstanceId());
                 o.addHasPart(cp);
             }
         }
 
         if(edmobj.getDataproductIspartofsByInstanceId().size()>0) {
             for(DataproductIspartof ed : edmobj.getDataproductIspartofsByInstanceId()) {
-                org.epos.eposdatamodel.DataProduct cp = retrieve(ed.getDataproduct2InstanceId());
+                LinkedEntity cp = retrieveLinkedEntity(ed.getDataproduct2InstanceId());
                 o.addIsPartOf(cp);
             }
         }
@@ -402,7 +402,7 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
         if(edmobj.getDataproductPublishersByInstanceId().size()>0) {
             for(DataproductPublisher ed : edmobj.getDataproductPublishersByInstanceId()) {
                 OrganizationAPI api = new OrganizationAPI(EntityNames.ORGANIZATION.name(), Organization.class);
-                org.epos.eposdatamodel.Organization cp = api.retrieve(ed.getOrganizationInstanceId());
+                LinkedEntity cp = api.retrieveLinkedEntity(ed.getOrganizationInstanceId());
                 o.addPublisher(cp);
             }
         }

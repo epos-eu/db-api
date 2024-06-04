@@ -1,6 +1,7 @@
 package relationsapi;
 
 import abstractapis.AbstractRelationsAPI;
+import commonapis.LinkedEntityAPI;
 import metadataapis.ContactPointAPI;
 import metadataapis.EntityNames;
 import model.*;
@@ -18,13 +19,12 @@ public class ContactPointRelationsAPI extends AbstractRelationsAPI {
                 getDbaccess().deleteObject(item);
             }
         }
-        ContactPointAPI contactPointAPI = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), Contactpoint.class);
         edmobj.setEquipmentContactpointsByInstanceId(new ArrayList<>());
-        for(org.epos.eposdatamodel.ContactPoint contactPoint : obj.getContactPoint()){
+        for(LinkedEntity contactPoint : obj.getContactPoint()){
             List<Contactpoint> list = dbaccess.getOneFromDBByInstanceId(contactPoint.getInstanceId(),Contactpoint.class);
             Contactpoint contactPoint1 = null;
             if(list.isEmpty()){
-                LinkedEntity le = contactPointAPI.create(contactPoint);
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(contactPoint);
                 contactPoint1 = (Contactpoint) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Contactpoint.class).get(0);
             } else {
                 contactPoint1 = list.get(0);
@@ -48,13 +48,12 @@ public class ContactPointRelationsAPI extends AbstractRelationsAPI {
                 getDbaccess().deleteObject(item);
             }
         }
-        ContactPointAPI contactPointAPI = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), Contactpoint.class);
         edmobj.setFacilityContactpointsByInstanceId(new ArrayList<>());
-        for(org.epos.eposdatamodel.ContactPoint contactPoint : obj.getContactPoint()){
+        for(LinkedEntity contactPoint : obj.getContactPoint()){
             List<Contactpoint> list = dbaccess.getOneFromDBByInstanceId(contactPoint.getInstanceId(),Contactpoint.class);
             Contactpoint contactPoint1 = null;
             if(list.isEmpty()){
-                LinkedEntity le = contactPointAPI.create(contactPoint);
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(contactPoint);
                 contactPoint1 = (Contactpoint) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Contactpoint.class).get(0);
             } else {
                 contactPoint1 = list.get(0);
@@ -80,11 +79,11 @@ public class ContactPointRelationsAPI extends AbstractRelationsAPI {
         }
         ContactPointAPI contactPointAPI = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), Contactpoint.class);
         edmobj.setDataproductContactpointsByInstanceId(new ArrayList<>());
-        for(org.epos.eposdatamodel.ContactPoint contactPoint : obj.getContactPoint()){
+        for(LinkedEntity contactPoint : obj.getContactPoint()){
             List<Contactpoint> list = dbaccess.getOneFromDBByInstanceId(contactPoint.getInstanceId(),Contactpoint.class);
             Contactpoint contactPoint1 = null;
             if(list.isEmpty()){
-                LinkedEntity le = contactPointAPI.create(contactPoint);
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(contactPoint);
                 contactPoint1 = (Contactpoint) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Contactpoint.class).get(0);
             } else {
                 contactPoint1 = list.get(0);

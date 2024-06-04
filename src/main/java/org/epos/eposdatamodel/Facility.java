@@ -20,12 +20,12 @@ public class Facility extends EPOSDataModelEntity {
 	/**
 	 * This property refers to a category of the Facility. A Facility may be associated with multiple categories.
 	 **/
-	private List<Category> category;
+	private List<LinkedEntity> category;
 
 	/**
 	 * This property contains contact information (i.e. Role) that can be used for sending comments about the Facility
 	 */
-	private List<ContactPoint> contactPoint;
+	private List<LinkedEntity> contactPoint;
 
 	/**
 	 * This property contains a free-text description of the Facility.
@@ -40,7 +40,7 @@ public class Facility extends EPOSDataModelEntity {
 	/**
 	 * This property refers to a Facility in which the described Facility is included.
 	 */
-	private List<Facility> isPartOf;
+	private List<LinkedEntity> isPartOf;
 
 	/**
 	 * This property refers to a page or document about this Facility.
@@ -124,9 +124,9 @@ public class Facility extends EPOSDataModelEntity {
 	}
 
 
-	public void addIsPartOf(Facility isPartOf) {
+	public void addIsPartOf(LinkedEntity isPartOf) {
 		if (this.getIsPartOf() == null) {
-			ArrayList<Facility> isPartOfList = new ArrayList<>();
+			ArrayList<LinkedEntity> isPartOfList = new ArrayList<>();
 			isPartOfList.add(isPartOf);
 			this.setIsPartOf(isPartOfList);
 		} else {
@@ -134,9 +134,9 @@ public class Facility extends EPOSDataModelEntity {
 		}
 	}
 
-	public void addCategory(Category category) {
+	public void addCategory(LinkedEntity category) {
 		if (this.getCategory() == null) {
-			ArrayList<Category> categoryList = new ArrayList<>();
+			ArrayList<LinkedEntity> categoryList = new ArrayList<>();
 			categoryList.add(category);
 			this.setCategory(categoryList);
 		} else {
@@ -144,9 +144,9 @@ public class Facility extends EPOSDataModelEntity {
 		}
 	}
 
-	public void addContactPoint(ContactPoint contactPoint) {
+	public void addContactPoint(LinkedEntity contactPoint) {
 		if (this.getContactPoint() == null) {
-			ArrayList<ContactPoint> contactPointList = new ArrayList<>();
+			ArrayList<LinkedEntity> contactPointList = new ArrayList<>();
 			contactPointList.add(contactPoint);
 			this.setContactPoint(contactPointList);
 		} else {
@@ -191,12 +191,12 @@ public class Facility extends EPOSDataModelEntity {
 		return this;
 	}
 
-	public Facility category(List<Category> category) {
+	public Facility category(List<LinkedEntity> category) {
 		this.category = category;
 		return this;
 	}
 
-	public Facility addCategoryItem(Category categoryItem) {
+	public Facility addCategoryItem(LinkedEntity categoryItem) {
 		if (this.category == null) {
 			this.category = new ArrayList<>();
 		}
@@ -210,11 +210,11 @@ public class Facility extends EPOSDataModelEntity {
 	 * @return category
 	 **/
 
-	public List<Category> getCategory() {
+	public List<LinkedEntity> getCategory() {
 		return category;
 	}
 
-	public void setCategory(List<Category> category) {
+	public void setCategory(List<LinkedEntity> category) {
 		this.category = category;
 	}
 
@@ -331,19 +331,19 @@ public class Facility extends EPOSDataModelEntity {
 		this.type = type;
 	}
 
-	public List<ContactPoint> getContactPoint() {
+	public List<LinkedEntity> getContactPoint() {
 		return contactPoint;
 	}
 
-	public void setContactPoint(List<ContactPoint> contactPoint) {
+	public void setContactPoint(List<LinkedEntity> contactPoint) {
 		this.contactPoint = contactPoint;
 	}
 
-	public List<Facility> getIsPartOf() {
+	public List<LinkedEntity> getIsPartOf() {
 		return isPartOf;
 	}
 
-	public void setIsPartOf(List<Facility> isPartOf) {
+	public void setIsPartOf(List<LinkedEntity> isPartOf) {
 		this.isPartOf = isPartOf;
 	}
 

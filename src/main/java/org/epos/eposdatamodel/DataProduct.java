@@ -23,12 +23,12 @@ public class DataProduct extends EPOSDataModelEntity {
     /**
      * This property refers to a category of the Data Product. A Data Product may be associated with multiple categories.
      **/
-    private List<Category> category;
+    private List<LinkedEntity> category;
 
     /**
      * This property contains contact information (i.e. Role) that can be used for sending comments about the Data Product.
      */
-    private List<ContactPoint> contactPoint;
+    private List<LinkedEntity> contactPoint;
 
     /**
      * This property contains the date on which the Data Product was created.
@@ -48,12 +48,12 @@ public class DataProduct extends EPOSDataModelEntity {
     /**
      * This property links the Data Product to an available Distribution.
      */
-    private List<Distribution> distribution;
+    private List<LinkedEntity> distribution;
 
     /**
      * This property refers to a related Data Product that is part of the described Data Product.
      */
-    private List<DataProduct> hasPart;
+    private List<LinkedEntity> hasPart;
 
     /**
      * This property refers to a secondary identifier of the Data Product, such as MAST/ADS, DataCite, DOI, EZID or W3ID.
@@ -63,7 +63,7 @@ public class DataProduct extends EPOSDataModelEntity {
     /**
      * This property refers to a related Data Product in which the described Data Product is physically or logically included.
      */
-    private List<DataProduct> isPartOf;
+    private List<LinkedEntity> isPartOf;
 
     /**
      * This property contains the date of formal issuance (e.g., publication) of the Data Product.
@@ -88,7 +88,7 @@ public class DataProduct extends EPOSDataModelEntity {
     /**
      * This property refers to an entity (organization) responsible for making the Data Product available.
      */
-    private List<Organization> publisher;
+    private List<LinkedEntity> publisher;
 
     /**
      * It represents the link to another Epos resource.
@@ -175,9 +175,9 @@ public class DataProduct extends EPOSDataModelEntity {
         }
     }
 
-    public void addCategory(Category category) {
+    public void addCategory(LinkedEntity category) {
         if (this.getCategory() == null) {
-            ArrayList<Category> categoryList = new ArrayList<>();
+            ArrayList<LinkedEntity> categoryList = new ArrayList<>();
             categoryList.add(category);
             this.setCategory(categoryList);
         } else {
@@ -185,9 +185,9 @@ public class DataProduct extends EPOSDataModelEntity {
         }
     }
 
-    public void addContactPoint(ContactPoint contactPoint) {
+    public void addContactPoint(LinkedEntity contactPoint) {
         if (this.getContactPoint() == null) {
-            ArrayList<ContactPoint> contactPointList = new ArrayList<>();
+            ArrayList<LinkedEntity> contactPointList = new ArrayList<>();
             contactPointList.add(contactPoint);
             this.setContactPoint(contactPointList);
         } else {
@@ -195,9 +195,9 @@ public class DataProduct extends EPOSDataModelEntity {
         }
     }
 
-    public void addPublisher(Organization publisher) {
+    public void addPublisher(LinkedEntity publisher) {
         if (this.getPublisher() == null) {
-            ArrayList<Organization> publisherList = new ArrayList<>();
+            ArrayList<LinkedEntity> publisherList = new ArrayList<>();
             publisherList.add(publisher);
             this.setPublisher(publisherList);
         } else {
@@ -215,9 +215,9 @@ public class DataProduct extends EPOSDataModelEntity {
         }
     }
 
-    public void addDistribution(Distribution distribution) {
+    public void addDistribution(LinkedEntity distribution) {
         if (this.getDistribution() == null) {
-            ArrayList<Distribution> distributionList = new ArrayList<>();
+            ArrayList<LinkedEntity> distributionList = new ArrayList<>();
             distributionList.add(distribution);
             this.setDistribution(distributionList);
         } else {
@@ -225,9 +225,9 @@ public class DataProduct extends EPOSDataModelEntity {
         }
     }
 
-    public void addIsPartOf(DataProduct isPartOf) {
+    public void addIsPartOf(LinkedEntity isPartOf) {
         if (this.getIsPartOf() == null) {
-            ArrayList<DataProduct> isPartOfList = new ArrayList<>();
+            ArrayList<LinkedEntity> isPartOfList = new ArrayList<>();
             isPartOfList.add(isPartOf);
             this.setIsPartOf(isPartOfList);
         } else {
@@ -235,9 +235,9 @@ public class DataProduct extends EPOSDataModelEntity {
         }
     }
 
-    public void addHasPart(DataProduct hasPart) {
+    public void addHasPart(LinkedEntity hasPart) {
         if (this.getHasPart() == null) {
-            ArrayList<DataProduct> hasPartList = new ArrayList<>();
+            ArrayList<LinkedEntity> hasPartList = new ArrayList<>();
             hasPartList.add(hasPart);
             this.setHasPart(hasPartList);
         } else {
@@ -306,12 +306,12 @@ public class DataProduct extends EPOSDataModelEntity {
         this.accrualPeriodicity = accrualPeriodicity;
     }
 
-    public DataProduct category(List<Category> category) {
+    public DataProduct category(List<LinkedEntity> category) {
         this.category = category;
         return this;
     }
 
-    public DataProduct addCategoryItem(Category categoryItem) {
+    public DataProduct addCategoryItem(LinkedEntity categoryItem) {
         if (this.category == null) {
             this.category = new ArrayList<>();
         }
@@ -325,11 +325,11 @@ public class DataProduct extends EPOSDataModelEntity {
      * @return category
      **/
 
-    public List<Category> getCategory() {
+    public List<LinkedEntity> getCategory() {
         return category;
     }
 
-    public void setCategory(List<Category> category) {
+    public void setCategory(List<LinkedEntity> category) {
         this.category = category;
     }
 
@@ -616,43 +616,43 @@ public class DataProduct extends EPOSDataModelEntity {
     }
 
 
-    public List<ContactPoint> getContactPoint() {
+    public List<LinkedEntity> getContactPoint() {
         return contactPoint;
     }
 
-    public void setContactPoint(List<ContactPoint> contactPoint) {
+    public void setContactPoint(List<LinkedEntity> contactPoint) {
         this.contactPoint = contactPoint;
     }
 
-    public List<Distribution> getDistribution() {
+    public List<LinkedEntity> getDistribution() {
         return distribution;
     }
 
-    public void setDistribution(List<Distribution> distribution) {
+    public void setDistribution(List<LinkedEntity> distribution) {
         this.distribution = distribution;
     }
 
-    public List<DataProduct> getHasPart() {
+    public List<LinkedEntity> getHasPart() {
         return hasPart;
     }
 
-    public void setHasPart(List<DataProduct> hasPart) {
+    public void setHasPart(List<LinkedEntity> hasPart) {
         this.hasPart = hasPart;
     }
 
-    public List<DataProduct> getIsPartOf() {
+    public List<LinkedEntity> getIsPartOf() {
         return isPartOf;
     }
 
-    public void setIsPartOf(List<DataProduct> isPartOf) {
+    public void setIsPartOf(List<LinkedEntity> isPartOf) {
         this.isPartOf = isPartOf;
     }
 
-    public List<Organization> getPublisher() {
+    public List<LinkedEntity> getPublisher() {
         return publisher;
     }
 
-    public void setPublisher(List<Organization> publisher) {
+    public void setPublisher(List<LinkedEntity> publisher) {
         this.publisher = publisher;
     }
 

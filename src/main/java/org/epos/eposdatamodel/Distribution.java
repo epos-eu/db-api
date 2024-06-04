@@ -12,7 +12,7 @@ import java.util.Objects;
 public class Distribution extends EPOSDataModelEntity {
 
     /**
-     * This property refers to the WebService which supports selection of an extract, sub-set, or combination of data
+     * This property refers to the URL which supports selection of an extract, sub-set, or combination of data
      */
     private List<String> accessURL;
 
@@ -66,7 +66,7 @@ public class Distribution extends EPOSDataModelEntity {
     /**
      * Reverse reference to the related dataproduct.
      */
-    private List<DataProduct> dataProduct;
+    private List<LinkedEntity> dataProduct;
 
 
     public void addTitle(String title) {
@@ -297,18 +297,18 @@ public class Distribution extends EPOSDataModelEntity {
         this.dataPolicy = dataPolicy;
     }
 
-    public List<DataProduct> getDataProduct() {
+    public List<LinkedEntity> getDataProduct() {
         return dataProduct;
     }
 
-    public Distribution setDataProduct(List<DataProduct> dataProduct) {
+    public Distribution setDataProduct(List<LinkedEntity> dataProduct) {
         this.dataProduct = dataProduct;
         return this;
     }
 
-    public void addDataproduct(DataProduct dataProduct) {
+    public void addDataproduct(LinkedEntity dataProduct) {
         if (this.getDataProduct() == null) {
-            ArrayList<DataProduct> dataproductList = new ArrayList<>();
+            ArrayList<LinkedEntity> dataproductList = new ArrayList<>();
             dataproductList.add(dataProduct);
             this.setDataProduct(dataproductList);
         } else {

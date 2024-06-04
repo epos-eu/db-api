@@ -119,11 +119,11 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
             }
             DataProductAPI dataProductAPI = new DataProductAPI(EntityNames.DATAPRODUCT.name(), Dataproduct.class);
             edmobj.setDistributionDataproductsByInstanceId(new ArrayList<>());
-            for(org.epos.eposdatamodel.DataProduct dataProduct : obj.getDataProduct()){
+            for(LinkedEntity dataProduct : obj.getDataProduct()){
                 List<Dataproduct> list = dbaccess.getOneFromDBByInstanceId(dataProduct.getInstanceId(),Dataproduct.class);
                 Dataproduct dataproduct = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = dataProductAPI.create(dataProduct);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(dataProduct);
                     dataproduct = (Dataproduct) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Dataproduct.class).get(0);
                 } else {
                     dataproduct = list.get(0);
@@ -217,7 +217,7 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
         if(edmobj.getDistributionDataproductsByInstanceId().size()>0) {
             for(DistributionDataproduct ed : edmobj.getDistributionDataproductsByInstanceId()) {
                 DataProductAPI api = new DataProductAPI(EntityNames.DATAPRODUCT.name(), Dataproduct.class);
-                org.epos.eposdatamodel.DataProduct cp = api.retrieve(ed.getDataproductInstanceId());
+                LinkedEntity cp = api.retrieveLinkedEntity(ed.getDataproductInstanceId());
                 o.addDataproduct(cp);
             }
         }
