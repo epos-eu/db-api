@@ -126,12 +126,13 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
         if (obj.getRelation() != null && !obj.getRelation().isEmpty()) {
             for(LinkedEntity le : obj.getRelation()){
                 Object object = LinkedEntityAPI.retrieveLinkedEntity(le);
-                if(object instanceof Operation){
+                if(object instanceof org.epos.eposdatamodel.Operation){
+                    List<Operation> operation = dbaccess.getOneFromDBByInstanceId(((org.epos.eposdatamodel.Operation) object).getInstanceId(), Operation.class);
                     SoftwareapplicationOperation pi = new SoftwareapplicationOperation();
                     pi.setSoftwareapplicationBySoftwareapplicationInstanceId(edmobj);
                     pi.setSoftwareapplicationInstanceId(edmobj.getInstanceId());
-                    pi.setOperationInstanceId(((Operation) object).getInstanceId());
-                    pi.setOperationByOperationInstanceId((Operation) object);
+                    pi.setOperationInstanceId(operation.get(0).getInstanceId());
+                    pi.setOperationByOperationInstanceId(operation.get(0));
 
                     edmobj.getSoftwareapplicationOperationsByInstanceId().add(pi);
 

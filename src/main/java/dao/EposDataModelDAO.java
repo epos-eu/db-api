@@ -49,6 +49,7 @@ public class EposDataModelDAO<T> {
     public List<T> getOneFromDBByUID(String uid, Class<T> obj){
         EntityManager em = entityManager.getEntityManager();
         em.getTransaction().begin();
+        System.out.println(uid);
         List resultList = em.createQuery(
                         "SELECT c FROM "+obj.getSimpleName()+" c WHERE c.uid LIKE :uid")
                 .setParameter("uid", uid)

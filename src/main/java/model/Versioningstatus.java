@@ -17,6 +17,9 @@ public class Versioningstatus {
     @Column(name = "meta_id", nullable = true, length = 100)
     private String metaId;
     @Basic
+    @Column(name = "uid", nullable = true, length = 100)
+    private String uid;
+    @Basic
     @Column(name = "instance_change_id", nullable = true, length = 1024)
     private String instanceChangeId;
     @Basic
@@ -121,6 +124,14 @@ public class Versioningstatus {
 
     public void setMetaId(String metaId) {
         this.metaId = metaId;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getInstanceChangeId() {

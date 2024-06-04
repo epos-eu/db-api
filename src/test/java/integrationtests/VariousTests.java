@@ -56,6 +56,28 @@ public class VariousTests {
         parameter.setAction(Parameter.ActionEnum.OBJECT);
         parameter.setConformsTo("nothing");
 
+        ContactPoint cp = new ContactPoint();
+        cp.setRole("Manager");
+        cp.setUid("ManagerUID");
+        cp.setEmail(List.of("email@email.email"));
+        cp.setLanguage(List.of("en"));
+        cp.setTelephone(List.of("293214124"));
+        cp.setStatus(StatusType.DRAFT);
+
+        Operation op = new Operation();
+        op.setUid("Operation/UI");
+        op.setTemplate("template");
+        op.setMethod("GET");
+        op.setReturns(List.of("application/json"));
+        op.setStatus(StatusType.DRAFT);
+
+        OperationAPI api3 = new OperationAPI(EntityNames.OPERATION.name(), model.Operation.class);
+        api3.create(op);
+
+        LinkedEntity leop = new LinkedEntity();
+        leop.setUid("Operation/UI");
+        leop.setEntityType(EntityNames.OPERATION.name());
+
         SoftwareApplication sa = new SoftwareApplication();
         sa.setUid("SoftwareApplicationUID");
         sa.setCategory(List.of(cat));
@@ -65,6 +87,8 @@ public class VariousTests {
         sa.setStatus(StatusType.DRAFT);
         sa.setParameter(new ArrayList<>());
         sa.getParameter().add(parameter);
+        sa.setRelation(List.of(leop));
+        sa.setContactPoint(List.of(cp));
 
 
         SoftwareSourceCode ssc = new SoftwareSourceCode();
@@ -74,6 +98,9 @@ public class VariousTests {
         ssc.setName("SoftwareApplicationName");
         ssc.setIdentifier(List.of(identifier));
         ssc.setStatus(StatusType.DRAFT);
+        ssc.setSoftwareVersion("1.0");
+        ssc.keywords("key1,key2,key3");
+        ssc.setContactPoint(List.of(cp));
 
         SoftwareApplicationAPI api = new SoftwareApplicationAPI(EntityNames.SOFTWAREAPPLICATION.name(), SoftwareApplication.class);
         LinkedEntity le = api.create(sa);
@@ -86,7 +113,7 @@ public class VariousTests {
     }
 
     public static void main(String[] args) {
-        //softwaresTest();
-        datasetTest();
+        softwaresTest();
+        //datasetTest();
     }
 }

@@ -21,7 +21,7 @@ public class VersioningStatusAPI {
         List<Versioningstatus> returnList = getDbaccess().getOneFromDB(
                 Optional.ofNullable(obj.getInstanceId()).orElse(null),
                 Optional.ofNullable(obj.getMetaId()).orElse(null),
-                null,
+                Optional.ofNullable(obj.getUid()).orElse(null),
                 Optional.ofNullable(obj.getVersionId()).orElse(null),
                 Versioningstatus.class
         );
@@ -76,6 +76,7 @@ public class VersioningStatusAPI {
             obj.setMetaId(edmobj.getMetaId());
             edmobj.setVersionId(UUID.randomUUID().toString());
             obj.setVersionId(edmobj.getVersionId());
+            edmobj.setUid(obj.getUid());
             edmobj.setInstanceChangeId(null);
             edmobj.setChangeTimestamp(Timestamp.from(Instant.now()));
             edmobj.setChangeComment(Optional.ofNullable(obj.getChangeComment()).orElse(null));

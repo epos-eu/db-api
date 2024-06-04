@@ -19,6 +19,7 @@ public class Element {
     private String versionId;
     @Basic
     @Column(name = "type", nullable = true)
+    @Enumerated(EnumType.STRING)
     private ElementType type;
     @Basic
     @Column(name = "value", nullable = false, length = 1024)
