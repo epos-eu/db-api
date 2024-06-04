@@ -1,6 +1,7 @@
 package org.epos.eposdatamodel;
 
 import model.RoleType;
+import org.eclipse.persistence.internal.jpa.rs.metadata.model.Link;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class Person extends EPOSDataModelEntity {
      * This property refers to the organization to which the person is
      * affiliated.
      */
-    private List<Organization> affiliation;
+    private List<LinkedEntity> affiliation;
 
     /**
      * This property refers to the URL of the Person curriculum vitae.
@@ -88,9 +89,9 @@ public class Person extends EPOSDataModelEntity {
         }
     }
 
-    public void addAffiliation(Organization affiliation) {
+    public void addAffiliation(LinkedEntity affiliation) {
         if (this.affiliation == null) {
-            ArrayList<Organization> affiliationList = new ArrayList<>();
+            ArrayList<LinkedEntity> affiliationList = new ArrayList<>();
             affiliationList.add(affiliation);
             this.setAffiliation(affiliationList);
         } else {
@@ -293,11 +294,11 @@ public class Person extends EPOSDataModelEntity {
         this.telephone = telephone;
     }
 
-    public List<Organization> getAffiliation() {
+    public List<LinkedEntity> getAffiliation() {
         return affiliation;
     }
 
-    public void setAffiliation(List<Organization> affiliation) {
+    public void setAffiliation(List<LinkedEntity> affiliation) {
         this.affiliation = affiliation;
     }
     @Override

@@ -17,7 +17,7 @@ public class Organization extends EPOSDataModelEntity {
     /**
      * This property refers to the Contact Point (i.e. Role) defined for the Organization
      */
-    private List<ContactPoint> contactPoint;
+    private List<LinkedEntity> contactPoint;
 
     /**
      * This property contains the email address of the Organization.
@@ -52,17 +52,13 @@ public class Organization extends EPOSDataModelEntity {
     /**
      * This property refers to an Organization to which this Organization belongs.
      */
-    private List<Organization> memberOf;
+    private List<LinkedEntity> memberOf;
 
     /**
-     * This property refers to a Facility of which it is the owner.
+     * This property refers to a Facility or Equipment of which it is the owner.
      **/
-    private List<Facility> ownedFacilities;
+    private List<LinkedEntity> owns;
 
-    /**
-     * This property refers to a Facility of which it is the owner.
-     **/
-    private List<Equipment> ownedEquipments;
 
     /**
      * This property contains the telephone number of the Organization.
@@ -130,9 +126,9 @@ public class Organization extends EPOSDataModelEntity {
     }
 
 
-    public void addContactPoint(ContactPoint contactPoint) {
+    public void addContactPoint(LinkedEntity contactPoint) {
         if (this.getContactPoint() == null) {
-            ArrayList<ContactPoint> contactPointList = new ArrayList<>();
+            ArrayList<LinkedEntity> contactPointList = new ArrayList<>();
             contactPointList.add(contactPoint);
             this.setContactPoint(contactPointList);
         } else {
@@ -140,9 +136,9 @@ public class Organization extends EPOSDataModelEntity {
         }
     }
 
-    public void addMemberOf(Organization memberOf) {
+    public void addMemberOf(LinkedEntity memberOf) {
         if (this.getMemberOf() == null) {
-            ArrayList<Organization> memberOfList = new ArrayList<>();
+            ArrayList<LinkedEntity> memberOfList = new ArrayList<>();
             memberOfList.add(memberOf);
             this.setMemberOf(memberOfList);
         } else {
@@ -278,28 +274,8 @@ public class Organization extends EPOSDataModelEntity {
     }
 
 
-    public Organization ownedEquipments(List<Equipment> ownedEquipments) {
-        this.ownedEquipments = ownedEquipments;
-        return this;
-    }
-
-    public Organization addOwnedEquipments(Equipment ownsItem) {
-        if (this.ownedEquipments == null) {
-            this.ownedEquipments = new ArrayList<>();
-        }
-        this.ownedEquipments.add(ownsItem);
-        return this;
-    }
-    public Organization ownedFacilities(List<Facility> ownedFacilities) {
-        this.ownedFacilities = ownedFacilities;
-        return this;
-    }
-
-    public Organization addOwnedFacilities(Facility ownsItem) {
-        if (this.ownedFacilities == null) {
-            this.ownedFacilities = new ArrayList<>();
-        }
-        this.ownedFacilities.add(ownsItem);
+    public Organization owns(List<LinkedEntity> ownedEquipments) {
+        this.owns = owns;
         return this;
     }
 
@@ -309,20 +285,20 @@ public class Organization extends EPOSDataModelEntity {
      * @return owns
      **/
 
-    public List<Equipment> getOwnedEquipments() {
-        return ownedEquipments;
+    public List<LinkedEntity> getOwns() {
+        return owns;
     }
 
-    public void setOwnedEquipments(List<Equipment> owns) {
-        this.ownedEquipments = owns;
+    public void setOwns(List<LinkedEntity> owns) {
+        this.owns = owns;
     }
 
-    public List<Facility> getOwnedFacilities() {
-        return ownedFacilities;
-    }
-
-    public void setOwnedFacilities(List<Facility> owns) {
-        this.ownedFacilities = owns;
+    public Organization addOwns(LinkedEntity owns) {
+        if (this.owns == null) {
+            this.owns = new ArrayList<>();
+        }
+        this.owns.add(owns);
+        return this;
     }
 
     public Organization telephone(List<String> telephone) {
@@ -371,19 +347,19 @@ public class Organization extends EPOSDataModelEntity {
         this.URL = URL;
     }
 
-    public List<ContactPoint> getContactPoint() {
+    public List<LinkedEntity> getContactPoint() {
         return contactPoint;
     }
 
-    public void setContactPoint(List<ContactPoint> contactPoint) {
+    public void setContactPoint(List<LinkedEntity> contactPoint) {
         this.contactPoint = contactPoint;
     }
 
-    public List<Organization> getMemberOf() {
+    public List<LinkedEntity> getMemberOf() {
         return memberOf;
     }
 
-    public void setMemberOf(List<Organization> memberOf) {
+    public void setMemberOf(List<LinkedEntity> memberOf) {
         this.memberOf = memberOf;
     }
 
@@ -423,8 +399,7 @@ public class Organization extends EPOSDataModelEntity {
                 ", leiCode='" + leiCode + '\'' +
                 ", logo='" + logo + '\'' +
                 ", memberOf=" + memberOf +
-                ", ownedFacilities=" + ownedFacilities +
-                ", ownedEquipments=" + ownedEquipments +
+                ", owns=" + owns +
                 ", telephone=" + telephone +
                 ", URL='" + URL + '\'' +
                 ", type='" + type + '\'' +
@@ -438,11 +413,11 @@ public class Organization extends EPOSDataModelEntity {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Organization that = (Organization) o;
-        return Objects.equals(getAddress(), that.getAddress()) && Objects.equals(getContactPoint(), that.getContactPoint()) && Objects.equals(getEmail(), that.getEmail()) && Objects.equals(getIdentifier(), that.getIdentifier()) && Objects.equals(getAcronym(), that.getAcronym()) && Objects.equals(getLegalName(), that.getLegalName()) && Objects.equals(getLeiCode(), that.getLeiCode()) && Objects.equals(getLogo(), that.getLogo()) && Objects.equals(getMemberOf(), that.getMemberOf()) && Objects.equals(getOwnedEquipments(), that.getOwnedEquipments()) && Objects.equals(getOwnedFacilities(), that.getOwnedFacilities()) && Objects.equals(getTelephone(), that.getTelephone()) && Objects.equals(getURL(), that.getURL()) && Objects.equals(getType(), that.getType()) && Objects.equals(getMaturity(), that.getMaturity());
+        return Objects.equals(getAddress(), that.getAddress()) && Objects.equals(getContactPoint(), that.getContactPoint()) && Objects.equals(getEmail(), that.getEmail()) && Objects.equals(getIdentifier(), that.getIdentifier()) && Objects.equals(getAcronym(), that.getAcronym()) && Objects.equals(getLegalName(), that.getLegalName()) && Objects.equals(getLeiCode(), that.getLeiCode()) && Objects.equals(getLogo(), that.getLogo()) && Objects.equals(getMemberOf(), that.getMemberOf()) && Objects.equals(getOwns(), that.getOwns()) && Objects.equals(getTelephone(), that.getTelephone()) && Objects.equals(getURL(), that.getURL()) && Objects.equals(getType(), that.getType()) && Objects.equals(getMaturity(), that.getMaturity());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getAddress(), getContactPoint(), getEmail(), getIdentifier(), getAcronym(), getLegalName(), getLeiCode(), getLogo(), getMemberOf(), getOwnedEquipments(), getOwnedFacilities(), getTelephone(), getURL(), getType(), getMaturity());
+        return Objects.hash(super.hashCode(), getAddress(), getContactPoint(), getEmail(), getIdentifier(), getAcronym(), getLegalName(), getLeiCode(), getLogo(), getMemberOf(), getOwns(), getTelephone(), getURL(), getType(), getMaturity());
     }
 }

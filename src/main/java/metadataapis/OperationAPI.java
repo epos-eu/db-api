@@ -3,10 +3,7 @@ package metadataapis;
 import abstractapis.AbstractAPI;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import commonapis.ElementAPI;
-import commonapis.SpatialAPI;
-import commonapis.TemporalAPI;
-import commonapis.VersioningStatusAPI;
+import commonapis.*;
 import model.*;
 import org.epos.eposdatamodel.ContactPoint;
 import org.epos.eposdatamodel.Documentation;
@@ -58,11 +55,11 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
         if (obj.getMapping() != null && !obj.getMapping().isEmpty()) {
             MappingAPI mappingAPI = new MappingAPI(EntityNames.MAPPING.name(), Mapping.class);
             List<Mapping> mappingList = new ArrayList<>();
-            for(org.epos.eposdatamodel.Mapping mapping : obj.getMapping()){
+            for(LinkedEntity mapping : obj.getMapping()){
                 List<Mapping> list = dbaccess.getOneFromDBByInstanceId(mapping.getInstanceId(),Mapping.class);
                 Mapping mapping1 = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = mappingAPI.create(mapping);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(mapping);
                     mapping1 = (Mapping) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Mapping.class).get(0);
                 } else {
                     mapping1 = list.get(0);
@@ -81,11 +78,11 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
             }
             WebServiceAPI webServiceAPI = new WebServiceAPI(EntityNames.WEBSERVICE.name(), Webservice.class);
             edmobj.setOperationWebservicesByInstanceId(new ArrayList<>());
-            for(org.epos.eposdatamodel.WebService webService : obj.getWebservice()){
+            for(LinkedEntity webService : obj.getWebservice()){
                 List<Webservice> list = dbaccess.getOneFromDBByInstanceId(webService.getInstanceId(),Webservice.class);
                 Webservice webservice = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = webServiceAPI.create(webService);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(webService);
                     webservice = (Webservice) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Webservice.class).get(0);
                 } else {
                     webservice = list.get(0);
@@ -162,7 +159,7 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
             for(Mapping ed : edmobj.getMappingsByInstanceId()) {
 
                 MappingAPI api = new MappingAPI(EntityNames.MAPPING.name(), Mapping.class);
-                o.addMapping(api.retrieve(ed.getInstanceId()));
+                o.addMapping(api.retrieveLinkedEntity(ed.getInstanceId()));
             }
         }
 

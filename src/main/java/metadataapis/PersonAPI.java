@@ -1,10 +1,7 @@
 package metadataapis;
 
 import abstractapis.AbstractAPI;
-import commonapis.AddressAPI;
-import commonapis.ElementAPI;
-import commonapis.IdentifierAPI;
-import commonapis.VersioningStatusAPI;
+import commonapis.*;
 import model.*;
 import org.epos.eposdatamodel.LinkedEntity;
 
@@ -93,11 +90,11 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
         if (obj.getAffiliation() != null && !obj.getAffiliation().isEmpty()) {
             OrganizationAPI organizationAPI = new OrganizationAPI(EntityNames.ORGANIZATION.name(), Organization.class);
             edmobj.setOrganizationAffiliationsByInstanceId(new ArrayList<>());
-            for(org.epos.eposdatamodel.Organization organization : obj.getAffiliation()){
+            for(LinkedEntity organization : obj.getAffiliation()){
                 List<Organization> list = dbaccess.getOneFromDBByInstanceId(organization.getInstanceId(),Organization.class);
                 Organization organization1 = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = organizationAPI.create(organization);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(organization);
                     organization1 = (Organization) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Organization.class).get(0);
                 } else {
                     organization1 = list.get(0);
@@ -216,7 +213,7 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
             o.setAffiliation(new LinkedList<>());
             for(OrganizationAffiliation organizationAffiliation : edmobj.getOrganizationAffiliationsByInstanceId()){
                 OrganizationAPI organizationAPI = new OrganizationAPI(EntityNames.ORGANIZATION.name(), Organization.class);
-                o.addAffiliation(organizationAPI.retrieve(organizationAffiliation.getOrganizationInstanceId()));
+                o.addAffiliation(organizationAPI.retrieveLinkedEntity(organizationAffiliation.getOrganizationInstanceId()));
             }
         }
 

@@ -27,17 +27,17 @@ public class Operation extends EPOSDataModelEntity {
     /**
      * A variable-to-property mapping of the IRI template.
      **/
-    private List<Mapping> mapping;
+    private List<LinkedEntity> mapping;
 
     /**
      * Reverse reference to the related webservice.
      */
-    private List<WebService> webservice;
+    private List<LinkedEntity> webservice;
 
 
-    public void addMapping(Mapping mapping) {
+    public void addMapping(LinkedEntity mapping) {
         if (this.mapping == null) {
-            ArrayList<Mapping> tmpList = new ArrayList<>();
+            ArrayList<LinkedEntity> tmpList = new ArrayList<>();
             tmpList.add(mapping);
             this.setMapping(tmpList);
         } else {
@@ -121,12 +121,12 @@ public class Operation extends EPOSDataModelEntity {
         this.template = template;
     }
 
-    public Operation mapping(List<Mapping> mapping) {
+    public Operation mapping(List<LinkedEntity> mapping) {
         this.mapping = mapping;
         return this;
     }
 
-    public Operation addMappingItem(Mapping mapping) {
+    public Operation addMappingItem(LinkedEntity mapping) {
         if (this.mapping == null) {
             this.mapping = new ArrayList<>();
         }
@@ -140,25 +140,25 @@ public class Operation extends EPOSDataModelEntity {
      *
      * @return spatialExtent
      **/
-    public List<Mapping> getMapping() {
+    public List<LinkedEntity> getMapping() {
         return mapping;
     }
 
-    public void setMapping(List<Mapping> mapping) {
+    public void setMapping(List<LinkedEntity> mapping) {
         this.mapping = mapping;
     }
 
 
-    public List<WebService> getWebservice() {
+    public List<LinkedEntity> getWebservice() {
         return webservice;
     }
 
-    public Operation setWebservice(List<WebService> webservice) {
+    public Operation setWebservice(List<LinkedEntity> webservice) {
         this.webservice = webservice;
         return this;
     }
 
-    public Operation addWebservice(WebService webservice) {
+    public Operation addWebservice(LinkedEntity webservice) {
         if (this.webservice == null) {
             this.webservice = new ArrayList<>();
         }
