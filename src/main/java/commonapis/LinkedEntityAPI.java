@@ -112,7 +112,7 @@ public class LinkedEntityAPI {
     }
 
 
-    public static Object retrieveLinkedEntity(LinkedEntity obj) {
+    public static Object retrieveFromLinkedEntity(LinkedEntity obj) {
 
         AbstractAPI api = null;
         Class<?> edmClass = null;
