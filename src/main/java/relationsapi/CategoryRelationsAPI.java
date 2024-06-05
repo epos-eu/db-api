@@ -105,11 +105,11 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
         }
         CategoryAPI categoryAPI = new CategoryAPI("Category", Category.class);
         edmobj.setWebserviceCategoriesByInstanceId(new ArrayList<>());
-        for (org.epos.eposdatamodel.Category category : obj.getCategory()) {
+        for (LinkedEntity category : obj.getCategory()) {
             List<Category> list = dbaccess.getOneFromDBByInstanceId(category.getInstanceId(), Category.class);
             Category category1 = null;
             if (list.isEmpty()) {
-                LinkedEntity le = categoryAPI.create(category);
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(category);
                 category1 = (Category) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Category.class).get(0);
             } else {
                 category1 = list.get(0);
@@ -133,11 +133,11 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
         }
         CategoryAPI categoryAPI = new CategoryAPI("Category", Category.class);
         edmobj.setSoftwaresourcecodeCategoriesByInstanceId(new ArrayList<>());
-        for (org.epos.eposdatamodel.Category category : obj.getCategory()) {
+        for (LinkedEntity category : obj.getCategory()) {
             List<Category> list = dbaccess.getOneFromDBByInstanceId(category.getInstanceId(), Category.class);
             Category category1 = null;
             if (list.isEmpty()) {
-                LinkedEntity le = categoryAPI.create(category);
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(category);
                 category1 = (Category) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Category.class).get(0);
             } else {
                 category1 = list.get(0);
@@ -161,11 +161,11 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
         }
         CategoryAPI categoryAPI = new CategoryAPI("Category", Category.class);
         edmobj.setSoftwareapplicationCategoriesByInstanceId(new ArrayList<>());
-        for (org.epos.eposdatamodel.Category category : obj.getCategory()) {
+        for (LinkedEntity category : obj.getCategory()) {
             List<Category> list = dbaccess.getOneFromDBByInstanceId(category.getInstanceId(), Category.class);
             Category category1 = null;
             if (list.isEmpty()) {
-                LinkedEntity le = categoryAPI.create(category);
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(category);
                 category1 = (Category) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Category.class).get(0);
             } else {
                 category1 = list.get(0);

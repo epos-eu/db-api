@@ -1,6 +1,7 @@
 package relationsapi;
 
 import abstractapis.AbstractRelationsAPI;
+import commonapis.LinkedEntityAPI;
 import metadataapis.ContactPointAPI;
 import model.*;
 import org.epos.eposdatamodel.LinkedEntity;
@@ -17,11 +18,11 @@ public class AddressRelationsAPI extends AbstractRelationsAPI {
             }
         }
         ContactPointAPI contactPointAPI = new ContactPointAPI("ContactPoint", Contactpoint.class);
-        for(org.epos.eposdatamodel.ContactPoint contactPoint : obj.getContactPoint()){
+        for(LinkedEntity contactPoint : obj.getContactPoint()){
             List<Contactpoint> list = dbaccess.getOneFromDBByInstanceId(contactPoint.getInstanceId(),Contactpoint.class);
             Contactpoint contactPoint1 = null;
             if(list.isEmpty()){
-                LinkedEntity le = contactPointAPI.create(contactPoint);
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(contactPoint);
                 contactPoint1 = (Contactpoint) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Contactpoint.class).get(0);
             } else {
                 contactPoint1 = list.get(0);
@@ -42,11 +43,11 @@ public class AddressRelationsAPI extends AbstractRelationsAPI {
             }
         }
         ContactPointAPI contactPointAPI = new ContactPointAPI("ContactPoint", Contactpoint.class);
-        for(org.epos.eposdatamodel.ContactPoint contactPoint : obj.getContactPoint()){
+        for(LinkedEntity contactPoint : obj.getContactPoint()){
             List<Contactpoint> list = dbaccess.getOneFromDBByInstanceId(contactPoint.getInstanceId(),Contactpoint.class);
             Contactpoint contactPoint1 = null;
             if(list.isEmpty()){
-                LinkedEntity le = contactPointAPI.create(contactPoint);
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(contactPoint);
                 contactPoint1 = (Contactpoint) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Contactpoint.class).get(0);
             } else {
                 contactPoint1 = list.get(0);

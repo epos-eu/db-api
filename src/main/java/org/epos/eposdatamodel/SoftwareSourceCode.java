@@ -14,7 +14,7 @@ public class SoftwareSourceCode extends Software {
     /**
      * This property refers to a category of the Software Source Code. A Software Source Code may be associated with multiple categories.
      **/
-    private List<Category> category;
+    private List<LinkedEntity> category;
 
     /**
      * This property contains the link to the repository where the un-compiled, human readable code and related code is located (SVN, GitHub, CodePlex)
@@ -25,7 +25,7 @@ public class SoftwareSourceCode extends Software {
      * This property refers to the Contact Point (i.e. Role) defined for the Software
      * Source Code.
      */
-    private List<ContactPoint> contactPoint;
+    private List<LinkedEntity> contactPoint;
 
     /**
      * This property contains the description of the Software
@@ -86,9 +86,9 @@ public class SoftwareSourceCode extends Software {
     private String softwareVersion;
 
 
-    public void addCategory(Category category) {
+    public void addCategory(LinkedEntity category) {
         if (this.getCategory() == null) {
-            ArrayList<Category> categoryList = new ArrayList<>();
+            ArrayList<LinkedEntity> categoryList = new ArrayList<>();
             categoryList.add(category);
             this.setCategory(categoryList);
         } else {
@@ -106,9 +106,9 @@ public class SoftwareSourceCode extends Software {
         }
     }
 
-    public void addContactPoint(ContactPoint contactPoint) {
+    public void addContactPoint(LinkedEntity contactPoint) {
         if (this.getContactPoint() == null) {
-            ArrayList<ContactPoint> contactPointList = new ArrayList<>();
+            ArrayList<LinkedEntity> contactPointList = new ArrayList<>();
             contactPointList.add(contactPoint);
             this.setContactPoint(contactPointList);
         } else {
@@ -137,12 +137,12 @@ public class SoftwareSourceCode extends Software {
     }
 
 
-    public SoftwareSourceCode category(List<Category> category) {
+    public SoftwareSourceCode category(List<LinkedEntity> category) {
         this.category = category;
         return this;
     }
 
-    public SoftwareSourceCode addCategoryItem(Category categoryItem) {
+    public SoftwareSourceCode addCategoryItem(LinkedEntity categoryItem) {
         if (this.category == null) {
             this.category = new ArrayList<>();
         }
@@ -155,11 +155,11 @@ public class SoftwareSourceCode extends Software {
      *
      * @return category
      **/
-    public List<Category> getCategory() {
+    public List<LinkedEntity> getCategory() {
         return category;
     }
 
-    public void setCategory(List<Category> category) {
+    public void setCategory(List<LinkedEntity> category) {
         this.category = category;
     }
 
@@ -392,11 +392,11 @@ public class SoftwareSourceCode extends Software {
         this.softwareVersion = softwareVersion;
     }
 
-    public List<ContactPoint> getContactPoint() {
+    public List<LinkedEntity> getContactPoint() {
         return contactPoint;
     }
 
-    public void setContactPoint(List<ContactPoint> contactPoint) {
+    public void setContactPoint(List<LinkedEntity> contactPoint) {
         this.contactPoint = contactPoint;
     }
 

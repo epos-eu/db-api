@@ -11,13 +11,13 @@ public class SoftwareApplication extends Software {
     /**
      * This property refers to a category of the Software Application. A Software Application may be associated with multiple categories.
      **/
-    private List<Category> category;
+    private List<LinkedEntity> category;
 
     /**
      * This property refers to the Contact Point (i.e. Role) defined for the Software
      * Application.
      */
-    private List<ContactPoint> contactPoint;
+    private List<LinkedEntity> contactPoint;
 
     /**
      * This property contains the description of the Software Application
@@ -90,9 +90,9 @@ public class SoftwareApplication extends Software {
         }
     }
 
-    public void addCategory(Category category) {
+    public void addCategory(LinkedEntity category) {
         if (this.getCategory() == null) {
-            ArrayList<Category> categoryList = new ArrayList<>();
+            ArrayList<LinkedEntity> categoryList = new ArrayList<>();
             categoryList.add(category);
             this.setCategory(categoryList);
         } else {
@@ -110,9 +110,9 @@ public class SoftwareApplication extends Software {
         }
     }
 
-    public void addContactPoint(ContactPoint contactPoint) {
+    public void addContactPoint(LinkedEntity contactPoint) {
         if (this.getContactPoint() == null) {
-            ArrayList<ContactPoint> contactPointList = new ArrayList<>();
+            ArrayList<LinkedEntity> contactPointList = new ArrayList<>();
             contactPointList.add(contactPoint);
             this.setContactPoint(contactPointList);
         } else {
@@ -131,12 +131,12 @@ public class SoftwareApplication extends Software {
     }
 
 
-    public SoftwareApplication category(List<Category> category) {
+    public SoftwareApplication category(List<LinkedEntity> category) {
         this.category = category;
         return this;
     }
 
-    public SoftwareApplication addCategoryItem(Category categoryItem) {
+    public SoftwareApplication addCategoryItem(LinkedEntity categoryItem) {
         if (this.category == null) {
             this.category = new ArrayList<>();
         }
@@ -150,11 +150,11 @@ public class SoftwareApplication extends Software {
      * @return category
      **/
 
-    public List<Category> getCategory() {
+    public List<LinkedEntity> getCategory() {
         return category;
     }
 
-    public void setCategory(List<Category> category) {
+    public void setCategory(List<LinkedEntity> category) {
         this.category = category;
     }
 
@@ -386,11 +386,11 @@ public class SoftwareApplication extends Software {
         this.softwareVersion = softwareVersion;
     }
 
-    public List<ContactPoint> getContactPoint() {
+    public List<LinkedEntity> getContactPoint() {
         return contactPoint;
     }
 
-    public void setContactPoint(List<ContactPoint> contactPoint) {
+    public void setContactPoint(List<LinkedEntity> contactPoint) {
         this.contactPoint = contactPoint;
     }
 
