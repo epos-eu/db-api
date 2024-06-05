@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import metadataapis.*;
 import model.Dataproduct;
 import model.StatusType;
+import org.eclipse.persistence.internal.jpa.rs.metadata.model.Link;
 import org.epos.eposdatamodel.*;
 
 import java.io.IOException;
@@ -40,6 +41,10 @@ public class VariousTests {
     }
 
     public static void softwaresTest(){
+        CategoryAPI categoryAPI = new CategoryAPI(EntityNames.CATEGORY.name(), model.Category.class);
+        ContactPointAPI contactPointAPI = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), model.Contactpoint.class);
+
+
         Category cat = new Category();
         cat.setName("SoftwareCategory1");
         cat.setUid("SoftwareCategory1");
@@ -79,7 +84,7 @@ public class VariousTests {
 
         SoftwareApplication sa = new SoftwareApplication();
         sa.setUid("SoftwareApplicationUID");
-        sa.setCategory(List.of(cat));
+        sa.setCategory(List.of(categoryAPI.create(cat)));
         sa.setDescription("SoftwareApplicationDescription");
         sa.setName("SoftwareApplicationName");
         sa.setIdentifier(List.of(identifier));
@@ -87,19 +92,19 @@ public class VariousTests {
         sa.setParameter(new ArrayList<>());
         sa.getParameter().add(parameter);
         sa.setRelation(List.of(leop));
-        sa.setContactPoint(List.of(cp));
+        sa.setContactPoint(List.of(contactPointAPI.create(cp)));
 
 
         SoftwareSourceCode ssc = new SoftwareSourceCode();
         ssc.setUid("SoftwareSourceCodeUID");
-        ssc.setCategory(List.of(cat));
+        ssc.setCategory(List.of(categoryAPI.create(cat)));
         ssc.setDescription("SoftwareApplicationDescription");
         ssc.setName("SoftwareApplicationName");
         ssc.setIdentifier(List.of(identifier));
         ssc.setStatus(StatusType.DRAFT);
         ssc.setSoftwareVersion("1.0");
         ssc.keywords("key1,key2,key3");
-        ssc.setContactPoint(List.of(cp));
+        ssc.setContactPoint(List.of(contactPointAPI.create(cp)));
 
         SoftwareApplicationAPI api = new SoftwareApplicationAPI(EntityNames.SOFTWAREAPPLICATION.name(), SoftwareApplication.class);
         LinkedEntity le = api.create(sa);
