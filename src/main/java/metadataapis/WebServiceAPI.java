@@ -87,7 +87,7 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
             ContactPointRelationsAPI.createRelation(edmobj,obj);
 
         /** DOCUMENTATION **/
-        if(!obj.getDocumentation().isEmpty()){
+        if(obj.getDocumentation()!=null && !obj.getDocumentation().isEmpty()){
             edmobj.setWebserviceElementsByInstanceId(new ArrayList<>());
             for(Documentation documentation : obj.getDocumentation()) {
                 JsonObject documentationObj = new JsonObject();

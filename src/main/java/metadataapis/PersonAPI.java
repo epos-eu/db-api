@@ -121,14 +121,14 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
             }
         }
         /* TELEPHONE */
-        if(!obj.getTelephone().isEmpty()){
+        if(obj.getTelephone()!=null && !obj.getTelephone().isEmpty()){
             for(String tel : obj.getTelephone()) {
                 createInnerElement(ElementType.TELEPHONE, tel, edmobj);
             }
         }
 
         /* EMAIL */
-        if(!obj.getEmail().isEmpty()){
+        if(obj.getEmail()!=null && !obj.getEmail().isEmpty()){
             for(String email : obj.getEmail()) {
                 createInnerElement(ElementType.EMAIL, email, edmobj);
             }

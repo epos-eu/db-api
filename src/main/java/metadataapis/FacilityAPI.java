@@ -166,7 +166,7 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
             }
         }
         /* PAGEURL */
-        if(!obj.getPageURL().isEmpty()){
+        if(obj.getPageURL()!=null && !obj.getPageURL().isEmpty()){
             for(String pageurl : obj.getPageURL()) {
                 createInnerElement(ElementType.PAGEURL, pageurl, edmobj);
             }

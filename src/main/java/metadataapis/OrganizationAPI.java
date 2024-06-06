@@ -124,14 +124,14 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
             }
         }
         /* TELEPHONE */
-        if(!obj.getTelephone().isEmpty()){
+        if(obj.getTelephone()!=null && !obj.getTelephone().isEmpty()){
             for(String tel : obj.getTelephone()) {
                 createInnerElement(ElementType.TELEPHONE, tel, edmobj);
             }
         }
 
         /* EMAIL */
-        if(!obj.getEmail().isEmpty()){
+        if(obj.getEmail()!=null && !obj.getEmail().isEmpty()){
             for(String email : obj.getEmail()) {
                 createInnerElement(ElementType.EMAIL, email, edmobj);
             }

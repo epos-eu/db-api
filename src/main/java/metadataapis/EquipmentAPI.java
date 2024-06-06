@@ -198,7 +198,7 @@ public class EquipmentAPI extends AbstractAPI<org.epos.eposdatamodel.Equipment> 
             }
         }
         /* PAGEURL */
-        if(!obj.getPageURL().isEmpty()){
+        if(obj.getPageURL()!=null && !obj.getPageURL().isEmpty()){
             createInnerElement(ElementType.PAGEURL, obj.getPageURL(), edmobj);
         }
 

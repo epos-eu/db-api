@@ -101,7 +101,7 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
 
         edmobj.setOperationElementsByInstanceId(new ArrayList<>());
         /** RETURNS **/
-        if(!obj.getReturns().isEmpty()){
+        if(obj.getReturns()!=null && !obj.getReturns().isEmpty()){
             for(String returns : obj.getReturns()) {
                 createInnerElement(ElementType.RETURNS, returns, edmobj);
             }

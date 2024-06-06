@@ -56,21 +56,21 @@ public class ContactPointAPI extends AbstractAPI<ContactPoint> {
         edmobj.setContactpointElementsByInstanceId(new ArrayList<>());
 
         /* LANGUAGE */
-        if(!obj.getLanguage().isEmpty()){
+        if(obj.getLanguage()!=null && !obj.getLanguage().isEmpty()){
             for(String lang : obj.getLanguage()) {
                 createInnerElement(ElementType.LANGUAGE, lang, edmobj);
             }
         }
 
         /* TELEPHONE */
-        if(!obj.getTelephone().isEmpty()){
+        if(obj.getTelephone()!=null && !obj.getTelephone().isEmpty()){
             for(String tel : obj.getTelephone()) {
                 createInnerElement(ElementType.TELEPHONE, tel, edmobj);
             }
         }
 
         /* EMAIL */
-        if(!obj.getEmail().isEmpty()){
+        if(obj.getEmail()!=null && !obj.getEmail().isEmpty()){
             for(String email : obj.getEmail()) {
                 createInnerElement(ElementType.EMAIL, email, edmobj);
             }
