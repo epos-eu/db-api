@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * This class allow to represent the implementation status of a Service made available by a Service Provider.
  */
-public class QuantitativeValue {
+public class QuantitativeValue extends EPOSDataModelEntity{
     /**
      * The unit of measurement given using the UN/CEFACT Common Code (3 characters) or a URL
      */

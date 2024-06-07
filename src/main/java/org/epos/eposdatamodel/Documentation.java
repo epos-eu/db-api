@@ -6,7 +6,7 @@ import java.util.Objects;
 /**
  * Documentation.
  */
-public class Documentation {
+public class Documentation extends EPOSDataModelEntity{
     private String title = null;
 
     private String description = null;
