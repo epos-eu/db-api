@@ -37,12 +37,7 @@ public class Equipment extends EPOSDataModelEntity {
 	/**
 	 * This property refers to an Equipment or a Facility in which the described Equipment is included.
 	 */
-	private List<LinkedEntity> isPartOfEquipment;
-
-	/**
-	 * This property refers to an Equipment or a Facility in which the described Equipment is included.
-	 */
-	private List<LinkedEntity> isPartOfFacility;
+	private List<LinkedEntity> isPartOf;
 
 	/**
 	 * This property refers to an ORGANIZATION responsible for manufacturing the Equipment.
@@ -106,25 +101,16 @@ public class Equipment extends EPOSDataModelEntity {
 	 **/
 	private String type;
 
-	public void addIsPartOfEquipment(LinkedEntity isPartOf) {
-		if (this.getIsPartOfEquipment() == null) {
+	public void addIsPartOf(LinkedEntity isPartOf) {
+		if (this.getIsPartOf() == null) {
 			ArrayList<LinkedEntity> isPartOfList = new ArrayList<>();
 			isPartOfList.add(isPartOf);
-			this.setIsPartOfEquipment(isPartOfList);
+			this.setIsPartOf(isPartOfList);
 		} else {
-			this.getIsPartOfEquipment().add(isPartOf);
+			this.getIsPartOf().add(isPartOf);
 		}
 	}
 
-	public void addIsPartOfFacility(LinkedEntity isPartOf) {
-		if (this.getIsPartOfFacility() == null) {
-			ArrayList<LinkedEntity> isPartOfList = new ArrayList<>();
-			isPartOfList.add(isPartOf);
-			this.setIsPartOfFacility(isPartOfList);
-		} else {
-			this.getIsPartOfFacility().add(isPartOf);
-		}
-	}
 
 	public void addContactPoint(LinkedEntity contactPoint) {
 		if (this.getContactPoint() == null) {
@@ -465,20 +451,12 @@ public class Equipment extends EPOSDataModelEntity {
 		this.contactPoint = contactPoint;
 	}
 
-	public List<LinkedEntity> getIsPartOfEquipment() {
-		return isPartOfEquipment;
+	public List<LinkedEntity> getIsPartOf() {
+		return isPartOf;
 	}
 
-	public void setIsPartOfEquipment(List<LinkedEntity> isPartOf) {
-		this.isPartOfEquipment = isPartOf;
-	}
-
-	public List<LinkedEntity> getIsPartOfFacility() {
-		return isPartOfFacility;
-	}
-
-	public void setIsPartOfFacility(List<LinkedEntity> isPartOf) {
-		this.isPartOfFacility = isPartOf;
+	public void setIsPartOf(List<LinkedEntity> isPartOf) {
+		this.isPartOf = isPartOf;
 	}
 
 	public LinkedEntity getManufacturer() {
@@ -529,8 +507,7 @@ public class Equipment extends EPOSDataModelEntity {
 				", description='" + description + '\'' +
 				", dynamicRange='" + dynamicRange + '\'' +
 				", filter='" + filter + '\'' +
-				", isPartOfEquipment=" + isPartOfEquipment +
-				", isPartOfFacility=" + isPartOfFacility +
+				", isPartOf=" + isPartOf +
 				", manufacturer=" + manufacturer +
 				", name='" + name + '\'' +
 				", pageURL='" + pageURL + '\'' +
@@ -551,11 +528,11 @@ public class Equipment extends EPOSDataModelEntity {
 		if (o == null || getClass() != o.getClass()) return false;
 		if (!super.equals(o)) return false;
 		Equipment equipment = (Equipment) o;
-		return Objects.equals(getUid(), equipment.getUid()) && Objects.equals(getCategory(), equipment.getCategory()) && Objects.equals(getContactPoint(), equipment.getContactPoint()) && Objects.equals(getDescription(), equipment.getDescription()) && Objects.equals(getDynamicRange(), equipment.getDynamicRange()) && Objects.equals(getFilter(), equipment.getFilter()) && Objects.equals(getIsPartOfEquipment(), equipment.getIsPartOfEquipment()) && Objects.equals(getManufacturer(), equipment.getManufacturer()) && Objects.equals(getName(), equipment.getName()) && Objects.equals(getPageURL(), equipment.getPageURL()) && Objects.equals(getOrientation(), equipment.getOrientation()) && Objects.equals(getRelation(), equipment.getRelation()) && Objects.equals(getResolution(), equipment.getResolution()) && Objects.equals(getSamplePeriod(), equipment.getSamplePeriod()) && Objects.equals(getSerialNumber(), equipment.getSerialNumber()) && Objects.equals(getSpatialExtent(), equipment.getSpatialExtent()) && Objects.equals(getTemporalExtent(), equipment.getTemporalExtent()) && Objects.equals(getType(), equipment.getType());
+		return Objects.equals(getUid(), equipment.getUid()) && Objects.equals(getCategory(), equipment.getCategory()) && Objects.equals(getContactPoint(), equipment.getContactPoint()) && Objects.equals(getDescription(), equipment.getDescription()) && Objects.equals(getDynamicRange(), equipment.getDynamicRange()) && Objects.equals(getFilter(), equipment.getFilter()) && Objects.equals(getIsPartOf(), equipment.getIsPartOf()) && Objects.equals(getManufacturer(), equipment.getManufacturer()) && Objects.equals(getName(), equipment.getName()) && Objects.equals(getPageURL(), equipment.getPageURL()) && Objects.equals(getOrientation(), equipment.getOrientation()) && Objects.equals(getRelation(), equipment.getRelation()) && Objects.equals(getResolution(), equipment.getResolution()) && Objects.equals(getSamplePeriod(), equipment.getSamplePeriod()) && Objects.equals(getSerialNumber(), equipment.getSerialNumber()) && Objects.equals(getSpatialExtent(), equipment.getSpatialExtent()) && Objects.equals(getTemporalExtent(), equipment.getTemporalExtent()) && Objects.equals(getType(), equipment.getType());
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(super.hashCode(), getCategory(), getContactPoint(), getDescription(), getDynamicRange(), getFilter(), getIsPartOfEquipment(), getIsPartOfFacility(), getManufacturer(), getName(), getPageURL(), getOrientation(), getRelation(), getResolution(), getSamplePeriod(), getSerialNumber(), getSpatialExtent(), getTemporalExtent(), getType());
+		return Objects.hash(super.hashCode(), getCategory(), getContactPoint(), getDescription(), getDynamicRange(), getFilter(), getIsPartOf(), getManufacturer(), getName(), getPageURL(), getOrientation(), getRelation(), getResolution(), getSamplePeriod(), getSerialNumber(), getSpatialExtent(), getTemporalExtent(), getType());
 	}
 }
