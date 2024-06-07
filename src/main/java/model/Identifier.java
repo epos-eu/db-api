@@ -18,10 +18,10 @@ public class Identifier {
     @Column(name = "version_id", nullable = true, length = 100)
     private String versionId;
     @Basic
-    @Column(name = "type", nullable = false, length = 1024)
+    @Column(name = "type", nullable = true, length = 1024)
     private String type;
     @Basic
-    @Column(name = "value", nullable = false, length = 1024)
+    @Column(name = "value", nullable = true, length = 1024)
     private String value;
     @OneToMany(mappedBy = "identifierByIdentifierInstanceId")
     private Collection<DataproductIdentifier> dataproductIdentifiersByInstanceId;
