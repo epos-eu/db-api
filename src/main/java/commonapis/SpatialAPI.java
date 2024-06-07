@@ -2,7 +2,6 @@ package commonapis;
 
 import abstractapis.AbstractAPI;
 import metadataapis.EntityNames;
-import model.Address;
 import model.Element;
 import model.Spatial;
 import org.epos.eposdatamodel.LinkedEntity;
@@ -72,7 +71,7 @@ public class SpatialAPI extends AbstractAPI<org.epos.eposdatamodel.Location> {
         o.setInstanceId(edmobj.getInstanceId());
         o.setMetaId(edmobj.getMetaId());
         o.setUid(edmobj.getUid());
-        o.setEntityType(EntityNames.SPATIAL.name());
+        o.setEntityType(EntityNames.LOCATION.name());
 
         return o;
     }

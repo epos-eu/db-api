@@ -3,7 +3,6 @@ package metadataapis;
 import abstractapis.AbstractAPI;
 import commonapis.*;
 import model.*;
-import org.epos.eposdatamodel.ContactPoint;
 import org.epos.eposdatamodel.LinkedEntity;
 import relationsapi.CategoryRelationsAPI;
 import relationsapi.ContactPointRelationsAPI;
@@ -134,7 +133,7 @@ public class EquipmentAPI extends AbstractAPI<org.epos.eposdatamodel.Equipment> 
                     getDbaccess().deleteObject(item);
                 }
             }
-            SpatialAPI spatialAPI = new SpatialAPI(EntityNames.SPATIAL.name(), Spatial.class);
+            SpatialAPI spatialAPI = new SpatialAPI(EntityNames.LOCATION.name(), Spatial.class);
             edmobj.setEquipmentSpatialsByInstanceId(new ArrayList<>());
             for(org.epos.eposdatamodel.Location location : obj.getSpatialExtent()){
                 List<Spatial> list = dbaccess.getOneFromDBByInstanceId(location.getInstanceId(),Spatial.class);
@@ -164,7 +163,7 @@ public class EquipmentAPI extends AbstractAPI<org.epos.eposdatamodel.Equipment> 
                     getDbaccess().deleteObject(item);
                 }
             }
-            TemporalAPI temporalAPI = new TemporalAPI(EntityNames.TEMPORAL.name(), Temporal.class);
+            TemporalAPI temporalAPI = new TemporalAPI(EntityNames.PERIODOFTIME.name(), Temporal.class);
             edmobj.setEquipmentTemporalsByInstanceId(new ArrayList<>());
             for(org.epos.eposdatamodel.PeriodOfTime periodOfTime : obj.getTemporalExtent()){
                 List<Temporal> list = dbaccess.getOneFromDBByInstanceId(periodOfTime.getInstanceId(),Temporal.class);
@@ -282,7 +281,7 @@ public class EquipmentAPI extends AbstractAPI<org.epos.eposdatamodel.Equipment> 
 
         if(edmobj.getEquipmentSpatialsByInstanceId().size()>0) {
             for(EquipmentSpatial ed : edmobj.getEquipmentSpatialsByInstanceId()) {
-                SpatialAPI api = new SpatialAPI(EntityNames.SPATIAL.name(), Spatial.class);
+                SpatialAPI api = new SpatialAPI(EntityNames.LOCATION.name(), Spatial.class);
                 org.epos.eposdatamodel.Location cp = api.retrieve(ed.getSpatialInstanceId());
                 o.addSpatialExtentItem(cp);
             }
@@ -290,7 +289,7 @@ public class EquipmentAPI extends AbstractAPI<org.epos.eposdatamodel.Equipment> 
 
         if(edmobj.getEquipmentTemporalsByInstanceId().size()>0) {
             for(EquipmentTemporal ed : edmobj.getEquipmentTemporalsByInstanceId()) {
-                TemporalAPI api = new TemporalAPI(EntityNames.TEMPORAL.name(), Temporal.class);
+                TemporalAPI api = new TemporalAPI(EntityNames.PERIODOFTIME.name(), Temporal.class);
                 org.epos.eposdatamodel.PeriodOfTime cp = api.retrieve(ed.getTemporalInstanceId());
                 o.addTemporalExtent(cp);
             }

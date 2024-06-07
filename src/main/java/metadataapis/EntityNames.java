@@ -18,7 +18,7 @@ public enum EntityNames {
     WEBSERVICE,
     ADDRESS,
     IDENTIFIER,
-    SPATIAL,
-    TEMPORAL,
+    LOCATION,
+    PERIODOFTIME,
     ELEMENT
 }

@@ -3,9 +3,6 @@ package metadataapis;
 import abstractapis.AbstractAPI;
 import commonapis.*;
 import model.*;
-import org.apache.commons.math3.analysis.function.Add;
-import org.epos.eposdatamodel.ContactPoint;
-import org.epos.eposdatamodel.LegalName;
 import org.epos.eposdatamodel.LinkedEntity;
 import relationsapi.CategoryRelationsAPI;
 import relationsapi.ContactPointRelationsAPI;
@@ -133,7 +130,7 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
                     getDbaccess().deleteObject(item);
                 }
             }
-            SpatialAPI spatialAPI = new SpatialAPI(EntityNames.SPATIAL.name(), Spatial.class);
+            SpatialAPI spatialAPI = new SpatialAPI(EntityNames.LOCATION.name(), Spatial.class);
             edmobj.setFacilitySpatialsByInstanceId(new ArrayList<>());
             for(org.epos.eposdatamodel.Location location : obj.getSpatialExtent()){
                 List<Spatial> list = dbaccess.getOneFromDBByInstanceId(location.getInstanceId(),Spatial.class);
@@ -247,7 +244,7 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
 
         if(edmobj.getFacilitySpatialsByInstanceId().size()>0) {
             for(FacilitySpatial ed : edmobj.getFacilitySpatialsByInstanceId()) {
-                SpatialAPI api = new SpatialAPI(EntityNames.SPATIAL.name(), Spatial.class);
+                SpatialAPI api = new SpatialAPI(EntityNames.LOCATION.name(), Spatial.class);
                 org.epos.eposdatamodel.Location cp = api.retrieve(ed.getSpatialInstanceId());
                 o.addSpatialExtentItem(cp);
             }

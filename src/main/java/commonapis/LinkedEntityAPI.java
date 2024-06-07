@@ -79,11 +79,11 @@ public class LinkedEntityAPI {
                 edmClass = Element.class;
                 api = new ElementAPI(obj.getEntityType(), edmClass);
                 break;
-            case SPATIAL:
+            case LOCATION:
                 edmClass = Spatial.class;
                 api = new SpatialAPI(obj.getEntityType(), edmClass);
                 break;
-            case TEMPORAL:
+            case PERIODOFTIME:
                 edmClass = Temporal.class;
                 api = new TemporalAPI(obj.getEntityType(), edmClass);
                 break;
@@ -181,11 +181,11 @@ public class LinkedEntityAPI {
                 edmClass = Element.class;
                 api = new ElementAPI(obj.getEntityType(), edmClass);
                 break;
-            case SPATIAL:
+            case LOCATION:
                 edmClass = Spatial.class;
                 api = new SpatialAPI(obj.getEntityType(), edmClass);
                 break;
-            case TEMPORAL:
+            case PERIODOFTIME:
                 edmClass = Temporal.class;
                 api = new TemporalAPI(obj.getEntityType(), edmClass);
                 break;
