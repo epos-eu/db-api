@@ -9,6 +9,7 @@ import org.epos.eposdatamodel.LinkedEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ContactPointRelationsAPI extends AbstractRelationsAPI {
 
@@ -21,7 +22,12 @@ public class ContactPointRelationsAPI extends AbstractRelationsAPI {
         }
         edmobj.setEquipmentContactpointsByInstanceId(new ArrayList<>());
         for(LinkedEntity contactPoint : obj.getContactPoint()){
-            List<Contactpoint> list = dbaccess.getOneFromDBByInstanceId(contactPoint.getInstanceId(),Contactpoint.class);
+            List<Contactpoint> list = dbaccess.getOneFromDB(
+                    Optional.ofNullable(contactPoint.getInstanceId()).orElse(null),
+                    Optional.ofNullable(contactPoint.getMetaId()).orElse(null),
+                    Optional.ofNullable(contactPoint.getUid()).orElse(null),
+                    null,
+                    Contactpoint.class);
             Contactpoint contactPoint1 = null;
             if(list.isEmpty()){
                 LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(contactPoint);
@@ -50,7 +56,12 @@ public class ContactPointRelationsAPI extends AbstractRelationsAPI {
         }
         edmobj.setFacilityContactpointsByInstanceId(new ArrayList<>());
         for(LinkedEntity contactPoint : obj.getContactPoint()){
-            List<Contactpoint> list = dbaccess.getOneFromDBByInstanceId(contactPoint.getInstanceId(),Contactpoint.class);
+            List<Contactpoint> list = dbaccess.getOneFromDB(
+                    Optional.ofNullable(contactPoint.getInstanceId()).orElse(null),
+                    Optional.ofNullable(contactPoint.getMetaId()).orElse(null),
+                    Optional.ofNullable(contactPoint.getUid()).orElse(null),
+                    null,
+                    Contactpoint.class);
             Contactpoint contactPoint1 = null;
             if(list.isEmpty()){
                 LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(contactPoint);
@@ -80,7 +91,12 @@ public class ContactPointRelationsAPI extends AbstractRelationsAPI {
         ContactPointAPI contactPointAPI = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), Contactpoint.class);
         edmobj.setDataproductContactpointsByInstanceId(new ArrayList<>());
         for(LinkedEntity contactPoint : obj.getContactPoint()){
-            List<Contactpoint> list = dbaccess.getOneFromDBByInstanceId(contactPoint.getInstanceId(),Contactpoint.class);
+            List<Contactpoint> list = dbaccess.getOneFromDB(
+                    Optional.ofNullable(contactPoint.getInstanceId()).orElse(null),
+                    Optional.ofNullable(contactPoint.getMetaId()).orElse(null),
+                    Optional.ofNullable(contactPoint.getUid()).orElse(null),
+                    null,
+                    Contactpoint.class);
             Contactpoint contactPoint1 = null;
             if(list.isEmpty()){
                 LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(contactPoint);
@@ -110,7 +126,12 @@ public class ContactPointRelationsAPI extends AbstractRelationsAPI {
         ContactPointAPI contactPointAPI = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), Contactpoint.class);
         edmobj.setWebserviceContactpointsByInstanceId(new ArrayList<>());
         for(LinkedEntity contactPoint : obj.getContactPoint()){
-            List<Contactpoint> list = dbaccess.getOneFromDBByInstanceId(contactPoint.getInstanceId(),Contactpoint.class);
+            List<Contactpoint> list = dbaccess.getOneFromDB(
+                    Optional.ofNullable(contactPoint.getInstanceId()).orElse(null),
+                    Optional.ofNullable(contactPoint.getMetaId()).orElse(null),
+                    Optional.ofNullable(contactPoint.getUid()).orElse(null),
+                    null,
+                    Contactpoint.class);
             Contactpoint contactPoint1 = null;
             if(list.isEmpty()){
                 LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(contactPoint);
@@ -140,7 +161,12 @@ public class ContactPointRelationsAPI extends AbstractRelationsAPI {
         ContactPointAPI contactPointAPI = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), Contactpoint.class);
         edmobj.setSoftwaresourcecodeContactpointsByInstanceId(new ArrayList<>());
         for(LinkedEntity contactPoint : obj.getContactPoint()){
-            List<Contactpoint> list = dbaccess.getOneFromDBByInstanceId(contactPoint.getInstanceId(),Contactpoint.class);
+            List<Contactpoint> list = dbaccess.getOneFromDB(
+                    Optional.ofNullable(contactPoint.getInstanceId()).orElse(null),
+                    Optional.ofNullable(contactPoint.getMetaId()).orElse(null),
+                    Optional.ofNullable(contactPoint.getUid()).orElse(null),
+                    null,
+                    Contactpoint.class);
             Contactpoint contactPoint1 = null;
             if(list.isEmpty()){
                 LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(contactPoint);
@@ -170,7 +196,12 @@ public class ContactPointRelationsAPI extends AbstractRelationsAPI {
         ContactPointAPI contactPointAPI = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), Contactpoint.class);
         edmobj.setSoftwareapplicationContactpointsByInstanceId(new ArrayList<>());
         for(LinkedEntity contactPoint : obj.getContactPoint()){
-            List<Contactpoint> list = dbaccess.getOneFromDBByInstanceId(contactPoint.getInstanceId(),Contactpoint.class);
+            List<Contactpoint> list = dbaccess.getOneFromDB(
+                    Optional.ofNullable(contactPoint.getInstanceId()).orElse(null),
+                    Optional.ofNullable(contactPoint.getMetaId()).orElse(null),
+                    Optional.ofNullable(contactPoint.getUid()).orElse(null),
+                    null,
+                    Contactpoint.class);
             Contactpoint contactPoint1 = null;
             if(list.isEmpty()){
                 LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(contactPoint);

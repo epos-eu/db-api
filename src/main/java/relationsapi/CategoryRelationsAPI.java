@@ -8,6 +8,7 @@ import org.epos.eposdatamodel.LinkedEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CategoryRelationsAPI extends AbstractRelationsAPI {
 
@@ -20,7 +21,12 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
         }
         edmobj.setEquipmentCategoriesByInstanceId(new ArrayList<>());
         for(LinkedEntity category : obj.getCategory()){
-            List<Category> list = dbaccess.getOneFromDBByInstanceId(category.getInstanceId(),Category.class);
+            List<Category> list = dbaccess.getOneFromDB(
+                    Optional.ofNullable(category.getInstanceId()).orElse(null),
+                    Optional.ofNullable(category.getMetaId()).orElse(null),
+                    Optional.ofNullable(category.getUid()).orElse(null),
+                    null,
+                    Category.class);
             Category category1 = null;
             if(list.isEmpty()){
                 LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(category);
@@ -49,7 +55,12 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
         }
         edmobj.setFacilityCategoriesByInstanceId(new ArrayList<>());
         for (LinkedEntity category : obj.getCategory()) {
-            List<Category> list = dbaccess.getOneFromDBByInstanceId(category.getInstanceId(), Category.class);
+            List<Category> list = dbaccess.getOneFromDB(
+                    Optional.ofNullable(category.getInstanceId()).orElse(null),
+                    Optional.ofNullable(category.getMetaId()).orElse(null),
+                    Optional.ofNullable(category.getUid()).orElse(null),
+                    null,
+                    Category.class);
             Category category1 = null;
             if (list.isEmpty()) {
                 LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(category);
@@ -78,7 +89,12 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
         }
         edmobj.setDataproductCategoriesByInstanceId(new ArrayList<>());
         for (LinkedEntity category : obj.getCategory()) {
-            List<Category> list = dbaccess.getOneFromDBByInstanceId(category.getInstanceId(), Category.class);
+            List<Category> list = dbaccess.getOneFromDB(
+                    Optional.ofNullable(category.getInstanceId()).orElse(null),
+                    Optional.ofNullable(category.getMetaId()).orElse(null),
+                    Optional.ofNullable(category.getUid()).orElse(null),
+                    null,
+                    Category.class);
             Category category1 = null;
             if (list.isEmpty()) {
                 LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(category);
@@ -106,7 +122,12 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
         CategoryAPI categoryAPI = new CategoryAPI("Category", Category.class);
         edmobj.setWebserviceCategoriesByInstanceId(new ArrayList<>());
         for (LinkedEntity category : obj.getCategory()) {
-            List<Category> list = dbaccess.getOneFromDBByInstanceId(category.getInstanceId(), Category.class);
+            List<Category> list = dbaccess.getOneFromDB(
+                    Optional.ofNullable(category.getInstanceId()).orElse(null),
+                    Optional.ofNullable(category.getMetaId()).orElse(null),
+                    Optional.ofNullable(category.getUid()).orElse(null),
+                    null,
+                    Category.class);
             Category category1 = null;
             if (list.isEmpty()) {
                 LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(category);
@@ -131,10 +152,14 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
                 getDbaccess().deleteObject(item);
             }
         }
-        CategoryAPI categoryAPI = new CategoryAPI("Category", Category.class);
         edmobj.setSoftwaresourcecodeCategoriesByInstanceId(new ArrayList<>());
         for (LinkedEntity category : obj.getCategory()) {
-            List<Category> list = dbaccess.getOneFromDBByInstanceId(category.getInstanceId(), Category.class);
+            List<Category> list = dbaccess.getOneFromDB(
+                    Optional.ofNullable(category.getInstanceId()).orElse(null),
+                    Optional.ofNullable(category.getMetaId()).orElse(null),
+                    Optional.ofNullable(category.getUid()).orElse(null),
+                    null,
+                    Category.class);
             Category category1 = null;
             if (list.isEmpty()) {
                 LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(category);
@@ -162,7 +187,12 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
         CategoryAPI categoryAPI = new CategoryAPI("Category", Category.class);
         edmobj.setSoftwareapplicationCategoriesByInstanceId(new ArrayList<>());
         for (LinkedEntity category : obj.getCategory()) {
-            List<Category> list = dbaccess.getOneFromDBByInstanceId(category.getInstanceId(), Category.class);
+            List<Category> list = dbaccess.getOneFromDB(
+                    Optional.ofNullable(category.getInstanceId()).orElse(null),
+                    Optional.ofNullable(category.getMetaId()).orElse(null),
+                    Optional.ofNullable(category.getUid()).orElse(null),
+                    null,
+                    Category.class);
             Category category1 = null;
             if (list.isEmpty()) {
                 LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(category);

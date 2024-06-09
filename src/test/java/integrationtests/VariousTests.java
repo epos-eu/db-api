@@ -20,6 +20,10 @@ public class VariousTests {
         cat.setUid("DataProductCategory1");
         cat.setDescription("DataProductCategoryDescription");
 
+        LinkedEntity catLe = new LinkedEntity();
+        catLe.setUid("DataProductCategory1");
+        catLe.setEntityType(EntityNames.CATEGORY.name());
+
         Identifier identifier = new Identifier();
         identifier.setIdentifier("DataProductIdentifier");
         identifier.setType("DOI");
@@ -28,6 +32,7 @@ public class VariousTests {
         DataProduct dp = new DataProduct();
         dp.setType("Dataproduct");
         dp.setAccessRight("Dataproduct accessrights");
+        dp.setCategory(List.of(catLe));
         dp.setUid("DataProductUID");
         dp.setDescription(List.of("Test dataproduct description"));
         dp.addTitle("DataProductTitle");
@@ -117,7 +122,7 @@ public class VariousTests {
     }
 
     public static void main(String[] args) {
-        softwaresTest();
-        //datasetTest();
+        //softwaresTest();
+        datasetTest();
     }
 }
