@@ -18,7 +18,7 @@ public class DataproductDescription {
     @Column(name = "version_id", nullable = true, length = 100)
     private String versionId;
     @Basic
-    @Column(name = "description", nullable = false, length = -1)
+    @Column(name = "description", nullable = true, length = -1)
     private String description;
     @Basic
     @Column(name = "lang", nullable = true, length = 20)

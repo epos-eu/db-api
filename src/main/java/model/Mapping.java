@@ -21,13 +21,13 @@ public class Mapping {
     @Column(name = "label", nullable = true, length = 1024)
     private String label;
     @Basic
-    @Column(name = "variable", nullable = false, length = 1024)
+    @Column(name = "variable", nullable = true, length = 1024)
     private String variable;
     @Basic
-    @Column(name = "required", nullable = false)
+    @Column(name = "required", nullable = true)
     private boolean required;
     @Basic
-    @Column(name = "range", nullable = false, length = 1024)
+    @Column(name = "range", nullable = true, length = 1024)
     private String range;
     @Basic
     @Column(name = "defaultvalue", nullable = true, length = 1024)

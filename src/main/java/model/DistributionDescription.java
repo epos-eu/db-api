@@ -18,7 +18,7 @@ public class DistributionDescription {
     @Column(name = "version_id", nullable = true, length = 100)
     private String versionId;
     @Basic
-    @Column(name = "description", nullable = false, length = 1024)
+    @Column(name = "description", nullable = true, length = 1024)
     private String description;
     @Basic
     @Column(name = "lang", nullable = true, length = 20)

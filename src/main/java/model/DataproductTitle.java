@@ -18,7 +18,7 @@ public class DataproductTitle {
     @Column(name = "version_id", nullable = true, length = 100)
     private String versionId;
     @Basic
-    @Column(name = "title", nullable = false, length = 1024)
+    @Column(name = "title", nullable = true, length = 1024)
     private String title;
     @Basic
     @Column(name = "lang", nullable = true, length = 20)
