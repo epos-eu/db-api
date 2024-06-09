@@ -18,7 +18,7 @@ public class DataproductProvenance {
     @Column(name = "version_id", nullable = true, length = 100)
     private String versionId;
     @Basic
-    @Column(name = "provenance", nullable = false, length = 1024)
+    @Column(name = "provenance", nullable = true, length = 1024)
     private String provenance;
     @Basic
     @Column(name = "dataproduct_instance_id", nullable = false, length = 100)

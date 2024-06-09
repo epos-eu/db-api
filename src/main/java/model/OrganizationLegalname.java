@@ -18,7 +18,7 @@ public class OrganizationLegalname {
     @Column(name = "version_id", nullable = true, length = 100)
     private String versionId;
     @Basic
-    @Column(name = "legalname", nullable = false, length = 1024)
+    @Column(name = "legalname", nullable = true, length = 1024)
     private String legalname;
     @Basic
     @Column(name = "language", nullable = true, length = 1024)

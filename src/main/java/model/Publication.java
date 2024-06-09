@@ -19,7 +19,7 @@ public class Publication {
     @Column(name = "version_id", nullable = true, length = 100)
     private String versionId;
     @Basic
-    @Column(name = "name", nullable = false, length = 1024)
+    @Column(name = "name", nullable = true, length = 1024)
     private String name;
     @Basic
     @Column(name = "published", nullable = true)

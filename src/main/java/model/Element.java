@@ -22,7 +22,7 @@ public class Element {
     @Enumerated(EnumType.STRING)
     private ElementType type;
     @Basic
-    @Column(name = "value", nullable = false, length = 1024)
+    @Column(name = "value", nullable = true, length = 1024)
     private String value;
     @OneToMany(mappedBy = "elementByElementInstanceId")
     private Collection<ContactpointElement> contactpointElementsByInstanceId;

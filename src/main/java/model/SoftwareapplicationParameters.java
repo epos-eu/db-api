@@ -24,7 +24,7 @@ public class SoftwareapplicationParameters {
     @Column(name = "conformsto", nullable = true, length = 1024)
     private String conformsto;
     @Basic
-    @Column(name = "action", nullable = false, length = 1024)
+    @Column(name = "action", nullable = true, length = 1024)
     private String action;
     @Basic
     @Column(name = "softwareapplication_instance_id", nullable = false, length = 100)
