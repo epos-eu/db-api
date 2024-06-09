@@ -1,6 +1,9 @@
 package org.epos.eposdatamodel;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
 import java.util.Objects;
 
 /**
@@ -37,6 +40,16 @@ public class PeriodOfTime extends EPOSDataModelEntity{
         this.startDate = startDate;
     }
 
+    public void setStartDate(String startDate){
+        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+                .appendPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
+                .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
+                .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
+                .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
+                .toFormatter();
+        this.startDate = LocalDateTime.parse(startDate,formatter);
+    }
+
     public PeriodOfTime endDate(LocalDateTime endDate) {
         this.endDate = endDate;
         return this;
@@ -54,6 +67,16 @@ public class PeriodOfTime extends EPOSDataModelEntity{
 
     public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
+    }
+
+    public void setEndDate(String endDate){
+        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+                .appendPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
+                .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
+                .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
+                .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
+                .toFormatter();
+        this.endDate = LocalDateTime.parse(endDate,formatter);
     }
 
     @Override

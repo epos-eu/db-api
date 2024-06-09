@@ -2,6 +2,9 @@ package org.epos.eposdatamodel;
 
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -279,6 +282,16 @@ public class WebService extends EPOSDataModelEntity {
         this.dateModified = dateModified;
     }
 
+    public void setDateModified(String dateModified){
+        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+                .appendPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
+                .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
+                .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
+                .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
+                .toFormatter();
+        this.dateModified = LocalDateTime.parse(dateModified,formatter);
+    }
+
     public WebService datePublished(LocalDateTime datePublished) {
         this.datePublished = datePublished;
         return this;
@@ -297,6 +310,17 @@ public class WebService extends EPOSDataModelEntity {
     public void setDatePublished(LocalDateTime datePublished) {
         this.datePublished = datePublished;
     }
+
+    public void setDatePublished(String datePublished){
+        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+                .appendPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
+                .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
+                .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
+                .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
+                .toFormatter();
+        this.datePublished = LocalDateTime.parse(datePublished,formatter);
+    }
+
 
     public WebService description(String description) {
         this.description = description;
