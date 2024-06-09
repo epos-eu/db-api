@@ -14,7 +14,7 @@ public class QuantitativeValue extends EPOSDataModelEntity{
     /**
      * The unit of measurement given using the UN/CEFACT Common Code (3 characters) or a URL
      */
-    private String value;
+        private String value;
 
 
     public String getUnit() {

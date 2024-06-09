@@ -20,5 +20,6 @@ public enum EntityNames {
     IDENTIFIER,
     LOCATION,
     PERIODOFTIME,
-    ELEMENT
+    ELEMENT,
+    QUANTITATIVEVALUE
 }
