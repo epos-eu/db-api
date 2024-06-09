@@ -71,11 +71,11 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
             }
             AddressAPI addressAPI = new AddressAPI(EntityNames.ADDRESS.name(), Address.class);
             edmobj.setFacilityAddressesByInstanceId(new ArrayList<>());
-            for(org.epos.eposdatamodel.Address address : obj.getAddress()){
+            for(LinkedEntity address : obj.getAddress()){
                 List<Address> list = dbaccess.getOneFromDBByInstanceId(address.getInstanceId(),Address.class);
                 Address address1 = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = addressAPI.create(address);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(address);
                     address1 = (Address) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Address.class).get(0);
                 } else {
                     address1 = list.get(0);
@@ -230,7 +230,7 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
         if(edmobj.getFacilityAddressesByInstanceId().size()>0) {
             for(FacilityAddress ed : edmobj.getFacilityAddressesByInstanceId()) {
                 AddressAPI api = new AddressAPI(EntityNames.ADDRESS.name(), Address.class);
-                org.epos.eposdatamodel.Address cp = api.retrieve(ed.getAddressInstanceId());
+                LinkedEntity cp = api.retrieveLinkedEntity(ed.getAddressInstanceId());
                 o.addAddress(cp);
             }
         }

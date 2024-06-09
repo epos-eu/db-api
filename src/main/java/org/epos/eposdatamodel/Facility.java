@@ -15,7 +15,7 @@ public class Facility extends EPOSDataModelEntity {
 	/**
 	 * This property contains the physical address of the Facility.
 	 */
-	private List<Address> address;
+	private List<LinkedEntity> address;
 
 	/**
 	 * This property refers to a category of the Facility. A Facility may be associated with multiple categories.
@@ -164,7 +164,7 @@ public class Facility extends EPOSDataModelEntity {
 		}
 	}
 
-	public Facility address(List<Address> address) {
+	public Facility address(List<LinkedEntity> address) {
 		this.address = address;
 		return this;
 	}
@@ -175,15 +175,15 @@ public class Facility extends EPOSDataModelEntity {
 	 * @return address
 	 **/
 
-	public List<Address> getAddress() {
+	public List<LinkedEntity> getAddress() {
 		return address;
 	}
 
-	public void setAddress(List<Address> address) {
+	public void setAddress(List<LinkedEntity> address) {
 		this.address = address;
 	}
 
-	public Facility addAddress(Address address) {
+	public Facility addAddress(LinkedEntity address) {
 		if (this.address == null) {
 			this.address = new ArrayList<>();
 		}
