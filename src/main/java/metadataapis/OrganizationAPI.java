@@ -76,15 +76,23 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
             IdentifierAPI identifierAPI = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
             edmobj.setOrganizationContactpointsByInstanceId(new ArrayList<>());
             for(LinkedEntity contactPoint : obj.getContactPoint()){
-                OrganizationContactpoint pi = new OrganizationContactpoint();
-                pi.setOrganizationByOrganizationInstanceId(edmobj);
-                pi.setOrganizationInstanceId(edmobj.getInstanceId());
-                pi.setContactpointInstanceId(contactPoint.getInstanceId());
-                pi.setContactpointByContactpointInstanceId((Contactpoint) dbaccess.getOneFromDBByInstanceId(contactPoint.getInstanceId(),Contactpoint.class).get(0));
+                List<Contactpoint> contactpoint = dbaccess.getOneFromDB(
+                        (contactPoint.getInstanceId()!=null)? contactPoint.getInstanceId() : null,
+                        (contactPoint.getMetaId()!=null)? contactPoint.getMetaId() : null,
+                        (contactPoint.getUid()!=null)? contactPoint.getUid() : null,
+                        null,
+                        Contactpoint.class);
+                if(!contactpoint.isEmpty()) {
+                    OrganizationContactpoint pi = new OrganizationContactpoint();
+                    pi.setOrganizationByOrganizationInstanceId(edmobj);
+                    pi.setOrganizationInstanceId(edmobj.getInstanceId());
+                    pi.setContactpointInstanceId(contactPoint.getInstanceId());
+                    pi.setContactpointByContactpointInstanceId(contactpoint.get(0));
 
-                edmobj.getOrganizationContactpointsByInstanceId().add(pi);
+                    edmobj.getOrganizationContactpointsByInstanceId().add(pi);
 
-                dbaccess.updateObject(pi);
+                    dbaccess.updateObject(pi);
+                }
             }
         }
 

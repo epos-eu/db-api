@@ -114,6 +114,16 @@ public class LinkedEntityAPI {
                 api = new IdentifierAPI(obj.getEntityType(), edmClass);
                 entity = new org.epos.eposdatamodel.Identifier();
                 break;
+            case QUANTITATIVEVALUE:
+                edmClass = QuantitativeValue.class;
+                api = new QuantitativeValueAPI(obj.getEntityType(), edmClass);
+                entity = new org.epos.eposdatamodel.QuantitativeValue();
+                break;
+            case DOCUMENTATION:
+                edmClass = Element.class;
+                api = new DocumentationAPI(obj.getEntityType(), edmClass);
+                entity = new org.epos.eposdatamodel.Documentation();
+                break;
         }
 
         List<Versioningstatus> returnList = getDbaccess().getOneFromDB(
@@ -123,9 +133,6 @@ public class LinkedEntityAPI {
                 null,
                 Versioningstatus.class
         );
-
-        System.out.println(returnList.size());
-        System.out.println("IS API: "+api);
 
         if(api!=null && entity!=null) {
             if (returnList.isEmpty()) {
@@ -228,6 +235,14 @@ public class LinkedEntityAPI {
                 edmClass = Identifier.class;
                 api = new IdentifierAPI(obj.getEntityType(), edmClass);
                 break;
+            case QUANTITATIVEVALUE:
+                edmClass = QuantitativeValue.class;
+                api = new QuantitativeValueAPI(obj.getEntityType(), edmClass);
+                break;
+            case DOCUMENTATION:
+                edmClass = Element.class;
+                api = new DocumentationAPI(obj.getEntityType(), edmClass);
+                break;
         }
 
         List<Versioningstatus> returnList = getDbaccess().getOneFromDB(
@@ -237,8 +252,6 @@ public class LinkedEntityAPI {
                 null,
                 Versioningstatus.class
         );
-
-        System.out.println("IS API: "+api);
 
         if(api!=null) {
             if (!returnList.isEmpty()) {

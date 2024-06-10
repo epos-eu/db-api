@@ -19,7 +19,7 @@ public class SpatialAPI extends AbstractAPI<org.epos.eposdatamodel.Location> {
     @Override
     public LinkedEntity create(org.epos.eposdatamodel.Location obj) {
 
-        List<Element> returnList = getDbaccess().getOneFromDB(
+        List<Spatial> returnList = getDbaccess().getOneFromDB(
                 obj.getInstanceId(),
                 obj.getMetaId(),
                 obj.getUid(),
