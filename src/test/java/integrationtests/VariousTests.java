@@ -134,9 +134,31 @@ public class VariousTests {
         System.out.println(api.retrieve(le.getInstanceId()));
     }
 
+    public static void checkProblems(){
+        Address a = new Address();
+
+        Identifier i = new Identifier();
+        i.setType("ORCID");
+        i.setIdentifier("0000-0002-0069-9144");
+        Person p = new Person();
+        p.setCVURL("http://en.vedur.is");
+        p.setEmail(List.of("bgo@vedur.is"));
+        p.setFamilyName("Benedkt G. Ófeigsson");
+        p.setIdentifier(List.of(i));
+        p.setTelephone(List.of("+3545226000"));
+        p.setUid("http://orcid.org/0000-0002-0069-9144");
+
+        PersonAPI api = new PersonAPI(EntityNames.PERSON.name(), model.Person.class);
+        LinkedEntity le = api.create(p);
+
+        System.out.println(api.retrieve(le.getInstanceId()));
+
+
+        }
     public static void main(String[] args) {
         //softwaresTest();
         //datasetTest();
-        quantitativeValue();
+        //quantitativeValue();
+        checkProblems();
     }
 }

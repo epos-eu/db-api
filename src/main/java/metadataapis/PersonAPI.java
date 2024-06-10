@@ -33,6 +33,7 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
 
         obj = (org.epos.eposdatamodel.Person) VersioningStatusAPI.checkVersion(obj);
 
+        System.out.println(obj);
         Person edmobj = new Person();
 
         edmobj.setVersionId(obj.getVersionId());
@@ -45,7 +46,7 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
         edmobj.setFamilyname(obj.getFamilyName());
         edmobj.setGivenname(obj.getGivenName());
         edmobj.setCvurl(obj.getCVURL());
-        edmobj.setQualifications(String.join(", ", obj.getQualifications()));
+        edmobj.setQualifications(obj.getQualifications()!=null? String.join(", ", obj.getQualifications()) : null);
 
         /** ADDRESS **/
         if (obj.getAddress() != null) {
