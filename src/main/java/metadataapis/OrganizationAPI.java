@@ -73,7 +73,6 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
                     getDbaccess().deleteObject(item);
                 }
             }
-            IdentifierAPI identifierAPI = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
             edmobj.setOrganizationContactpointsByInstanceId(new ArrayList<>());
             for(LinkedEntity contactPoint : obj.getContactPoint()){
                 List<Contactpoint> contactpoint = dbaccess.getOneFromDB(
@@ -86,7 +85,7 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
                     OrganizationContactpoint pi = new OrganizationContactpoint();
                     pi.setOrganizationByOrganizationInstanceId(edmobj);
                     pi.setOrganizationInstanceId(edmobj.getInstanceId());
-                    pi.setContactpointInstanceId(contactPoint.getInstanceId());
+                    pi.setContactpointInstanceId(contactpoint.get(0).getInstanceId());
                     pi.setContactpointByContactpointInstanceId(contactpoint.get(0));
 
                     edmobj.getOrganizationContactpointsByInstanceId().add(pi);

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.util.Collection;
 
 @Entity
+@Table(name = "quantitativevalue", schema = "public", catalog = "cerif")
 public class QuantitativeValue {
     @Id
     @Column(name = "instance_id", nullable = false, length = 100)
