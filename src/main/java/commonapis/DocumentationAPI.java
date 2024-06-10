@@ -79,7 +79,7 @@ public class DocumentationAPI extends AbstractAPI<org.epos.eposdatamodel.Documen
 
     @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
-        QuantitativeValue edmobj = (QuantitativeValue) getDbaccess().getOneFromDBByInstanceId(instanceId, QuantitativeValue.class).get(0);
+        Element edmobj = (Element) getDbaccess().getOneFromDBByInstanceId(instanceId, Element.class).get(0);
 
         LinkedEntity o = new LinkedEntity();
         o.setInstanceId(edmobj.getInstanceId());

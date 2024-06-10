@@ -1,6 +1,7 @@
 package integrationtests;
 
 import com.google.gson.Gson;
+import commonapis.QuantitativeValueAPI;
 import metadataapis.*;
 import model.Dataproduct;
 import model.StatusType;
@@ -121,8 +122,21 @@ public class VariousTests {
         System.out.println(api2.retrieve(le2.getInstanceId()));
     }
 
+    public static void quantitativeValue(){
+        QuantitativeValue qv = new QuantitativeValue();
+        qv.setValue("val");
+        qv.setUnit("unit");
+        qv.setStatus(StatusType.DRAFT);
+
+        QuantitativeValueAPI api = new QuantitativeValueAPI(EntityNames.QUANTITATIVEVALUE.name(), model.QuantitativeValue.class);
+        LinkedEntity le = api.create(qv);
+
+        System.out.println(api.retrieve(le.getInstanceId()));
+    }
+
     public static void main(String[] args) {
         //softwaresTest();
-        datasetTest();
+        //datasetTest();
+        quantitativeValue();
     }
 }

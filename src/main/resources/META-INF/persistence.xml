@@ -83,6 +83,7 @@
 		<class>model.PublicationCategory</class>
 		<class>model.PublicationContributor</class>
 		<class>model.PublicationIdentifier</class>
+		<class>model.QuantitativeValue</class>
 		<class>model.ServiceCategory</class>
 		<class>model.ServiceContactpoint</class>
 		<class>model.ServiceIdentifier</class>
