@@ -149,7 +149,7 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
         }
 
         if(obj.getDownloadURL()!=null && !obj.getDownloadURL().isEmpty()) {
-            for (String downloadurl : obj.getAccessURL()) {
+            for (String downloadurl : obj.getDownloadURL()) {
                 createInnerElement(ElementType.DOWNLOADURL, downloadurl, edmobj);
             }
         }

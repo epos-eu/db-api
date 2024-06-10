@@ -40,8 +40,8 @@ public class TemporalAPI extends AbstractAPI<org.epos.eposdatamodel.PeriodOfTime
         edmobj.setInstanceId(obj.getInstanceId());
         edmobj.setMetaId(obj.getMetaId());
         edmobj.setUid(Optional.ofNullable(obj.getUid()).orElse(getEdmClass().getSimpleName()+"/"+UUID.randomUUID().toString()));
-        edmobj.setStartdate(Timestamp.valueOf(Optional.ofNullable(obj.getStartDate()).orElse(null)));
-        edmobj.setEnddate(Timestamp.valueOf(Optional.ofNullable(obj.getEndDate()).orElse(null)));
+        edmobj.setStartdate(obj.getStartDate()!=null? Timestamp.valueOf(obj.getStartDate()) : null);
+        edmobj.setEnddate(obj.getEndDate()!=null? Timestamp.valueOf(obj.getEndDate()) : null);
 
         getDbaccess().updateObject(edmobj);
 
