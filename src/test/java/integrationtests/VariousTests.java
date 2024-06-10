@@ -1,9 +1,11 @@
 package integrationtests;
 
 import com.google.gson.Gson;
+import commonapis.DocumentationAPI;
 import commonapis.QuantitativeValueAPI;
 import metadataapis.*;
 import model.Dataproduct;
+import model.ElementType;
 import model.StatusType;
 import org.eclipse.persistence.internal.jpa.rs.metadata.model.Link;
 import org.epos.eposdatamodel.*;
@@ -135,21 +137,10 @@ public class VariousTests {
     }
 
     public static void checkProblems(){
-        Address a = new Address();
+        Documentation documentation = new Documentation();
 
-        Identifier i = new Identifier();
-        i.setType("ORCID");
-        i.setIdentifier("0000-0002-0069-9144");
-        Person p = new Person();
-        p.setCVURL("http://en.vedur.is");
-        p.setEmail(List.of("bgo@vedur.is"));
-        p.setFamilyName("Benedkt G. Ófeigsson");
-        p.setIdentifier(List.of(i));
-        p.setTelephone(List.of("+3545226000"));
-        p.setUid("http://orcid.org/0000-0002-0069-9144");
-
-        PersonAPI api = new PersonAPI(EntityNames.PERSON.name(), model.Person.class);
-        LinkedEntity le = api.create(p);
+        DocumentationAPI api = new DocumentationAPI(EntityNames.DOCUMENTATION.name(), model.Element.class);
+        LinkedEntity le = api.create(documentation);
 
         System.out.println(api.retrieve(le.getInstanceId()));
 

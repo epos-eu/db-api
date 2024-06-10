@@ -40,7 +40,7 @@ public class DocumentationAPI extends AbstractAPI<org.epos.eposdatamodel.Documen
 
         obj = (org.epos.eposdatamodel.Documentation) VersioningStatusAPI.checkVersion(obj);
 
-        org.epos.eposdatamodel.Element edmobj = new org.epos.eposdatamodel.Element();
+        Element edmobj = new Element();
         edmobj.setVersionId(obj.getVersionId());
         edmobj.setInstanceId(obj.getInstanceId());
         edmobj.setMetaId(obj.getMetaId());
@@ -70,9 +70,9 @@ public class DocumentationAPI extends AbstractAPI<org.epos.eposdatamodel.Documen
         o.setMetaId(edmobj.getMetaId());
         o.setUid(edmobj.getUid());
         JsonObject doc = new Gson().fromJson(edmobj.getValue(), JsonObject.class);
-        o.setTitle(doc.get("Title").getAsString());
-        o.setDescription(doc.get("Description").getAsString());
-        o.setUri(doc.get("Uri").getAsString());
+        o.setTitle(doc.has("Title")? doc.get("Title").getAsString() : null);
+        o.setDescription(doc.has("Description")? doc.get("Description").getAsString() : null);
+        o.setUri(doc.has("Uri")? doc.get("Uri").getAsString() : null);
 
         return o;
     }
