@@ -24,6 +24,17 @@ public class EposDataModelDAO<T> {
     	em.getTransaction().commit();
     }
 
+    public List<T> getOneFromDBBySpecificKey(String key, String value, Class<T> obj){
+        EntityManager em = entityManager.getEntityManager();
+        em.getTransaction().begin();
+        List resultList = em.createQuery(
+                        "SELECT c FROM "+obj.getSimpleName()+" c WHERE c."+key+ " LIKE :value")
+                .setParameter("value", value)
+                .getResultList();
+        em.getTransaction().commit();
+        return resultList;
+    }
+
     public List<T> getOneFromDBByInstanceId(String instanceId, Class<T> obj){
         EntityManager em = entityManager.getEntityManager();
         em.getTransaction().begin();

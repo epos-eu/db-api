@@ -55,6 +55,8 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
         edmobj.setDocumentation(obj.getDocumentation());
         edmobj.setQualityassurance(obj.getQualityAssurance());
         edmobj.setHasQualityAnnotation(obj.getHasQualityAnnotation());
+        edmobj.setIdentifier(obj.getDctIdentifier());
+        edmobj.setAccessright(obj.getAccessRight());
 
         if (obj.getCreated() != null)
             edmobj.setCreated(Timestamp.valueOf(obj.getCreated()));
@@ -325,7 +327,6 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
         o.setMetaId(edmobj.getMetaId());
         o.setUid(edmobj.getUid());
         o.setType(edmobj.getType());
-        o.setAccessRight(edmobj.getAccessright());
         o.setAccrualPeriodicity(edmobj.getAccrualperiodicity());
         o.setHasQualityAnnotation(edmobj.getHasQualityAnnotation());
         o.setCreated(
@@ -341,6 +342,8 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
         o.setVersionInfo(edmobj.getVersioninfo());
         o.setDocumentation(edmobj.getDocumentation());
         o.setQualityAssurance(edmobj.getQualityassurance());
+        o.setDctIdentifier(edmobj.getIdentifier());
+        o.setAccessRight(edmobj.getAccessright());
 
         if(edmobj.getDataproductCategoriesByInstanceId().size()>0) {
             for(DataproductCategory ed : edmobj.getDataproductCategoriesByInstanceId()) {

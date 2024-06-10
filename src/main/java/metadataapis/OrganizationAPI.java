@@ -305,7 +305,7 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
             }
         }
 
-        List<OrganizationOwns> organizationOwnsList =dbaccess.getOneFromDBByInstanceId(edmobj.getInstanceId(),OrganizationOwns.class);
+        List<OrganizationOwns> organizationOwnsList =dbaccess.getOneFromDBBySpecificKey("organizationInstanceId",edmobj.getInstanceId(),OrganizationOwns.class);
         if(organizationOwnsList.size()>0) {
             for(OrganizationOwns ed : organizationOwnsList) {
                 if(ed.getResourceEntity().equals(EntityNames.FACILITY.name())){

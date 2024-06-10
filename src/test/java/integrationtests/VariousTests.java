@@ -137,12 +137,28 @@ public class VariousTests {
     }
 
     public static void checkProblems(){
-        Documentation documentation = new Documentation();
 
-        DocumentationAPI api = new DocumentationAPI(EntityNames.DOCUMENTATION.name(), model.Element.class);
-        LinkedEntity le = api.create(documentation);
+        Organization organization = new Organization();
+        Identifier identifier = new Identifier();
+        identifier.setType("DOI");
+        identifier.setIdentifier("https://doi.org/10.14470/9D7564946595");
 
-        System.out.println(api.retrieve(le.getInstanceId()));
+        organization.setIdentifier(List.of(identifier));
+
+        LegalName legalName = new LegalName();
+        legalName.setLegalname("GFZ contribution to the COSEISMIQ seismic network\t,4Q_2019,https://doi.org/10.14470/9D7564946595");
+
+        LinkedEntity le = new LinkedEntity();
+        le.setUid("https://orfeus-eu.org/data/eida/nodes/GFZ/");
+        le.setEntityType(EntityNames.ORGANIZATION.name());
+
+        organization.setURL("https://doi.org/10.14470/9D7564946595");
+        organization.setUid("https://doi.org/10.14470/9D7564946595");
+
+        OrganizationAPI api = new OrganizationAPI(EntityNames.ORGANIZATION.name(), model.Organization.class);
+        LinkedEntity le2 = api.create(organization);
+
+        System.out.println(api.retrieve(le2.getInstanceId()));
 
 
         }
