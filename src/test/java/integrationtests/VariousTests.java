@@ -1,6 +1,7 @@
 package integrationtests;
 
 import com.google.gson.Gson;
+import commonapis.AddressAPI;
 import commonapis.DocumentationAPI;
 import commonapis.QuantitativeValueAPI;
 import metadataapis.*;
@@ -138,27 +139,29 @@ public class VariousTests {
 
     public static void checkProblems(){
 
-        Organization organization = new Organization();
-        Identifier identifier = new Identifier();
-        identifier.setType("DOI");
-        identifier.setIdentifier("https://doi.org/10.14470/9D7564946595");
+        Address address = new Address();
+        address.setUid("test");
 
-        organization.setIdentifier(List.of(identifier));
+        Person p = new Person();
+        p.setUid("TEST");
+        p.setAddress(address);
 
-        LegalName legalName = new LegalName();
-        legalName.setLegalname("GFZ contribution to the COSEISMIQ seismic network\t,4Q_2019,https://doi.org/10.14470/9D7564946595");
+        PersonAPI personAPI = new PersonAPI(EntityNames.PERSON.name(), model.Person.class);
+        LinkedEntity le2 = personAPI.create(p);
 
-        LinkedEntity le = new LinkedEntity();
-        le.setUid("https://orfeus-eu.org/data/eida/nodes/GFZ/");
-        le.setEntityType(EntityNames.ORGANIZATION.name());
+        AddressAPI addressAPI = new AddressAPI(EntityNames.ADDRESS.name(), model.Address.class);
+        LinkedEntity le = addressAPI.create(address);
+        System.out.println(addressAPI.retrieve(le.getInstanceId()));
 
-        organization.setURL("https://doi.org/10.14470/9D7564946595");
-        organization.setUid("https://doi.org/10.14470/9D7564946595");
+        address.setStreet("test");
+        address.setPostalCode("test");
+        address.setLocality("test");
+        address.setCountry("test");
 
-        OrganizationAPI api = new OrganizationAPI(EntityNames.ORGANIZATION.name(), model.Organization.class);
-        LinkedEntity le2 = api.create(organization);
+        le = addressAPI.create(address);
 
-        System.out.println(api.retrieve(le2.getInstanceId()));
+        System.out.println(personAPI.retrieve(le2.getInstanceId()));
+        System.out.println(addressAPI.retrieve(le.getInstanceId()));
 
 
         }

@@ -33,7 +33,6 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
 
         obj = (org.epos.eposdatamodel.Person) VersioningStatusAPI.checkVersion(obj);
 
-        System.out.println(obj);
         Person edmobj = new Person();
 
         edmobj.setVersionId(obj.getVersionId());
@@ -50,15 +49,17 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
 
         /** ADDRESS **/
         if (obj.getAddress() != null) {
-            List<Address> identifierList = getDbaccess().getAllFromDB(Address.class);
-            for(Address item : identifierList){
+            List<Address> addressList = getDbaccess().getAllFromDB(Address.class);
+            for(Address item : addressList){
                 if(item.getInstanceId().equals(obj.getAddress().getInstanceId())){
                     getDbaccess().deleteObject(item);
                 }
             }
             AddressAPI addressAPI = new AddressAPI(EntityNames.ADDRESS.name(), Address.class);
             LinkedEntity le = addressAPI.create(obj.getAddress());
-            edmobj.setAddressId(le.getInstanceId());
+            addressList = getDbaccess().getOneFromDBByInstanceId(le.getInstanceId(),Address.class);
+            edmobj.setAddressId(addressList.get(0).getInstanceId());
+            edmobj.setAddressByAddressId(addressList.get(0));
         }
 
         /** IDENTIFIER **/
@@ -184,6 +185,7 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
 
         o.setFamilyName(edmobj.getFamilyname());
         o.setGivenName(edmobj.getGivenname());
+
 
         if(edmobj.getAddressByAddressId()!=null) {
             Address address = edmobj.getAddressByAddressId();

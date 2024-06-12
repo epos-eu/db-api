@@ -110,7 +110,7 @@ public class Address extends EPOSDataModelEntity {
                 ", postalCode='" + postalCode + '\'' +
                 ", street='" + street + '\'' +
                 ", countryCode='" + countryCode + '\'' +
-                '}';
+                '}'+ super.toString();
     }
 
     @Override
