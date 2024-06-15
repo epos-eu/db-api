@@ -192,7 +192,7 @@ public class EquipmentAPI extends AbstractAPI<org.epos.eposdatamodel.Equipment> 
             if(item.getEquipmentInstanceId().equals(obj.getInstanceId())){
                 getDbaccess().deleteObject(item);
                 List<Element> list2 = getDbaccess().getOneFromDBByInstanceId(item.getElementInstanceId(), Element.class);
-                getDbaccess().deleteObject(list2.get(0));
+                if(list2.size()>0) getDbaccess().deleteObject(list2.get(0));
             }
         }
         /* PAGEURL */

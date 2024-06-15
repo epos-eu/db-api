@@ -69,7 +69,7 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
                 if(item.getPersonByPersonInstanceId().equals(obj.getInstanceId())){
                     getDbaccess().deleteObject(item);
                     List<Identifier> list2 = getDbaccess().getOneFromDBByInstanceId(item.getIdentifierInstanceId(), Identifier.class);
-                    getDbaccess().deleteObject(list2.get(0));
+                    if(list2.size()>0) getDbaccess().deleteObject(list2.get(0));
                 }
             }
             IdentifierAPI identifierAPI = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
@@ -119,7 +119,7 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
             if(item.getPersonInstanceId().equals(obj.getInstanceId())){
                 getDbaccess().deleteObject(item);
                 List<Element> list2 = getDbaccess().getOneFromDBByInstanceId(item.getElementInstanceId(), Element.class);
-                getDbaccess().deleteObject(list2.get(0));
+                if(list2.size()>0) getDbaccess().deleteObject(list2.get(0));
             }
         }
         /* TELEPHONE */

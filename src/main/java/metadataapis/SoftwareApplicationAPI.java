@@ -77,7 +77,7 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
                 if(item.getSoftwareapplicationBySoftwareapplicationInstanceId().equals(obj.getInstanceId())){
                     getDbaccess().deleteObject(item);
                     List<Identifier> list2 = getDbaccess().getOneFromDBByInstanceId(item.getIdentifierInstanceId(), Identifier.class);
-                    getDbaccess().deleteObject(list2.get(0));
+                    if(list2.size()>0) getDbaccess().deleteObject(list2.get(0));
                 }
             }
             IdentifierAPI identifierAPI = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);

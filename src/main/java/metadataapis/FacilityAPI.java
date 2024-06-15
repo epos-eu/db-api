@@ -159,7 +159,7 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
             if(item.getFacilityInstanceId().equals(obj.getInstanceId())){
                 getDbaccess().deleteObject(item);
                 List<Element> list2 = getDbaccess().getOneFromDBByInstanceId(item.getElementInstanceId(), Element.class);
-                getDbaccess().deleteObject(list2.get(0));
+                if(list2.size()>0) getDbaccess().deleteObject(list2.get(0));
             }
         }
         /* PAGEURL */

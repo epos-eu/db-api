@@ -102,7 +102,7 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
                 if(item.getOrganizationInstanceId().equals(obj.getInstanceId())){
                     getDbaccess().deleteObject(item);
                     List<Identifier> list2 = getDbaccess().getOneFromDBByInstanceId(item.getIdentifierInstanceId(), Identifier.class);
-                    getDbaccess().deleteObject(list2.get(0));
+                    if(list2.size()>0) getDbaccess().deleteObject(list2.get(0));
                 }
             }
             IdentifierAPI identifierAPI = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
@@ -127,7 +127,7 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
             if(item.getOrganizationInstanceId().equals(obj.getInstanceId())){
                 getDbaccess().deleteObject(item);
                 List<Element> list2 = getDbaccess().getOneFromDBByInstanceId(item.getElementInstanceId(), Element.class);
-                getDbaccess().deleteObject(list2.get(0));
+                if(list2.size()>0) getDbaccess().deleteObject(list2.get(0));
             }
         }
         /* TELEPHONE */
@@ -151,7 +151,7 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
                 if(item.getOrganizationInstanceId().equals(obj.getInstanceId())){
                     getDbaccess().deleteObject(item);
                     List<OrganizationLegalname> list2 = getDbaccess().getOneFromDBByInstanceId(item.getInstanceId(), OrganizationLegalname.class);
-                    getDbaccess().deleteObject(list2.get(0));
+                    if(list2.size()>0) getDbaccess().deleteObject(list2.get(0));
                 }
             }
             edmobj.setOrganizationLegalnamesByInstanceId(new ArrayList<>());
