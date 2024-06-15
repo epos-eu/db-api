@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * Parameter
  */
-public class Parameter {
+public class Parameter extends EPOSDataModelEntity {
 
     /**
      * Format
