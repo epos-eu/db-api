@@ -45,6 +45,14 @@ jobs:
         shell: bash
         env:
           GPG_PRIVATE_KEY : ${{ secrets.GPG_PRIVATE_KEY }}
+      - uses: s4u/maven-settings-action@v3.0.0
+        with:
+          servers: |
+            [{
+                "id": "ossrh",
+                "username": "${{ secrets.OSSRH_USERNAME }}",
+                "password": "${{ secrets.OSSRH_TOKEN }}"
+            }]
       - name: Publish to the Maven Central Repository
         run: |
           mvn clean deploy -Dmaven.test.skip=true
