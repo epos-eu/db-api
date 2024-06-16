@@ -204,15 +204,17 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
                     getDbaccess().deleteObject(item);
                 }
             }
-            FacilityAPI facilityAPI = new FacilityAPI(EntityNames.FACILITY.name(), Facility.class);
-            for(LinkedEntity owns : obj.getOwns()){
-                OrganizationOwns pi = new OrganizationOwns();
-                pi.setOrganizationByOrganizationInstanceId(edmobj);
-                pi.setOrganizationInstanceId(edmobj.getInstanceId());
-                pi.setResourceEntity(owns.getEntityType());
-                pi.setEntityInstanceId(owns.getInstanceId());
-                edmobj.setOrganizationOwnsByInstanceId(pi);
-                dbaccess.updateObject(pi);
+
+            for(LinkedEntity owns : obj.getOwns()) {
+                if (owns != null){
+                    OrganizationOwns pi = new OrganizationOwns();
+                    pi.setOrganizationByOrganizationInstanceId(edmobj);
+                    pi.setOrganizationInstanceId(edmobj.getInstanceId());
+                    pi.setResourceEntity(owns.getEntityType());
+                    pi.setEntityInstanceId(owns.getInstanceId());
+                    edmobj.setOrganizationOwnsByInstanceId(pi);
+                    dbaccess.updateObject(pi);
+                }
             }
         }
 
