@@ -164,17 +164,20 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
                 Dataproduct dataproduct = null;
                 if(list.isEmpty()){
                     LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(dataProduct);
-                    dataproduct = (Dataproduct) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Dataproduct.class).get(0);
+                    List<Dataproduct> list1 = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Dataproduct.class);
+                    dataproduct =list1.size()>0? list.get(0) : null;
                 } else {
                     dataproduct = list.get(0);
                 }
-                DataproductIspartof pi = new DataproductIspartof();
-                pi.setDataproductByDataproduct1InstanceId(edmobj);
-                pi.setDataproduct1InstanceId(edmobj.getInstanceId());
-                pi.setDataproduct2InstanceId(dataproduct.getInstanceId());
-                pi.setDataproductByDataproduct2InstanceId(dataproduct);
-                edmobj.getDataproductIspartofsByInstanceId().add(pi);
-                dbaccess.updateObject(pi);
+                if(dataproduct!=null) {
+                    DataproductIspartof pi = new DataproductIspartof();
+                    pi.setDataproductByDataproduct1InstanceId(edmobj);
+                    pi.setDataproduct1InstanceId(edmobj.getInstanceId());
+                    pi.setDataproduct2InstanceId(dataproduct.getInstanceId());
+                    pi.setDataproductByDataproduct2InstanceId(dataproduct);
+                    edmobj.getDataproductIspartofsByInstanceId().add(pi);
+                    dbaccess.updateObject(pi);
+                }
             }
         }
 

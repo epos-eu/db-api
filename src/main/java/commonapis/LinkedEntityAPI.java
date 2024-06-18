@@ -252,6 +252,13 @@ public class LinkedEntityAPI {
                 edmClass = Element.class;
                 api = new DocumentationAPI(obj.getEntityType(), edmClass);
                 break;
+            case PARAMETER:
+                edmClass = SoftwareapplicationParameters.class;
+                api = new ParameterAPI(obj.getEntityType(), edmClass);
+                break;
+            case RELATION:
+                System.out.println("Relation empty case");
+                break;
         }
 
         List<Versioningstatus> returnList = getDbaccess().getOneFromDB(
