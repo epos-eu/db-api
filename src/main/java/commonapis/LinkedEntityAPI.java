@@ -6,6 +6,7 @@ import metadataapis.*;
 import model.*;
 import org.epos.eposdatamodel.EPOSDataModelEntity;
 import org.epos.eposdatamodel.LinkedEntity;
+import org.epos.eposdatamodel.Parameter;
 
 import java.util.List;
 import java.util.Optional;
@@ -123,6 +124,14 @@ public class LinkedEntityAPI {
                 edmClass = Element.class;
                 api = new DocumentationAPI(obj.getEntityType(), edmClass);
                 entity = new org.epos.eposdatamodel.Documentation();
+                break;
+            case PARAMETER:
+                edmClass = SoftwareapplicationParameters.class;
+                api = new ParameterAPI(obj.getEntityType(), edmClass);
+                entity = new org.epos.eposdatamodel.Parameter();
+                break;
+            case RELATION:
+                System.out.println("Relation empty case");
                 break;
         }
 

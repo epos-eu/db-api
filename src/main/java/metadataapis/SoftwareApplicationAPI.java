@@ -110,9 +110,9 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
                 pi.setMetaId(UUID.randomUUID().toString());
                 pi.setUid("Parameter/"+UUID.randomUUID().toString());
                 pi.setVersionId(UUID.randomUUID().toString());
-                pi.setAction(parameter.getAction().name());
-                pi.setConformsto(parameter.getConformsTo());
-                pi.setEncodingformat(parameter.getEncodingFormat());
+                pi.setAction(parameter.getAction()!=null? parameter.getAction().name() : null);
+                pi.setConformsto(parameter.getConformsTo()!=null? parameter.getConformsTo() : null);
+                pi.setEncodingformat(parameter.getEncodingFormat()!=null? parameter.getEncodingFormat() : null);
                 pi.setSoftwareapplicationBySoftwareapplicationInstanceId(edmobj);
                 pi.setSoftwareapplicationInstanceId(edmobj.getInstanceId());
 

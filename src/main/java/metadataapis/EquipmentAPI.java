@@ -114,17 +114,20 @@ public class EquipmentAPI extends AbstractAPI<org.epos.eposdatamodel.Equipment> 
                 Facility facility1 = null;
                 if(list.isEmpty()){
                     LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(facility);
-                    facility1 = (Facility) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Equipment.class).get(0);
+                    List<Facility> list1 = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Facility.class);
+                    facility1 = list1.size()>0? list1.get(0) : null;
                 } else {
                     facility1 = list.get(0);
                 }
-                EquipmentIspartof pi = new EquipmentIspartof();
-                pi.setEquipmentByEquipmentInstanceId(edmobj);
-                pi.setEquipmentInstanceId(edmobj.getInstanceId());
-                pi.setEntityInstanceId(facility1.getInstanceId());
-                pi.setResourceEntity(EntityNames.FACILITY.name());
-                edmobj.setEquipmentIspartofByInstanceId(pi);
-                dbaccess.updateObject(pi);
+                if(facility1!=null) {
+                    EquipmentIspartof pi = new EquipmentIspartof();
+                    pi.setEquipmentByEquipmentInstanceId(edmobj);
+                    pi.setEquipmentInstanceId(edmobj.getInstanceId());
+                    pi.setEntityInstanceId(facility1.getInstanceId());
+                    pi.setResourceEntity(EntityNames.FACILITY.name());
+                    edmobj.setEquipmentIspartofByInstanceId(pi);
+                    dbaccess.updateObject(pi);
+                }
             }
         }
 
