@@ -33,7 +33,7 @@ public class UserGroupTest {
         User user = new User("testid", "familyname", "givenname", "email@email.email");
         UserGroupManagementAPI.createUser(user);
 
-        model.User retrieveUser = UserGroupManagementAPI.retrieveUser(user);
+        User retrieveUser = UserGroupManagementAPI.retrieveUser(user);
 
         assertNotNull(retrieveUser);
         assertEquals(user.getAuthIdentifier(), retrieveUser.getAuthIdentifier());
@@ -54,7 +54,7 @@ public class UserGroupTest {
 
         UserGroupManagementAPI.createUser(user);
 
-        model.User retrieveUser = UserGroupManagementAPI.retrieveUser(user);
+        User retrieveUser = UserGroupManagementAPI.retrieveUser(user);
 
         assertNotNull(retrieveUser);
         assertEquals(user.getAuthIdentifier(), retrieveUser.getAuthIdentifier());
@@ -71,7 +71,7 @@ public class UserGroupTest {
 
         UserGroupManagementAPI.deleteUser(user.getAuthIdentifier());
 
-        model.User retrieveUser = UserGroupManagementAPI.retrieveUser(user);
+        User retrieveUser = UserGroupManagementAPI.retrieveUser(user);
 
         assertNull(retrieveUser);
     }

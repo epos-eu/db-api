@@ -4,7 +4,6 @@ import model.Versioningstatus;
 import org.epos.handler.dbapi.service.DBService;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +16,17 @@ public class EposDataModelDAO<T> {
         this.entityManager = new DBService();
     }
 
-    public void createObject(T entity) {
-    	EntityManager em = entityManager.getEntityManager();
-    	em.getTransaction().begin();
-        em.persist(entity);
-    	em.getTransaction().commit();
+    public Boolean createObject(T entity) {
+        try {
+            EntityManager em = entityManager.getEntityManager();
+            em.getTransaction().begin();
+            em.persist(entity);
+            em.getTransaction().commit();
+            return true;
+        }catch (Exception exception){
+            System.err.println(exception.getLocalizedMessage());
+            return false;
+        }
     }
 
     public List<T> getOneFromDBBySpecificKey(String key, String value, Class<T> obj){
@@ -104,21 +109,33 @@ public class EposDataModelDAO<T> {
         return resultList;
     }
 
-    public void updateObject(T obj) {
-        if (obj == null) return;
-    	EntityManager em = entityManager.getEntityManager();
-    	em.getTransaction().begin();
-        em.merge(obj);
-    	em.getTransaction().commit();
+    public Boolean updateObject(T obj) {
+        if (obj == null) return false;
+        try {
+            EntityManager em = entityManager.getEntityManager();
+            em.getTransaction().begin();
+            em.merge(obj);
+            em.getTransaction().commit();
+            return true;
+        }catch(Exception exception){
+            System.err.println(exception.getLocalizedMessage());
+            return false;
+        }
     }
 
-    public void deleteObject(T obj) {
-        EntityManager em = entityManager.getEntityManager();
-        if (!em.contains(obj)) {
-            em.getTransaction().begin();
-            T target = em.merge(obj);
-            em.remove(target);
-            em.getTransaction().commit();
+    public Boolean deleteObject(T obj) {
+        try {
+            EntityManager em = entityManager.getEntityManager();
+            if (!em.contains(obj)) {
+                em.getTransaction().begin();
+                T target = em.merge(obj);
+                em.remove(target);
+                em.getTransaction().commit();
+            }
+            return true;
+        }catch(Exception exception){
+            System.err.println(exception.getLocalizedMessage());
+            return false;
         }
     }
 }
