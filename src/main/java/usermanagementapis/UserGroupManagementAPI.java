@@ -117,9 +117,9 @@ public class UserGroupManagementAPI {
         return getDbaccess().getAllFromDB(MetadataGroup.class);
     }
 
-    public static void deleteGroup(String groupId){
+    public static Boolean deleteGroup(String groupId){
         List<MetadataGroup> group = getDbaccess().getOneFromDBBySpecificKey("id",groupId, MetadataGroup.class);
-        getDbaccess().deleteObject(group.get(0));
+        return getDbaccess().deleteObject(group.get(0));
     }
 
     /**
