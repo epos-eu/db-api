@@ -1,18 +1,26 @@
 package org.epos.eposdatamodel;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class User {
 
     private String authIdentifier;
-    private String familyname;
-    private String givenname;
+    private String lastName;
+    private String firstName;
     private String email;
 
-    public User(String authIdentifier, String familyname, String givenname, String email) {
+    private Boolean isAdmin;
+
+    private List<UserGroup> groups;
+
+    public User(String authIdentifier, String familyname, String firstName, String email, Boolean isAdmin) {
         this.authIdentifier = authIdentifier;
-        this.familyname = familyname;
-        this.givenname = givenname;
+        this.lastName = familyname;
+        this.firstName = firstName;
         this.email = email;
+        this.isAdmin = isAdmin;
+        this.groups = new ArrayList<>();
     }
 
     public String getAuthIdentifier() {
@@ -23,20 +31,20 @@ public class User {
         this.authIdentifier = authIdentifier;
     }
 
-    public String getFamilyname() {
-        return familyname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setFamilyname(String familyname) {
-        this.familyname = familyname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public String getGivenname() {
-        return givenname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setGivenname(String givenname) {
-        this.givenname = givenname;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getEmail() {
@@ -47,25 +55,39 @@ public class User {
         this.email = email;
     }
 
+    public Boolean getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setEmail(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+
+    public List<UserGroup> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<UserGroup> groups) { this.groups = groups; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(authIdentifier, user.authIdentifier) && Objects.equals(familyname, user.familyname) && Objects.equals(givenname, user.givenname) && Objects.equals(email, user.email);
+        return Objects.equals(authIdentifier, user.authIdentifier) && Objects.equals(lastName, user.lastName) && Objects.equals(firstName, user.firstName) && Objects.equals(email, user.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(authIdentifier, familyname, givenname, email);
+        return Objects.hash(authIdentifier, lastName, firstName, email);
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "authIdentifier='" + authIdentifier + '\'' +
-                ", familyname='" + familyname + '\'' +
-                ", givenname='" + givenname + '\'' +
+                ", familyname='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
                 ", email='" + email + '\'' +
                 '}';
     }

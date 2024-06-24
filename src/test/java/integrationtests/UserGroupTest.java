@@ -9,9 +9,6 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import usermanagementapis.UserGroupManagementAPI;
 
-import java.util.List;
-import java.util.UUID;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UserGroupTest {
@@ -30,27 +27,27 @@ public class UserGroupTest {
     @Test
     @Order(1)
     public void testCreateUser() {
-        User user = new User("testid", "familyname", "givenname", "email@email.email");
+        User user = new User("testid", "familyname", "givenname", "email@email.email", false);
         UserGroupManagementAPI.createUser(user);
 
         User retrieveUser = UserGroupManagementAPI.retrieveUser(user);
 
         assertNotNull(retrieveUser);
         assertEquals(user.getAuthIdentifier(), retrieveUser.getAuthIdentifier());
-        assertEquals(user.getFamilyname(), retrieveUser.getFamilyname());
-        assertEquals(user.getGivenname(), retrieveUser.getGivenname());
+        assertEquals(user.getLastName(), retrieveUser.getLastName());
+        assertEquals(user.getFirstName(), retrieveUser.getFirstName());
         assertEquals(user.getEmail(), retrieveUser.getEmail());
     }
 
     @Test
     @Order(2)
     public void testUpdateUser() {
-        User user = new User("testid", "familyname", "givenname", "email@email.email");
+        User user = new User("testid", "familyname", "givenname", "email@email.email", false);
         UserGroupManagementAPI.createUser(user);
 
         user.setEmail("newemail@email.email");
-        user.setFamilyname("newfamilyname");
-        user.setGivenname("newgivenname");
+        user.setLastName("newfamilyname");
+        user.setFirstName("newgivenname");
 
         UserGroupManagementAPI.createUser(user);
 
@@ -58,15 +55,15 @@ public class UserGroupTest {
 
         assertNotNull(retrieveUser);
         assertEquals(user.getAuthIdentifier(), retrieveUser.getAuthIdentifier());
-        assertEquals(user.getFamilyname(), retrieveUser.getFamilyname());
-        assertEquals(user.getGivenname(), retrieveUser.getGivenname());
+        assertEquals(user.getLastName(), retrieveUser.getLastName());
+        assertEquals(user.getFirstName(), retrieveUser.getFirstName());
         assertEquals(user.getEmail(), retrieveUser.getEmail());
     }
 
     @Test
     @Order(3)
     public void testDeleteUser() {
-        User user = new User("testid", "familyname", "givenname", "email@email.email");
+        User user = new User("testid", "familyname", "givenname", "email@email.email", false);
         UserGroupManagementAPI.createUser(user);
 
         UserGroupManagementAPI.deleteUser(user.getAuthIdentifier());

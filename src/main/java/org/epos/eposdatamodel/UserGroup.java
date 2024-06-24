@@ -8,11 +8,11 @@ import java.util.Objects;
 public class UserGroup {
 
     private RoleType role;
-    private Group groups;
+    private String groupId;
 
-    public UserGroup(RoleType role, Group groups) {
+    public UserGroup(RoleType role, String groupId) {
         this.role = role;
-        this.groups = groups;
+        this.groupId = groupId;
     }
 
     public RoleType getRole() {
@@ -23,12 +23,12 @@ public class UserGroup {
         this.role = role;
     }
 
-    public Group getGroups() {
-        return groups;
+    public String getGroupId() {
+        return groupId;
     }
 
-    public void setGroups(Group groups) {
-        this.groups = groups;
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
     @Override
@@ -36,19 +36,19 @@ public class UserGroup {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserGroup userGroup = (UserGroup) o;
-        return role == userGroup.role && Objects.equals(groups, userGroup.groups);
+        return role == userGroup.role && Objects.equals(groupId, userGroup.groupId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(role, groups);
+        return Objects.hash(role, groupId);
     }
 
     @Override
     public String toString() {
         return "UserGroup{" +
                 "role=" + role +
-                ", groups=" + groups +
+                ", groupId=" + groupId +
                 '}';
     }
 }

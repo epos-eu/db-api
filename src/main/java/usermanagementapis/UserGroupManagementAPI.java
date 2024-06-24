@@ -2,6 +2,8 @@ package usermanagementapis;
 
 import dao.EposDataModelDAO;
 import model.*;
+import org.epos.eposdatamodel.UserGroup;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -17,8 +19,9 @@ public class UserGroupManagementAPI {
         User user1 = new User();
         user1.setAuthIdentifier(user.getAuthIdentifier());
         user1.setEmail(user.getEmail());
-        user1.setGivenname(user.getGivenname());
-        user1.setFamilyname(user.getFamilyname());
+        user1.setGivenname(user.getFirstName());
+        user1.setFamilyname(user.getLastName());
+        user1.setIsadmin(Boolean.toString(user.getIsAdmin()));
 
         return getDbaccess().createObject(user1);
     }
@@ -28,11 +31,35 @@ public class UserGroupManagementAPI {
         if(userList.isEmpty()) return null;
 
         User retrievedUser = userList.get(0);
+
         org.epos.eposdatamodel.User user1 = new org.epos.eposdatamodel.User(
                 retrievedUser.getAuthIdentifier(),
                 retrievedUser.getFamilyname(),
                 retrievedUser.getGivenname(),
-                retrievedUser.getEmail()
+                retrievedUser.getEmail(),
+                Boolean.getBoolean(retrievedUser.getIsadmin())
+        );
+
+        retrievedUser.getMetadataGroupUsersByAuthIdentifier().forEach(item->{
+            UserGroup userGroup = new UserGroup(item.getRole(),item.getGroupId());
+            user1.getGroups().add(userGroup);
+        });
+
+
+        return user1 ;
+    }
+
+    public static org.epos.eposdatamodel.User retrieveUserById(String userId){
+        List<User> userList = getDbaccess().getOneFromDBByInstanceId(userId, User.class);
+        if(userList.isEmpty()) return null;
+
+        User retrievedUser = userList.get(0);
+        org.epos.eposdatamodel.User user1 = new org.epos.eposdatamodel.User(
+                retrievedUser.getAuthIdentifier(),
+                retrievedUser.getFamilyname(),
+                retrievedUser.getGivenname(),
+                retrievedUser.getEmail(),
+                Boolean.getBoolean(retrievedUser.getIsadmin())
         );
 
         return user1 ;
@@ -58,8 +85,12 @@ public class UserGroupManagementAPI {
         return getDbaccess().createObject(group1);
     }
 
-    public static MetadataGroup retrieveGroup(org.epos.eposdatamodel.Group user){
-        return (MetadataGroup) getDbaccess().getOneFromDBByInstanceId(user.getId(), MetadataGroup.class).get(0);
+    public static MetadataGroup retrieveGroup(org.epos.eposdatamodel.Group group){
+        return (MetadataGroup) getDbaccess().getOneFromDBByInstanceId(group.getId(), MetadataGroup.class).get(0);
+    }
+
+    public static MetadataGroup retrieveGroupById(String groupId){
+        return (MetadataGroup) getDbaccess().getOneFromDBByInstanceId(groupId, MetadataGroup.class).get(0);
     }
 
     public static void deleteGroup(String groupId){
@@ -73,10 +104,11 @@ public class UserGroupManagementAPI {
      *
      */
 
-    public static Boolean createUserGroup(org.epos.eposdatamodel.Group group, org.epos.eposdatamodel.User user, RoleType role, RequestStatusType requestStatusType){
+    public static Boolean addUserToGroup(String groupId, String userId, RoleType role, RequestStatusType requestStatusType){
 
-        MetadataGroup metadataGroup = retrieveGroup(group);
-        List<User> userList = getDbaccess().getOneFromDBByInstanceId(user.getAuthIdentifier(), User.class);
+        MetadataGroup metadataGroup = retrieveGroupById(groupId);
+
+        List<User> userList = getDbaccess().getOneFromDBByInstanceId(userId, User.class);
         if(userList.isEmpty()) return null;
 
         User retrievedUser = userList.get(0);
@@ -96,7 +128,7 @@ public class UserGroupManagementAPI {
         return false;
     }
 
-    public static void addMetadataToGroup(String metaId, String groupId){
+    public static void addMetadataElementToGroup(String metaId, String groupId){
 
         AuthorizationGroup authorizationGroup = new AuthorizationGroup();
         authorizationGroup.setGroupId(groupId);

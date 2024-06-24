@@ -18,6 +18,11 @@ public class User {
     @Basic
     @Column(name = "email", nullable = true, length = 1024)
     private String email;
+
+    @Basic
+    @Column(name = "isadmin", nullable = true, length = 1024)
+    private String isadmin;
+
     @OneToMany(mappedBy = "userByAuthIdentifier")
     private Collection<MetadataGroupUser> metadataGroupUsersByAuthIdentifier;
 
@@ -53,6 +58,15 @@ public class User {
         this.email = email;
     }
 
+
+    public String getIsadmin() {
+        return isadmin;
+    }
+
+    public void setIsadmin(String isadmin) {
+        this.isadmin = isadmin;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -65,6 +79,7 @@ public class User {
         if (familyname != null ? !familyname.equals(user.familyname) : user.familyname != null) return false;
         if (givenname != null ? !givenname.equals(user.givenname) : user.givenname != null) return false;
         if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        if (isadmin != null ? !isadmin.equals(user.isadmin) : user.isadmin != null) return false;
 
         return true;
     }
@@ -75,6 +90,7 @@ public class User {
         result = 31 * result + (familyname != null ? familyname.hashCode() : 0);
         result = 31 * result + (givenname != null ? givenname.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (isadmin != null ? isadmin.hashCode() : 0);
         return result;
     }
 
