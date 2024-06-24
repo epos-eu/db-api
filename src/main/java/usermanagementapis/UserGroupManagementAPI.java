@@ -27,7 +27,7 @@ public class UserGroupManagementAPI {
     }
 
     public static org.epos.eposdatamodel.User retrieveUser(org.epos.eposdatamodel.User user){
-        List<User> userList = getDbaccess().getOneFromDBByInstanceId(user.getAuthIdentifier(), User.class);
+        List<User> userList = getDbaccess().getOneFromDBBySpecificKey("authIdentifier",user.getAuthIdentifier(), User.class);
         if(userList.isEmpty()) return null;
 
         User retrievedUser = userList.get(0);
@@ -50,7 +50,7 @@ public class UserGroupManagementAPI {
     }
 
     public static org.epos.eposdatamodel.User retrieveUserById(String userId){
-        List<User> userList = getDbaccess().getOneFromDBByInstanceId(userId, User.class);
+        List<User> userList = getDbaccess().getOneFromDBBySpecificKey("authIdentifier",userId, User.class);
         if(userList.isEmpty()) return null;
 
         User retrievedUser = userList.get(0);
@@ -66,7 +66,7 @@ public class UserGroupManagementAPI {
     }
 
     public static Boolean deleteUser(String authIdentfier){
-        List<User> user1 = getDbaccess().getOneFromDBByInstanceId(authIdentfier,User.class);
+        List<User> user1 = getDbaccess().getOneFromDBBySpecificKey("authIdentifier",authIdentfier,User.class);
         return getDbaccess().deleteObject(user1.get(0));
     }
 
@@ -86,15 +86,15 @@ public class UserGroupManagementAPI {
     }
 
     public static MetadataGroup retrieveGroup(org.epos.eposdatamodel.Group group){
-        return (MetadataGroup) getDbaccess().getOneFromDBByInstanceId(group.getId(), MetadataGroup.class).get(0);
+        return (MetadataGroup) getDbaccess().getOneFromDBBySpecificKey("id",group.getId(), MetadataGroup.class).get(0);
     }
 
     public static MetadataGroup retrieveGroupById(String groupId){
-        return (MetadataGroup) getDbaccess().getOneFromDBByInstanceId(groupId, MetadataGroup.class).get(0);
+        return (MetadataGroup) getDbaccess().getOneFromDBBySpecificKey("id",groupId, MetadataGroup.class).get(0);
     }
 
     public static void deleteGroup(String groupId){
-        List<MetadataGroup> group = getDbaccess().getOneFromDBByInstanceId(groupId, MetadataGroup.class);
+        List<MetadataGroup> group = getDbaccess().getOneFromDBBySpecificKey("id",groupId, MetadataGroup.class);
         getDbaccess().deleteObject(group.get(0));
     }
 
@@ -108,7 +108,7 @@ public class UserGroupManagementAPI {
 
         MetadataGroup metadataGroup = retrieveGroupById(groupId);
 
-        List<User> userList = getDbaccess().getOneFromDBByInstanceId(userId, User.class);
+        List<User> userList = getDbaccess().getOneFromDBBySpecificKey("authIdentifier",userId, User.class);
         if(userList.isEmpty()) return null;
 
         User retrievedUser = userList.get(0);
