@@ -11,31 +11,26 @@ public class Address extends EPOSDataModelEntity {
     /**
      * The country.
      **/
-    @Schema (description = "Country", example = "Italy", required = false)
     private String country = null;
 
     /**
      * The locality in which the street address is, and which is in the region. For example, Mountain View.
      **/
-    @Schema (description = "Locality", example = "Mountain View", required = false)
     private String locality = null;
 
     /**
      * The postal code. For example, 94043.
      **/
-    @Schema (description = "Postal Code", example = "94043", required = false)
     private String postalCode = null;
 
     /**
      * The street address. For example, 1600 Amphitheatre Pkwy.
      **/
-    @Schema (description = "Street Address", example = "1600, Amphitheatre Pkwy", required = false)
     private String street = null;
 
     /**
      * The two-letter ISO 3166-1 alpha-2 country code (e.g., IT, UK).
      */
-    @Schema (description = "Country Code, ISO 3166-1 alpha-2", example = "IT", required = false)
     private String countryCode = null;
 
 

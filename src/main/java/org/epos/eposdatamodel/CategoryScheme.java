@@ -14,13 +14,11 @@ public class CategoryScheme extends EPOSDataModelEntity {
     /**
      * This property contains a description of the category scheme.
      */
-	@Schema(description = "Description of the category scheme", example = "A sample description of a category scheme", required = false)
-    private String description;
+	private String description;
 
     /**
      * This property contains a name of the category scheme.
      */
-	@Schema(description = "Name of the category", example = "A sample name of a category", required = false)
     private String title;
     
     /**
@@ -40,14 +38,12 @@ public class CategoryScheme extends EPOSDataModelEntity {
     /**
      *  Relates a list of resources of type CATEGORY
      */
-	@Schema (description = "Category scheme top concepts ", example = "Relation to a LinkedEntity of type CATEGORY", required = false)
 	private List<LinkedEntity> topconcepts;
     
     
     /**
      * This property contains a uid of the category scheme.
      */
-	@Schema(description = "UID of the category scheme ", example = "CategoryScheme/0123456789", required = false)
 	private String uid;
 
     public String getDescription() {

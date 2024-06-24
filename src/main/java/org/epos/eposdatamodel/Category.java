@@ -13,37 +13,31 @@ public class Category extends EPOSDataModelEntity {
     /**
      * This property contains a description of the category
      */
-    @Schema(description = "Description of the category", example = "A sample description of a category", required = false)
     private String description;
 
     /**
      * Relates a resource of type CATEGORYSCHEME
      */
-    @Schema (description = "Category Scheme", example = "Relation to a LinkedEntity of type CATEGORYSCHEME", required = false)
     private LinkedEntity inScheme;
 
     /**
      * This property contains a preferred label of the category
      */
-    @Schema (description = "Name", example = "Seismic Waveform", required = false)
     private String name;
     
     /**
      * This property contains a name of the category scheme.
      */
-    @Schema (description = "UID", example = "Category/0012302013", required = false)
     private String uid;
     
     /**
      * Relates a list of resources of type CATEGORY
      */
-    @Schema (description = "Category broaders", example = "Relation to a LinkedEntity of type CATEGORY", required = false)
     private List<LinkedEntity> broader;
     
     /**
      * Relates a list of resources of type CATEGORY
      */
-    @Schema (description = "Category narrowers", example = "Relation to a LinkedEntity of type CATEGORY", required = false)
     private List<LinkedEntity> narrower;
 
 
