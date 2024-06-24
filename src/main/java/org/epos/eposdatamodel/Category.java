@@ -13,37 +13,37 @@ public class Category extends EPOSDataModelEntity {
     /**
      * This property contains a description of the category
      */
-    @Schema(name = "Description", example = "A sample description of a category", required = false)
+    @Schema(description = "Description of the category", example = "A sample description of a category", required = false)
     private String description;
 
     /**
      * Relates a resource of type CATEGORYSCHEME
      */
-    @Schema (name = "Category Scheme", example = "Relation to a LinkedEntity of type CATEGORYSCHEME", required = false)
+    @Schema (description = "Category Scheme", example = "Relation to a LinkedEntity of type CATEGORYSCHEME", required = false)
     private LinkedEntity inScheme;
 
     /**
      * This property contains a preferred label of the category
      */
-    @Schema (name = "Name", example = "Seismic Waveform", required = false)
+    @Schema (description = "Name", example = "Seismic Waveform", required = false)
     private String name;
     
     /**
      * This property contains a name of the category scheme.
      */
-    @Schema (name = "UID", example = "Category/0012302013", required = false)
+    @Schema (description = "UID", example = "Category/0012302013", required = false)
     private String uid;
     
     /**
      * Relates a list of resources of type CATEGORY
      */
-    @Schema (name = "Category broaders", example = "Relation to a LinkedEntity of type CATEGORY", required = false)
+    @Schema (description = "Category broaders", example = "Relation to a LinkedEntity of type CATEGORY", required = false)
     private List<LinkedEntity> broader;
     
     /**
      * Relates a list of resources of type CATEGORY
      */
-    @Schema (name = "Category narrowers", example = "Relation to a LinkedEntity of type CATEGORY", required = false)
+    @Schema (description = "Category narrowers", example = "Relation to a LinkedEntity of type CATEGORY", required = false)
     private List<LinkedEntity> narrower;
 
 

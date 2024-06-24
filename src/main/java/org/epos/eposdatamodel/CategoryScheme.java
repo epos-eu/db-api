@@ -1,5 +1,7 @@
 package org.epos.eposdatamodel;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -12,18 +14,19 @@ public class CategoryScheme extends EPOSDataModelEntity {
     /**
      * This property contains a description of the category scheme.
      */
+	@Schema(description = "Description of the category scheme", example = "A sample description of a category scheme", required = false)
     private String description;
 
     /**
      * This property contains a name of the category scheme.
      */
+	@Schema(description = "Name of the category", example = "A sample name of a category", required = false)
     private String title;
     
     /**
      * This property contains a name of the category scheme.
      */
     private String code;
-    
 
     private String logo;
     
@@ -37,13 +40,15 @@ public class CategoryScheme extends EPOSDataModelEntity {
     /**
      *  Relates a list of resources of type CATEGORY
      */
-    private List<LinkedEntity> topconcepts;
+	@Schema (description = "Category scheme top concepts ", example = "Relation to a LinkedEntity of type CATEGORY", required = false)
+	private List<LinkedEntity> topconcepts;
     
     
     /**
-     * This property contains a name of the category scheme.
+     * This property contains a uid of the category scheme.
      */
-    private String uid;
+	@Schema(description = "UID of the category scheme ", example = "CategoryScheme/0123456789", required = false)
+	private String uid;
 
     public String getDescription() {
         return description;
