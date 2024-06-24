@@ -4,6 +4,7 @@ import dao.EposDataModelDAO;
 import model.*;
 import org.epos.eposdatamodel.UserGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -65,6 +66,25 @@ public class UserGroupManagementAPI {
         return user1 ;
     }
 
+    public static List<org.epos.eposdatamodel.User> retrieveAllUsers(){
+        List<User> userList = getDbaccess().getAllFromDB(User.class);
+        if(userList.isEmpty()) return null;
+
+        List<org.epos.eposdatamodel.User> returnList = new ArrayList<>();
+        for(User user : userList){
+            org.epos.eposdatamodel.User user1 = new org.epos.eposdatamodel.User(
+                    user.getAuthIdentifier(),
+                    user.getFamilyname(),
+                    user.getGivenname(),
+                    user.getEmail(),
+                    Boolean.parseBoolean(user.getIsadmin())
+            );
+            returnList.add(user1);
+        }
+
+        return returnList ;
+    }
+
     public static Boolean deleteUser(String authIdentfier){
         List<User> user1 = getDbaccess().getOneFromDBBySpecificKey("authIdentifier",authIdentfier,User.class);
         return getDbaccess().deleteObject(user1.get(0));
@@ -91,6 +111,10 @@ public class UserGroupManagementAPI {
 
     public static MetadataGroup retrieveGroupById(String groupId){
         return (MetadataGroup) getDbaccess().getOneFromDBBySpecificKey("id",groupId, MetadataGroup.class).get(0);
+    }
+
+    public static List<MetadataGroup> retrieveAllGroups(){
+        return getDbaccess().getAllFromDB(MetadataGroup.class);
     }
 
     public static void deleteGroup(String groupId){
