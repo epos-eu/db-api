@@ -2,10 +2,12 @@ package commonapis;
 
 import abstractapis.AbstractAPI;
 import metadataapis.EntityNames;
+import model.Spatial;
 import model.Temporal;
 import org.epos.eposdatamodel.LinkedEntity;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -63,6 +65,16 @@ public class TemporalAPI extends AbstractAPI<org.epos.eposdatamodel.PeriodOfTime
         o.setEndDate(edmobj.getEnddate()!=null? edmobj.getEnddate().toLocalDateTime() : null);
 
         return o;
+    }
+
+    @Override
+    public List<org.epos.eposdatamodel.PeriodOfTime> retrieveAll() {
+        List<Temporal> list = getDbaccess().getAllFromDB(Temporal.class);
+        List<org.epos.eposdatamodel.PeriodOfTime> returnList = new ArrayList<>();
+        for(Temporal item : list){
+            returnList.add(retrieve(item.getInstanceId()));
+        }
+        return returnList;
     }
 
     @Override

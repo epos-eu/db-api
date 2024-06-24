@@ -167,6 +167,16 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
     }
 
     @Override
+    public List<org.epos.eposdatamodel.Operation> retrieveAll() {
+        List<Operation> list = getDbaccess().getAllFromDB(Operation.class);
+        List<org.epos.eposdatamodel.Operation> returnList = new ArrayList<>();
+        for(Operation item : list){
+            returnList.add(retrieve(item.getInstanceId()));
+        }
+        return returnList;
+    }
+
+    @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
         Operation edmobj = (Operation) getDbaccess().getOneFromDBByInstanceId(instanceId, Operation.class).get(0);
 

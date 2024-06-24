@@ -6,6 +6,7 @@ import model.Category;
 import model.CategoryScheme;
 import org.epos.eposdatamodel.LinkedEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -77,6 +78,16 @@ public class CategorySchemeAPI extends AbstractAPI<org.epos.eposdatamodel.Catego
         o.setOrderitemnumber(edmobj.getOrderitemnumber());
 
         return o;
+    }
+
+    @Override
+    public List<org.epos.eposdatamodel.CategoryScheme> retrieveAll() {
+        List<CategoryScheme> list = getDbaccess().getAllFromDB(CategoryScheme.class);
+        List<org.epos.eposdatamodel.CategoryScheme> returnList = new ArrayList<>();
+        for(CategoryScheme item : list){
+            returnList.add(retrieve(item.getInstanceId()));
+        }
+        return returnList;
     }
 
     @Override

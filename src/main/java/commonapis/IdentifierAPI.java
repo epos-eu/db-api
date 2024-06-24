@@ -3,9 +3,11 @@ package commonapis;
 import abstractapis.AbstractAPI;
 import metadataapis.EntityNames;
 import model.Address;
+import model.Element;
 import model.Identifier;
 import org.epos.eposdatamodel.LinkedEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -63,6 +65,17 @@ public class IdentifierAPI extends AbstractAPI<org.epos.eposdatamodel.Identifier
 
         return o;
     }
+
+    @Override
+    public List<org.epos.eposdatamodel.Identifier> retrieveAll() {
+        List<Identifier> list = getDbaccess().getAllFromDB(Identifier.class);
+        List<org.epos.eposdatamodel.Identifier> returnList = new ArrayList<>();
+        for(Identifier item : list){
+            returnList.add(retrieve(item.getInstanceId()));
+        }
+        return returnList;
+    }
+
     @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
         Identifier edmobj = (Identifier) getDbaccess().getOneFromDBByInstanceId(instanceId, Identifier.class).get(0);

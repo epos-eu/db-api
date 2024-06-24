@@ -6,6 +6,7 @@ import model.Address;
 import model.Element;
 import org.epos.eposdatamodel.LinkedEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -65,6 +66,17 @@ public class ElementAPI extends AbstractAPI<org.epos.eposdatamodel.Element> {
 
         return o;
     }
+
+    @Override
+    public List<org.epos.eposdatamodel.Element> retrieveAll() {
+        List<Element> list = getDbaccess().getAllFromDB(Element.class);
+        List<org.epos.eposdatamodel.Element> returnList = new ArrayList<>();
+        for(Element item : list){
+            returnList.add(retrieve(item.getInstanceId()));
+        }
+        return returnList;
+    }
+
 
     @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {

@@ -126,6 +126,17 @@ public class MappingAPI extends AbstractAPI<org.epos.eposdatamodel.Mapping> {
     }
 
     @Override
+    public List<org.epos.eposdatamodel.Mapping> retrieveAll() {
+        List<Mapping> list = getDbaccess().getAllFromDB(Mapping.class);
+        List<org.epos.eposdatamodel.Mapping> returnList = new ArrayList<>();
+        for(Mapping item : list){
+            returnList.add(retrieve(item.getInstanceId()));
+        }
+        return returnList;
+    }
+
+
+    @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
         Mapping edmobj = (Mapping) getDbaccess().getOneFromDBByInstanceId(instanceId, Mapping.class).get(0);
 

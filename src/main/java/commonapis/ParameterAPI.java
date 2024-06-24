@@ -2,11 +2,13 @@ package commonapis;
 
 import abstractapis.AbstractAPI;
 import metadataapis.EntityNames;
+import model.Identifier;
 import model.QuantitativeValue;
 import model.SoftwareapplicationParameters;
 import org.epos.eposdatamodel.LinkedEntity;
 import org.epos.eposdatamodel.Parameter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -66,6 +68,16 @@ public class ParameterAPI extends AbstractAPI<org.epos.eposdatamodel.Parameter> 
         o.setAction(Parameter.ActionEnum.fromValue(edmobj.getAction()));
 
         return o;
+    }
+
+    @Override
+    public List<org.epos.eposdatamodel.Parameter> retrieveAll() {
+        List<SoftwareapplicationParameters> list = getDbaccess().getAllFromDB(SoftwareapplicationParameters.class);
+        List<org.epos.eposdatamodel.Parameter> returnList = new ArrayList<>();
+        for(SoftwareapplicationParameters item : list){
+            returnList.add(retrieve(item.getInstanceId()));
+        }
+        return returnList;
     }
 
     @Override

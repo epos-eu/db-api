@@ -312,6 +312,16 @@ public class EquipmentAPI extends AbstractAPI<org.epos.eposdatamodel.Equipment> 
     }
 
     @Override
+    public List<org.epos.eposdatamodel.Equipment> retrieveAll() {
+        List<Equipment> list = getDbaccess().getAllFromDB(Equipment.class);
+        List<org.epos.eposdatamodel.Equipment> returnList = new ArrayList<>();
+        for(Equipment item : list){
+            returnList.add(retrieve(item.getInstanceId()));
+        }
+        return returnList;
+    }
+
+    @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
         Equipment edmobj = (Equipment) getDbaccess().getOneFromDBByInstanceId(instanceId, Equipment.class).get(0);
 

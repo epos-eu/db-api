@@ -4,13 +4,11 @@ import abstractapis.AbstractAPI;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import metadataapis.EntityNames;
-import model.Element;
-import model.ElementType;
-import model.QuantitativeValue;
-import model.Temporal;
+import model.*;
 import org.epos.eposdatamodel.Documentation;
 import org.epos.eposdatamodel.LinkedEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -75,6 +73,16 @@ public class DocumentationAPI extends AbstractAPI<org.epos.eposdatamodel.Documen
         o.setUri(doc.has("Uri")? doc.get("Uri").getAsString() : null);
 
         return o;
+    }
+
+    @Override
+    public List<org.epos.eposdatamodel.Documentation> retrieveAll() {
+        List<Element> list = getDbaccess().getAllFromDB(Element.class);
+        List<org.epos.eposdatamodel.Documentation> returnList = new ArrayList<>();
+        for(Element item : list){
+            returnList.add(retrieve(item.getInstanceId()));
+        }
+        return returnList;
     }
 
     @Override

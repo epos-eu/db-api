@@ -261,6 +261,17 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
     }
 
     @Override
+    public List<org.epos.eposdatamodel.Facility> retrieveAll() {
+        List<Facility> list = getDbaccess().getAllFromDB(Facility.class);
+        List<org.epos.eposdatamodel.Facility> returnList = new ArrayList<>();
+        for(Facility item : list){
+            returnList.add(retrieve(item.getInstanceId()));
+        }
+        return returnList;
+    }
+
+
+    @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
         Facility edmobj = (Facility) getDbaccess().getOneFromDBByInstanceId(instanceId, Facility.class).get(0);
 

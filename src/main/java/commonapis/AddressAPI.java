@@ -8,6 +8,7 @@ import model.Identifier;
 import org.apache.commons.math3.analysis.function.Add;
 import org.epos.eposdatamodel.LinkedEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -70,6 +71,16 @@ public class AddressAPI extends AbstractAPI<org.epos.eposdatamodel.Address> {
         o.setLocality(edmobj.getLocality());
 
         return o;
+    }
+
+    @Override
+    public List<org.epos.eposdatamodel.Address> retrieveAll() {
+        List<Address> list = getDbaccess().getAllFromDB(Address.class);
+        List<org.epos.eposdatamodel.Address> returnList = new ArrayList<>();
+        for(Address item : list){
+            returnList.add(retrieve(item.getInstanceId()));
+        }
+        return returnList;
     }
 
     @Override

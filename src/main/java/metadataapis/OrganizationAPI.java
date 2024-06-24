@@ -332,6 +332,17 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
     }
 
     @Override
+    public List<org.epos.eposdatamodel.Organization> retrieveAll() {
+        List<Organization> list = getDbaccess().getAllFromDB(Organization.class);
+        List<org.epos.eposdatamodel.Organization> returnList = new ArrayList<>();
+        for(Organization item : list){
+            returnList.add(retrieve(item.getInstanceId()));
+        }
+        return returnList;
+    }
+
+
+    @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
         Organization edmobj = (Organization) getDbaccess().getOneFromDBByInstanceId(instanceId, Organization.class).get(0);
 

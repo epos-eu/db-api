@@ -3,9 +3,11 @@ package commonapis;
 import abstractapis.AbstractAPI;
 import metadataapis.EntityNames;
 import model.Element;
+import model.QuantitativeValue;
 import model.Spatial;
 import org.epos.eposdatamodel.LinkedEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -61,6 +63,16 @@ public class SpatialAPI extends AbstractAPI<org.epos.eposdatamodel.Location> {
         o.setLocation(edmobj.getLocation());
 
         return o;
+    }
+
+    @Override
+    public List<org.epos.eposdatamodel.Location> retrieveAll() {
+        List<Spatial> list = getDbaccess().getAllFromDB(Spatial.class);
+        List<org.epos.eposdatamodel.Location> returnList = new ArrayList<>();
+        for(Spatial item : list){
+            returnList.add(retrieve(item.getInstanceId()));
+        }
+        return returnList;
     }
 
     @Override

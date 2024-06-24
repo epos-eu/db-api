@@ -3,9 +3,11 @@ package commonapis;
 import abstractapis.AbstractAPI;
 import metadataapis.EntityNames;
 import model.QuantitativeValue;
+import model.SoftwareapplicationParameters;
 import model.Temporal;
 import org.epos.eposdatamodel.LinkedEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -63,6 +65,16 @@ public class QuantitativeValueAPI extends AbstractAPI<org.epos.eposdatamodel.Qua
         o.setValue(edmobj.getValue());
 
         return o;
+    }
+
+    @Override
+    public List<org.epos.eposdatamodel.QuantitativeValue> retrieveAll() {
+        List<QuantitativeValue> list = getDbaccess().getAllFromDB(QuantitativeValue.class);
+        List<org.epos.eposdatamodel.QuantitativeValue> returnList = new ArrayList<>();
+        for(QuantitativeValue item : list){
+            returnList.add(retrieve(item.getInstanceId()));
+        }
+        return returnList;
     }
 
     @Override

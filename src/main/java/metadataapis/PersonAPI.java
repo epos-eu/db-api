@@ -224,6 +224,17 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
     }
 
     @Override
+    public List<org.epos.eposdatamodel.Person> retrieveAll() {
+        List<Person> list = getDbaccess().getAllFromDB(Person.class);
+        List<org.epos.eposdatamodel.Person> returnList = new ArrayList<>();
+        for(Person item : list){
+            returnList.add(retrieve(item.getInstanceId()));
+        }
+        return returnList;
+    }
+
+
+    @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
         Person edmobj = (Person) getDbaccess().getOneFromDBByInstanceId(instanceId, Person.class).get(0);
 

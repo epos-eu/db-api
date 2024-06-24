@@ -432,6 +432,17 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
     }
 
     @Override
+    public List<org.epos.eposdatamodel.DataProduct> retrieveAll() {
+        List<Dataproduct> list = getDbaccess().getAllFromDB(Dataproduct.class);
+        List<org.epos.eposdatamodel.DataProduct> returnList = new ArrayList<>();
+        for(Dataproduct item : list){
+            returnList.add(retrieve(item.getInstanceId()));
+        }
+        return returnList;
+    }
+
+
+    @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
         Dataproduct edmobj = (Dataproduct) getDbaccess().getOneFromDBByInstanceId(instanceId, Dataproduct.class).get(0);
 

@@ -8,6 +8,7 @@ import model.*;
 import model.Category;
 import model.Identifier;
 import model.Operation;
+import model.Person;
 import model.SoftwareApplication;
 import org.epos.eposdatamodel.*;
 import relationsapi.CategoryRelationsAPI;
@@ -218,6 +219,16 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
             }
         }
         return o;
+    }
+
+    @Override
+    public List<org.epos.eposdatamodel.SoftwareApplication> retrieveAll() {
+        List<SoftwareApplication> list = getDbaccess().getAllFromDB(SoftwareApplication.class);
+        List<org.epos.eposdatamodel.SoftwareApplication> returnList = new ArrayList<>();
+        for(SoftwareApplication item : list){
+            returnList.add(retrieve(item.getInstanceId()));
+        }
+        return returnList;
     }
 
     @Override

@@ -234,6 +234,16 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
     }
 
     @Override
+    public List<org.epos.eposdatamodel.Distribution> retrieveAll() {
+        List<Distribution> list = getDbaccess().getAllFromDB(Distribution.class);
+        List<org.epos.eposdatamodel.Distribution> returnList = new ArrayList<>();
+        for(Distribution item : list){
+            returnList.add(retrieve(item.getInstanceId()));
+        }
+        return returnList;
+    }
+
+    @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
         Distribution edmobj = (Distribution) getDbaccess().getOneFromDBByInstanceId(instanceId, Distribution.class).get(0);
 
