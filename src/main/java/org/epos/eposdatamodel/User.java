@@ -59,7 +59,7 @@ public class User {
         return isAdmin;
     }
 
-    public void setEmail(Boolean isAdmin) {
+    public void setIsAdmin(Boolean isAdmin) {
         this.isAdmin = isAdmin;
     }
 
