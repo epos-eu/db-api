@@ -21,7 +21,7 @@ public class UserGroupManagementAPI {
         user1.setEmail(user.getEmail());
         user1.setGivenname(user.getFirstName());
         user1.setFamilyname(user.getLastName());
-        user1.setIsadmin(Boolean.toString(user.getIsAdmin()));
+        user1.setIsadmin(Boolean.toString(user.getIsAdmin().booleanValue()));
 
         return getDbaccess().createObject(user1);
     }
@@ -37,7 +37,7 @@ public class UserGroupManagementAPI {
                 retrievedUser.getFamilyname(),
                 retrievedUser.getGivenname(),
                 retrievedUser.getEmail(),
-                Boolean.getBoolean(retrievedUser.getIsadmin())
+                Boolean.parseBoolean(retrievedUser.getIsadmin())
         );
 
         retrievedUser.getMetadataGroupUsersByAuthIdentifier().forEach(item->{
@@ -59,7 +59,7 @@ public class UserGroupManagementAPI {
                 retrievedUser.getFamilyname(),
                 retrievedUser.getGivenname(),
                 retrievedUser.getEmail(),
-                Boolean.getBoolean(retrievedUser.getIsadmin())
+                Boolean.parseBoolean(retrievedUser.getIsadmin())
         );
 
         return user1 ;

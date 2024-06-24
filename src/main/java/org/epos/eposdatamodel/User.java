@@ -14,12 +14,23 @@ public class User {
 
     private List<UserGroup> groups;
 
+    public User(){}
+
     public User(String authIdentifier, String familyname, String firstName, String email, Boolean isAdmin) {
         this.authIdentifier = authIdentifier;
         this.lastName = familyname;
         this.firstName = firstName;
         this.email = email;
         this.isAdmin = isAdmin;
+        this.groups = new ArrayList<>();
+    }
+
+    public User(String authIdentifier, String familyname, String firstName, String email, String isAdmin) {
+        this.authIdentifier = authIdentifier;
+        this.lastName = familyname;
+        this.firstName = firstName;
+        this.email = email;
+        this.isAdmin = Boolean.getBoolean(isAdmin);
         this.groups = new ArrayList<>();
     }
 
@@ -74,21 +85,23 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(authIdentifier, user.authIdentifier) && Objects.equals(lastName, user.lastName) && Objects.equals(firstName, user.firstName) && Objects.equals(email, user.email);
+        return Objects.equals(authIdentifier, user.authIdentifier) && Objects.equals(lastName, user.lastName) && Objects.equals(firstName, user.firstName) && Objects.equals(email, user.email) && Objects.equals(isAdmin, user.isAdmin) && Objects.equals(groups, user.groups);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(authIdentifier, lastName, firstName, email);
+        return Objects.hash(authIdentifier, lastName, firstName, email, isAdmin, groups);
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "authIdentifier='" + authIdentifier + '\'' +
-                ", familyname='" + lastName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", email='" + email + '\'' +
+                ", isAdmin=" + isAdmin +
+                ", groups=" + groups +
                 '}';
     }
 }

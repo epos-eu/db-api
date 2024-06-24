@@ -10,6 +10,7 @@ import model.ElementType;
 import model.StatusType;
 import org.eclipse.persistence.internal.jpa.rs.metadata.model.Link;
 import org.epos.eposdatamodel.*;
+import usermanagementapis.UserGroupManagementAPI;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,6 +18,19 @@ import java.util.List;
 import java.util.Map;
 
 public class VariousTests {
+
+    public static void checkUsers(){
+        User user = new User();
+        user.setLastName("test");
+        user.setFirstName("test");
+        user.setEmail("test");
+        user.setAuthIdentifier("test");
+        user.setIsAdmin(true);
+
+        UserGroupManagementAPI.createUser(user);
+
+        System.out.println(UserGroupManagementAPI.retrieveUserById("test"));
+    }
 
     public static void datasetTest(){
         Category cat = new Category();
@@ -169,6 +183,7 @@ public class VariousTests {
         //softwaresTest();
         //datasetTest();
         //quantitativeValue();
-        checkProblems();
+        //checkProblems();
+        checkUsers();
     }
 }
