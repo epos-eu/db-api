@@ -63,6 +63,8 @@ public class IdentifierAPI extends AbstractAPI<org.epos.eposdatamodel.Identifier
         o.setType(edmobj.getType());
         o.setIdentifier(edmobj.getValue());
 
+        o = (org.epos.eposdatamodel.Identifier) VersioningStatusAPI.retrieveVersion(o);
+
         return o;
     }
 

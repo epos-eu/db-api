@@ -15,7 +15,7 @@ public class Person extends EPOSDataModelEntity {
     /**
      * This property contains the physical address of the Person.
      */
-    private Address address;
+    private LinkedEntity address;
 
     /**
      * This property refers to the organization to which the person is
@@ -47,7 +47,7 @@ public class Person extends EPOSDataModelEntity {
      * This property contains an identifier for the Person (e.g., ORCID, ScopusID, etc.).
      **/
 
-    private List<Identifier> identifier = new ArrayList<>();
+    private List<LinkedEntity> identifier = new ArrayList<>();
 
     /**
      * This property contains the specific qualifications of the Person.
@@ -99,9 +99,9 @@ public class Person extends EPOSDataModelEntity {
         }
     }
 
-    public void addIdentifier(Identifier identifier) {
+    public void addIdentifier(LinkedEntity identifier) {
         if (this.identifier == null) {
-            ArrayList<Identifier> identifierList = new ArrayList<>();
+            ArrayList<LinkedEntity> identifierList = new ArrayList<>();
             identifierList.add(identifier);
             this.setIdentifier(identifierList);
         } else {
@@ -110,7 +110,7 @@ public class Person extends EPOSDataModelEntity {
     }
 
 
-    public Person address(Address address) {
+    public Person address(LinkedEntity address) {
         this.address = address;
         return this;
     }
@@ -121,11 +121,11 @@ public class Person extends EPOSDataModelEntity {
      * @return address
      **/
 
-    public Address getAddress() {
+    public LinkedEntity getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(LinkedEntity address) {
         this.address = address;
     }
 
@@ -214,12 +214,12 @@ public class Person extends EPOSDataModelEntity {
         this.givenName = givenName;
     }
 
-    public Person identifier(List<Identifier> identifier) {
+    public Person identifier(List<LinkedEntity> identifier) {
         this.identifier = identifier;
         return this;
     }
 
-    public Person addIdentifierItem(Identifier identifierItem) {
+    public Person addIdentifierItem(LinkedEntity identifierItem) {
         this.identifier.add(identifierItem);
         return this;
     }
@@ -231,11 +231,11 @@ public class Person extends EPOSDataModelEntity {
      **/
 
 
-    public List<Identifier> getIdentifier() {
+    public List<LinkedEntity> getIdentifier() {
         return identifier;
     }
 
-    public void setIdentifier(List<Identifier> identifier) {
+    public void setIdentifier(List<LinkedEntity> identifier) {
         this.identifier = identifier;
     }
 

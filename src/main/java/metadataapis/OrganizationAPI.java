@@ -107,8 +107,8 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
             }
             IdentifierAPI identifierAPI = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
             edmobj.setOrganizationIdentifiersByInstanceId(new ArrayList<>());
-            for(org.epos.eposdatamodel.Identifier identifier : obj.getIdentifier()){
-                LinkedEntity le = identifierAPI.create(identifier);
+            for(org.epos.eposdatamodel.LinkedEntity identifier : obj.getIdentifier()){
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(identifier);
                 OrganizationIdentifier pi = new OrganizationIdentifier();
                 pi.setOrganizationByOrganizationInstanceId(edmobj);
                 pi.setOrganizationInstanceId(edmobj.getInstanceId());
@@ -155,19 +155,9 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
                 }
             }
             edmobj.setOrganizationLegalnamesByInstanceId(new ArrayList<>());
-            for(LegalName legalname : obj.getLegalName()) {
-                legalname = (org.epos.eposdatamodel.LegalName) VersioningStatusAPI.checkVersion(legalname);
-                OrganizationLegalname pi = new OrganizationLegalname();
-                pi.setInstanceId(legalname.getInstanceId());
-                pi.setMetaId(legalname.getMetaId());
-                pi.setUid(legalname.getUid());
-                pi.setVersionId(legalname.getVersionId());
-                pi.setOrganizationByOrganizationInstanceId(edmobj);
-                pi.setOrganizationInstanceId(edmobj.getInstanceId());
-                pi.setLanguage(null);
-                pi.setLegalname(legalname.getLegalname());
-                edmobj.getOrganizationLegalnamesByInstanceId().add(pi);
-                dbaccess.updateObject(pi);
+            for(LinkedEntity legalname : obj.getLegalName()) {
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(legalname);
+                edmobj.getOrganizationLegalnamesByInstanceId().add((OrganizationLegalname) getDbaccess().getOneFromDBByInstanceId(le.getInstanceId(),OrganizationLegalname.class));
             }
         }
 
@@ -262,12 +252,10 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
         o.setMaturity(edmobj.getMaturity());
 
         if(edmobj.getOrganizationIdentifiersByInstanceId().size()>0) {
+            IdentifierAPI api = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
             for(OrganizationIdentifier ed : edmobj.getOrganizationIdentifiersByInstanceId()) {
                 Identifier el = ed.getIdentifierByIdentifierInstanceId();
-                org.epos.eposdatamodel.Identifier id = new org.epos.eposdatamodel.Identifier();
-                id.setIdentifier(el.getValue());
-                id.setType(el.getType());
-                o.addIdentifier(id);
+                o.addIdentifier(api.retrieveLinkedEntity(el.getInstanceId()));
             }
         }
 
@@ -283,8 +271,8 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
         }
 
         if(edmobj.getOrganizationContactpointsByInstanceId().size()>0) {
+            ContactPointAPI api = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), Contactpoint.class);
             for(OrganizationContactpoint ed : edmobj.getOrganizationContactpointsByInstanceId()) {
-                ContactPointAPI api = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), Contactpoint.class);
                 LinkedEntity cp = api.retrieveLinkedEntity(ed.getContactpointInstanceId());
                 o.addContactPoint(cp);
             }
@@ -299,11 +287,9 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
         }
 
         if(edmobj.getOrganizationLegalnamesByInstanceId().size()>0) {
+            LegalNameAPI api = new LegalNameAPI(EntityNames.LEGALNAME.name(), OrganizationLegalname.class);
             for(OrganizationLegalname ed : edmobj.getOrganizationLegalnamesByInstanceId()) {
-                LegalName ln = new LegalName();
-                ln.setLanguage(ed.getLanguage());
-                ln.setLegalname(ed.getLegalname());
-                o.addLegalName(ln);
+                o.addLegalName(api.retrieveLinkedEntity(ed.getInstanceId()));
             }
         }
 
@@ -327,6 +313,8 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
                 o.addMemberOf(cp);
             }
         }
+
+        o = (org.epos.eposdatamodel.Organization) VersioningStatusAPI.retrieveVersion(o);
 
         return o;
     }

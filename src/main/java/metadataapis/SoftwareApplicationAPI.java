@@ -3,6 +3,7 @@ package metadataapis;
 import abstractapis.AbstractAPI;
 import commonapis.IdentifierAPI;
 import commonapis.LinkedEntityAPI;
+import commonapis.ParameterAPI;
 import commonapis.VersioningStatusAPI;
 import model.*;
 import model.Category;
@@ -81,10 +82,9 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
                     if(list2.size()>0) getDbaccess().deleteObject(list2.get(0));
                 }
             }
-            IdentifierAPI identifierAPI = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
             edmobj.setSoftwareapplicationIdentifiersByInstanceId(new ArrayList<>());
-            for(org.epos.eposdatamodel.Identifier identifier : obj.getIdentifier()){
-                LinkedEntity le = identifierAPI.create(identifier);
+            for(org.epos.eposdatamodel.LinkedEntity identifier : obj.getIdentifier()){
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(identifier);
                 SoftwareapplicationIdentifier pi = new SoftwareapplicationIdentifier();
                 pi.setSoftwareapplicationBySoftwareapplicationInstanceId(edmobj);
                 pi.setSoftwareapplicationInstanceId(edmobj.getInstanceId());
@@ -105,21 +105,11 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
                 }
             }
             edmobj.setSoftwareapplicationParametersByInstanceId(new ArrayList<>());
-            for(org.epos.eposdatamodel.Parameter parameter : obj.getParameter()){
-                SoftwareapplicationParameters pi = new SoftwareapplicationParameters();
-                pi.setInstanceId(UUID.randomUUID().toString());
-                pi.setMetaId(UUID.randomUUID().toString());
-                pi.setUid("Parameter/"+UUID.randomUUID().toString());
-                pi.setVersionId(UUID.randomUUID().toString());
-                pi.setAction(parameter.getAction()!=null? parameter.getAction().name() : null);
-                pi.setConformsto(parameter.getConformsTo()!=null? parameter.getConformsTo() : null);
-                pi.setEncodingformat(parameter.getEncodingFormat()!=null? parameter.getEncodingFormat() : null);
-                pi.setSoftwareapplicationBySoftwareapplicationInstanceId(edmobj);
-                pi.setSoftwareapplicationInstanceId(edmobj.getInstanceId());
+            ParameterAPI api = new ParameterAPI(EntityNames.PARAMETER.name(), SoftwareapplicationParameters.class);
+            for(org.epos.eposdatamodel.LinkedEntity parameter : obj.getParameter()){
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(parameter);
 
-                edmobj.getSoftwareapplicationParametersByInstanceId().add(pi);
-
-                dbaccess.updateObject(pi);
+                edmobj.getSoftwareapplicationParametersByInstanceId().add((SoftwareapplicationParameters) getDbaccess().getOneFromDBByInstanceId(le.getInstanceId(),SoftwareapplicationParameters.class));
             }
         }
 
@@ -190,20 +180,17 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
         }
 
         if(edmobj.getSoftwareapplicationIdentifiersByInstanceId().size()>0) {
+            IdentifierAPI api = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
             for(SoftwareapplicationIdentifier ed : edmobj.getSoftwareapplicationIdentifiersByInstanceId()) {
-                IdentifierAPI api = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
-                org.epos.eposdatamodel.Identifier cp = api.retrieve(ed.getIdentifierInstanceId());
+                org.epos.eposdatamodel.LinkedEntity cp = api.retrieveLinkedEntity(ed.getIdentifierInstanceId());
                 o.addIdentifier(cp);
             }
         }
 
         if(edmobj.getSoftwareapplicationParametersByInstanceId().size()>0) {
+            ParameterAPI api = new ParameterAPI(EntityNames.PARAMETER.name(), SoftwareapplicationParameters.class);
             for(SoftwareapplicationParameters ed : edmobj.getSoftwareapplicationParametersByInstanceId()) {
-                Parameter p = new Parameter();
-                p.setAction(Parameter.ActionEnum.fromValue(ed.getAction()));
-                p.setConformsTo(ed.getConformsto());
-                p.setEncodingFormat(ed.getEncodingformat());
-                o.addParameter(p);
+                o.addParameter(api.retrieveLinkedEntity(ed.getInstanceId()));
             }
         }
 
@@ -218,6 +205,9 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
                 o.addRelation(le);
             }
         }
+
+        o = (org.epos.eposdatamodel.SoftwareApplication) VersioningStatusAPI.retrieveVersion(o);
+
         return o;
     }
 

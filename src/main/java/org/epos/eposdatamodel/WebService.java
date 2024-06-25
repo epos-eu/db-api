@@ -17,7 +17,7 @@ public class WebService extends EPOSDataModelEntity {
     /**
      * This property refers to a secondary identifier of the Web Service, such as MAST/ADS, DataCite, DOI, EZID or W3ID.
      **/
-    private List<Identifier> identifier;
+    private List<LinkedEntity> identifier;
 
     /**
      * This property contains the single idenfier of the WebService.
@@ -83,7 +83,7 @@ public class WebService extends EPOSDataModelEntity {
     /**
      * This property refers to a geographical area covered by the Web Service.
      **/
-    private List<Location> spatialExtent;
+    private List<LinkedEntity> spatialExtent;
 
     /**
      * This property refers to a web service operation supported by the
@@ -94,7 +94,7 @@ public class WebService extends EPOSDataModelEntity {
     /**
      * This property refers to a temporal period (i.e. startDate, endDate) that the Web Service covers.
      **/
-    private List<PeriodOfTime> temporalExtent;
+    private List<LinkedEntity> temporalExtent;
 
     /**
      * Reverse reference to the related distribution.
@@ -124,9 +124,9 @@ public class WebService extends EPOSDataModelEntity {
     }
 
 
-    public void addSpatialExtent(Location spatialExtent) {
+    public void addSpatialExtent(LinkedEntity spatialExtent) {
         if (this.getSpatialExtent() == null) {
-            ArrayList<Location> spatialExtentList = new ArrayList<>();
+            ArrayList<LinkedEntity> spatialExtentList = new ArrayList<>();
             spatialExtentList.add(spatialExtent);
             this.setSpatialExtent(spatialExtentList);
         } else {
@@ -175,9 +175,9 @@ public class WebService extends EPOSDataModelEntity {
     }
 
 
-    public void addTemporalExtent(PeriodOfTime temporalExtent) {
+    public void addTemporalExtent(LinkedEntity temporalExtent) {
         if (this.getTemporalExtent() == null) {
-            ArrayList<PeriodOfTime> temporalExtentList = new ArrayList<>();
+            ArrayList<LinkedEntity> temporalExtentList = new ArrayList<>();
             temporalExtentList.add(temporalExtent);
             this.setTemporalExtent(temporalExtentList);
         } else {
@@ -185,9 +185,9 @@ public class WebService extends EPOSDataModelEntity {
         }
     }
 
-    public void addIdentifier(Identifier identifier) {
+    public void addIdentifier(LinkedEntity identifier) {
         if (this.getIdentifier() == null) {
-            ArrayList<Identifier> identifierList = new ArrayList<>();
+            ArrayList<LinkedEntity> identifierList = new ArrayList<>();
             identifierList.add(identifier);
             this.setIdentifier(identifierList);
         } else {
@@ -209,12 +209,12 @@ public class WebService extends EPOSDataModelEntity {
         this.schemaIdentifier = schemaIdentifier;
     }
 
-    public WebService identifier(List<Identifier> identifier) {
+    public WebService identifier(List<LinkedEntity> identifier) {
         this.identifier = identifier;
         return this;
     }
 
-    public WebService addIdentifierItem(Identifier identifierItem) {
+    public WebService addIdentifierItem(LinkedEntity identifierItem) {
         if (this.identifier == null) {
             this.identifier = new ArrayList<>();
         }
@@ -227,11 +227,11 @@ public class WebService extends EPOSDataModelEntity {
      *
      * @return identifier
      **/
-    public List<Identifier> getIdentifier() {
+    public List<LinkedEntity> getIdentifier() {
         return identifier;
     }
 
-    public void setIdentifier(List<Identifier> identifier) {
+    public void setIdentifier(List<LinkedEntity> identifier) {
         this.identifier = identifier;
     }
 
@@ -467,12 +467,12 @@ public class WebService extends EPOSDataModelEntity {
         this.provider = provider;
     }
 
-    public WebService spatialExtent(List<Location> spatialExtent) {
+    public WebService spatialExtent(List<LinkedEntity> spatialExtent) {
         this.spatialExtent = spatialExtent;
         return this;
     }
 
-    public WebService addSpatialExtentItem(Location spatialExtentItem) {
+    public WebService addSpatialExtentItem(LinkedEntity spatialExtentItem) {
         if (this.spatialExtent == null) {
             this.spatialExtent = new ArrayList<>();
         }
@@ -485,21 +485,21 @@ public class WebService extends EPOSDataModelEntity {
      *
      * @return spatialExtent
      **/
-    public List<Location> getSpatialExtent() {
+    public List<LinkedEntity> getSpatialExtent() {
         return spatialExtent;
     }
 
-    public void setSpatialExtent(ArrayList<Location> spatialExtent) {
+    public void setSpatialExtent(ArrayList<LinkedEntity> spatialExtent) {
         this.spatialExtent = spatialExtent;
     }
 
 
-    public WebService temporalExtent(List<PeriodOfTime> temporalExtent) {
+    public WebService temporalExtent(List<LinkedEntity> temporalExtent) {
         this.temporalExtent = temporalExtent;
         return this;
     }
 
-    public WebService addTemporalExtentItem(PeriodOfTime temporalExtentItem) {
+    public WebService addTemporalExtentItem(LinkedEntity temporalExtentItem) {
         if (this.temporalExtent == null) {
             this.temporalExtent = new ArrayList<>();
         }
@@ -512,11 +512,11 @@ public class WebService extends EPOSDataModelEntity {
      *
      * @return temporalExtent
      **/
-    public List<PeriodOfTime> getTemporalExtent() {
+    public List<LinkedEntity> getTemporalExtent() {
         return temporalExtent;
     }
 
-    public void setTemporalExtent(List<PeriodOfTime> temporalExtent) {
+    public void setTemporalExtent(List<LinkedEntity> temporalExtent) {
         this.temporalExtent = temporalExtent;
     }
 

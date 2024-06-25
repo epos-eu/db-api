@@ -72,6 +72,8 @@ public class DocumentationAPI extends AbstractAPI<org.epos.eposdatamodel.Documen
         o.setDescription(doc.has("Description")? doc.get("Description").getAsString() : null);
         o.setUri(doc.has("Uri")? doc.get("Uri").getAsString() : null);
 
+        o = (org.epos.eposdatamodel.Documentation) VersioningStatusAPI.retrieveVersion(o);
+
         return o;
     }
 

@@ -67,6 +67,8 @@ public class ParameterAPI extends AbstractAPI<org.epos.eposdatamodel.Parameter> 
         o.setConformsTo(edmobj.getConformsto());
         o.setAction(Parameter.ActionEnum.fromValue(edmobj.getAction()));
 
+        o = (org.epos.eposdatamodel.Parameter) VersioningStatusAPI.retrieveVersion(o);
+
         return o;
     }
 

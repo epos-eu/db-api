@@ -59,9 +59,9 @@ public class DataProduct extends EPOSDataModelEntity {
     private List<LinkedEntity> hasPart;
 
     /**
-     * This property refers to a secondary identifier of the Data Product, such as MAST/ADS, DataCite, DOI, EZID or W3ID.
+     * This property refers to a secondary identifier of the Data Product, such as MAST/ADS, DataCite, DOI, EZID or W3ID. Linked entity of type IDENTIFIER
      **/
-    private List<Identifier> identifier;
+    private List<LinkedEntity> identifier;
 
     /**
      * This property refers to a related Data Product in which the described Data Product is physically or logically included.
@@ -99,14 +99,14 @@ public class DataProduct extends EPOSDataModelEntity {
     private List<LinkedEntity> relation;
 
     /**
-     * This property refers to a geographic region that is covered by the Data Product.
+     * This property refers to a geographic region that is covered by the Data Product. Linked entity of type LOCATION
      **/
-    private List<Location> spatialExtent;
+    private List<LinkedEntity> spatialExtent;
 
     /**
-     * This property refers to a temporal period (i.e. startDate, endDate) that the Data Product covers.
+     * This property refers to a temporal period (i.e. startDate, endDate) that the Data Product covers. Linked entity of type PERIODOFTIME
      **/
-    private List<PeriodOfTime> temporalExtent;
+    private List<LinkedEntity> temporalExtent;
 
     /**
      * This property contains a name given to the Data Product. This property can be repeated for parallel language versions of the name.
@@ -138,9 +138,9 @@ public class DataProduct extends EPOSDataModelEntity {
      */
     private String hasQualityAnnotation;
 
-    public void addSpatialExtent(Location spatialExtent) {
+    public void addSpatialExtent(LinkedEntity spatialExtent) {
         if (this.getSpatialExtent() == null) {
-            ArrayList<Location> spatialExtentList = new ArrayList<>();
+            ArrayList<LinkedEntity> spatialExtentList = new ArrayList<>();
             spatialExtentList.add(spatialExtent);
             this.setSpatialExtent(spatialExtentList);
         } else {
@@ -168,9 +168,9 @@ public class DataProduct extends EPOSDataModelEntity {
         }
     }
 
-    public void addIdentifier(Identifier identifier) {
+    public void addIdentifier(LinkedEntity identifier) {
         if (this.getIdentifier() == null) {
-            ArrayList<Identifier> identifierList = new ArrayList<>();
+            ArrayList<LinkedEntity> identifierList = new ArrayList<>();
             identifierList.add(identifier);
             this.setIdentifier(identifierList);
         } else {
@@ -208,9 +208,9 @@ public class DataProduct extends EPOSDataModelEntity {
         }
     }
 
-    public void addTemporalExtent(PeriodOfTime temporalExtent) {
+    public void addTemporalExtent(LinkedEntity temporalExtent) {
         if (this.getTemporalExtent() == null) {
-            ArrayList<PeriodOfTime> temporalExtentList = new ArrayList<>();
+            ArrayList<LinkedEntity> temporalExtentList = new ArrayList<>();
             temporalExtentList.add(temporalExtent);
             this.setTemporalExtent(temporalExtentList);
         } else {
@@ -390,12 +390,12 @@ public class DataProduct extends EPOSDataModelEntity {
     }
 
 
-    public DataProduct identifier(List<Identifier> identifier) {
+    public DataProduct identifier(List<LinkedEntity> identifier) {
         this.identifier = identifier;
         return this;
     }
 
-    public DataProduct addIdentifierItem(Identifier identifierItem) {
+    public DataProduct addIdentifierItem(LinkedEntity identifierItem) {
         if (this.identifier == null) {
             this.identifier = new ArrayList<>();
         }
@@ -408,11 +408,11 @@ public class DataProduct extends EPOSDataModelEntity {
      *
      * @return identifier
      **/
-    public List<Identifier> getIdentifier() {
+    public List<LinkedEntity> getIdentifier() {
         return identifier;
     }
 
-    public void setIdentifier(List<Identifier> identifier) {
+    public void setIdentifier(List<LinkedEntity> identifier) {
         this.identifier = identifier;
     }
 
@@ -526,12 +526,12 @@ public class DataProduct extends EPOSDataModelEntity {
     }
 
 
-    public DataProduct spatialExtent(List<Location> spatialExtent) {
+    public DataProduct spatialExtent(List<LinkedEntity> spatialExtent) {
         this.spatialExtent = spatialExtent;
         return this;
     }
 
-    public DataProduct addSpatialExtentItem(Location spatialExtentItem) {
+    public DataProduct addSpatialExtentItem(LinkedEntity spatialExtentItem) {
         if (this.spatialExtent == null) {
             this.spatialExtent = new ArrayList<>();
         }
@@ -544,20 +544,20 @@ public class DataProduct extends EPOSDataModelEntity {
      *
      * @return spatialExtent
      **/
-    public List<Location> getSpatialExtent() {
+    public List<LinkedEntity> getSpatialExtent() {
         return spatialExtent;
     }
 
-    public void setSpatialExtent(ArrayList<Location> spatialExtent) {
+    public void setSpatialExtent(ArrayList<LinkedEntity> spatialExtent) {
         this.spatialExtent = spatialExtent;
     }
 
-    public DataProduct temporalExtent(List<PeriodOfTime> temporalExtent) {
+    public DataProduct temporalExtent(List<LinkedEntity> temporalExtent) {
         this.temporalExtent = temporalExtent;
         return this;
     }
 
-    public DataProduct addTemporalExtentItem(PeriodOfTime temporalExtentItem) {
+    public DataProduct addTemporalExtentItem(LinkedEntity temporalExtentItem) {
         if (this.temporalExtent == null) {
             this.temporalExtent = new ArrayList<>();
         }
@@ -570,11 +570,11 @@ public class DataProduct extends EPOSDataModelEntity {
      *
      * @return temporalExtent
      **/
-    public List<PeriodOfTime> getTemporalExtent() {
+    public List<LinkedEntity> getTemporalExtent() {
         return temporalExtent;
     }
 
-    public void setTemporalExtent(List<PeriodOfTime> temporalExtent) {
+    public void setTemporalExtent(List<LinkedEntity> temporalExtent) {
         this.temporalExtent = temporalExtent;
     }
 

@@ -108,11 +108,11 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
             }
             SpatialAPI spatialAPI = new SpatialAPI(EntityNames.LOCATION.name(), Spatial.class);
             edmobj.setWebserviceSpatialsByInstanceId(new ArrayList<>());
-            for(org.epos.eposdatamodel.Location location : obj.getSpatialExtent()){
+            for(org.epos.eposdatamodel.LinkedEntity location : obj.getSpatialExtent()){
                 List<Spatial> list = dbaccess.getOneFromDBByInstanceId(location.getInstanceId(),Spatial.class);
                 Spatial spatial = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = spatialAPI.create(location);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(location);
                     spatial = (Spatial) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Spatial.class).get(0);
                 } else {
                     spatial = list.get(0);
@@ -139,11 +139,11 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
             }
             TemporalAPI temporalAPI = new TemporalAPI(EntityNames.PERIODOFTIME.name(), Temporal.class);
             edmobj.setWebserviceTemporalsByInstanceId(new ArrayList<>());
-            for(org.epos.eposdatamodel.PeriodOfTime periodOfTime : obj.getTemporalExtent()){
+            for(org.epos.eposdatamodel.LinkedEntity periodOfTime : obj.getTemporalExtent()){
                 List<Temporal> list = dbaccess.getOneFromDBByInstanceId(periodOfTime.getInstanceId(),Temporal.class);
                 Temporal temporal = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = temporalAPI.create(periodOfTime);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(periodOfTime);
                     temporal = (Temporal) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Temporal.class).get(0);
                 } else {
                     temporal = list.get(0);
@@ -288,17 +288,17 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
         }
 
         if(edmobj.getWebserviceSpatialsByInstanceId().size()>0) {
+            SpatialAPI api = new SpatialAPI(EntityNames.LOCATION.name(), Spatial.class);
             for(WebserviceSpatial ed : edmobj.getWebserviceSpatialsByInstanceId()) {
-                SpatialAPI api = new SpatialAPI(EntityNames.LOCATION.name(), Spatial.class);
-                org.epos.eposdatamodel.Location cp = api.retrieve(ed.getSpatialInstanceId());
+                org.epos.eposdatamodel.LinkedEntity cp = api.retrieveLinkedEntity(ed.getSpatialInstanceId());
                 o.addSpatialExtentItem(cp);
             }
         }
 
         if(edmobj.getWebserviceTemporalsByInstanceId().size()>0) {
+            TemporalAPI api = new TemporalAPI(EntityNames.PERIODOFTIME.name(), Temporal.class);
             for(WebserviceTemporal ed : edmobj.getWebserviceTemporalsByInstanceId()) {
-                TemporalAPI api = new TemporalAPI(EntityNames.PERIODOFTIME.name(), Temporal.class);
-                org.epos.eposdatamodel.PeriodOfTime cp = api.retrieve(ed.getTemporalInstanceId());
+                org.epos.eposdatamodel.LinkedEntity cp = api.retrieveLinkedEntity(ed.getTemporalInstanceId());
                 o.addTemporalExtent(cp);
             }
         }
@@ -311,6 +311,8 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
             }
         }
         /** TODO: RELATION **/
+
+        o = (org.epos.eposdatamodel.WebService) VersioningStatusAPI.retrieveVersion(o);
 
         return o;
     }

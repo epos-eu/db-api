@@ -32,7 +32,7 @@ public class SoftwareApplication extends Software {
     /**
      * This property contains an identifier for the Software Application.
      **/
-    private List<Identifier> identifier = new ArrayList<>();
+    private List<LinkedEntity> identifier = new ArrayList<>();
 
     /**
      * This property contains the URL at which the application may be installed.
@@ -62,7 +62,7 @@ public class SoftwareApplication extends Software {
     /**
      * This property represents an input or output parameters of the Software Application.
      **/
-    private List<Parameter> parameter;
+    private List<LinkedEntity> parameter;
 
     /**
      * It represents the link to another Epos resource. e.g. Software, WebService,
@@ -100,9 +100,9 @@ public class SoftwareApplication extends Software {
         }
     }
 
-    public void addIdentifier(Identifier identifier) {
+    public void addIdentifier(LinkedEntity identifier) {
         if (this.getIdentifier() == null) {
-            ArrayList<Identifier> identifierList = new ArrayList<>();
+            ArrayList<LinkedEntity> identifierList = new ArrayList<>();
             identifierList.add(identifier);
             this.setIdentifier(identifierList);
         } else {
@@ -120,9 +120,9 @@ public class SoftwareApplication extends Software {
         }
     }
 
-    public void addParameter(Parameter parameter) {
+    public void addParameter(LinkedEntity parameter) {
         if (this.getParameter() == null) {
-            ArrayList<Parameter> parameterList = new ArrayList<>();
+            ArrayList<LinkedEntity> parameterList = new ArrayList<>();
             parameterList.add(parameter);
             this.setParameter(parameterList);
         } else {
@@ -196,12 +196,12 @@ public class SoftwareApplication extends Software {
         this.downloadURL = downloadURL;
     }
 
-    public SoftwareApplication identifier(List<Identifier> identifier) {
+    public SoftwareApplication identifier(List<LinkedEntity> identifier) {
         this.identifier = identifier;
         return this;
     }
 
-    public SoftwareApplication addIdentifierItem(Identifier identifierItem) {
+    public SoftwareApplication addIdentifierItem(LinkedEntity identifierItem) {
         this.identifier.add(identifierItem);
         return this;
     }
@@ -212,11 +212,11 @@ public class SoftwareApplication extends Software {
      * @return identifier
      **/
 
-    public List<Identifier> getIdentifier() {
+    public List<LinkedEntity> getIdentifier() {
         return identifier;
     }
 
-    public void setIdentifier(List<Identifier> identifier) {
+    public void setIdentifier(List<LinkedEntity> identifier) {
         this.identifier = identifier;
     }
 
@@ -320,12 +320,12 @@ public class SoftwareApplication extends Software {
         this.name = name;
     }
 
-    public SoftwareApplication parameter(ArrayList<Parameter> parameter) {
+    public SoftwareApplication parameter(ArrayList<LinkedEntity> parameter) {
         this.parameter = parameter;
         return this;
     }
 
-    public SoftwareApplication addParameterItem(Parameter parameterItem) {
+    public SoftwareApplication addParameterItem(LinkedEntity parameterItem) {
         if (this.parameter == null) {
             this.parameter = new ArrayList<>();
         }
@@ -339,11 +339,11 @@ public class SoftwareApplication extends Software {
      * @return parameter
      **/
 
-    public List<Parameter> getParameter() {
+    public List<LinkedEntity> getParameter() {
         return parameter;
     }
 
-    public void setParameter(ArrayList<Parameter> parameter) {
+    public void setParameter(ArrayList<LinkedEntity> parameter) {
         this.parameter = parameter;
     }
 

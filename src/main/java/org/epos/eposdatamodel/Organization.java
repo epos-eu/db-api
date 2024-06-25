@@ -25,9 +25,9 @@ public class Organization extends EPOSDataModelEntity {
     private List<String> email;
 
     /**
-     * This property contains an identifier for the Organization (e.g., PIC, ISNI, etc.).
+     * This property contains an identifier for the Organization (e.g., PIC, ISNI, etc.). LinkedEntity of type IDENTIFIER
      **/
-    private List<Identifier> identifier = new ArrayList<>();
+    private List<LinkedEntity> identifier = new ArrayList<>();
 
     /**
      * This property contains the Organization acronym (e.g., INGV).
@@ -35,9 +35,9 @@ public class Organization extends EPOSDataModelEntity {
     private String acronym;
 
     /**
-     * This property contains the official name of the Organization.
+     * This property contains the official name of the Organization. LinkedEntity of type LEGALNAME
      **/
-    private List<LegalName> legalName;
+    private List<LinkedEntity> legalName;
 
     /**
      * This property contains the Organization identifier that uniquely identifies a legal entity as defined in ISO 17442.
@@ -85,9 +85,9 @@ public class Organization extends EPOSDataModelEntity {
     private String maturity;
 
 
-    public void addIdentifier(Identifier identifier) {
+    public void addIdentifier(LinkedEntity identifier) {
         if (this.getIdentifier() == null) {
-            ArrayList<Identifier> identifierList = new ArrayList<>();
+            ArrayList<LinkedEntity> identifierList = new ArrayList<>();
             identifierList.add(identifier);
             this.setIdentifier(identifierList);
         } else {
@@ -115,9 +115,9 @@ public class Organization extends EPOSDataModelEntity {
         }
     }
 
-    public void addLegalName(LegalName legalName) {
+    public void addLegalName(LinkedEntity legalName) {
         if (this.getLegalName() == null) {
-            ArrayList<LegalName> legalNameList = new ArrayList<>();
+            ArrayList<LinkedEntity> legalNameList = new ArrayList<>();
             legalNameList.add(legalName);
             this.setLegalName(legalNameList);
         } else {
@@ -193,12 +193,12 @@ public class Organization extends EPOSDataModelEntity {
         this.email = email;
     }
 
-    public Organization identifier(List<Identifier> identifier) {
+    public Organization identifier(List<LinkedEntity> identifier) {
         this.identifier = identifier;
         return this;
     }
 
-    public Organization addIdentifierItem(Identifier identifierItem) {
+    public Organization addIdentifierItem(LinkedEntity identifierItem) {
         this.identifier.add(identifierItem);
         return this;
     }
@@ -208,15 +208,15 @@ public class Organization extends EPOSDataModelEntity {
      *
      * @return identifier
      **/
-    public List<Identifier> getIdentifier() {
+    public List<LinkedEntity> getIdentifier() {
         return identifier;
     }
 
-    public void setIdentifier(List<Identifier> identifier) {
+    public void setIdentifier(List<LinkedEntity> identifier) {
         this.identifier = identifier;
     }
 
-    public Organization legalName(List<LegalName> legalName) {
+    public Organization legalName(List<LinkedEntity> legalName) {
         this.legalName = legalName;
         return this;
     }
@@ -227,11 +227,11 @@ public class Organization extends EPOSDataModelEntity {
      * @return legalName
      **/
 
-    public List<LegalName> getLegalName() {
+    public List<LinkedEntity> getLegalName() {
         return legalName;
     }
 
-    public void setLegalName(List<LegalName> legalName) {
+    public void setLegalName(List<LinkedEntity> legalName) {
         this.legalName = legalName;
     }
 

@@ -50,8 +50,9 @@ public abstract class AbstractAPI<T> {
 
     public abstract LinkedEntity retrieveLinkedEntity(String instanceId);
 
-    public static AbstractAPI retrieveAPI(String entityType, Class<?> edmClass){
+    private static AbstractAPI retrieveAPI(String entityType){
         AbstractAPI api = null;
+        Class<?> edmClass = null;
 
         switch(EntityNames.valueOf(entityType)){
             case PERSON:
@@ -138,10 +139,99 @@ public abstract class AbstractAPI<T> {
                 edmClass = Element.class;
                 api = new DocumentationAPI(entityType, edmClass);
                 break;
+            case PARAMETER:
+                edmClass = SoftwareapplicationParameters.class;
+                api = new ParameterAPI(entityType, edmClass);
+                break;
+            case LEGALNAME:
+                edmClass = OrganizationLegalname.class;
+                api = new LegalNameAPI(entityType, edmClass);
+            case RELATION:
+                System.out.println("Relation empty case");
+                break;
         }
         return api;
     }
 
+    private static Class retrieveClass(String entityType){
+
+        Class<?> edmClass = null;
+
+        switch(EntityNames.valueOf(entityType)){
+            case PERSON:
+                edmClass = Person.class;
+                break;
+            case MAPPING:
+                edmClass = Mapping.class;
+                break;
+            case CATEGORY:
+                edmClass = Category.class;
+                break;
+            case FACILITY:
+                edmClass = Facility.class;
+                break;
+            case EQUIPMENT:
+                edmClass = Equipment.class;
+                break;
+            case OPERATION:
+                edmClass = Operation.class;
+                break;
+            case WEBSERVICE:
+                edmClass = Webservice.class;
+                break;
+            case DATAPRODUCT:
+                edmClass = Dataproduct.class;
+                break;
+            case CONTACTPOINT:
+                edmClass = Contactpoint.class;
+                break;
+            case DISTRIBUTION:
+                edmClass = Distribution.class;
+                break;
+            case ORGANIZATION:
+                edmClass = Organization.class;
+                break;
+            case CATEGORYSCHEME:
+                edmClass = CategoryScheme.class;
+                break;
+            case SOFTWARESOURCECODE:
+                edmClass = SoftwareSourceCode.class;
+                break;
+            case SOFTWAREAPPLICATION:
+                edmClass = SoftwareApplication.class;
+                break;
+            case ADDRESS:
+                edmClass = Address.class;
+                break;
+            case ELEMENT:
+                edmClass = Element.class;
+                break;
+            case LOCATION:
+                edmClass = Spatial.class;
+                break;
+            case PERIODOFTIME:
+                edmClass = Temporal.class;
+                break;
+            case IDENTIFIER:
+                edmClass = Identifier.class;
+                break;
+            case QUANTITATIVEVALUE:
+                edmClass = QuantitativeValue.class;
+                break;
+            case DOCUMENTATION:
+                edmClass = Element.class;
+                break;
+            case PARAMETER:
+                edmClass = SoftwareapplicationParameters.class;
+                break;
+            case LEGALNAME:
+                edmClass = OrganizationLegalname.class;
+            case RELATION:
+                System.out.println("Relation empty case");
+                break;
+        }
+        return edmClass;
+    }
 
 
 }

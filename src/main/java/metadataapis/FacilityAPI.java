@@ -132,11 +132,11 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
             }
             SpatialAPI spatialAPI = new SpatialAPI(EntityNames.LOCATION.name(), Spatial.class);
             edmobj.setFacilitySpatialsByInstanceId(new ArrayList<>());
-            for(org.epos.eposdatamodel.Location location : obj.getSpatialExtent()){
+            for(org.epos.eposdatamodel.LinkedEntity location : obj.getSpatialExtent()){
                 List<Spatial> list = dbaccess.getOneFromDBByInstanceId(location.getInstanceId(),Spatial.class);
                 Spatial spatial = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = spatialAPI.create(location);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(location);
                     spatial = (Spatial) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Spatial.class).get(0);
                 } else {
                     spatial = list.get(0);
@@ -245,7 +245,7 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
         if(edmobj.getFacilitySpatialsByInstanceId().size()>0) {
             for(FacilitySpatial ed : edmobj.getFacilitySpatialsByInstanceId()) {
                 SpatialAPI api = new SpatialAPI(EntityNames.LOCATION.name(), Spatial.class);
-                org.epos.eposdatamodel.Location cp = api.retrieve(ed.getSpatialInstanceId());
+                org.epos.eposdatamodel.LinkedEntity cp = api.retrieveLinkedEntity(ed.getSpatialInstanceId());
                 o.addSpatialExtentItem(cp);
             }
         }
@@ -256,6 +256,8 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
                 if(el.getType().equals(ElementType.PAGEURL)) o.addPageURL(el.getValue());
             }
         }
+
+        o = (org.epos.eposdatamodel.Facility) VersioningStatusAPI.retrieveVersion(o);
 
         return o;
     }

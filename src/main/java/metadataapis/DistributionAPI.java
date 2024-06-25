@@ -230,6 +230,8 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
             }
         }
 
+        o = (org.epos.eposdatamodel.Distribution) VersioningStatusAPI.retrieveVersion(o);
+
         return o;
     }
 

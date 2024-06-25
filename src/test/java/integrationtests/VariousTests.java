@@ -5,11 +5,18 @@ import commonapis.AddressAPI;
 import commonapis.DocumentationAPI;
 import commonapis.QuantitativeValueAPI;
 import metadataapis.*;
-import model.Dataproduct;
-import model.ElementType;
-import model.StatusType;
+import model.*;
 import org.eclipse.persistence.internal.jpa.rs.metadata.model.Link;
 import org.epos.eposdatamodel.*;
+import org.epos.eposdatamodel.Address;
+import org.epos.eposdatamodel.Category;
+import org.epos.eposdatamodel.Identifier;
+import org.epos.eposdatamodel.Operation;
+import org.epos.eposdatamodel.Person;
+import org.epos.eposdatamodel.QuantitativeValue;
+import org.epos.eposdatamodel.SoftwareApplication;
+import org.epos.eposdatamodel.SoftwareSourceCode;
+import org.epos.eposdatamodel.User;
 import usermanagementapis.UserGroupManagementAPI;
 
 import java.io.IOException;
@@ -18,6 +25,13 @@ import java.util.List;
 import java.util.Map;
 
 public class VariousTests {
+
+
+    public static void checkGroups(){
+
+        //System.out.println(UserGroupManagementAPI.addUserToGroup("07b998a8-7598-47e4-ae94-b4d21d9591d5", "admin", RoleType.ADMIN, RequestStatusType.PENDING));
+        System.out.println(UserGroupManagementAPI.retrieveUserById("admin"));
+    }
 
     public static void checkUsers(){
         User user = new User();
@@ -184,6 +198,7 @@ public class VariousTests {
         //datasetTest();
         //quantitativeValue();
         //checkProblems();
-        checkUsers();
+        //checkUsers();
+        checkGroups();
     }
 }

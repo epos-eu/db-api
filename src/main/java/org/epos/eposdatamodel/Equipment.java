@@ -85,14 +85,14 @@ public class Equipment extends EPOSDataModelEntity {
 	private String serialNumber;
 
 	/**
-	 * This property refers to a geographical location of the Equipment.
+	 * This property refers to a geographical location of the Equipment. LinkedEntity of type LOCATION
 	 **/
-	private List<Location> spatialExtent;
+	private List<LinkedEntity> spatialExtent;
 
 	/**
-	 * This property refers to a temporal period (i.e. startDate, endDate) that the Equipment covers.
+	 * This property refers to a temporal period (i.e. startDate, endDate) that the Equipment covers. LinkedEntity of type PERIODOFTIME
 	 **/
-	private List<PeriodOfTime> temporalExtent;
+	private List<LinkedEntity> temporalExtent;
 
 	private String keywords;
 
@@ -122,9 +122,9 @@ public class Equipment extends EPOSDataModelEntity {
 		}
 	}
 
-	public void addSpatialExtent(Location spatialExtent) {
+	public void addSpatialExtent(LinkedEntity spatialExtent) {
 		if (this.getSpatialExtent() == null) {
-			ArrayList<Location> spatialExtentList = new ArrayList<>();
+			ArrayList<LinkedEntity> spatialExtentList = new ArrayList<>();
 			spatialExtentList.add(spatialExtent);
 			this.setSpatialExtent(spatialExtentList);
 		} else {
@@ -132,9 +132,9 @@ public class Equipment extends EPOSDataModelEntity {
 		}
 	}
 
-	public void addTemporalExtent(PeriodOfTime temporalExtent) {
+	public void addTemporalExtent(LinkedEntity temporalExtent) {
 		if (this.getTemporalExtent() == null) {
-			ArrayList<PeriodOfTime> temporalExtentList = new ArrayList<>();
+			ArrayList<LinkedEntity> temporalExtentList = new ArrayList<>();
 			temporalExtentList.add(temporalExtent);
 			this.setTemporalExtent(temporalExtentList);
 		} else {
@@ -372,12 +372,12 @@ public class Equipment extends EPOSDataModelEntity {
 		this.serialNumber = serialNumber;
 	}
 
-	public Equipment spatialExtent(List<Location> spatialExtent) {
+	public Equipment spatialExtent(List<LinkedEntity> spatialExtent) {
 		this.spatialExtent = spatialExtent;
 		return this;
 	}
 
-	public Equipment addSpatialExtentItem(Location spatialExtentItem) {
+	public Equipment addSpatialExtentItem(LinkedEntity spatialExtentItem) {
 		if (this.spatialExtent == null) {
 			this.spatialExtent = new ArrayList<>();
 		}
@@ -390,20 +390,20 @@ public class Equipment extends EPOSDataModelEntity {
 	 *
 	 * @return spatialExtent
 	 **/
-	public List<Location> getSpatialExtent() {
+	public List<LinkedEntity> getSpatialExtent() {
 		return spatialExtent;
 	}
 
-	public void setSpatialExtent(ArrayList<Location> spatialExtent) {
+	public void setSpatialExtent(ArrayList<LinkedEntity> spatialExtent) {
 		this.spatialExtent = spatialExtent;
 	}
 
-	public Equipment temporalExtent(List<PeriodOfTime> temporalExtent) {
+	public Equipment temporalExtent(List<LinkedEntity> temporalExtent) {
 		this.temporalExtent = temporalExtent;
 		return this;
 	}
 
-	public Equipment addTemporalExtentItem(PeriodOfTime temporalExtentItem) {
+	public Equipment addTemporalExtentItem(LinkedEntity temporalExtentItem) {
 		if (this.temporalExtent == null) {
 			this.temporalExtent = new ArrayList<>();
 		}
@@ -416,11 +416,11 @@ public class Equipment extends EPOSDataModelEntity {
 	 *
 	 * @return temporalExtent
 	 **/
-	public List<PeriodOfTime> getTemporalExtent() {
+	public List<LinkedEntity> getTemporalExtent() {
 		return temporalExtent;
 	}
 
-	public void setTemporalExtent(List<PeriodOfTime> temporalExtent) {
+	public void setTemporalExtent(List<LinkedEntity> temporalExtent) {
 		this.temporalExtent = temporalExtent;
 	}
 

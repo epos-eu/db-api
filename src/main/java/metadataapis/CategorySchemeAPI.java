@@ -77,6 +77,8 @@ public class CategorySchemeAPI extends AbstractAPI<org.epos.eposdatamodel.Catego
         o.setColor(edmobj.getColor());
         o.setOrderitemnumber(edmobj.getOrderitemnumber());
 
+        o = (org.epos.eposdatamodel.CategoryScheme) VersioningStatusAPI.retrieveVersion(o);
+
         return o;
     }
 

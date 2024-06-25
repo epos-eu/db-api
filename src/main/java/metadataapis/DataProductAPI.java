@@ -189,10 +189,9 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
                     getDbaccess().deleteObject(item);
                 }
             }
-            IdentifierAPI identifierAPI = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
             edmobj.setDataproductIdentifiersByInstanceId(new ArrayList<>());
-            for(org.epos.eposdatamodel.Identifier identifier : obj.getIdentifier()){
-                LinkedEntity le = identifierAPI.create(identifier);
+            for(org.epos.eposdatamodel.LinkedEntity identifier : obj.getIdentifier()){
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(identifier);
                 DataproductIdentifier pi = new DataproductIdentifier();
                 pi.setDataproductByDataproductInstanceId(edmobj);
                 pi.setDataproductInstanceId(edmobj.getInstanceId());
@@ -266,11 +265,11 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
             }
             SpatialAPI spatialAPI = new SpatialAPI(EntityNames.LOCATION.name(), Spatial.class);
             edmobj.setDataproductSpatialsByInstanceId(new ArrayList<>());
-            for(org.epos.eposdatamodel.Location location : obj.getSpatialExtent()){
+            for(org.epos.eposdatamodel.LinkedEntity location : obj.getSpatialExtent()){
                 List<Spatial> list = dbaccess.getOneFromDBByInstanceId(location.getInstanceId(),Spatial.class);
                 Spatial spatial = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = spatialAPI.create(location);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(location);
                     spatial = (Spatial) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Spatial.class).get(0);
                 } else {
                     spatial = list.get(0);
@@ -294,11 +293,11 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
             }
             TemporalAPI temporalAPI = new TemporalAPI(EntityNames.PERIODOFTIME.name(), Temporal.class);
             edmobj.setDataproductTemporalsByInstanceId(new ArrayList<>());
-            for(org.epos.eposdatamodel.PeriodOfTime periodOfTime : obj.getTemporalExtent()){
+            for(org.epos.eposdatamodel.LinkedEntity periodOfTime : obj.getTemporalExtent()){
                 List<Temporal> list = dbaccess.getOneFromDBByInstanceId(periodOfTime.getInstanceId(),Temporal.class);
                 Temporal temporal = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = temporalAPI.create(periodOfTime);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(periodOfTime);
                     temporal = (Temporal) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Temporal.class).get(0);
                 } else {
                     temporal = list.get(0);
@@ -378,7 +377,7 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
         if(edmobj.getDataproductIdentifiersByInstanceId().size()>0) {
             for(DataproductIdentifier ed : edmobj.getDataproductIdentifiersByInstanceId()) {
                 IdentifierAPI api = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
-                org.epos.eposdatamodel.Identifier cp = api.retrieve(ed.getIdentifierInstanceId());
+                org.epos.eposdatamodel.LinkedEntity cp = api.retrieveLinkedEntity(ed.getIdentifierInstanceId());
                 o.addIdentifier(cp);
             }
         }
@@ -414,7 +413,7 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
         if(edmobj.getDataproductSpatialsByInstanceId().size()>0) {
             for(DataproductSpatial ed : edmobj.getDataproductSpatialsByInstanceId()) {
                 SpatialAPI api = new SpatialAPI(EntityNames.LOCATION.name(), Spatial.class);
-                org.epos.eposdatamodel.Location cp = api.retrieve(ed.getSpatialInstanceId());
+                org.epos.eposdatamodel.LinkedEntity cp = api.retrieveLinkedEntity(ed.getSpatialInstanceId());
                 o.addSpatialExtentItem(cp);
             }
         }
@@ -422,11 +421,12 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
         if(edmobj.getDataproductTemporalsByInstanceId().size()>0) {
             for(DataproductTemporal ed : edmobj.getDataproductTemporalsByInstanceId()) {
                 TemporalAPI api = new TemporalAPI(EntityNames.PERIODOFTIME.name(), Temporal.class);
-                org.epos.eposdatamodel.PeriodOfTime cp = api.retrieve(ed.getTemporalInstanceId());
+                org.epos.eposdatamodel.LinkedEntity cp = api.retrieveLinkedEntity(ed.getTemporalInstanceId());
                 o.addTemporalExtent(cp);
             }
         }
 
+        o = (org.epos.eposdatamodel.DataProduct) VersioningStatusAPI.retrieveVersion(o);
 
         return o;
     }

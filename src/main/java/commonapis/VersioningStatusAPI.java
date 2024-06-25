@@ -108,4 +108,31 @@ public class VersioningStatusAPI {
         return obj;
     }
 
+    public static EPOSDataModelEntity retrieveVersion(EPOSDataModelEntity obj) {
+
+        List<Versioningstatus> returnList = getDbaccess().getOneFromDB(
+                Optional.ofNullable(obj.getInstanceId()).orElse(null),
+                Optional.ofNullable(obj.getMetaId()).orElse(null),
+                Optional.ofNullable(obj.getUid()).orElse(null),
+                Optional.ofNullable(obj.getVersionId()).orElse(null),
+                Versioningstatus.class
+        );
+
+        if(returnList.isEmpty()) return null;
+
+        Versioningstatus vs = returnList.get(0);
+
+        obj.setChangeComment(vs.getChangeComment());
+        obj.setChangeTimestamp(vs.getChangeTimestamp().toLocalDateTime());
+        obj.setChangeComment(Optional.ofNullable(vs.getChangeComment()).orElse(null));
+        obj.setEditorId(Optional.ofNullable(vs.getEditorId()).orElse(null));
+        obj.setFileProvenance(Optional.ofNullable(vs.getProvenance()).orElse(null));
+        obj.setVersion(Optional.ofNullable(vs.getVersion()).orElse(null));
+        obj.setStatus(vs.getStatus());
+
+        getDbaccess().updateObject(vs);
+
+        return obj;
+    }
+
 }

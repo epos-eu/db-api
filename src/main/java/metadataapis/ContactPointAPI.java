@@ -123,6 +123,8 @@ public class ContactPointAPI extends AbstractAPI<ContactPoint> {
             }
         }
 
+        o = (org.epos.eposdatamodel.ContactPoint) VersioningStatusAPI.retrieveVersion(o);
+
         return o;
     }
 

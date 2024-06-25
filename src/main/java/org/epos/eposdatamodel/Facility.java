@@ -55,7 +55,7 @@ public class Facility extends EPOSDataModelEntity {
 	/**
 	 * This property refers to a geographical location of the Facility.
 	 **/
-	private List<Location> spatialExtent;
+	private List<LinkedEntity> spatialExtent;
 
 	/**
 	 * This property contains a name given to the Facility.
@@ -267,12 +267,12 @@ public class Facility extends EPOSDataModelEntity {
 	}
 
 
-	public Facility spatialExtent(List<Location> spatialExtent) {
+	public Facility spatialExtent(List<LinkedEntity> spatialExtent) {
 		this.spatialExtent = spatialExtent;
 		return this;
 	}
 
-	public Facility addSpatialExtentItem(Location spatialExtentItem) {
+	public Facility addSpatialExtentItem(LinkedEntity spatialExtentItem) {
 		if (this.spatialExtent == null) {
 			this.spatialExtent = new ArrayList<>();
 		}
@@ -285,11 +285,11 @@ public class Facility extends EPOSDataModelEntity {
 	 *
 	 * @return spatialExtent
 	 **/
-	public List<Location> getSpatialExtent() {
+	public List<LinkedEntity> getSpatialExtent() {
 		return spatialExtent;
 	}
 
-	public void setSpatialExtent(ArrayList<Location> spatialExtent) {
+	public void setSpatialExtent(ArrayList<LinkedEntity> spatialExtent) {
 		this.spatialExtent = spatialExtent;
 	}
 

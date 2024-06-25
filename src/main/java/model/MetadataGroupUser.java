@@ -14,9 +14,11 @@ public class MetadataGroupUser {
     private String groupId;
     @Basic
     @Column(name = "request_status", nullable = true, length = 100)
+    @Enumerated(EnumType.STRING)
     private RequestStatusType requestStatus;
     @Basic
     @Column(name = "role", nullable = true, length = 100)
+    @Enumerated(EnumType.STRING)
     private RoleType role;
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "auth_identifier", referencedColumnName = "auth_identifier")

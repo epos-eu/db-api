@@ -64,6 +64,8 @@ public class ElementAPI extends AbstractAPI<org.epos.eposdatamodel.Element> {
         o.setType(edmobj.getType());
         o.setValue(edmobj.getValue());
 
+        o = (org.epos.eposdatamodel.Element) VersioningStatusAPI.retrieveVersion(o);
+
         return o;
     }
 

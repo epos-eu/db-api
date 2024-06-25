@@ -73,10 +73,9 @@ public class SoftwareSourceCodeAPI extends AbstractAPI<org.epos.eposdatamodel.So
                     getDbaccess().deleteObject(item);
                 }
             }
-            IdentifierAPI identifierAPI = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
             edmobj.setSoftwaresourcecodeIdentifiersByInstanceId(new ArrayList<>());
-            for(org.epos.eposdatamodel.Identifier identifier : obj.getIdentifier()){
-                LinkedEntity le = identifierAPI.create(identifier);
+            for(org.epos.eposdatamodel.LinkedEntity identifier : obj.getIdentifier()){
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(identifier);
                 SoftwaresourcecodeIdentifier pi = new SoftwaresourcecodeIdentifier();
                 pi.setSoftwaresourcecodeBySoftwaresourcecodeInstanceId(edmobj);
                 pi.setSoftwaresourcecodeInstanceId(edmobj.getInstanceId());
@@ -145,25 +144,25 @@ public class SoftwareSourceCodeAPI extends AbstractAPI<org.epos.eposdatamodel.So
 
 
         if(edmobj.getSoftwaresourcecodeCategoriesByInstanceId().size()>0) {
+            CategoryAPI api = new CategoryAPI(EntityNames.CATEGORY.name(), Category.class);
             for(SoftwaresourcecodeCategory ed : edmobj.getSoftwaresourcecodeCategoriesByInstanceId()) {
-                CategoryAPI api = new CategoryAPI(EntityNames.CATEGORY.name(), Category.class);
                 LinkedEntity cp = api.retrieveLinkedEntity(ed.getCategoryInstanceId());
                 o.addCategory(cp);
             }
         }
 
         if(edmobj.getSoftwaresourcecodeContactpointsByInstanceId().size()>0) {
+            ContactPointAPI api = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), Contactpoint.class);
             for(SoftwaresourcecodeContactpoint ed : edmobj.getSoftwaresourcecodeContactpointsByInstanceId()) {
-                ContactPointAPI api = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), Contactpoint.class);
                 LinkedEntity cp = api.retrieveLinkedEntity(ed.getContactpointInstanceId());
                 o.addContactPoint(cp);
             }
         }
 
         if(edmobj.getSoftwaresourcecodeIdentifiersByInstanceId().size()>0) {
+            IdentifierAPI api = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
             for(SoftwaresourcecodeIdentifier ed : edmobj.getSoftwaresourcecodeIdentifiersByInstanceId()) {
-                IdentifierAPI api = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
-                org.epos.eposdatamodel.Identifier cp = api.retrieve(ed.getIdentifierInstanceId());
+                org.epos.eposdatamodel.LinkedEntity cp = api.retrieveLinkedEntity(ed.getIdentifierInstanceId());
                 o.addIdentifier(cp);
             }
         }
@@ -175,6 +174,9 @@ public class SoftwareSourceCodeAPI extends AbstractAPI<org.epos.eposdatamodel.So
                 }
             }
         }
+
+        o = (org.epos.eposdatamodel.SoftwareSourceCode) VersioningStatusAPI.retrieveVersion(o);
+
         return o;
     }
 

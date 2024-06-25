@@ -7,7 +7,9 @@ import jakarta.persistence.OneToMany;
 import model.AuthorizationGroup;
 import model.MetadataGroupUser;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 public class Group {
@@ -16,12 +18,19 @@ public class Group {
     private String name;
     private String description;
 
+    private List<String> users;
+
+    private List<String> entities;
+
+
     public Group(){}
 
     public Group(String id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.users = new ArrayList<>();
+        this.entities = new ArrayList<>();
     }
 
     public String getId() {
@@ -48,17 +57,33 @@ public class Group {
         this.description = description;
     }
 
+    public List<String> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<String> users) {
+        this.users = users;
+    }
+
+    public List<String> getEntities() {
+        return entities;
+    }
+
+    public void setEntities(List<String> entities) {
+        this.entities = entities;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Group group = (Group) o;
-        return Objects.equals(id, group.id) && Objects.equals(name, group.name) && Objects.equals(description, group.description);
+        return Objects.equals(id, group.id) && Objects.equals(name, group.name) && Objects.equals(description, group.description) && Objects.equals(users, group.users) && Objects.equals(entities, group.entities);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description);
+        return Objects.hash(id, name, description, users, entities);
     }
 
     @Override
@@ -67,6 +92,8 @@ public class Group {
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", users=" + users +
+                ", entities=" + entities +
                 '}';
     }
 }

@@ -55,8 +55,7 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
                     getDbaccess().deleteObject(item);
                 }
             }
-            AddressAPI addressAPI = new AddressAPI(EntityNames.ADDRESS.name(), Address.class);
-            LinkedEntity le = addressAPI.create(obj.getAddress());
+            LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(obj.getAddress());
             addressList = getDbaccess().getOneFromDBByInstanceId(le.getInstanceId(),Address.class);
             edmobj.setAddressId(addressList.get(0).getInstanceId());
             edmobj.setAddressByAddressId(addressList.get(0));
@@ -74,8 +73,8 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
             }
             IdentifierAPI identifierAPI = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
             edmobj.setPersonIdentifiersByInstanceId(new ArrayList<>());
-            for(org.epos.eposdatamodel.Identifier identifier : obj.getIdentifier()){
-                LinkedEntity le = identifierAPI.create(identifier);
+            for(org.epos.eposdatamodel.LinkedEntity identifier : obj.getIdentifier()){
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(identifier);
                 PersonIdentifier pi = new PersonIdentifier();
                 pi.setPersonByPersonInstanceId(edmobj);
                 pi.setPersonInstanceId(edmobj.getInstanceId());
@@ -174,12 +173,10 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
         o.setUid(edmobj.getUid());
 
         if(edmobj.getPersonIdentifiersByInstanceId().size()>0) {
+            IdentifierAPI api = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
             for(PersonIdentifier ed : edmobj.getPersonIdentifiersByInstanceId()) {
                 Identifier el = ed.getIdentifierByIdentifierInstanceId();
-                org.epos.eposdatamodel.Identifier id = new org.epos.eposdatamodel.Identifier();
-                id.setIdentifier(el.getValue());
-                id.setType(el.getType());
-                o.addIdentifier(id);
+                o.addIdentifier(api.retrieveLinkedEntity(el.getInstanceId()));
             }
         }
 
@@ -188,14 +185,8 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
 
 
         if(edmobj.getAddressByAddressId()!=null) {
-            Address address = edmobj.getAddressByAddressId();
-            org.epos.eposdatamodel.Address address1 = new org.epos.eposdatamodel.Address();
-            address1.setLocality(address.getLocality());
-            address1.setCountryCode(address.getCountrycode());
-            address1.setCountry(address.getCountry());
-            address1.setPostalCode(address.getPostalCode());
-            address1.setStreet(address.getStreet());
-            o.setAddress(address1);
+            AddressAPI api = new AddressAPI(EntityNames.ADDRESS.name(), Address.class);
+            o.setAddress(api.retrieveLinkedEntity(edmobj.getAddressByAddressId().getInstanceId()));
         }
 
         if(edmobj.getPersonElementsByInstanceId().size()>0) {
@@ -219,6 +210,8 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
                 o.addAffiliation(organizationAPI.retrieveLinkedEntity(organizationAffiliation.getOrganizationInstanceId()));
             }
         }
+
+        o = (org.epos.eposdatamodel.Person) VersioningStatusAPI.retrieveVersion(o);
 
         return o;
     }

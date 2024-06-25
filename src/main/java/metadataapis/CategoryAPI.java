@@ -163,6 +163,8 @@ public class CategoryAPI extends AbstractAPI<org.epos.eposdatamodel.Category> {
             o.setNarrower(narrowers);
         }
 
+        o = (org.epos.eposdatamodel.Category) VersioningStatusAPI.retrieveVersion(o);
+
         return o;
     }
 

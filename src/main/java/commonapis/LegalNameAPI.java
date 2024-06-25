@@ -2,26 +2,26 @@ package commonapis;
 
 import abstractapis.AbstractAPI;
 import metadataapis.EntityNames;
-import model.Element;
-import model.QuantitativeValue;
-import model.Spatial;
+import model.OrganizationLegalname;
+import model.Temporal;
 import org.epos.eposdatamodel.LinkedEntity;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class SpatialAPI extends AbstractAPI<org.epos.eposdatamodel.Location> {
+public class LegalNameAPI extends AbstractAPI<org.epos.eposdatamodel.LegalName> {
 
-    public SpatialAPI(String entityName, Class<?> edmClass) {
+    public LegalNameAPI(String entityName, Class<?> edmClass) {
         super(entityName, edmClass);
     }
 
     @Override
-    public LinkedEntity create(org.epos.eposdatamodel.Location obj) {
+    public LinkedEntity create(org.epos.eposdatamodel.LegalName obj) {
 
-        List<Spatial> returnList = getDbaccess().getOneFromDB(
+        List<OrganizationLegalname> returnList = getDbaccess().getOneFromDB(
                 obj.getInstanceId(),
                 obj.getMetaId(),
                 obj.getUid(),
@@ -35,14 +35,15 @@ public class SpatialAPI extends AbstractAPI<org.epos.eposdatamodel.Location> {
             obj.setVersionId(returnList.get(0).getVersionId());
         }
 
-        obj = (org.epos.eposdatamodel.Location) VersioningStatusAPI.checkVersion(obj);
+        obj = (org.epos.eposdatamodel.LegalName) VersioningStatusAPI.checkVersion(obj);
 
-        Spatial edmobj = new Spatial();
+        OrganizationLegalname edmobj = new OrganizationLegalname();
         edmobj.setVersionId(obj.getVersionId());
         edmobj.setInstanceId(obj.getInstanceId());
         edmobj.setMetaId(obj.getMetaId());
         edmobj.setUid(Optional.ofNullable(obj.getUid()).orElse(getEdmClass().getSimpleName()+"/"+UUID.randomUUID().toString()));
-        edmobj.setLocation(Optional.ofNullable(obj.getLocation()).orElse(null));
+        edmobj.setLanguage(Optional.ofNullable(obj.getLanguage()).orElse(null));
+        edmobj.setLegalname(Optional.ofNullable(obj.getLegalname()).orElse(null));
 
         getDbaccess().updateObject(edmobj);
 
@@ -53,25 +54,26 @@ public class SpatialAPI extends AbstractAPI<org.epos.eposdatamodel.Location> {
     }
 
     @Override
-    public org.epos.eposdatamodel.Location retrieve(String instanceId) {
-        Spatial edmobj = (Spatial) getDbaccess().getOneFromDBByInstanceId(instanceId, Spatial.class).get(0);
-        org.epos.eposdatamodel.Location o = new org.epos.eposdatamodel.Location();
+    public org.epos.eposdatamodel.LegalName retrieve(String instanceId) {
+        OrganizationLegalname edmobj = (OrganizationLegalname) getDbaccess().getOneFromDBByInstanceId(instanceId, OrganizationLegalname.class).get(0);
+        org.epos.eposdatamodel.LegalName o = new org.epos.eposdatamodel.LegalName();
 
         o.setInstanceId(edmobj.getInstanceId());
         o.setMetaId(edmobj.getMetaId());
         o.setUid(edmobj.getUid());
-        o.setLocation(edmobj.getLocation());
+        o.setLanguage(Optional.ofNullable(edmobj.getLanguage()).orElse(null));
+        o.setLegalname(Optional.ofNullable(edmobj.getLegalname()).orElse(null));
 
-        o = (org.epos.eposdatamodel.Location) VersioningStatusAPI.retrieveVersion(o);
+        o = (org.epos.eposdatamodel.LegalName) VersioningStatusAPI.retrieveVersion(o);
 
         return o;
     }
 
     @Override
-    public List<org.epos.eposdatamodel.Location> retrieveAll() {
-        List<Spatial> list = getDbaccess().getAllFromDB(Spatial.class);
-        List<org.epos.eposdatamodel.Location> returnList = new ArrayList<>();
-        for(Spatial item : list){
+    public List<org.epos.eposdatamodel.LegalName> retrieveAll() {
+        List<OrganizationLegalname> list = getDbaccess().getAllFromDB(OrganizationLegalname.class);
+        List<org.epos.eposdatamodel.LegalName> returnList = new ArrayList<>();
+        for(OrganizationLegalname item : list){
             returnList.add(retrieve(item.getInstanceId()));
         }
         return returnList;
@@ -79,15 +81,16 @@ public class SpatialAPI extends AbstractAPI<org.epos.eposdatamodel.Location> {
 
     @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
-        Spatial edmobj = (Spatial) getDbaccess().getOneFromDBByInstanceId(instanceId, Spatial.class).get(0);
+        OrganizationLegalname edmobj = (OrganizationLegalname) getDbaccess().getOneFromDBByInstanceId(instanceId, OrganizationLegalname.class).get(0);
 
         LinkedEntity o = new LinkedEntity();
         o.setInstanceId(edmobj.getInstanceId());
         o.setMetaId(edmobj.getMetaId());
         o.setUid(edmobj.getUid());
-        o.setEntityType(EntityNames.LOCATION.name());
+        o.setEntityType(EntityNames.LEGALNAME.name());
 
         return o;
     }
+
 
 }

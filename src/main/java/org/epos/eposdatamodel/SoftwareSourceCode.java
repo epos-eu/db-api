@@ -41,7 +41,7 @@ public class SoftwareSourceCode extends Software {
     /**
      * This property contains an identifier for the Software.
      **/
-    private List<Identifier> identifier = new ArrayList<>();
+    private List<LinkedEntity> identifier = new ArrayList<>();
 
     /**
      * This property contains the keywords used to describe the Software. Multiple entries in a keywords list are typically delimited by commas.
@@ -96,9 +96,9 @@ public class SoftwareSourceCode extends Software {
         }
     }
 
-    public void addIdentifier(Identifier identifier) {
+    public void addIdentifier(LinkedEntity identifier) {
         if (this.getIdentifier() == null) {
-            ArrayList<Identifier> identifierList = new ArrayList<>();
+            ArrayList<LinkedEntity> identifierList = new ArrayList<>();
             identifierList.add(identifier);
             this.setIdentifier(identifierList);
         } else {
@@ -221,12 +221,12 @@ public class SoftwareSourceCode extends Software {
         this.downloadURL = downloadURL;
     }
 
-    public SoftwareSourceCode identifier(List<Identifier> identifier) {
+    public SoftwareSourceCode identifier(List<LinkedEntity> identifier) {
         this.identifier = identifier;
         return this;
     }
 
-    public SoftwareSourceCode addIdentifierItem(Identifier identifierItem) {
+    public SoftwareSourceCode addIdentifierItem(LinkedEntity identifierItem) {
         this.identifier.add(identifierItem);
         return this;
     }
@@ -237,11 +237,11 @@ public class SoftwareSourceCode extends Software {
      * @return identifier
      **/
 
-    public List<Identifier> getIdentifier() {
+    public List<LinkedEntity> getIdentifier() {
         return identifier;
     }
 
-    public void setIdentifier(List<Identifier> identifier) {
+    public void setIdentifier(List<LinkedEntity> identifier) {
         this.identifier = identifier;
     }
 

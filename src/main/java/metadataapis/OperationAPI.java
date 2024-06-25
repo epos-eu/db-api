@@ -163,6 +163,8 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
             }
         }
 
+        o = (org.epos.eposdatamodel.Operation) VersioningStatusAPI.retrieveVersion(o);
+
         return o;
     }
 

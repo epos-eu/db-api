@@ -70,6 +70,8 @@ public class AddressAPI extends AbstractAPI<org.epos.eposdatamodel.Address> {
         o.setCountryCode(edmobj.getCountrycode());
         o.setLocality(edmobj.getLocality());
 
+        o = (org.epos.eposdatamodel.Address) VersioningStatusAPI.retrieveVersion(o);
+
         return o;
     }
 

@@ -122,6 +122,8 @@ public class MappingAPI extends AbstractAPI<org.epos.eposdatamodel.Mapping> {
             }
         }
 
+        o = (org.epos.eposdatamodel.Mapping) VersioningStatusAPI.retrieveVersion(o);
+
         return o;
     }
 
