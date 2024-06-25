@@ -50,7 +50,7 @@ public abstract class AbstractAPI<T> {
 
     public abstract LinkedEntity retrieveLinkedEntity(String instanceId);
 
-    private static AbstractAPI retrieveAPI(String entityType){
+    public static AbstractAPI retrieveAPI(String entityType){
         AbstractAPI api = null;
         Class<?> edmClass = null;
 
@@ -153,7 +153,7 @@ public abstract class AbstractAPI<T> {
         return api;
     }
 
-    private static Class retrieveClass(String entityType){
+    public static Class retrieveClass(String entityType){
 
         Class<?> edmClass = null;
 
