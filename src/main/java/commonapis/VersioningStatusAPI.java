@@ -27,46 +27,94 @@ public class VersioningStatusAPI {
         );
 
         if(!returnList.isEmpty()){
+
             Versioningstatus edmobj = returnList.get(0);
+
             if(obj.getStatus()==null) obj.setStatus(StatusType.DRAFT);
-            switch (edmobj.getStatus()){
+
+            switch (obj.getStatus()){
                 case DRAFT:
-                    if(!obj.getStatus().equals(StatusType.DRAFT)) {
+                    if(!edmobj.getStatus().equals(StatusType.DRAFT)) {
+                        /**
+                         * CREATING A NEW DRAFT FROM A NON-DRAFT SAVED ENTITY
+                         *
+                         * STATUS --> NEW STATUS
+                         * InstanceChangeId --> OLD InstanceId
+                         * InstanceId --> NEW InstanceId
+                         * VersionId --> NEW VersionId
+                         */
                         edmobj.setStatus(obj.getStatus());
+
                         edmobj.setInstanceChangeId(edmobj.getInstanceId());
                         obj.setInstanceChangedId(edmobj.getInstanceId());
+
                         edmobj.setInstanceId(UUID.randomUUID().toString());
                         obj.setInstanceId(edmobj.getInstanceId());
+
                         edmobj.setVersionId(UUID.randomUUID().toString());
+                        obj.setVersionId(edmobj.getVersionId());
+                    } else{
+                        /**
+                         * UPDATING A DRAFT FROM A DRAFT SAVED ENTITY
+                         *
+                         * STATUS --> OLD STATUS
+                         * InstanceChangeId --> OLD InstanceChangeId if not null
+                         * InstanceId --> OLD InstanceId
+                         * VersionId --> OLD VersionId
+                         */
+                        edmobj.setStatus(obj.getStatus());
+
+                        obj.setInstanceChangedId(Optional.ofNullable(edmobj.getInstanceChangeId()).orElse(null));
+
+                        obj.setInstanceId(edmobj.getInstanceId());
+
                         obj.setVersionId(edmobj.getVersionId());
                     }
                     break;
                 case ARCHIVED:
-                case DISCARDED:
-                case PUBLISHED:
-                    if(obj.getStatus().equals(StatusType.DRAFT)) {
+                    if(edmobj.getStatus().equals(StatusType.DRAFT))
                         edmobj.setStatus(obj.getStatus());
-                        edmobj.setInstanceChangeId(edmobj.getInstanceId());
-                        obj.setInstanceChangedId(edmobj.getInstanceId());
-                        edmobj.setInstanceId(UUID.randomUUID().toString());
-                        obj.setInstanceId(edmobj.getInstanceId());
-                        edmobj.setVersionId(UUID.randomUUID().toString());
-                        obj.setVersionId(edmobj.getVersionId());
+                    if(edmobj.getStatus().equals(StatusType.PUBLISHED))
+                        edmobj.setStatus(obj.getStatus());
+                    if(edmobj.getStatus().equals(StatusType.SUBMITTED))
+                        edmobj.setStatus(obj.getStatus());
+                    if(edmobj.getStatus().equals(StatusType.DISCARDED))
+                        edmobj.setStatus(obj.getStatus());
+                case DISCARDED:
+                    if(edmobj.getStatus().equals(StatusType.DRAFT))
+                        edmobj.setStatus(obj.getStatus());
+                    if(edmobj.getStatus().equals(StatusType.PUBLISHED))
+                        edmobj.setStatus(obj.getStatus());
+                    if(edmobj.getStatus().equals(StatusType.SUBMITTED))
+                        edmobj.setStatus(obj.getStatus());
+                    if(edmobj.getStatus().equals(StatusType.ARCHIVED))
+                        edmobj.setStatus(obj.getStatus());
+                case PUBLISHED:
+                    if(edmobj.getStatus().equals(StatusType.SUBMITTED) ) {
+                        edmobj.setStatus(obj.getStatus());
                     }
                     break;
                 case SUBMITTED:
-                    if(obj.getStatus().equals(StatusType.DRAFT))
+                    if(edmobj.getStatus().equals(StatusType.DRAFT))
                         edmobj.setStatus(obj.getStatus());
-                    if(obj.getStatus().equals(StatusType.PUBLISHED))
+                    if(edmobj.getStatus().equals(StatusType.PUBLISHED))
                         edmobj.setStatus(obj.getStatus());
-                    if(obj.getStatus().equals(StatusType.DISCARDED))
+                    if(edmobj.getStatus().equals(StatusType.DISCARDED))
                         edmobj.setStatus(obj.getStatus());
-                    if(obj.getStatus().equals(StatusType.ARCHIVED))
+                    if(edmobj.getStatus().equals(StatusType.ARCHIVED))
                         edmobj.setStatus(obj.getStatus());
                     break;
             }
-            return updateVersion(obj, edmobj);
+
+            getDbaccess().updateObject(edmobj);
+
+            return obj;
         } else {
+            /**
+             *
+             * CREATING A NEW VERSIONING STATUS ENTITY
+             *
+             */
             Versioningstatus edmobj = new Versioningstatus();
             if(obj.getStatus()!=null) edmobj.setStatus(obj.getStatus());
             else edmobj.setStatus(StatusType.DRAFT);

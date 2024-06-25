@@ -186,14 +186,45 @@ public class VariousTests {
         System.out.println(personAPI.retrieve(le2.getInstanceId()));
         System.out.println(addressAPI.retrieve(le.getInstanceId()));
 
+    }
 
-        }
+    public static void checkWebServiceExample(){
+        WebService webService = new WebService();
+        webService.setStatus(StatusType.DRAFT);
+        webService.setDescription("My description of webservice");
+        webService.setName("My name of webservice");
+        webService.setEditorId("admin");
+
+        WebServiceAPI api = new WebServiceAPI(EntityNames.WEBSERVICE.name(), Webservice.class);
+        LinkedEntity le = api.create(webService);
+
+        System.out.println(api.retrieve(le.getInstanceId()));
+    }
+
+    public static void checkWebServiceExampleUpdate(){
+        WebService webService = new WebService();
+        webService.setStatus(StatusType.DRAFT);
+        webService.setDescription("My description of webservice update");
+        webService.setName("My name of webservice");
+        webService.setEditorId("admin");
+        webService.setUid("Webservice/ab9a8b83-4476-470e-87d9-599b97547981");
+        webService.setInstanceId("00463a24-b0c4-43f5-a166-2afe6f66179e");
+        webService.setMetaId("8140b55d-4381-4c93-abcc-4cc1caaa2744");
+
+        WebServiceAPI api = new WebServiceAPI(EntityNames.WEBSERVICE.name(), Webservice.class);
+        LinkedEntity le = api.create(webService);
+
+        System.out.println(api.retrieve(le.getInstanceId()));
+    }
+
     public static void main(String[] args) {
         //softwaresTest();
         //datasetTest();
         //quantitativeValue();
         //checkProblems();
         //checkUsers();
-        checkGroups();
+        //checkGroups();
+        //checkWebServiceExample();
+        checkWebServiceExampleUpdate();
     }
 }

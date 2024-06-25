@@ -32,6 +32,8 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
                 obj.getVersionId(),
                 getEdmClass());
 
+        System.out.println(returnList.toString());
+
         if(!returnList.isEmpty()){
             obj.setInstanceId(returnList.get(0).getInstanceId());
             obj.setMetaId(returnList.get(0).getMetaId());

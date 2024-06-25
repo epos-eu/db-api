@@ -86,10 +86,22 @@ public class EposDataModelDAO<T> {
 
     public List<T> getOneFromDB(String instanceId, String metaId, String uid, String versionId, Class<T> obj){
         List resultList = new ArrayList<T>();
-        if(instanceId!=null) resultList.addAll(getOneFromDBByInstanceId(instanceId,obj));
-        if(metaId!=null) resultList.addAll(getOneFromDBByMetaId(metaId,obj));
-        if(uid!=null) resultList.addAll(getOneFromDBByUID(uid,obj));
-        if(versionId!=null) resultList.addAll(getOneFromDBByVersionID(versionId,obj));
+        if(instanceId!=null) {
+            resultList.addAll(getOneFromDBByInstanceId(instanceId,obj));
+            return resultList;
+        }
+        if(metaId!=null) {
+            resultList.addAll(getOneFromDBByMetaId(metaId,obj));
+            return resultList;
+        }
+        if(uid!=null) {
+            resultList.addAll(getOneFromDBByUID(uid,obj));
+            return resultList;
+        }
+        if(versionId!=null) {
+            resultList.addAll(getOneFromDBByVersionID(versionId,obj));
+            return resultList;
+        }
 
         return resultList;
     }
