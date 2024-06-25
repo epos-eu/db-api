@@ -68,7 +68,6 @@ public class VariousTests {
         dp.setUid("DataProductUID");
         dp.setDescription(List.of("Test dataproduct description"));
         dp.addTitle("DataProductTitle");
-        dp.setIdentifier(List.of(identifier));
         dp.setStatus(StatusType.DRAFT);
 
         DataProductAPI api = new DataProductAPI(EntityNames.DATAPRODUCT.name(), Dataproduct.class);
@@ -124,10 +123,8 @@ public class VariousTests {
         sa.setCategory(List.of(categoryAPI.create(cat)));
         sa.setDescription("SoftwareApplicationDescription");
         sa.setName("SoftwareApplicationName");
-        sa.setIdentifier(List.of(identifier));
         sa.setStatus(StatusType.DRAFT);
         sa.setParameter(new ArrayList<>());
-        sa.getParameter().add(parameter);
         sa.setRelation(List.of(leop));
         sa.setContactPoint(List.of(contactPointAPI.create(cp)));
 
@@ -137,7 +134,6 @@ public class VariousTests {
         ssc.setCategory(List.of(categoryAPI.create(cat)));
         ssc.setDescription("SoftwareApplicationDescription");
         ssc.setName("SoftwareApplicationName");
-        ssc.setIdentifier(List.of(identifier));
         ssc.setStatus(StatusType.DRAFT);
         ssc.setSoftwareVersion("1.0");
         ssc.keywords("key1,key2,key3");
@@ -172,7 +168,6 @@ public class VariousTests {
 
         Person p = new Person();
         p.setUid("TEST");
-        p.setAddress(address);
 
         PersonAPI personAPI = new PersonAPI(EntityNames.PERSON.name(), model.Person.class);
         LinkedEntity le2 = personAPI.create(p);
