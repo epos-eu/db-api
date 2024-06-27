@@ -320,6 +320,14 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
             }
         }
 
+        if(edmobj.getWebserviceIdentifiersByInstanceId().size()>0) {
+            IdentifierAPI api = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
+            for(WebserviceIdentifier ed : edmobj.getWebserviceIdentifiersByInstanceId()) {
+                org.epos.eposdatamodel.LinkedEntity cp = api.retrieveLinkedEntity(ed.getIdentifierInstanceId());
+                o.addIdentifier(cp);
+            }
+        }
+
         if(edmobj.getWebserviceSpatialsByInstanceId().size()>0) {
             SpatialAPI api = new SpatialAPI(EntityNames.LOCATION.name(), Spatial.class);
             for(WebserviceSpatial ed : edmobj.getWebserviceSpatialsByInstanceId()) {
