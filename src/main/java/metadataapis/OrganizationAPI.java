@@ -238,85 +238,88 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
 
     @Override
     public org.epos.eposdatamodel.Organization retrieve(String instanceId) {
-        Organization edmobj = (Organization) getDbaccess().getOneFromDBByInstanceId(instanceId, Organization.class).get(0);
+        List<Organization> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, Organization.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            Organization edmobj = elementList.get(0);
+            org.epos.eposdatamodel.Organization o = new org.epos.eposdatamodel.Organization();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setAcronym(edmobj.getAcronym());
+            o.setLeiCode(edmobj.getLeicode());
+            o.setLogo(edmobj.getLogo());
+            o.setURL(edmobj.getUrl());
+            o.setType(edmobj.getType());
+            o.setMaturity(edmobj.getMaturity());
 
-        org.epos.eposdatamodel.Organization o = new org.epos.eposdatamodel.Organization();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setAcronym(edmobj.getAcronym());
-        o.setLeiCode(edmobj.getLeicode());
-        o.setLogo(edmobj.getLogo());
-        o.setURL(edmobj.getUrl());
-        o.setType(edmobj.getType());
-        o.setMaturity(edmobj.getMaturity());
-
-        if(edmobj.getOrganizationIdentifiersByInstanceId().size()>0) {
-            IdentifierAPI api = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
-            for(OrganizationIdentifier ed : edmobj.getOrganizationIdentifiersByInstanceId()) {
-                Identifier el = ed.getIdentifierByIdentifierInstanceId();
-                o.addIdentifier(api.retrieveLinkedEntity(el.getInstanceId()));
-            }
-        }
-
-        if(edmobj.getAddressByAddressId()!=null) {
-            Address address = edmobj.getAddressByAddressId();
-            org.epos.eposdatamodel.Address address1 = new org.epos.eposdatamodel.Address();
-            address1.setLocality(address.getLocality());
-            address1.setCountryCode(address.getCountrycode());
-            address1.setCountry(address.getCountry());
-            address1.setPostalCode(address.getPostalCode());
-            address1.setStreet(address.getStreet());
-            o.setAddress(address1);
-        }
-
-        if(edmobj.getOrganizationContactpointsByInstanceId().size()>0) {
-            ContactPointAPI api = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), Contactpoint.class);
-            for(OrganizationContactpoint ed : edmobj.getOrganizationContactpointsByInstanceId()) {
-                LinkedEntity cp = api.retrieveLinkedEntity(ed.getContactpointInstanceId());
-                o.addContactPoint(cp);
-            }
-        }
-
-        if(edmobj.getOrganizationElementsByInstanceId().size()>0) {
-            for(OrganizationElement ed : edmobj.getOrganizationElementsByInstanceId()) {
-                Element el = ed.getElementByElementInstanceId();
-                if(el.getType().equals(ElementType.TELEPHONE)) o.addTelephone(el.getValue());
-                if(el.getType().equals(ElementType.EMAIL)) o.addEmail(el.getValue());
-            }
-        }
-
-        if(edmobj.getOrganizationLegalnamesByInstanceId().size()>0) {
-            LegalNameAPI api = new LegalNameAPI(EntityNames.LEGALNAME.name(), OrganizationLegalname.class);
-            for(OrganizationLegalname ed : edmobj.getOrganizationLegalnamesByInstanceId()) {
-                o.addLegalName(api.retrieveLinkedEntity(ed.getInstanceId()));
-            }
-        }
-
-        List<OrganizationOwns> organizationOwnsList =dbaccess.getOneFromDBBySpecificKey("organizationInstanceId",edmobj.getInstanceId(),OrganizationOwns.class);
-        if(organizationOwnsList.size()>0) {
-            for(OrganizationOwns ed : organizationOwnsList) {
-                if(ed.getResourceEntity().equals(EntityNames.FACILITY.name())){
-                    FacilityAPI api = new FacilityAPI(EntityNames.FACILITY.name(), Facility.class);
-                    o.addOwns(api.retrieveLinkedEntity(ed.getEntityInstanceId()));
-                }
-                if(ed.getResourceEntity().equals(EntityNames.EQUIPMENT.name())){
-                    EquipmentAPI api = new EquipmentAPI(EntityNames.EQUIPMENT.name(), Equipment.class);
-                    o.addOwns(api.retrieveLinkedEntity(ed.getEntityInstanceId()));
+            if (edmobj.getOrganizationIdentifiersByInstanceId().size() > 0) {
+                IdentifierAPI api = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
+                for (OrganizationIdentifier ed : edmobj.getOrganizationIdentifiersByInstanceId()) {
+                    Identifier el = ed.getIdentifierByIdentifierInstanceId();
+                    o.addIdentifier(api.retrieveLinkedEntity(el.getInstanceId()));
                 }
             }
-        }
 
-        if(edmobj.getOrganizationMemberofsByInstanceId().size()>0) {
-            for(OrganizationMemberof ed : edmobj.getOrganizationMemberofsByInstanceId()) {
-                LinkedEntity cp = retrieveLinkedEntity(ed.getOrganization2InstanceId());
-                o.addMemberOf(cp);
+            if (edmobj.getAddressByAddressId() != null) {
+                Address address = edmobj.getAddressByAddressId();
+                org.epos.eposdatamodel.Address address1 = new org.epos.eposdatamodel.Address();
+                address1.setLocality(address.getLocality());
+                address1.setCountryCode(address.getCountrycode());
+                address1.setCountry(address.getCountry());
+                address1.setPostalCode(address.getPostalCode());
+                address1.setStreet(address.getStreet());
+                o.setAddress(address1);
             }
+
+            if (edmobj.getOrganizationContactpointsByInstanceId().size() > 0) {
+                ContactPointAPI api = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), Contactpoint.class);
+                for (OrganizationContactpoint ed : edmobj.getOrganizationContactpointsByInstanceId()) {
+                    LinkedEntity cp = api.retrieveLinkedEntity(ed.getContactpointInstanceId());
+                    o.addContactPoint(cp);
+                }
+            }
+
+            if (edmobj.getOrganizationElementsByInstanceId().size() > 0) {
+                for (OrganizationElement ed : edmobj.getOrganizationElementsByInstanceId()) {
+                    Element el = ed.getElementByElementInstanceId();
+                    if (el.getType().equals(ElementType.TELEPHONE)) o.addTelephone(el.getValue());
+                    if (el.getType().equals(ElementType.EMAIL)) o.addEmail(el.getValue());
+                }
+            }
+
+            if (edmobj.getOrganizationLegalnamesByInstanceId().size() > 0) {
+                LegalNameAPI api = new LegalNameAPI(EntityNames.LEGALNAME.name(), OrganizationLegalname.class);
+                for (OrganizationLegalname ed : edmobj.getOrganizationLegalnamesByInstanceId()) {
+                    o.addLegalName(api.retrieveLinkedEntity(ed.getInstanceId()));
+                }
+            }
+
+            List<OrganizationOwns> organizationOwnsList = dbaccess.getOneFromDBBySpecificKey("organizationInstanceId", edmobj.getInstanceId(), OrganizationOwns.class);
+            if (organizationOwnsList.size() > 0) {
+                for (OrganizationOwns ed : organizationOwnsList) {
+                    if (ed.getResourceEntity().equals(EntityNames.FACILITY.name())) {
+                        FacilityAPI api = new FacilityAPI(EntityNames.FACILITY.name(), Facility.class);
+                        o.addOwns(api.retrieveLinkedEntity(ed.getEntityInstanceId()));
+                    }
+                    if (ed.getResourceEntity().equals(EntityNames.EQUIPMENT.name())) {
+                        EquipmentAPI api = new EquipmentAPI(EntityNames.EQUIPMENT.name(), Equipment.class);
+                        o.addOwns(api.retrieveLinkedEntity(ed.getEntityInstanceId()));
+                    }
+                }
+            }
+
+            if (edmobj.getOrganizationMemberofsByInstanceId().size() > 0) {
+                for (OrganizationMemberof ed : edmobj.getOrganizationMemberofsByInstanceId()) {
+                    LinkedEntity cp = retrieveLinkedEntity(ed.getOrganization2InstanceId());
+                    o.addMemberOf(cp);
+                }
+            }
+
+            o = (org.epos.eposdatamodel.Organization) VersioningStatusAPI.retrieveVersion(o);
+
+            return o;
         }
-
-        o = (org.epos.eposdatamodel.Organization) VersioningStatusAPI.retrieveVersion(o);
-
-        return o;
+        return null;
     }
 
     @Override
@@ -332,15 +335,18 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
 
     @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
-        Organization edmobj = (Organization) getDbaccess().getOneFromDBByInstanceId(instanceId, Organization.class).get(0);
+        List<Organization> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, Organization.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            Organization edmobj = elementList.get(0);
+            LinkedEntity o = new LinkedEntity();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setEntityType(EntityNames.ORGANIZATION.name());
 
-        LinkedEntity o = new LinkedEntity();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setEntityType(EntityNames.ORGANIZATION.name());
-
-        return o;
+            return o;
+        }
+        return null;
     }
 
 }

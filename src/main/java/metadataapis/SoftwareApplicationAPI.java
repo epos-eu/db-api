@@ -145,70 +145,73 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
 
     @Override
     public org.epos.eposdatamodel.SoftwareApplication retrieve(String instanceId) {
-        SoftwareApplication edmobj = (SoftwareApplication) getDbaccess().getOneFromDBByInstanceId(instanceId, SoftwareApplication.class).get(0);
+        List<SoftwareApplication> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, SoftwareApplication.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            SoftwareApplication edmobj = elementList.get(0);
+            org.epos.eposdatamodel.SoftwareApplication o = new org.epos.eposdatamodel.SoftwareApplication();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setVersionId(edmobj.getVersionId());
+            o.setName(edmobj.getName());
+            o.setDescription(edmobj.getDescription());
+            o.setDownloadURL(edmobj.getDownloadurl());
+            o.setInstallURL(edmobj.getInstallurl());
+            o.addKeywords(edmobj.getKeywords());
+            o.setLicenseURL(edmobj.getLicenseurl());
+            o.setMainEntityOfPage(edmobj.getMainentityofpage());
+            o.setRequirements(edmobj.getRequirements());
+            o.setSoftwareVersion(edmobj.getSoftwareversion());
 
-        org.epos.eposdatamodel.SoftwareApplication o = new org.epos.eposdatamodel.SoftwareApplication();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setVersionId(edmobj.getVersionId());
-        o.setName(edmobj.getName());
-        o.setDescription(edmobj.getDescription());
-        o.setDownloadURL(edmobj.getDownloadurl());
-        o.setInstallURL(edmobj.getInstallurl());
-        o.addKeywords(edmobj.getKeywords());
-        o.setLicenseURL(edmobj.getLicenseurl());
-        o.setMainEntityOfPage(edmobj.getMainentityofpage());
-        o.setRequirements(edmobj.getRequirements());
-        o.setSoftwareVersion(edmobj.getSoftwareversion());
 
-
-        if(edmobj.getSoftwareapplicationCategoriesByInstanceId().size()>0) {
-            for(SoftwareapplicationCategory ed : edmobj.getSoftwareapplicationCategoriesByInstanceId()) {
-                CategoryAPI api = new CategoryAPI(EntityNames.CATEGORY.name(), Category.class);
-                LinkedEntity cp = api.retrieveLinkedEntity(ed.getCategoryInstanceId());
-                o.addCategory(cp);
+            if (edmobj.getSoftwareapplicationCategoriesByInstanceId().size() > 0) {
+                for (SoftwareapplicationCategory ed : edmobj.getSoftwareapplicationCategoriesByInstanceId()) {
+                    CategoryAPI api = new CategoryAPI(EntityNames.CATEGORY.name(), Category.class);
+                    LinkedEntity cp = api.retrieveLinkedEntity(ed.getCategoryInstanceId());
+                    o.addCategory(cp);
+                }
             }
-        }
 
-        if(edmobj.getSoftwareapplicationContactpointsByInstanceId().size()>0) {
-            for(SoftwareapplicationContactpoint ed : edmobj.getSoftwareapplicationContactpointsByInstanceId()) {
-                ContactPointAPI api = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), Contactpoint.class);
-                LinkedEntity cp = api.retrieveLinkedEntity(ed.getContactpointInstanceId());
-                o.addContactPoint(cp);
+            if (edmobj.getSoftwareapplicationContactpointsByInstanceId().size() > 0) {
+                for (SoftwareapplicationContactpoint ed : edmobj.getSoftwareapplicationContactpointsByInstanceId()) {
+                    ContactPointAPI api = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), Contactpoint.class);
+                    LinkedEntity cp = api.retrieveLinkedEntity(ed.getContactpointInstanceId());
+                    o.addContactPoint(cp);
+                }
             }
-        }
 
-        if(edmobj.getSoftwareapplicationIdentifiersByInstanceId().size()>0) {
-            IdentifierAPI api = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
-            for(SoftwareapplicationIdentifier ed : edmobj.getSoftwareapplicationIdentifiersByInstanceId()) {
-                org.epos.eposdatamodel.LinkedEntity cp = api.retrieveLinkedEntity(ed.getIdentifierInstanceId());
-                o.addIdentifier(cp);
+            if (edmobj.getSoftwareapplicationIdentifiersByInstanceId().size() > 0) {
+                IdentifierAPI api = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
+                for (SoftwareapplicationIdentifier ed : edmobj.getSoftwareapplicationIdentifiersByInstanceId()) {
+                    org.epos.eposdatamodel.LinkedEntity cp = api.retrieveLinkedEntity(ed.getIdentifierInstanceId());
+                    o.addIdentifier(cp);
+                }
             }
-        }
 
-        if(edmobj.getSoftwareapplicationParametersByInstanceId().size()>0) {
-            ParameterAPI api = new ParameterAPI(EntityNames.PARAMETER.name(), SoftwareapplicationParameters.class);
-            for(SoftwareapplicationParameters ed : edmobj.getSoftwareapplicationParametersByInstanceId()) {
-                o.addParameter(api.retrieveLinkedEntity(ed.getInstanceId()));
+            if (edmobj.getSoftwareapplicationParametersByInstanceId().size() > 0) {
+                ParameterAPI api = new ParameterAPI(EntityNames.PARAMETER.name(), SoftwareapplicationParameters.class);
+                for (SoftwareapplicationParameters ed : edmobj.getSoftwareapplicationParametersByInstanceId()) {
+                    o.addParameter(api.retrieveLinkedEntity(ed.getInstanceId()));
+                }
             }
-        }
 
-        if(edmobj.getSoftwareapplicationOperationsByInstanceId().size()>0) {
-            for(SoftwareapplicationOperation ed : edmobj.getSoftwareapplicationOperationsByInstanceId()) {
-                Operation op = ed.getOperationByOperationInstanceId();
-                LinkedEntity le = new LinkedEntity();
-                le.setInstanceId(op.getInstanceId());
-                le.setUid(op.getUid());
-                le.setMetaId(op.getMetaId());
-                le.setEntityType(EntityNames.OPERATION.name());
-                o.addRelation(le);
+            if (edmobj.getSoftwareapplicationOperationsByInstanceId().size() > 0) {
+                for (SoftwareapplicationOperation ed : edmobj.getSoftwareapplicationOperationsByInstanceId()) {
+                    Operation op = ed.getOperationByOperationInstanceId();
+                    LinkedEntity le = new LinkedEntity();
+                    le.setInstanceId(op.getInstanceId());
+                    le.setUid(op.getUid());
+                    le.setMetaId(op.getMetaId());
+                    le.setEntityType(EntityNames.OPERATION.name());
+                    o.addRelation(le);
+                }
             }
+
+            o = (org.epos.eposdatamodel.SoftwareApplication) VersioningStatusAPI.retrieveVersion(o);
+
+            return o;
         }
-
-        o = (org.epos.eposdatamodel.SoftwareApplication) VersioningStatusAPI.retrieveVersion(o);
-
-        return o;
+        return null;
     }
 
     @Override
@@ -223,15 +226,18 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
 
     @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
-        SoftwareApplication edmobj = (SoftwareApplication) getDbaccess().getOneFromDBByInstanceId(instanceId, SoftwareApplication.class).get(0);
+        List<SoftwareApplication> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, SoftwareApplication.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            SoftwareApplication edmobj = elementList.get(0);
+            LinkedEntity o = new LinkedEntity();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setEntityType(EntityNames.SOFTWAREAPPLICATION.name());
 
-        LinkedEntity o = new LinkedEntity();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setEntityType(EntityNames.SOFTWAREAPPLICATION.name());
-
-        return o;
+            return o;
+        }
+        return null;
     }
 
 }

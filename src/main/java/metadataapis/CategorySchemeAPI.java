@@ -62,24 +62,29 @@ public class CategorySchemeAPI extends AbstractAPI<org.epos.eposdatamodel.Catego
 
     @Override
     public org.epos.eposdatamodel.CategoryScheme retrieve(String instanceId) {
-        CategoryScheme edmobj = (CategoryScheme) getDbaccess().getOneFromDBByInstanceId(instanceId, CategoryScheme.class).get(0);
-        org.epos.eposdatamodel.CategoryScheme o = new org.epos.eposdatamodel.CategoryScheme();
+
+        List<CategoryScheme> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, CategoryScheme.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            CategoryScheme edmobj = elementList.get(0);
+            org.epos.eposdatamodel.CategoryScheme o = new org.epos.eposdatamodel.CategoryScheme();
 
 
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setTitle(edmobj.getName());
-        o.setDescription(edmobj.getDescription());
-        o.setCode(edmobj.getCode());
-        o.setHomepage(edmobj.getHomepage());
-        o.setLogo(edmobj.getLogo());
-        o.setColor(edmobj.getColor());
-        o.setOrderitemnumber(edmobj.getOrderitemnumber());
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setTitle(edmobj.getName());
+            o.setDescription(edmobj.getDescription());
+            o.setCode(edmobj.getCode());
+            o.setHomepage(edmobj.getHomepage());
+            o.setLogo(edmobj.getLogo());
+            o.setColor(edmobj.getColor());
+            o.setOrderitemnumber(edmobj.getOrderitemnumber());
 
-        o = (org.epos.eposdatamodel.CategoryScheme) VersioningStatusAPI.retrieveVersion(o);
+            o = (org.epos.eposdatamodel.CategoryScheme) VersioningStatusAPI.retrieveVersion(o);
 
-        return o;
+            return o;
+        }
+        return null;
     }
 
     @Override
@@ -94,14 +99,17 @@ public class CategorySchemeAPI extends AbstractAPI<org.epos.eposdatamodel.Catego
 
     @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
-        CategoryScheme edmobj = (CategoryScheme) getDbaccess().getOneFromDBByInstanceId(instanceId, CategoryScheme.class).get(0);
+        List<CategoryScheme> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, CategoryScheme.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            CategoryScheme edmobj = elementList.get(0);
+            LinkedEntity o = new LinkedEntity();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setEntityType(EntityNames.CATEGORYSCHEME.name());
 
-        LinkedEntity o = new LinkedEntity();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setEntityType(EntityNames.CATEGORYSCHEME.name());
-
-        return o;
+            return o;
+        }
+        return null;
     }
 }

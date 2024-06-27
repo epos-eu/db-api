@@ -54,19 +54,23 @@ public class ElementAPI extends AbstractAPI<org.epos.eposdatamodel.Element> {
 
     @Override
     public org.epos.eposdatamodel.Element retrieve(String instanceId) {
-        Element edmobj = (Element) getDbaccess().getOneFromDBByInstanceId(instanceId, Element.class).get(0);
-        org.epos.eposdatamodel.Element o = new org.epos.eposdatamodel.Element();
+        List<Element> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, Element.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            Element edmobj = elementList.get(0);
+            org.epos.eposdatamodel.Element o = new org.epos.eposdatamodel.Element();
 
 
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setType(edmobj.getType());
-        o.setValue(edmobj.getValue());
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setType(edmobj.getType());
+            o.setValue(edmobj.getValue());
 
-        o = (org.epos.eposdatamodel.Element) VersioningStatusAPI.retrieveVersion(o);
+            o = (org.epos.eposdatamodel.Element) VersioningStatusAPI.retrieveVersion(o);
 
-        return o;
+            return o;
+        }
+        return null;
     }
 
     @Override
@@ -82,15 +86,19 @@ public class ElementAPI extends AbstractAPI<org.epos.eposdatamodel.Element> {
 
     @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
-        Address edmobj = (Address) getDbaccess().getOneFromDBByInstanceId(instanceId, Address.class).get(0);
+        List<Element> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, Element.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            Element edmobj = elementList.get(0);
 
-        LinkedEntity o = new LinkedEntity();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setEntityType(EntityNames.ELEMENT.name());
+            LinkedEntity o = new LinkedEntity();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setEntityType(EntityNames.ELEMENT.name());
 
-        return o;
+            return o;
+        }
+        return null;
     }
 
 

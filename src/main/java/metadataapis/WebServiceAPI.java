@@ -267,95 +267,98 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
 
     @Override
     public org.epos.eposdatamodel.WebService retrieve(String instanceId) {
-        Webservice edmobj = (Webservice) getDbaccess().getOneFromDBByInstanceId(instanceId, Webservice.class).get(0);
+        List<Webservice> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, Webservice.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            Webservice edmobj = elementList.get(0);
+            org.epos.eposdatamodel.WebService o = new org.epos.eposdatamodel.WebService();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setDateModified(
+                    edmobj.getDatamodified() != null ? edmobj.getDatamodified().toLocalDateTime() : null
+            );
+            o.setDatePublished(
+                    edmobj.getDatapublished() != null ? edmobj.getDatapublished().toLocalDateTime() : null
+            );
+            o.setDescription(edmobj.getDescription());
+            o.setEntryPoint(edmobj.getEntrypoint());
+            o.setLicense(edmobj.getLicense());
+            o.setName(edmobj.getName());
+            o.setAaaiTypes(edmobj.getAaaitypes());
 
-        org.epos.eposdatamodel.WebService o = new org.epos.eposdatamodel.WebService();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setDateModified(
-                edmobj.getDatamodified() != null ? edmobj.getDatamodified().toLocalDateTime() : null
-        );
-        o.setDatePublished(
-                edmobj.getDatapublished() != null ? edmobj.getDatapublished().toLocalDateTime() : null
-        );
-        o.setDescription(edmobj.getDescription());
-        o.setEntryPoint(edmobj.getEntrypoint());
-        o.setLicense(edmobj.getLicense());
-        o.setName(edmobj.getName());
-        o.setAaaiTypes(edmobj.getAaaitypes());
-
-        if(edmobj.getWebserviceCategoriesByInstanceId().size()>0) {
-            for(WebserviceCategory ed : edmobj.getWebserviceCategoriesByInstanceId()) {
-                CategoryAPI api = new CategoryAPI(EntityNames.CATEGORY.name(), Category.class);
-                LinkedEntity cp = api.retrieveLinkedEntity(ed.getCategoryInstanceId());
-                o.addCategory(cp);
-            }
-        }
-
-        if(edmobj.getWebserviceContactpointsByInstanceId().size()>0) {
-            for(WebserviceContactpoint ed : edmobj.getWebserviceContactpointsByInstanceId()) {
-                ContactPointAPI api = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), Contactpoint.class);
-                LinkedEntity cp = api.retrieveLinkedEntity(ed.getContactpointInstanceId());
-                o.addContactPoint(cp);
-            }
-        }
-
-        if(edmobj.getProvider()!=null) {
-            OrganizationAPI api = new OrganizationAPI(EntityNames.ORGANIZATION.name(), Organization.class);
-            o.setProvider(api.retrieveLinkedEntity(edmobj.getProvider()));
-        }
-
-        if(edmobj.getWebserviceElementsByInstanceId().size()>0) {
-            for(WebserviceElement ed : edmobj.getWebserviceElementsByInstanceId()) {
-                Element el = ed.getElementByElementInstanceId();
-                if(el.getType().equals(ElementType.PAGEURL)) {
-                    JsonObject doc = new Gson().fromJson(el.getValue(), JsonObject.class);
-                    Documentation documentation = new Documentation();
-                    documentation.setTitle(doc.get("Title").getAsString());
-                    documentation.setDescription(doc.get("Description").getAsString());
-                    documentation.setUri(doc.get("Uri").getAsString());
-                    o.addDocumentation(documentation);
+            if (edmobj.getWebserviceCategoriesByInstanceId().size() > 0) {
+                for (WebserviceCategory ed : edmobj.getWebserviceCategoriesByInstanceId()) {
+                    CategoryAPI api = new CategoryAPI(EntityNames.CATEGORY.name(), Category.class);
+                    LinkedEntity cp = api.retrieveLinkedEntity(ed.getCategoryInstanceId());
+                    o.addCategory(cp);
                 }
             }
-        }
 
-        if(edmobj.getWebserviceIdentifiersByInstanceId().size()>0) {
-            IdentifierAPI api = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
-            for(WebserviceIdentifier ed : edmobj.getWebserviceIdentifiersByInstanceId()) {
-                org.epos.eposdatamodel.LinkedEntity cp = api.retrieveLinkedEntity(ed.getIdentifierInstanceId());
-                o.addIdentifier(cp);
+            if (edmobj.getWebserviceContactpointsByInstanceId().size() > 0) {
+                for (WebserviceContactpoint ed : edmobj.getWebserviceContactpointsByInstanceId()) {
+                    ContactPointAPI api = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), Contactpoint.class);
+                    LinkedEntity cp = api.retrieveLinkedEntity(ed.getContactpointInstanceId());
+                    o.addContactPoint(cp);
+                }
             }
-        }
 
-        if(edmobj.getWebserviceSpatialsByInstanceId().size()>0) {
-            SpatialAPI api = new SpatialAPI(EntityNames.LOCATION.name(), Spatial.class);
-            for(WebserviceSpatial ed : edmobj.getWebserviceSpatialsByInstanceId()) {
-                org.epos.eposdatamodel.LinkedEntity cp = api.retrieveLinkedEntity(ed.getSpatialInstanceId());
-                o.addSpatialExtentItem(cp);
+            if (edmobj.getProvider() != null) {
+                OrganizationAPI api = new OrganizationAPI(EntityNames.ORGANIZATION.name(), Organization.class);
+                o.setProvider(api.retrieveLinkedEntity(edmobj.getProvider()));
             }
-        }
 
-        if(edmobj.getWebserviceTemporalsByInstanceId().size()>0) {
-            TemporalAPI api = new TemporalAPI(EntityNames.PERIODOFTIME.name(), Temporal.class);
-            for(WebserviceTemporal ed : edmobj.getWebserviceTemporalsByInstanceId()) {
-                org.epos.eposdatamodel.LinkedEntity cp = api.retrieveLinkedEntity(ed.getTemporalInstanceId());
-                o.addTemporalExtent(cp);
+            if (edmobj.getWebserviceElementsByInstanceId().size() > 0) {
+                for (WebserviceElement ed : edmobj.getWebserviceElementsByInstanceId()) {
+                    Element el = ed.getElementByElementInstanceId();
+                    if (el.getType().equals(ElementType.PAGEURL)) {
+                        JsonObject doc = new Gson().fromJson(el.getValue(), JsonObject.class);
+                        Documentation documentation = new Documentation();
+                        documentation.setTitle(doc.get("Title").getAsString());
+                        documentation.setDescription(doc.get("Description").getAsString());
+                        documentation.setUri(doc.get("Uri").getAsString());
+                        o.addDocumentation(documentation);
+                    }
+                }
             }
-        }
 
-        if(edmobj.getOperationWebservicesByInstanceId().size()>0) {
-            for(OperationWebservice ed : edmobj.getOperationWebservicesByInstanceId()) {
-                OperationAPI api = new OperationAPI(EntityNames.OPERATION.name(), Operation.class);
-                LinkedEntity cp = api.retrieveLinkedEntity(ed.getOperationInstanceId());
-                o.addSupportedOperation(cp);
+            if (edmobj.getWebserviceIdentifiersByInstanceId().size() > 0) {
+                IdentifierAPI api = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
+                for (WebserviceIdentifier ed : edmobj.getWebserviceIdentifiersByInstanceId()) {
+                    org.epos.eposdatamodel.LinkedEntity cp = api.retrieveLinkedEntity(ed.getIdentifierInstanceId());
+                    o.addIdentifier(cp);
+                }
             }
+
+            if (edmobj.getWebserviceSpatialsByInstanceId().size() > 0) {
+                SpatialAPI api = new SpatialAPI(EntityNames.LOCATION.name(), Spatial.class);
+                for (WebserviceSpatial ed : edmobj.getWebserviceSpatialsByInstanceId()) {
+                    org.epos.eposdatamodel.LinkedEntity cp = api.retrieveLinkedEntity(ed.getSpatialInstanceId());
+                    o.addSpatialExtentItem(cp);
+                }
+            }
+
+            if (edmobj.getWebserviceTemporalsByInstanceId().size() > 0) {
+                TemporalAPI api = new TemporalAPI(EntityNames.PERIODOFTIME.name(), Temporal.class);
+                for (WebserviceTemporal ed : edmobj.getWebserviceTemporalsByInstanceId()) {
+                    org.epos.eposdatamodel.LinkedEntity cp = api.retrieveLinkedEntity(ed.getTemporalInstanceId());
+                    o.addTemporalExtent(cp);
+                }
+            }
+
+            if (edmobj.getOperationWebservicesByInstanceId().size() > 0) {
+                for (OperationWebservice ed : edmobj.getOperationWebservicesByInstanceId()) {
+                    OperationAPI api = new OperationAPI(EntityNames.OPERATION.name(), Operation.class);
+                    LinkedEntity cp = api.retrieveLinkedEntity(ed.getOperationInstanceId());
+                    o.addSupportedOperation(cp);
+                }
+            }
+            /** TODO: RELATION **/
+
+            o = (org.epos.eposdatamodel.WebService) VersioningStatusAPI.retrieveVersion(o);
+
+            return o;
         }
-        /** TODO: RELATION **/
-
-        o = (org.epos.eposdatamodel.WebService) VersioningStatusAPI.retrieveVersion(o);
-
-        return o;
+        return null;
     }
 
     @Override
@@ -370,15 +373,18 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
 
     @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
-        Webservice edmobj = (Webservice) getDbaccess().getOneFromDBByInstanceId(instanceId, Webservice.class).get(0);
+        List<Webservice> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, Webservice.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            Webservice edmobj = elementList.get(0);
+            LinkedEntity o = new LinkedEntity();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setEntityType(EntityNames.WEBSERVICE.name());
 
-        LinkedEntity o = new LinkedEntity();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setEntityType(EntityNames.WEBSERVICE.name());
-
-        return o;
+            return o;
+        }
+        return null;
     }
 
 }

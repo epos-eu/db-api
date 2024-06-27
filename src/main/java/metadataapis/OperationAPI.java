@@ -137,35 +137,38 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
 
     @Override
     public org.epos.eposdatamodel.Operation retrieve(String instanceId) {
-        Operation edmobj = (Operation) getDbaccess().getOneFromDBByInstanceId(instanceId, Operation.class).get(0);
+        List<Operation> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, Operation.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            Operation edmobj = elementList.get(0);
+            org.epos.eposdatamodel.Operation o = new org.epos.eposdatamodel.Operation();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setMethod(edmobj.getMethod());
+            o.setTemplate(edmobj.getTemplate());
 
-        org.epos.eposdatamodel.Operation o = new org.epos.eposdatamodel.Operation();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setMethod(edmobj.getMethod());
-        o.setTemplate(edmobj.getTemplate());
-
-        if(edmobj.getOperationElementsByInstanceId().size()>0) {
-            for(OperationElement ed : edmobj.getOperationElementsByInstanceId()) {
-                Element el = ed.getElementByElementInstanceId();
-                if(el.getType().equals(ElementType.RETURNS)) {
-                    o.addReturns(el.getValue());
+            if (edmobj.getOperationElementsByInstanceId().size() > 0) {
+                for (OperationElement ed : edmobj.getOperationElementsByInstanceId()) {
+                    Element el = ed.getElementByElementInstanceId();
+                    if (el.getType().equals(ElementType.RETURNS)) {
+                        o.addReturns(el.getValue());
+                    }
                 }
             }
-        }
 
-        if(edmobj.getMappingsByInstanceId().size()>0) {
-            for(Mapping ed : edmobj.getMappingsByInstanceId()) {
+            if (edmobj.getMappingsByInstanceId().size() > 0) {
+                for (Mapping ed : edmobj.getMappingsByInstanceId()) {
 
-                MappingAPI api = new MappingAPI(EntityNames.MAPPING.name(), Mapping.class);
-                o.addMapping(api.retrieveLinkedEntity(ed.getInstanceId()));
+                    MappingAPI api = new MappingAPI(EntityNames.MAPPING.name(), Mapping.class);
+                    o.addMapping(api.retrieveLinkedEntity(ed.getInstanceId()));
+                }
             }
+
+            o = (org.epos.eposdatamodel.Operation) VersioningStatusAPI.retrieveVersion(o);
+
+            return o;
         }
-
-        o = (org.epos.eposdatamodel.Operation) VersioningStatusAPI.retrieveVersion(o);
-
-        return o;
+        return null;
     }
 
     @Override
@@ -180,15 +183,18 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
 
     @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
-        Operation edmobj = (Operation) getDbaccess().getOneFromDBByInstanceId(instanceId, Operation.class).get(0);
+        List<Operation> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, Operation.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            Operation edmobj = elementList.get(0);
+            LinkedEntity o = new LinkedEntity();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setEntityType(EntityNames.OPERATION.name());
 
-        LinkedEntity o = new LinkedEntity();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setEntityType(EntityNames.OPERATION.name());
-
-        return o;
+            return o;
+        }
+        return null;
     }
 
 }

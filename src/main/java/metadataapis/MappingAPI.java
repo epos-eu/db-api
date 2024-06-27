@@ -96,35 +96,38 @@ public class MappingAPI extends AbstractAPI<org.epos.eposdatamodel.Mapping> {
 
     @Override
     public org.epos.eposdatamodel.Mapping retrieve(String instanceId) {
-        Mapping edmobj = (Mapping) getDbaccess().getOneFromDBByInstanceId(instanceId, Mapping.class).get(0);
+        List<Mapping> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, Mapping.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            Mapping edmobj = elementList.get(0);
+            org.epos.eposdatamodel.Mapping o = new org.epos.eposdatamodel.Mapping();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setLabel(edmobj.getLabel());
+            o.setValuePattern(edmobj.getValuepattern());
+            o.setDefaultValue(edmobj.getDefaultvalue());
+            o.setMaxValue(edmobj.getMaxvalue());
+            o.setMinValue(edmobj.getMinvalue());
+            o.setMultipleValues(edmobj.getMultipleValues());
+            o.setReadOnlyValue(edmobj.getReadOnlyValue());
+            o.setRequired(Boolean.toString(edmobj.isRequired()));
+            o.setRange(edmobj.getRange());
+            o.setProperty(edmobj.getProperty());
 
-        org.epos.eposdatamodel.Mapping o = new org.epos.eposdatamodel.Mapping();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setLabel(edmobj.getLabel());
-        o.setValuePattern(edmobj.getValuepattern());
-        o.setDefaultValue(edmobj.getDefaultvalue());
-        o.setMaxValue(edmobj.getMaxvalue());
-        o.setMinValue(edmobj.getMinvalue());
-        o.setMultipleValues(edmobj.getMultipleValues());
-        o.setReadOnlyValue(edmobj.getReadOnlyValue());
-        o.setRequired(Boolean.toString(edmobj.isRequired()));
-        o.setRange(edmobj.getRange());
-        o.setProperty(edmobj.getProperty());
-
-        if(edmobj.getMappingElementsByInstanceId().size()>0) {
-            for(MappingElement ed : edmobj.getMappingElementsByInstanceId()) {
-                Element el = ed.getElementByElementInstanceId();
-                if(el.getType().equals(ElementType.PARAMVALUE)) {
-                    o.addParamValue(el.getValue());
+            if (edmobj.getMappingElementsByInstanceId().size() > 0) {
+                for (MappingElement ed : edmobj.getMappingElementsByInstanceId()) {
+                    Element el = ed.getElementByElementInstanceId();
+                    if (el.getType().equals(ElementType.PARAMVALUE)) {
+                        o.addParamValue(el.getValue());
+                    }
                 }
             }
+
+            o = (org.epos.eposdatamodel.Mapping) VersioningStatusAPI.retrieveVersion(o);
+
+            return o;
         }
-
-        o = (org.epos.eposdatamodel.Mapping) VersioningStatusAPI.retrieveVersion(o);
-
-        return o;
+        return null;
     }
 
     @Override
@@ -140,15 +143,18 @@ public class MappingAPI extends AbstractAPI<org.epos.eposdatamodel.Mapping> {
 
     @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
-        Mapping edmobj = (Mapping) getDbaccess().getOneFromDBByInstanceId(instanceId, Mapping.class).get(0);
+        List<Mapping> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, Mapping.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            Mapping edmobj = elementList.get(0);
+            LinkedEntity o = new LinkedEntity();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setEntityType(EntityNames.MAPPING.name());
 
-        LinkedEntity o = new LinkedEntity();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setEntityType(EntityNames.MAPPING.name());
-
-        return o;
+            return o;
+        }
+        return null;
     }
 
 }

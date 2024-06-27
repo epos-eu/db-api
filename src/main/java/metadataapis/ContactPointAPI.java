@@ -106,26 +106,29 @@ public class ContactPointAPI extends AbstractAPI<ContactPoint> {
 
     @Override
     public org.epos.eposdatamodel.ContactPoint retrieve(String instanceId) {
-        Contactpoint edmobj = (Contactpoint) getDbaccess().getOneFromDBByInstanceId(instanceId, Contactpoint.class).get(0);
+        List<Contactpoint> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, Contactpoint.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            Contactpoint edmobj = elementList.get(0);
+            org.epos.eposdatamodel.ContactPoint o = new org.epos.eposdatamodel.ContactPoint();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setRole(edmobj.getRole());
 
-        org.epos.eposdatamodel.ContactPoint o = new org.epos.eposdatamodel.ContactPoint();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setRole(edmobj.getRole());
-
-        if(edmobj.getContactpointElementsByInstanceId().size()>0) {
-            for(ContactpointElement ed : edmobj.getContactpointElementsByInstanceId()) {
-                Element el = ed.getElementByElementInstanceId();
-                if(el.getType().equals(ElementType.TELEPHONE)) o.addTelephone(el.getValue());
-                if(el.getType().equals(ElementType.EMAIL)) o.addEmail(el.getValue());
-                if(el.getType().equals(ElementType.LANGUAGE)) o.addLanguage(el.getValue());
+            if (edmobj.getContactpointElementsByInstanceId().size() > 0) {
+                for (ContactpointElement ed : edmobj.getContactpointElementsByInstanceId()) {
+                    Element el = ed.getElementByElementInstanceId();
+                    if (el.getType().equals(ElementType.TELEPHONE)) o.addTelephone(el.getValue());
+                    if (el.getType().equals(ElementType.EMAIL)) o.addEmail(el.getValue());
+                    if (el.getType().equals(ElementType.LANGUAGE)) o.addLanguage(el.getValue());
+                }
             }
+
+            o = (org.epos.eposdatamodel.ContactPoint) VersioningStatusAPI.retrieveVersion(o);
+
+            return o;
         }
-
-        o = (org.epos.eposdatamodel.ContactPoint) VersioningStatusAPI.retrieveVersion(o);
-
-        return o;
+        return null;
     }
 
     @Override
@@ -140,15 +143,18 @@ public class ContactPointAPI extends AbstractAPI<ContactPoint> {
 
     @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
-        Contactpoint edmobj = (Contactpoint) getDbaccess().getOneFromDBByInstanceId(instanceId, Contactpoint.class).get(0);
+        List<Contactpoint> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, Contactpoint.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            Contactpoint edmobj = elementList.get(0);
+            LinkedEntity o = new LinkedEntity();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setEntityType(EntityNames.CONTACTPOINT.name());
 
-        LinkedEntity o = new LinkedEntity();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setEntityType(EntityNames.CONTACTPOINT.name());
-
-        return o;
+            return o;
+        }
+        return null;
     }
 
 }

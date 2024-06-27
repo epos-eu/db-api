@@ -165,55 +165,58 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
 
     @Override
     public org.epos.eposdatamodel.Person retrieve(String instanceId) {
-        Person edmobj = (Person) getDbaccess().getOneFromDBByInstanceId(instanceId, Person.class).get(0);
+        List<Person> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, Person.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            Person edmobj = elementList.get(0);
+            org.epos.eposdatamodel.Person o = new org.epos.eposdatamodel.Person();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
 
-        org.epos.eposdatamodel.Person o = new org.epos.eposdatamodel.Person();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-
-        if(edmobj.getPersonIdentifiersByInstanceId().size()>0) {
-            IdentifierAPI api = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
-            for(PersonIdentifier ed : edmobj.getPersonIdentifiersByInstanceId()) {
-                Identifier el = ed.getIdentifierByIdentifierInstanceId();
-                o.addIdentifier(api.retrieveLinkedEntity(el.getInstanceId()));
+            if (edmobj.getPersonIdentifiersByInstanceId().size() > 0) {
+                IdentifierAPI api = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
+                for (PersonIdentifier ed : edmobj.getPersonIdentifiersByInstanceId()) {
+                    Identifier el = ed.getIdentifierByIdentifierInstanceId();
+                    o.addIdentifier(api.retrieveLinkedEntity(el.getInstanceId()));
+                }
             }
-        }
 
-        o.setFamilyName(edmobj.getFamilyname());
-        o.setGivenName(edmobj.getGivenname());
+            o.setFamilyName(edmobj.getFamilyname());
+            o.setGivenName(edmobj.getGivenname());
 
 
-        if(edmobj.getAddressByAddressId()!=null) {
-            AddressAPI api = new AddressAPI(EntityNames.ADDRESS.name(), Address.class);
-            o.setAddress(api.retrieveLinkedEntity(edmobj.getAddressByAddressId().getInstanceId()));
-        }
-
-        if(edmobj.getPersonElementsByInstanceId().size()>0) {
-            for(PersonElement ed : edmobj.getPersonElementsByInstanceId()) {
-                Element el = ed.getElementByElementInstanceId();
-                if(el.getType().equals(ElementType.TELEPHONE)) o.addTelephone(el.getValue());
-                if(el.getType().equals(ElementType.EMAIL)) o.addEmail(el.getValue());
+            if (edmobj.getAddressByAddressId() != null) {
+                AddressAPI api = new AddressAPI(EntityNames.ADDRESS.name(), Address.class);
+                o.setAddress(api.retrieveLinkedEntity(edmobj.getAddressByAddressId().getInstanceId()));
             }
-        }
 
-        o.setQualifications(edmobj.getQualifications() != null ?
-                Arrays.stream(edmobj.getQualifications().split(", ")).collect(Collectors.toList())
-                : new ArrayList<>());
-
-        o.setCVURL(edmobj.getCvurl());
-
-        if (edmobj.getOrganizationAffiliationsByInstanceId() != null) {
-            o.setAffiliation(new LinkedList<>());
-            for(OrganizationAffiliation organizationAffiliation : edmobj.getOrganizationAffiliationsByInstanceId()){
-                OrganizationAPI organizationAPI = new OrganizationAPI(EntityNames.ORGANIZATION.name(), Organization.class);
-                o.addAffiliation(organizationAPI.retrieveLinkedEntity(organizationAffiliation.getOrganizationInstanceId()));
+            if (edmobj.getPersonElementsByInstanceId().size() > 0) {
+                for (PersonElement ed : edmobj.getPersonElementsByInstanceId()) {
+                    Element el = ed.getElementByElementInstanceId();
+                    if (el.getType().equals(ElementType.TELEPHONE)) o.addTelephone(el.getValue());
+                    if (el.getType().equals(ElementType.EMAIL)) o.addEmail(el.getValue());
+                }
             }
+
+            o.setQualifications(edmobj.getQualifications() != null ?
+                    Arrays.stream(edmobj.getQualifications().split(", ")).collect(Collectors.toList())
+                    : new ArrayList<>());
+
+            o.setCVURL(edmobj.getCvurl());
+
+            if (edmobj.getOrganizationAffiliationsByInstanceId() != null) {
+                o.setAffiliation(new LinkedList<>());
+                for (OrganizationAffiliation organizationAffiliation : edmobj.getOrganizationAffiliationsByInstanceId()) {
+                    OrganizationAPI organizationAPI = new OrganizationAPI(EntityNames.ORGANIZATION.name(), Organization.class);
+                    o.addAffiliation(organizationAPI.retrieveLinkedEntity(organizationAffiliation.getOrganizationInstanceId()));
+                }
+            }
+
+            o = (org.epos.eposdatamodel.Person) VersioningStatusAPI.retrieveVersion(o);
+
+            return o;
         }
-
-        o = (org.epos.eposdatamodel.Person) VersioningStatusAPI.retrieveVersion(o);
-
-        return o;
+        return null;
     }
 
     @Override
@@ -229,15 +232,18 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
 
     @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
-        Person edmobj = (Person) getDbaccess().getOneFromDBByInstanceId(instanceId, Person.class).get(0);
+        List<Person> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, Person.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            Person edmobj = elementList.get(0);
+            LinkedEntity o = new LinkedEntity();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setEntityType(EntityNames.PERSON.name());
 
-        LinkedEntity o = new LinkedEntity();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setEntityType(EntityNames.PERSON.name());
-
-        return o;
+            return o;
+        }
+        return null;
     }
 
 }

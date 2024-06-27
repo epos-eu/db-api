@@ -2,6 +2,7 @@ package commonapis;
 
 import abstractapis.AbstractAPI;
 import metadataapis.EntityNames;
+import model.Identifier;
 import model.OrganizationLegalname;
 import model.Temporal;
 import org.epos.eposdatamodel.LinkedEntity;
@@ -55,18 +56,22 @@ public class LegalNameAPI extends AbstractAPI<org.epos.eposdatamodel.LegalName> 
 
     @Override
     public org.epos.eposdatamodel.LegalName retrieve(String instanceId) {
-        OrganizationLegalname edmobj = (OrganizationLegalname) getDbaccess().getOneFromDBByInstanceId(instanceId, OrganizationLegalname.class).get(0);
-        org.epos.eposdatamodel.LegalName o = new org.epos.eposdatamodel.LegalName();
+        List<OrganizationLegalname> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, OrganizationLegalname.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            OrganizationLegalname edmobj = elementList.get(0);
+            org.epos.eposdatamodel.LegalName o = new org.epos.eposdatamodel.LegalName();
 
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setLanguage(Optional.ofNullable(edmobj.getLanguage()).orElse(null));
-        o.setLegalname(Optional.ofNullable(edmobj.getLegalname()).orElse(null));
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setLanguage(Optional.ofNullable(edmobj.getLanguage()).orElse(null));
+            o.setLegalname(Optional.ofNullable(edmobj.getLegalname()).orElse(null));
 
-        o = (org.epos.eposdatamodel.LegalName) VersioningStatusAPI.retrieveVersion(o);
+            o = (org.epos.eposdatamodel.LegalName) VersioningStatusAPI.retrieveVersion(o);
 
-        return o;
+            return o;
+        }
+        return null;
     }
 
     @Override
@@ -81,15 +86,18 @@ public class LegalNameAPI extends AbstractAPI<org.epos.eposdatamodel.LegalName> 
 
     @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
-        OrganizationLegalname edmobj = (OrganizationLegalname) getDbaccess().getOneFromDBByInstanceId(instanceId, OrganizationLegalname.class).get(0);
+        List<OrganizationLegalname> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, OrganizationLegalname.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            OrganizationLegalname edmobj = elementList.get(0);
+            LinkedEntity o = new LinkedEntity();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setEntityType(EntityNames.LEGALNAME.name());
 
-        LinkedEntity o = new LinkedEntity();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setEntityType(EntityNames.LEGALNAME.name());
-
-        return o;
+            return o;
+        }
+        return null;
     }
 
 

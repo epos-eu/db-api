@@ -126,58 +126,61 @@ public class SoftwareSourceCodeAPI extends AbstractAPI<org.epos.eposdatamodel.So
 
     @Override
     public org.epos.eposdatamodel.SoftwareSourceCode retrieve(String instanceId) {
-        SoftwareSourceCode edmobj = (SoftwareSourceCode) getDbaccess().getOneFromDBByInstanceId(instanceId, SoftwareSourceCode.class).get(0);
+        List<SoftwareSourceCode> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, SoftwareSourceCode.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            SoftwareSourceCode edmobj = elementList.get(0);
+            org.epos.eposdatamodel.SoftwareSourceCode o = new org.epos.eposdatamodel.SoftwareSourceCode();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setName(edmobj.getName());
+            o.setDescription(edmobj.getDescription());
+            o.setDownloadURL(edmobj.getDownloadurl());
+            o.addKeywords(edmobj.getKeywords());
+            o.setLicenseURL(edmobj.getLicenseurl());
+            o.setMainEntityofPage(edmobj.getMainentityofpage());
+            o.setRuntimePlatform(edmobj.getRuntimeplatform());
+            o.setSoftwareVersion(edmobj.getSoftwareversion());
+            o.setCodeRepository(edmobj.getCoderepository());
 
-        org.epos.eposdatamodel.SoftwareSourceCode o = new org.epos.eposdatamodel.SoftwareSourceCode();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setName(edmobj.getName());
-        o.setDescription(edmobj.getDescription());
-        o.setDownloadURL(edmobj.getDownloadurl());
-        o.addKeywords(edmobj.getKeywords());
-        o.setLicenseURL(edmobj.getLicenseurl());
-        o.setMainEntityofPage(edmobj.getMainentityofpage());
-        o.setRuntimePlatform(edmobj.getRuntimeplatform());
-        o.setSoftwareVersion(edmobj.getSoftwareversion());
-        o.setCodeRepository(edmobj.getCoderepository());
 
-
-        if(edmobj.getSoftwaresourcecodeCategoriesByInstanceId().size()>0) {
-            CategoryAPI api = new CategoryAPI(EntityNames.CATEGORY.name(), Category.class);
-            for(SoftwaresourcecodeCategory ed : edmobj.getSoftwaresourcecodeCategoriesByInstanceId()) {
-                LinkedEntity cp = api.retrieveLinkedEntity(ed.getCategoryInstanceId());
-                o.addCategory(cp);
-            }
-        }
-
-        if(edmobj.getSoftwaresourcecodeContactpointsByInstanceId().size()>0) {
-            ContactPointAPI api = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), Contactpoint.class);
-            for(SoftwaresourcecodeContactpoint ed : edmobj.getSoftwaresourcecodeContactpointsByInstanceId()) {
-                LinkedEntity cp = api.retrieveLinkedEntity(ed.getContactpointInstanceId());
-                o.addContactPoint(cp);
-            }
-        }
-
-        if(edmobj.getSoftwaresourcecodeIdentifiersByInstanceId().size()>0) {
-            IdentifierAPI api = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
-            for(SoftwaresourcecodeIdentifier ed : edmobj.getSoftwaresourcecodeIdentifiersByInstanceId()) {
-                org.epos.eposdatamodel.LinkedEntity cp = api.retrieveLinkedEntity(ed.getIdentifierInstanceId());
-                o.addIdentifier(cp);
-            }
-        }
-        if(edmobj.getSoftwaresourcecodeElementsByInstanceId().size()>0) {
-            for(SoftwaresourcecodeElement ed : edmobj.getSoftwaresourcecodeElementsByInstanceId()) {
-                Element el = ed.getElementByElementInstanceId();
-                if(el.getType().equals(ElementType.PROGRAMMINGLANGUAGE)) {
-                    o.addProgrammingLanguage(el.getValue());
+            if (edmobj.getSoftwaresourcecodeCategoriesByInstanceId().size() > 0) {
+                CategoryAPI api = new CategoryAPI(EntityNames.CATEGORY.name(), Category.class);
+                for (SoftwaresourcecodeCategory ed : edmobj.getSoftwaresourcecodeCategoriesByInstanceId()) {
+                    LinkedEntity cp = api.retrieveLinkedEntity(ed.getCategoryInstanceId());
+                    o.addCategory(cp);
                 }
             }
+
+            if (edmobj.getSoftwaresourcecodeContactpointsByInstanceId().size() > 0) {
+                ContactPointAPI api = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), Contactpoint.class);
+                for (SoftwaresourcecodeContactpoint ed : edmobj.getSoftwaresourcecodeContactpointsByInstanceId()) {
+                    LinkedEntity cp = api.retrieveLinkedEntity(ed.getContactpointInstanceId());
+                    o.addContactPoint(cp);
+                }
+            }
+
+            if (edmobj.getSoftwaresourcecodeIdentifiersByInstanceId().size() > 0) {
+                IdentifierAPI api = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
+                for (SoftwaresourcecodeIdentifier ed : edmobj.getSoftwaresourcecodeIdentifiersByInstanceId()) {
+                    org.epos.eposdatamodel.LinkedEntity cp = api.retrieveLinkedEntity(ed.getIdentifierInstanceId());
+                    o.addIdentifier(cp);
+                }
+            }
+            if (edmobj.getSoftwaresourcecodeElementsByInstanceId().size() > 0) {
+                for (SoftwaresourcecodeElement ed : edmobj.getSoftwaresourcecodeElementsByInstanceId()) {
+                    Element el = ed.getElementByElementInstanceId();
+                    if (el.getType().equals(ElementType.PROGRAMMINGLANGUAGE)) {
+                        o.addProgrammingLanguage(el.getValue());
+                    }
+                }
+            }
+
+            o = (org.epos.eposdatamodel.SoftwareSourceCode) VersioningStatusAPI.retrieveVersion(o);
+
+            return o;
         }
-
-        o = (org.epos.eposdatamodel.SoftwareSourceCode) VersioningStatusAPI.retrieveVersion(o);
-
-        return o;
+        return null;
     }
 
     @Override
@@ -192,14 +195,17 @@ public class SoftwareSourceCodeAPI extends AbstractAPI<org.epos.eposdatamodel.So
 
     @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
-        SoftwareSourceCode edmobj = (SoftwareSourceCode) getDbaccess().getOneFromDBByInstanceId(instanceId, SoftwareSourceCode.class).get(0);
+        List<SoftwareSourceCode> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, SoftwareSourceCode.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            SoftwareSourceCode edmobj = elementList.get(0);
+            LinkedEntity o = new LinkedEntity();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setEntityType(EntityNames.SOFTWARESOURCECODE.name());
 
-        LinkedEntity o = new LinkedEntity();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setEntityType(EntityNames.SOFTWARESOURCECODE.name());
-
-        return o;
+            return o;
+        }
+        return null;
     }
 }

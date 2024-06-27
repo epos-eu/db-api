@@ -199,67 +199,70 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
 
     @Override
     public org.epos.eposdatamodel.Facility retrieve(String instanceId) {
-        Facility edmobj = (Facility) getDbaccess().getOneFromDBByInstanceId(instanceId, Facility.class).get(0);
+        List<Facility> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, Facility.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            Facility edmobj = elementList.get(0);
+            org.epos.eposdatamodel.Facility o = new org.epos.eposdatamodel.Facility();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setType(edmobj.getType());
+            o.setIdentifier(edmobj.getIdentifier());
+            o.setDescription(edmobj.getDescription());
+            o.setTitle(edmobj.getTitle());
+            o.setKeywords(edmobj.getKeywords());
 
-        org.epos.eposdatamodel.Facility o = new org.epos.eposdatamodel.Facility();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setType(edmobj.getType());
-        o.setIdentifier(edmobj.getIdentifier());
-        o.setDescription(edmobj.getDescription());
-        o.setTitle(edmobj.getTitle());
-        o.setKeywords(edmobj.getKeywords());
-
-        if(edmobj.getFacilityCategoriesByInstanceId().size()>0) {
-            for(FacilityCategory ed : edmobj.getFacilityCategoriesByInstanceId()) {
-                CategoryAPI api = new CategoryAPI(EntityNames.CATEGORY.name(), Category.class);
-                LinkedEntity cp = api.retrieveLinkedEntity(ed.getCategoryInstanceId());
-                o.addCategory(cp);
+            if (edmobj.getFacilityCategoriesByInstanceId().size() > 0) {
+                for (FacilityCategory ed : edmobj.getFacilityCategoriesByInstanceId()) {
+                    CategoryAPI api = new CategoryAPI(EntityNames.CATEGORY.name(), Category.class);
+                    LinkedEntity cp = api.retrieveLinkedEntity(ed.getCategoryInstanceId());
+                    o.addCategory(cp);
+                }
             }
-        }
 
-        if(edmobj.getFacilityContactpointsByInstanceId().size()>0) {
-            for(FacilityContactpoint ed : edmobj.getFacilityContactpointsByInstanceId()) {
-                ContactPointAPI api = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), Contactpoint.class);
-                LinkedEntity cp = api.retrieveLinkedEntity(ed.getContactpointInstanceId());
-                o.addContactPoint(cp);
+            if (edmobj.getFacilityContactpointsByInstanceId().size() > 0) {
+                for (FacilityContactpoint ed : edmobj.getFacilityContactpointsByInstanceId()) {
+                    ContactPointAPI api = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), Contactpoint.class);
+                    LinkedEntity cp = api.retrieveLinkedEntity(ed.getContactpointInstanceId());
+                    o.addContactPoint(cp);
+                }
             }
-        }
 
-        if(edmobj.getFacilityAddressesByInstanceId().size()>0) {
-            for(FacilityAddress ed : edmobj.getFacilityAddressesByInstanceId()) {
-                AddressAPI api = new AddressAPI(EntityNames.ADDRESS.name(), Address.class);
-                LinkedEntity cp = api.retrieveLinkedEntity(ed.getAddressInstanceId());
-                o.addAddress(cp);
+            if (edmobj.getFacilityAddressesByInstanceId().size() > 0) {
+                for (FacilityAddress ed : edmobj.getFacilityAddressesByInstanceId()) {
+                    AddressAPI api = new AddressAPI(EntityNames.ADDRESS.name(), Address.class);
+                    LinkedEntity cp = api.retrieveLinkedEntity(ed.getAddressInstanceId());
+                    o.addAddress(cp);
+                }
             }
-        }
 
-        if(edmobj.getFacilityIspartofsByInstanceId().size()>0) {
-            for(FacilityIspartof ed : edmobj.getFacilityIspartofsByInstanceId()) {
-                LinkedEntity cp = retrieveLinkedEntity(ed.getFacility2InstanceId());
-                o.addIsPartOf(cp);
+            if (edmobj.getFacilityIspartofsByInstanceId().size() > 0) {
+                for (FacilityIspartof ed : edmobj.getFacilityIspartofsByInstanceId()) {
+                    LinkedEntity cp = retrieveLinkedEntity(ed.getFacility2InstanceId());
+                    o.addIsPartOf(cp);
+                }
             }
-        }
 
-        if(edmobj.getFacilitySpatialsByInstanceId().size()>0) {
-            for(FacilitySpatial ed : edmobj.getFacilitySpatialsByInstanceId()) {
-                SpatialAPI api = new SpatialAPI(EntityNames.LOCATION.name(), Spatial.class);
-                org.epos.eposdatamodel.LinkedEntity cp = api.retrieveLinkedEntity(ed.getSpatialInstanceId());
-                o.addSpatialExtentItem(cp);
+            if (edmobj.getFacilitySpatialsByInstanceId().size() > 0) {
+                for (FacilitySpatial ed : edmobj.getFacilitySpatialsByInstanceId()) {
+                    SpatialAPI api = new SpatialAPI(EntityNames.LOCATION.name(), Spatial.class);
+                    org.epos.eposdatamodel.LinkedEntity cp = api.retrieveLinkedEntity(ed.getSpatialInstanceId());
+                    o.addSpatialExtentItem(cp);
+                }
             }
-        }
 
-        if(edmobj.getFacilityElementsByInstanceId().size()>0) {
-            for(FacilityElement ed : edmobj.getFacilityElementsByInstanceId()) {
-                Element el = ed.getElementByElementInstanceId();
-                if(el.getType().equals(ElementType.PAGEURL)) o.addPageURL(el.getValue());
+            if (edmobj.getFacilityElementsByInstanceId().size() > 0) {
+                for (FacilityElement ed : edmobj.getFacilityElementsByInstanceId()) {
+                    Element el = ed.getElementByElementInstanceId();
+                    if (el.getType().equals(ElementType.PAGEURL)) o.addPageURL(el.getValue());
+                }
             }
+
+            o = (org.epos.eposdatamodel.Facility) VersioningStatusAPI.retrieveVersion(o);
+
+            return o;
         }
-
-        o = (org.epos.eposdatamodel.Facility) VersioningStatusAPI.retrieveVersion(o);
-
-        return o;
+        return null;
     }
 
     @Override
@@ -275,15 +278,18 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
 
     @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
-        Facility edmobj = (Facility) getDbaccess().getOneFromDBByInstanceId(instanceId, Facility.class).get(0);
+        List<Facility> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, Facility.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            Facility edmobj = elementList.get(0);
+            LinkedEntity o = new LinkedEntity();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setEntityType(EntityNames.FACILITY.name());
 
-        LinkedEntity o = new LinkedEntity();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setEntityType(EntityNames.FACILITY.name());
-
-        return o;
+            return o;
+        }
+        return null;
     }
 
 }

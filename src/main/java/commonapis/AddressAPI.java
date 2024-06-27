@@ -59,20 +59,24 @@ public class AddressAPI extends AbstractAPI<org.epos.eposdatamodel.Address> {
 
     @Override
     public org.epos.eposdatamodel.Address retrieve(String instanceId) {
-        Address edmobj = (Address) getDbaccess().getOneFromDBByInstanceId(instanceId, Address.class).get(0);
-        org.epos.eposdatamodel.Address o = new org.epos.eposdatamodel.Address();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setStreet(edmobj.getStreet());
-        o.setCountry(edmobj.getCountry());
-        o.setPostalCode(edmobj.getPostalCode());
-        o.setCountryCode(edmobj.getCountrycode());
-        o.setLocality(edmobj.getLocality());
+        List<Address> addressList = getDbaccess().getOneFromDBByInstanceId(instanceId, Address.class);
+        if(addressList!=null && !addressList.isEmpty()) {
+            Address edmobj = addressList.get(0);
+            org.epos.eposdatamodel.Address o = new org.epos.eposdatamodel.Address();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setStreet(edmobj.getStreet());
+            o.setCountry(edmobj.getCountry());
+            o.setPostalCode(edmobj.getPostalCode());
+            o.setCountryCode(edmobj.getCountrycode());
+            o.setLocality(edmobj.getLocality());
 
-        o = (org.epos.eposdatamodel.Address) VersioningStatusAPI.retrieveVersion(o);
+            o = (org.epos.eposdatamodel.Address) VersioningStatusAPI.retrieveVersion(o);
 
-        return o;
+            return o;
+        }
+        return null;
     }
 
     @Override
@@ -87,15 +91,18 @@ public class AddressAPI extends AbstractAPI<org.epos.eposdatamodel.Address> {
 
     @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
-        Address edmobj = (Address) getDbaccess().getOneFromDBByInstanceId(instanceId, Address.class).get(0);
+        List<Address> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, Address.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            Address edmobj = elementList.get(0);
+            LinkedEntity o = new LinkedEntity();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setEntityType(EntityNames.ADDRESS.name());
 
-        LinkedEntity o = new LinkedEntity();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setEntityType(EntityNames.ADDRESS.name());
-
-        return o;
+            return o;
+        }
+        return null;
     }
 
 

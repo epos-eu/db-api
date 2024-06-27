@@ -1,24 +1,25 @@
 package dao;
 
 import model.Versioningstatus;
-import org.epos.handler.dbapi.service.DBService;
 
 import jakarta.persistence.EntityManager;
+import org.epos.handler.dbapi.service.EntityManagerService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class EposDataModelDAO<T> {
-	
-	private final DBService entityManager;
+
+    protected static Logger LOG = Logger.getGlobal();
 
     public  EposDataModelDAO(){
-        this.entityManager = new DBService();
+        if(EntityManagerService.getInstance()==null) new EntityManagerService.EntityManagerServiceBuilder().build();
     }
 
     public Boolean createObject(T entity) {
+        EntityManager em = EntityManagerService.getInstance().createEntityManager();
         try {
-            EntityManager em = entityManager.getEntityManager();
             em.getTransaction().begin();
             em.persist(entity);
             em.getTransaction().commit();
@@ -30,7 +31,7 @@ public class EposDataModelDAO<T> {
     }
 
     public List<T> getOneFromDBBySpecificKey(String key, String value, Class<T> obj){
-        EntityManager em = entityManager.getEntityManager();
+        EntityManager em = EntityManagerService.getInstance().createEntityManager();
         em.getTransaction().begin();
         List resultList = em.createQuery(
                         "SELECT c FROM "+obj.getSimpleName()+" c WHERE c."+key+ " LIKE :value")
@@ -41,7 +42,7 @@ public class EposDataModelDAO<T> {
     }
 
     public List<T> getOneFromDBByInstanceId(String instanceId, Class<T> obj){
-        EntityManager em = entityManager.getEntityManager();
+        EntityManager em = EntityManagerService.getInstance().createEntityManager();
         em.getTransaction().begin();
         List resultList = em.createQuery(
                         "SELECT c FROM "+obj.getSimpleName()+" c WHERE c.instanceId LIKE :instanceId")
@@ -52,7 +53,7 @@ public class EposDataModelDAO<T> {
     }
 
     public List<T> getOneFromDBByMetaId(String metaId, Class<T> obj){
-        EntityManager em = entityManager.getEntityManager();
+        EntityManager em = EntityManagerService.getInstance().createEntityManager();
         em.getTransaction().begin();
         List resultList = em.createQuery(
                         "SELECT c FROM "+obj.getSimpleName()+" c WHERE c.metaId LIKE :metaId")
@@ -63,7 +64,7 @@ public class EposDataModelDAO<T> {
     }
 
     public List<T> getOneFromDBByUID(String uid, Class<T> obj){
-        EntityManager em = entityManager.getEntityManager();
+        EntityManager em = EntityManagerService.getInstance().createEntityManager();
         em.getTransaction().begin();
         List resultList = em.createQuery(
                         "SELECT c FROM "+obj.getSimpleName()+" c WHERE c.uid LIKE :uid")
@@ -74,7 +75,7 @@ public class EposDataModelDAO<T> {
     }
 
     public List<T> getOneFromDBByVersionID(String versionId, Class<T> obj){
-        EntityManager em = entityManager.getEntityManager();
+        EntityManager em = EntityManagerService.getInstance().createEntityManager();
         em.getTransaction().begin();
         List resultList = em.createQuery(
                         "SELECT c FROM "+obj.getSimpleName()+" c WHERE c.versionId LIKE :versionId")
@@ -107,12 +108,13 @@ public class EposDataModelDAO<T> {
     }
 
     public List<Versioningstatus> getVersionsFromDBByVersionId(String versionId){
-        Versioningstatus objReturn = entityManager.getEntityManager().find(Versioningstatus.class, versionId);
+        EntityManager em = EntityManagerService.getInstance().createEntityManager();
+        Versioningstatus objReturn = em.find(Versioningstatus.class, versionId);
         return objReturn==null? List.of() : List.of(objReturn);
     }
 
     public List<T> getAllFromDB(Class<T> obj){
-        EntityManager em = entityManager.getEntityManager();
+        EntityManager em = EntityManagerService.getInstance().createEntityManager();
         em.getTransaction().begin();
         List resultList = em.createQuery(
                         "SELECT c FROM "+obj.getSimpleName()+" c")
@@ -122,9 +124,9 @@ public class EposDataModelDAO<T> {
     }
 
     public Boolean updateObject(T obj) {
+        EntityManager em = EntityManagerService.getInstance().createEntityManager();
         if (obj == null) return false;
         try {
-            EntityManager em = entityManager.getEntityManager();
             em.getTransaction().begin();
             em.merge(obj);
             em.getTransaction().commit();
@@ -136,17 +138,19 @@ public class EposDataModelDAO<T> {
     }
 
     public Boolean deleteObject(T obj) {
+        EntityManager em = EntityManagerService.getInstance().createEntityManager();
         try {
-            EntityManager em = entityManager.getEntityManager();
+            LOG.info(Boolean.toString(em.contains(obj)));
             if (!em.contains(obj)) {
                 em.getTransaction().begin();
                 T target = em.merge(obj);
+                LOG.info(target.toString());
                 em.remove(target);
                 em.getTransaction().commit();
             }
             return true;
         }catch(Exception exception){
-            System.err.println(exception.getLocalizedMessage());
+            LOG.severe(exception.getLocalizedMessage());
             return false;
         }
     }

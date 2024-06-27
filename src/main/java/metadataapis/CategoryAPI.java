@@ -131,41 +131,45 @@ public class CategoryAPI extends AbstractAPI<org.epos.eposdatamodel.Category> {
 
     @Override
     public org.epos.eposdatamodel.Category retrieve(String instanceId) {
-        Category edmobj = (Category) getDbaccess().getOneFromDBByInstanceId(instanceId, Category.class).get(0);
+        List<Category> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, Category.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            Category edmobj = elementList.get(0);
 
-        org.epos.eposdatamodel.Category o = new org.epos.eposdatamodel.Category();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setName(edmobj.getName());
-        o.setDescription(edmobj.getDescription());
-        if(edmobj.getInScheme()!=null){
-            CategorySchemeAPI csapi = new CategorySchemeAPI(EntityNames.CATEGORYSCHEME.name(), CategoryScheme.class);
-            o.setInScheme(csapi.retrieveLinkedEntity(edmobj.getInScheme()));
-        }
-
-        edmobj.getCategoryIspartofsByInstanceId_0().isEmpty();
-        edmobj.getCategoryIspartofsByInstanceId().isEmpty();
-
-        if(edmobj.getCategoryIspartofsByInstanceId_0().size()>0) {
-            ArrayList<LinkedEntity> broaders = new ArrayList<>();
-            for(CategoryIspartof ed : edmobj.getCategoryIspartofsByInstanceId_0()) {
-                broaders.add(retrieveLinkedEntity(ed.getCategory1InstanceId()));
+            org.epos.eposdatamodel.Category o = new org.epos.eposdatamodel.Category();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setName(edmobj.getName());
+            o.setDescription(edmobj.getDescription());
+            if (edmobj.getInScheme() != null) {
+                CategorySchemeAPI csapi = new CategorySchemeAPI(EntityNames.CATEGORYSCHEME.name(), CategoryScheme.class);
+                o.setInScheme(csapi.retrieveLinkedEntity(edmobj.getInScheme()));
             }
-            o.setBroader(broaders);
-        }
 
-        if(edmobj.getCategoryIspartofsByInstanceId().size()>0) {
-            ArrayList<LinkedEntity> narrowers = new ArrayList<>();
-            for(CategoryIspartof ed : edmobj.getCategoryIspartofsByInstanceId()) {
-                narrowers.add(retrieveLinkedEntity(ed.getCategory2InstanceId()));
+            edmobj.getCategoryIspartofsByInstanceId_0().isEmpty();
+            edmobj.getCategoryIspartofsByInstanceId().isEmpty();
+
+            if (edmobj.getCategoryIspartofsByInstanceId_0().size() > 0) {
+                ArrayList<LinkedEntity> broaders = new ArrayList<>();
+                for (CategoryIspartof ed : edmobj.getCategoryIspartofsByInstanceId_0()) {
+                    broaders.add(retrieveLinkedEntity(ed.getCategory1InstanceId()));
+                }
+                o.setBroader(broaders);
             }
-            o.setNarrower(narrowers);
+
+            if (edmobj.getCategoryIspartofsByInstanceId().size() > 0) {
+                ArrayList<LinkedEntity> narrowers = new ArrayList<>();
+                for (CategoryIspartof ed : edmobj.getCategoryIspartofsByInstanceId()) {
+                    narrowers.add(retrieveLinkedEntity(ed.getCategory2InstanceId()));
+                }
+                o.setNarrower(narrowers);
+            }
+
+            o = (org.epos.eposdatamodel.Category) VersioningStatusAPI.retrieveVersion(o);
+
+            return o;
         }
-
-        o = (org.epos.eposdatamodel.Category) VersioningStatusAPI.retrieveVersion(o);
-
-        return o;
+        return null;
     }
 
     @Override
@@ -180,15 +184,19 @@ public class CategoryAPI extends AbstractAPI<org.epos.eposdatamodel.Category> {
 
     @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
-        Category edmobj = (Category) getDbaccess().getOneFromDBByInstanceId(instanceId, Category.class).get(0);
+        List<Category> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, Category.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            Category edmobj = elementList.get(0);
 
-        LinkedEntity o = new LinkedEntity();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setEntityType(EntityNames.CATEGORY.name());
+            LinkedEntity o = new LinkedEntity();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setEntityType(EntityNames.CATEGORY.name());
 
-        return o;
+            return o;
+        }
+        return null;
     }
 
 }

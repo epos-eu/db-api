@@ -55,18 +55,22 @@ public class TemporalAPI extends AbstractAPI<org.epos.eposdatamodel.PeriodOfTime
 
     @Override
     public org.epos.eposdatamodel.PeriodOfTime retrieve(String instanceId) {
-        Temporal edmobj = (Temporal) getDbaccess().getOneFromDBByInstanceId(instanceId, Temporal.class).get(0);
-        org.epos.eposdatamodel.PeriodOfTime o = new org.epos.eposdatamodel.PeriodOfTime();
+        List<Temporal> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, Temporal.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            Temporal edmobj = elementList.get(0);
+            org.epos.eposdatamodel.PeriodOfTime o = new org.epos.eposdatamodel.PeriodOfTime();
 
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setStartDate(edmobj.getStartdate()!=null? edmobj.getStartdate().toLocalDateTime() : null);
-        o.setEndDate(edmobj.getEnddate()!=null? edmobj.getEnddate().toLocalDateTime() : null);
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setStartDate(edmobj.getStartdate() != null ? edmobj.getStartdate().toLocalDateTime() : null);
+            o.setEndDate(edmobj.getEnddate() != null ? edmobj.getEnddate().toLocalDateTime() : null);
 
-        o = (org.epos.eposdatamodel.PeriodOfTime) VersioningStatusAPI.retrieveVersion(o);
+            o = (org.epos.eposdatamodel.PeriodOfTime) VersioningStatusAPI.retrieveVersion(o);
 
-        return o;
+            return o;
+        }
+        return null;
     }
 
     @Override
@@ -81,15 +85,18 @@ public class TemporalAPI extends AbstractAPI<org.epos.eposdatamodel.PeriodOfTime
 
     @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
-        Temporal edmobj = (Temporal) getDbaccess().getOneFromDBByInstanceId(instanceId, Temporal.class).get(0);
+        List<Temporal> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, Temporal.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            Temporal edmobj = elementList.get(0);
+            LinkedEntity o = new LinkedEntity();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setEntityType(EntityNames.PERIODOFTIME.name());
 
-        LinkedEntity o = new LinkedEntity();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setEntityType(EntityNames.PERIODOFTIME.name());
-
-        return o;
+            return o;
+        }
+        return null;
     }
 
 

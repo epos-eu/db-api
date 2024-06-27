@@ -55,17 +55,21 @@ public class IdentifierAPI extends AbstractAPI<org.epos.eposdatamodel.Identifier
 
     @Override
     public org.epos.eposdatamodel.Identifier retrieve(String instanceId) {
-        Identifier edmobj = (Identifier) getDbaccess().getOneFromDBByInstanceId(instanceId, Identifier.class).get(0);
-        org.epos.eposdatamodel.Identifier o = new org.epos.eposdatamodel.Identifier();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setType(edmobj.getType());
-        o.setIdentifier(edmobj.getValue());
+        List<Identifier> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, Identifier.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            Identifier edmobj = elementList.get(0);
+            org.epos.eposdatamodel.Identifier o = new org.epos.eposdatamodel.Identifier();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setType(edmobj.getType());
+            o.setIdentifier(edmobj.getValue());
 
-        o = (org.epos.eposdatamodel.Identifier) VersioningStatusAPI.retrieveVersion(o);
+            o = (org.epos.eposdatamodel.Identifier) VersioningStatusAPI.retrieveVersion(o);
 
-        return o;
+            return o;
+        }
+        return null;
     }
 
     @Override
@@ -80,15 +84,18 @@ public class IdentifierAPI extends AbstractAPI<org.epos.eposdatamodel.Identifier
 
     @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
-        Identifier edmobj = (Identifier) getDbaccess().getOneFromDBByInstanceId(instanceId, Identifier.class).get(0);
+        List<Identifier> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, Identifier.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            Identifier edmobj = elementList.get(0);
+            LinkedEntity o = new LinkedEntity();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setEntityType(EntityNames.IDENTIFIER.name());
 
-        LinkedEntity o = new LinkedEntity();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setEntityType(EntityNames.IDENTIFIER.name());
-
-        return o;
+            return o;
+        }
+        return null;
     }
 
 }

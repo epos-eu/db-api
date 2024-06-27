@@ -25,7 +25,7 @@ public class UserGroupManagementAPI {
         user1.setFamilyname(user.getLastName());
         user1.setIsadmin(Boolean.toString(user.getIsAdmin().booleanValue()));
 
-        return getDbaccess().createObject(user1);
+        return getDbaccess().updateObject(user1);
     }
 
     public static org.epos.eposdatamodel.User retrieveUser(org.epos.eposdatamodel.User user){

@@ -57,25 +57,25 @@ public class Identifier extends EPOSDataModelEntity{
         this.identifier = identifier;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Identifier that = (Identifier) o;
+        return Objects.equals(type, that.type) && Objects.equals(identifier, that.identifier);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), type, identifier);
+    }
 
     @Override
     public String toString() {
         return "Identifier{" +
                 "type='" + type + '\'' +
                 ", identifier='" + identifier + '\'' +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Identifier that = (Identifier) o;
-        return Objects.equals(getType(), that.getType()) && Objects.equals(getIdentifier(), that.getIdentifier());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getType(), getIdentifier());
+                '}'+ super.toString();
     }
 }

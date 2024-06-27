@@ -55,18 +55,22 @@ public class QuantitativeValueAPI extends AbstractAPI<org.epos.eposdatamodel.Qua
 
     @Override
     public org.epos.eposdatamodel.QuantitativeValue retrieve(String instanceId) {
-        QuantitativeValue edmobj = (QuantitativeValue) getDbaccess().getOneFromDBByInstanceId(instanceId, QuantitativeValue.class).get(0);
-        org.epos.eposdatamodel.QuantitativeValue o = new org.epos.eposdatamodel.QuantitativeValue();
+        List<QuantitativeValue> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, QuantitativeValue.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            QuantitativeValue edmobj = elementList.get(0);
+            org.epos.eposdatamodel.QuantitativeValue o = new org.epos.eposdatamodel.QuantitativeValue();
 
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setUnit(edmobj.getUnicode());
-        o.setValue(edmobj.getValue());
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setUnit(edmobj.getUnicode());
+            o.setValue(edmobj.getValue());
 
-        o = (org.epos.eposdatamodel.QuantitativeValue) VersioningStatusAPI.retrieveVersion(o);
+            o = (org.epos.eposdatamodel.QuantitativeValue) VersioningStatusAPI.retrieveVersion(o);
 
-        return o;
+            return o;
+        }
+        return null;
     }
 
     @Override
@@ -81,16 +85,17 @@ public class QuantitativeValueAPI extends AbstractAPI<org.epos.eposdatamodel.Qua
 
     @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
-        QuantitativeValue edmobj = (QuantitativeValue) getDbaccess().getOneFromDBByInstanceId(instanceId, QuantitativeValue.class).get(0);
+        List<QuantitativeValue> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, QuantitativeValue.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            QuantitativeValue edmobj = elementList.get(0);
+            LinkedEntity o = new LinkedEntity();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setEntityType(EntityNames.QUANTITATIVEVALUE.name());
 
-        LinkedEntity o = new LinkedEntity();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setEntityType(EntityNames.QUANTITATIVEVALUE.name());
-
-        return o;
+            return o;
+        }
+        return null;
     }
-
-
 }

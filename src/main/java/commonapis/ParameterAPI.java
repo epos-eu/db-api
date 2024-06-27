@@ -3,6 +3,7 @@ package commonapis;
 import abstractapis.AbstractAPI;
 import metadataapis.EntityNames;
 import model.Identifier;
+import model.OrganizationLegalname;
 import model.QuantitativeValue;
 import model.SoftwareapplicationParameters;
 import org.epos.eposdatamodel.LinkedEntity;
@@ -57,19 +58,23 @@ public class ParameterAPI extends AbstractAPI<org.epos.eposdatamodel.Parameter> 
 
     @Override
     public org.epos.eposdatamodel.Parameter retrieve(String instanceId) {
-        SoftwareapplicationParameters edmobj = (SoftwareapplicationParameters) getDbaccess().getOneFromDBByInstanceId(instanceId, QuantitativeValue.class).get(0);
-        org.epos.eposdatamodel.Parameter o = new org.epos.eposdatamodel.Parameter();
+        List<SoftwareapplicationParameters> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, SoftwareapplicationParameters.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            SoftwareapplicationParameters edmobj = elementList.get(0);
+            org.epos.eposdatamodel.Parameter o = new org.epos.eposdatamodel.Parameter();
 
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setEncodingFormat(edmobj.getEncodingformat());
-        o.setConformsTo(edmobj.getConformsto());
-        o.setAction(Parameter.ActionEnum.fromValue(edmobj.getAction()));
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setEncodingFormat(edmobj.getEncodingformat());
+            o.setConformsTo(edmobj.getConformsto());
+            o.setAction(Parameter.ActionEnum.fromValue(edmobj.getAction()));
 
-        o = (org.epos.eposdatamodel.Parameter) VersioningStatusAPI.retrieveVersion(o);
+            o = (org.epos.eposdatamodel.Parameter) VersioningStatusAPI.retrieveVersion(o);
 
-        return o;
+            return o;
+        }
+        return null;
     }
 
     @Override
@@ -84,15 +89,18 @@ public class ParameterAPI extends AbstractAPI<org.epos.eposdatamodel.Parameter> 
 
     @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
-        QuantitativeValue edmobj = (QuantitativeValue) getDbaccess().getOneFromDBByInstanceId(instanceId, QuantitativeValue.class).get(0);
+        List<SoftwareapplicationParameters> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, SoftwareapplicationParameters.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            SoftwareapplicationParameters edmobj = elementList.get(0);
+            LinkedEntity o = new LinkedEntity();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setEntityType(EntityNames.PARAMETER.name());
 
-        LinkedEntity o = new LinkedEntity();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setEntityType(EntityNames.QUANTITATIVEVALUE.name());
-
-        return o;
+            return o;
+        }
+        return null;
     }
 
 

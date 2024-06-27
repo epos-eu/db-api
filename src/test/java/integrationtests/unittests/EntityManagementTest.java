@@ -1,100 +1,104 @@
-package integrationtests;
+package integrationtests.unittests;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
+import abstractapis.AbstractAPI;
 import dao.EposDataModelDAO;
-import model.Address;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import integrationtests.TestcontainersLifecycle;
+import metadataapis.EntityNames;
+import org.epos.eposdatamodel.Address;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
-public class DAOJUnitTest {
+import java.util.List;
+import java.util.UUID;
 
-    private static EposDataModelDAO<Address> objDAO;
-    
-    @BeforeAll
-    public static void setUp() {
-        objDAO = new EposDataModelDAO<Address>();
-    }
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-    @AfterAll
-    public static void tearDown() {
-    }
+public class EntityManagementTest extends TestcontainersLifecycle {
 
     @Test
     @Order(1)
     public void testCreateAndGetAddress() {
+
+        AbstractAPI api = AbstractAPI.retrieveAPI(EntityNames.ADDRESS.name());
+
         Address address = new Address();
         address.setInstanceId(UUID.randomUUID().toString());
         address.setMetaId(UUID.randomUUID().toString());
         address.setUid(UUID.randomUUID().toString());
         address.setCountry("Italy");
-        address.setCountrycode("IT");
+        address.setCountryCode("IT");
         address.setStreet("Via Roma");
         address.setPostalCode("00100");
         address.setLocality("Rome");
 
-        objDAO.createObject(address);
 
-        List<Address> retrievedAddress = objDAO.getOneFromDBByInstanceId(address.getInstanceId(), Address.class);
+        LOG.info("CREATED:\n"+address.toString());
+
+        api.create(address);
+
+        Address retrievedAddress = (Address) api.retrieve(address.getInstanceId());
+
+        LOG.info("RECEIVED:\n"+address.toString());
 
         assertNotNull(retrievedAddress);
-        assertEquals(List.of(address), retrievedAddress);
+        assertEquals(address, retrievedAddress);
     }
+
 
     @Test
     @Order(2)
     public void testUpdateAddress() {
+        AbstractAPI api = AbstractAPI.retrieveAPI(EntityNames.ADDRESS.name());
+
         Address address = new Address();
         address.setInstanceId(UUID.randomUUID().toString());
         address.setMetaId(UUID.randomUUID().toString());
         address.setUid(UUID.randomUUID().toString());
         address.setCountry("France");
-        address.setCountrycode("FR");
+        address.setCountryCode("FR");
         address.setStreet("Rue de la Paix");
         address.setPostalCode("75002");
         address.setLocality("Paris");
 
-        objDAO.createObject(address);
+        api.create(address);
 
         address.setCountry("Spain");
         address.setPostalCode("28001");
         address.setLocality("Madrid");
 
-        objDAO.updateObject(address);
+        api.create(address);
 
-        List<Address> retrievedAddress = objDAO.getOneFromDBByInstanceId(address.getInstanceId(), Address.class);
+        Address retrievedAddress = (Address) api.retrieve(address.getInstanceId());
 
         assertNotNull(retrievedAddress);
-        assertEquals(List.of(address), retrievedAddress);
+        assertEquals(address, retrievedAddress);
     }
 
     @Test
     @Order(3)
     public void testDeleteAddress() {
+        AbstractAPI api = AbstractAPI.retrieveAPI(EntityNames.ADDRESS.name());
+
         Address address = new Address();
         address.setInstanceId(UUID.randomUUID().toString());
         address.setMetaId(UUID.randomUUID().toString());
         address.setUid(UUID.randomUUID().toString());
         address.setCountry("Germany");
-        address.setCountrycode("DE");
+        address.setCountryCode("DE");
         address.setStreet("Unter den Linden");
         address.setPostalCode("10117");
         address.setLocality("Berlin");
 
-        objDAO.createObject(address);
+        api.create(address);
 
-        objDAO.deleteObject(address);
+       List<model.Address> addressList = api.getDbaccess().getOneFromDBByInstanceId(address.getInstanceId(),model.Address.class);
 
-        List<Address> retrievedAddress = objDAO.getOneFromDBByInstanceId(address.getInstanceId(), Address.class);
+        LOG.info(api.getDbaccess().deleteObject(addressList.get(0)).toString());
+        Address retrievedAddress = (Address) api.retrieve(address.getInstanceId());
 
-        assertEquals(List.of(),retrievedAddress);
+        assertEquals(null,retrievedAddress);
     }
+
+
 }

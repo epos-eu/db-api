@@ -184,55 +184,58 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
 
     @Override
     public org.epos.eposdatamodel.Distribution retrieve(String instanceId) {
-        Distribution edmobj = (Distribution) getDbaccess().getOneFromDBByInstanceId(instanceId, Distribution.class).get(0);
+        List<Distribution> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, Distribution.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            Distribution edmobj = elementList.get(0);
+            org.epos.eposdatamodel.Distribution o = new org.epos.eposdatamodel.Distribution();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setType(edmobj.getType());
+            o.setFormat(edmobj.getFormat());
+            o.setLicence(edmobj.getLicense());
+            o.setDataPolicy(edmobj.getDatapolicy());
+            o.setIssued(
+                    edmobj.getIssued() != null ? edmobj.getIssued().toLocalDateTime() : null
+            );
+            o.setModified(
+                    edmobj.getModified() != null ? edmobj.getModified().toLocalDateTime() : null
+            );
+            o.setType(edmobj.getType());
 
-        org.epos.eposdatamodel.Distribution o = new org.epos.eposdatamodel.Distribution();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setType(edmobj.getType());
-        o.setFormat(edmobj.getFormat());
-        o.setLicence(edmobj.getLicense());
-        o.setDataPolicy(edmobj.getDatapolicy());
-        o.setIssued(
-                edmobj.getIssued() != null ? edmobj.getIssued().toLocalDateTime() : null
-        );
-        o.setModified(
-                edmobj.getModified() != null ? edmobj.getModified().toLocalDateTime() : null
-        );
-        o.setType(edmobj.getType());
-
-        if(edmobj.getDistributionTitlesByInstanceId().size()>0) {
-            for(DistributionTitle ed : edmobj.getDistributionTitlesByInstanceId()) {
-                o.addTitle(ed.getTitle());
+            if (edmobj.getDistributionTitlesByInstanceId().size() > 0) {
+                for (DistributionTitle ed : edmobj.getDistributionTitlesByInstanceId()) {
+                    o.addTitle(ed.getTitle());
+                }
             }
-        }
 
-        if(edmobj.getDistributionDescriptionsByInstanceId().size()>0) {
-            for(DistributionDescription ed : edmobj.getDistributionDescriptionsByInstanceId()) {
-                o.addDescription(ed.getDescription());
+            if (edmobj.getDistributionDescriptionsByInstanceId().size() > 0) {
+                for (DistributionDescription ed : edmobj.getDistributionDescriptionsByInstanceId()) {
+                    o.addDescription(ed.getDescription());
+                }
             }
-        }
 
-        if(edmobj.getDistributionDataproductsByInstanceId().size()>0) {
-            for(DistributionDataproduct ed : edmobj.getDistributionDataproductsByInstanceId()) {
-                DataProductAPI api = new DataProductAPI(EntityNames.DATAPRODUCT.name(), Dataproduct.class);
-                LinkedEntity cp = api.retrieveLinkedEntity(ed.getDataproductInstanceId());
-                o.addDataproduct(cp);
+            if (edmobj.getDistributionDataproductsByInstanceId().size() > 0) {
+                for (DistributionDataproduct ed : edmobj.getDistributionDataproductsByInstanceId()) {
+                    DataProductAPI api = new DataProductAPI(EntityNames.DATAPRODUCT.name(), Dataproduct.class);
+                    LinkedEntity cp = api.retrieveLinkedEntity(ed.getDataproductInstanceId());
+                    o.addDataproduct(cp);
+                }
             }
-        }
 
-        if(edmobj.getDistributionElementsByInstanceId().size()>0) {
-            for(DistributionElement ed : edmobj.getDistributionElementsByInstanceId()) {
-                Element el = ed.getElementByElementInstanceId();
-                if(el.getType().equals(ElementType.ACCESSURL)) o.addAccessURL(el.getValue());
-                if(el.getType().equals(ElementType.DOWNLOADURL)) o.addDownloadURL(el.getValue());
+            if (edmobj.getDistributionElementsByInstanceId().size() > 0) {
+                for (DistributionElement ed : edmobj.getDistributionElementsByInstanceId()) {
+                    Element el = ed.getElementByElementInstanceId();
+                    if (el.getType().equals(ElementType.ACCESSURL)) o.addAccessURL(el.getValue());
+                    if (el.getType().equals(ElementType.DOWNLOADURL)) o.addDownloadURL(el.getValue());
+                }
             }
+
+            o = (org.epos.eposdatamodel.Distribution) VersioningStatusAPI.retrieveVersion(o);
+
+            return o;
         }
-
-        o = (org.epos.eposdatamodel.Distribution) VersioningStatusAPI.retrieveVersion(o);
-
-        return o;
+        return null;
     }
 
     @Override
@@ -247,15 +250,18 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
 
     @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
-        Distribution edmobj = (Distribution) getDbaccess().getOneFromDBByInstanceId(instanceId, Distribution.class).get(0);
+        List<Distribution> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, Distribution.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            Distribution edmobj = elementList.get(0);
+            LinkedEntity o = new LinkedEntity();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setEntityType(EntityNames.DISTRIBUTION.name());
 
-        LinkedEntity o = new LinkedEntity();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setEntityType(EntityNames.DISTRIBUTION.name());
-
-        return o;
+            return o;
+        }
+        return null;
     }
 
 }

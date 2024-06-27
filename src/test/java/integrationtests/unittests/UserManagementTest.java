@@ -1,28 +1,20 @@
-package integrationtests;
+package integrationtests.unittests;
 
-import dao.EposDataModelDAO;
-import model.Address;
+import abstractapis.AbstractAPI;
+import integrationtests.TestcontainersLifecycle;
+import metadataapis.EntityNames;
+import org.epos.eposdatamodel.Address;
 import org.epos.eposdatamodel.User;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import usermanagementapis.UserGroupManagementAPI;
 
+import java.util.List;
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UserGroupTest {
-
-    private static EposDataModelDAO<Address> objDAO;
-    
-    @BeforeAll
-    public static void setUp() {
-        objDAO = new EposDataModelDAO<Address>();
-    }
-
-    @AfterAll
-    public static void tearDown() {
-    }
+public class UserManagementTest extends TestcontainersLifecycle {
 
     @Test
     @Order(1)
@@ -72,4 +64,5 @@ public class UserGroupTest {
 
         assertNull(retrieveUser);
     }
+
 }

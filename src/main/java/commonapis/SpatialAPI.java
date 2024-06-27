@@ -4,6 +4,7 @@ import abstractapis.AbstractAPI;
 import metadataapis.EntityNames;
 import model.Element;
 import model.QuantitativeValue;
+import model.SoftwareapplicationParameters;
 import model.Spatial;
 import org.epos.eposdatamodel.LinkedEntity;
 
@@ -54,17 +55,21 @@ public class SpatialAPI extends AbstractAPI<org.epos.eposdatamodel.Location> {
 
     @Override
     public org.epos.eposdatamodel.Location retrieve(String instanceId) {
-        Spatial edmobj = (Spatial) getDbaccess().getOneFromDBByInstanceId(instanceId, Spatial.class).get(0);
-        org.epos.eposdatamodel.Location o = new org.epos.eposdatamodel.Location();
+        List<Spatial> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, Spatial.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            Spatial edmobj = elementList.get(0);
+            org.epos.eposdatamodel.Location o = new org.epos.eposdatamodel.Location();
 
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setLocation(edmobj.getLocation());
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setLocation(edmobj.getLocation());
 
-        o = (org.epos.eposdatamodel.Location) VersioningStatusAPI.retrieveVersion(o);
+            o = (org.epos.eposdatamodel.Location) VersioningStatusAPI.retrieveVersion(o);
 
-        return o;
+            return o;
+        }
+        return null;
     }
 
     @Override
@@ -79,15 +84,18 @@ public class SpatialAPI extends AbstractAPI<org.epos.eposdatamodel.Location> {
 
     @Override
     public LinkedEntity retrieveLinkedEntity(String instanceId) {
-        Spatial edmobj = (Spatial) getDbaccess().getOneFromDBByInstanceId(instanceId, Spatial.class).get(0);
+        List<Spatial> elementList = getDbaccess().getOneFromDBByInstanceId(instanceId, Spatial.class);
+        if(elementList!=null && !elementList.isEmpty()) {
+            Spatial edmobj = elementList.get(0);
+            LinkedEntity o = new LinkedEntity();
+            o.setInstanceId(edmobj.getInstanceId());
+            o.setMetaId(edmobj.getMetaId());
+            o.setUid(edmobj.getUid());
+            o.setEntityType(EntityNames.LOCATION.name());
 
-        LinkedEntity o = new LinkedEntity();
-        o.setInstanceId(edmobj.getInstanceId());
-        o.setMetaId(edmobj.getMetaId());
-        o.setUid(edmobj.getUid());
-        o.setEntityType(EntityNames.LOCATION.name());
-
-        return o;
+            return o;
+        }
+        return null;
     }
 
 }
