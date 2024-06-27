@@ -224,13 +224,13 @@ public class UserGroupManagementAPI {
         return false;
     }
 
-    public static void addMetadataElementToGroup(String metaId, String groupId){
+    public static Boolean addMetadataElementToGroup(String metaId, String groupId){
 
         AuthorizationGroup authorizationGroup = new AuthorizationGroup();
         authorizationGroup.setGroupId(groupId);
         authorizationGroup.setMetaId(metaId);
         authorizationGroup.setId(UUID.randomUUID().toString());
-        getDbaccess().createObject(authorizationGroup);
+        return getDbaccess().createObject(authorizationGroup);
     }
 
     private static EposDataModelDAO getDbaccess() {
