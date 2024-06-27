@@ -217,6 +217,15 @@ public class VariousTests {
         System.out.println(api.retrieve(le.getInstanceId()));
     }
 
+    public static void addUserToGroupCheck(){
+        String userid = "admin";
+        String groupid = "0da052a0-34ab-4aaa-8c6d-61358a60f35d";
+        RoleType role = RoleType.ADMIN;
+        RequestStatusType statusType = RequestStatusType.ACCEPTED;
+
+        System.out.println(UserGroupManagementAPI.addUserToGroup(groupid,userid,role,statusType));
+    }
+
     public static void main(String[] args) {
         //softwaresTest();
         //datasetTest();
@@ -225,6 +234,7 @@ public class VariousTests {
         //checkUsers();
         //checkGroups();
         //checkWebServiceExample();
-        checkWebServiceExampleUpdate();
+        //checkWebServiceExampleUpdate();
+        addUserToGroupCheck();
     }
 }

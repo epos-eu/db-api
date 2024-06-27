@@ -79,6 +79,8 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
             edmobj.setProvider(organization1.getInstanceId());
         }
 
+
+
         /** CATEGORY **/
         if (obj.getCategory() != null && !obj.getCategory().isEmpty())
             CategoryRelationsAPI.createRelation(edmobj,obj);
@@ -97,6 +99,35 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
                 documentationObj.addProperty("Uri", documentation.getUri());
                 String doc = new Gson().toJson(documentationObj);
                 createInnerElement(ElementType.DOCUMENTATION, doc, edmobj);
+            }
+        }
+
+        if (obj.getIdentifier() != null && !obj.getIdentifier().isEmpty()) {
+            List<Identifier> identifierList = getDbaccess().getAllFromDB(Identifier.class);
+            for(Identifier item : identifierList){
+                if(item.getInstanceId().equals(obj.getInstanceId())){
+                    getDbaccess().deleteObject(item);
+                }
+            }
+            edmobj.setWebserviceIdentifiersByInstanceId(new ArrayList<>());
+            for(org.epos.eposdatamodel.LinkedEntity identifier : obj.getIdentifier()){
+                List<Identifier> list = dbaccess.getOneFromDBByInstanceId(identifier.getInstanceId(),Identifier.class);
+                Identifier identifier1 = null;
+                if(list.isEmpty()){
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(identifier);
+                    identifier1 = (Identifier) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Identifier.class).get(0);
+                } else {
+                    identifier1 = list.get(0);
+                }
+                WebserviceIdentifier pi = new WebserviceIdentifier();
+                pi.setWebserviceByWebserviceInstanceId(edmobj);
+                pi.setWebserviceInstanceId(edmobj.getInstanceId());
+                pi.setIdentifierInstanceId(identifier1.getInstanceId());
+                pi.setIdentifierByIdentifierInstanceId(identifier1);
+
+                edmobj.getWebserviceIdentifiersByInstanceId().add(pi);
+
+                dbaccess.updateObject(pi);
             }
         }
 
