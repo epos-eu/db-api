@@ -110,10 +110,10 @@ public class UserGroupManagementAPI {
 
     public static Boolean createGroup(org.epos.eposdatamodel.Group group){
         MetadataGroup group1 = new MetadataGroup();
-        group1.setId(UUID.randomUUID().toString());
+        group1.setId(group.getId()==null? UUID.randomUUID().toString() : group.getId());
         group1.setName(group.getName());
         group1.setDescription(group.getDescription());
-        return getDbaccess().createObject(group1);
+        return getDbaccess().updateObject(group1);
     }
 
     public static Group retrieveGroup(Group group){

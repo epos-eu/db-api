@@ -51,6 +51,8 @@ public class EntityManagerService {
         this.postgresqlUsername = entityManagerServiceBuilder.postgresqlUsername;
         this.postgresqlPassword = entityManagerServiceBuilder.postgresqlPassword;
 
+        System.out.println(this.postgresqlHost);
+
         if (connectionString != null) {
             hikariConfig.setJdbcUrl(connectionString);
         } else {

@@ -33,6 +33,7 @@ public class EposDataModelDAO<T> {
     public List<T> getOneFromDBBySpecificKey(String key, String value, Class<T> obj){
         EntityManager em = EntityManagerService.getInstance().createEntityManager();
         em.getTransaction().begin();
+
         List resultList = em.createQuery(
                         "SELECT c FROM "+obj.getSimpleName()+" c WHERE c."+key+ " LIKE :value")
                 .setParameter("value", value)
