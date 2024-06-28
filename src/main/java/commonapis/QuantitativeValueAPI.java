@@ -37,6 +37,8 @@ public class QuantitativeValueAPI extends AbstractAPI<org.epos.eposdatamodel.Qua
 
         obj = (org.epos.eposdatamodel.QuantitativeValue) VersioningStatusAPI.checkVersion(obj);
 
+        EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
+
         QuantitativeValue edmobj = new QuantitativeValue();
         edmobj.setVersionId(obj.getVersionId());
         edmobj.setInstanceId(obj.getInstanceId());

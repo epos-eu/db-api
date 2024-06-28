@@ -1,10 +1,7 @@
 package metadataapis;
 
 import abstractapis.AbstractAPI;
-import commonapis.IdentifierAPI;
-import commonapis.LinkedEntityAPI;
-import commonapis.ParameterAPI;
-import commonapis.VersioningStatusAPI;
+import commonapis.*;
 import model.*;
 import model.Category;
 import model.Identifier;
@@ -44,6 +41,8 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
         }
 
         obj = (org.epos.eposdatamodel.SoftwareApplication) VersioningStatusAPI.checkVersion(obj);
+
+        EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
 
         SoftwareApplication edmobj = new SoftwareApplication();
 

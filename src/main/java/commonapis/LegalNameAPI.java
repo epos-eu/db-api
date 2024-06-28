@@ -38,6 +38,8 @@ public class LegalNameAPI extends AbstractAPI<org.epos.eposdatamodel.LegalName> 
 
         obj = (org.epos.eposdatamodel.LegalName) VersioningStatusAPI.checkVersion(obj);
 
+        EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
+
         OrganizationLegalname edmobj = new OrganizationLegalname();
         edmobj.setVersionId(obj.getVersionId());
         edmobj.setInstanceId(obj.getInstanceId());

@@ -36,6 +36,8 @@ public class ElementAPI extends AbstractAPI<org.epos.eposdatamodel.Element> {
 
         obj = (org.epos.eposdatamodel.Element) VersioningStatusAPI.checkVersion(obj);
 
+        EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
+
         Element edmobj = new Element();
         edmobj.setVersionId(obj.getVersionId());
         edmobj.setInstanceId(obj.getInstanceId());

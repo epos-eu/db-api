@@ -2,6 +2,7 @@ package metadataapis;
 
 import abstractapis.AbstractAPI;
 import commonapis.ElementAPI;
+import commonapis.EposDataModelEntityIDAPI;
 import commonapis.VersioningStatusAPI;
 import model.*;
 import org.epos.eposdatamodel.ContactPoint;
@@ -33,6 +34,8 @@ public class ContactPointAPI extends AbstractAPI<ContactPoint> {
         }
 
         obj = (org.epos.eposdatamodel.ContactPoint) VersioningStatusAPI.checkVersion(obj);
+
+        EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
 
         Contactpoint edmobj = new Contactpoint();
 

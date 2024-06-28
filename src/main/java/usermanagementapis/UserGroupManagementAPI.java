@@ -127,20 +127,24 @@ public class UserGroupManagementAPI {
                 retrievedGroup.getDescription()
         );
 
-        retrievedGroup.getAuthorizationGroupsById().forEach(item->{
-            group1.getEntities().add(item.getMetaId());
-        });
+        List<AuthorizationGroup> authorizationGroupList = getDbaccess().getAllFromDB(AuthorizationGroup.class);
 
-        retrievedGroup.getMetadataGroupUsersById().forEach(item->{
-            group1.getUsers().add(item.getAuthIdentifier());
-        });
+        for(AuthorizationGroup authorizationGroup : authorizationGroupList){
+            group1.getEntities().add(authorizationGroup.getMetaId());
+        }
 
+        List<MetadataGroupUser> metadataGroupUserList = getDbaccess().getAllFromDB(MetadataGroupUser.class);
+
+        for(MetadataGroupUser metadataGroupUser : metadataGroupUserList){
+            group1.getUsers().add(metadataGroupUser.getAuthIdentifier());
+        }
         return group1;
     }
 
     public static Group retrieveGroupById(String groupId){
         List<MetadataGroup> metadataGroupList = getDbaccess().getOneFromDBBySpecificKey("id",groupId, MetadataGroup.class);
         if(metadataGroupList.isEmpty()) return null;
+
 
         MetadataGroup retrievedGroup = metadataGroupList.get(0);
         org.epos.eposdatamodel.Group group1 = new org.epos.eposdatamodel.Group(
@@ -149,13 +153,17 @@ public class UserGroupManagementAPI {
                 retrievedGroup.getDescription()
         );
 
-        retrievedGroup.getAuthorizationGroupsById().forEach(item->{
-            group1.getEntities().add(item.getMetaId());
-        });
+        List<AuthorizationGroup> authorizationGroupList = getDbaccess().getAllFromDB(AuthorizationGroup.class);
 
-        retrievedGroup.getMetadataGroupUsersById().forEach(item->{
-            group1.getUsers().add(item.getAuthIdentifier());
-        });
+        for(AuthorizationGroup authorizationGroup : authorizationGroupList){
+            group1.getEntities().add(authorizationGroup.getMetaId());
+        }
+
+        List<MetadataGroupUser> metadataGroupUserList = getDbaccess().getAllFromDB(MetadataGroupUser.class);
+
+        for(MetadataGroupUser metadataGroupUser : metadataGroupUserList){
+            group1.getUsers().add(metadataGroupUser.getAuthIdentifier());
+        }
 
         return group1;
     }
@@ -173,13 +181,18 @@ public class UserGroupManagementAPI {
                     retrievedGroup.getDescription()
             );
 
-            retrievedGroup.getAuthorizationGroupsById().forEach(item->{
-                group1.getEntities().add(item.getMetaId());
-            });
+            List<AuthorizationGroup> authorizationGroupList = getDbaccess().getAllFromDB(AuthorizationGroup.class);
 
-            retrievedGroup.getMetadataGroupUsersById().forEach(item->{
-                group1.getUsers().add(item.getAuthIdentifier());
-            });
+            for(AuthorizationGroup authorizationGroup : authorizationGroupList){
+                group1.getEntities().add(authorizationGroup.getMetaId());
+            }
+
+            List<MetadataGroupUser> metadataGroupUserList = getDbaccess().getAllFromDB(MetadataGroupUser.class);
+
+            for(MetadataGroupUser metadataGroupUser : metadataGroupUserList){
+                group1.getUsers().add(metadataGroupUser.getAuthIdentifier());
+            }
+
             returnList.add(group1);
         }
 
@@ -219,18 +232,34 @@ public class UserGroupManagementAPI {
             metadataGroupUser.setRequestStatus(requestStatusType);
             metadataGroupUser.setRole(role);
 
-            return getDbaccess().createObject(metadataGroupUser);
+            return getDbaccess().updateObject(metadataGroupUser);
         }
         return false;
     }
 
     public static Boolean addMetadataElementToGroup(String metaId, String groupId){
 
-        AuthorizationGroup authorizationGroup = new AuthorizationGroup();
-        authorizationGroup.setGroupId(groupId);
-        authorizationGroup.setMetaId(metaId);
-        authorizationGroup.setId(UUID.randomUUID().toString());
-        return getDbaccess().createObject(authorizationGroup);
+        List<MetadataGroup> metadataGroupList = getDbaccess().getOneFromDBBySpecificKey("id",groupId, MetadataGroup.class);
+        if(metadataGroupList.isEmpty()) return null;
+
+        List<EdmEntityId> edmEntityIdList = getDbaccess().getOneFromDBBySpecificKey("metaId",metaId, EdmEntityId.class);
+        if(edmEntityIdList.isEmpty()) return null;
+
+        MetadataGroup retrievedGroup = metadataGroupList.get(0);
+        EdmEntityId retrievedEdmEntity = edmEntityIdList.get(0);
+
+        if(retrievedEdmEntity!=null && retrievedGroup!=null) {
+
+            AuthorizationGroup authorizationGroup = new AuthorizationGroup();
+            authorizationGroup.setGroupId(groupId);
+            authorizationGroup.setMetaId(metaId);
+            authorizationGroup.setId(UUID.randomUUID().toString());
+            authorizationGroup.setMetadataGroupByGroupId(retrievedGroup);
+            authorizationGroup.setEdmEntityIdByMetaId(retrievedEdmEntity);
+
+            return getDbaccess().updateObject(authorizationGroup);
+        }
+        else return false;
     }
 
     private static EposDataModelDAO getDbaccess() {

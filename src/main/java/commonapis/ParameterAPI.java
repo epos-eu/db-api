@@ -39,6 +39,8 @@ public class ParameterAPI extends AbstractAPI<org.epos.eposdatamodel.Parameter> 
 
         obj = (org.epos.eposdatamodel.Parameter) VersioningStatusAPI.checkVersion(obj);
 
+        EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
+
         SoftwareapplicationParameters edmobj = new SoftwareapplicationParameters();
         edmobj.setVersionId(obj.getVersionId());
         edmobj.setInstanceId(obj.getInstanceId());

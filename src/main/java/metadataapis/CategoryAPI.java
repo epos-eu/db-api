@@ -1,6 +1,7 @@
 package metadataapis;
 
 import abstractapis.AbstractAPI;
+import commonapis.EposDataModelEntityIDAPI;
 import commonapis.VersioningStatusAPI;
 import model.*;
 import org.eclipse.persistence.internal.jpa.rs.metadata.model.Link;
@@ -32,6 +33,8 @@ public class CategoryAPI extends AbstractAPI<org.epos.eposdatamodel.Category> {
         }
 
         obj = (org.epos.eposdatamodel.Category) VersioningStatusAPI.checkVersion(obj);
+
+        EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
 
         Category edmobj = new Category();
 

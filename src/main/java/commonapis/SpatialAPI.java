@@ -38,6 +38,8 @@ public class SpatialAPI extends AbstractAPI<org.epos.eposdatamodel.Location> {
 
         obj = (org.epos.eposdatamodel.Location) VersioningStatusAPI.checkVersion(obj);
 
+        EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
+
         Spatial edmobj = new Spatial();
         edmobj.setVersionId(obj.getVersionId());
         edmobj.setInstanceId(obj.getInstanceId());

@@ -37,6 +37,8 @@ public class IdentifierAPI extends AbstractAPI<org.epos.eposdatamodel.Identifier
 
         obj = (org.epos.eposdatamodel.Identifier) VersioningStatusAPI.checkVersion(obj);
 
+        EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
+
         Identifier edmobj = new Identifier();
         edmobj.setVersionId(obj.getVersionId());
         edmobj.setInstanceId(obj.getInstanceId());

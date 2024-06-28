@@ -1,6 +1,7 @@
 package metadataapis;
 
 import abstractapis.AbstractAPI;
+import commonapis.EposDataModelEntityIDAPI;
 import commonapis.VersioningStatusAPI;
 import model.Category;
 import model.CategoryScheme;
@@ -35,6 +36,8 @@ public class CategorySchemeAPI extends AbstractAPI<org.epos.eposdatamodel.Catego
         }
 
         obj = (org.epos.eposdatamodel.CategoryScheme) VersioningStatusAPI.checkVersion(obj);
+
+        EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
 
         CategoryScheme edmobj = new CategoryScheme();
         edmobj.setVersionId(obj.getVersionId());

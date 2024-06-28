@@ -36,6 +36,8 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
 
         obj = (org.epos.eposdatamodel.Organization) VersioningStatusAPI.checkVersion(obj);
 
+        EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
+
         Organization edmobj = new Organization();
 
         edmobj.setVersionId(obj.getVersionId());

@@ -38,6 +38,8 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
 
         obj = (org.epos.eposdatamodel.DataProduct) VersioningStatusAPI.checkVersion(obj);
 
+        EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
+
         Dataproduct edmobj = new Dataproduct();
 
         edmobj.setVersionId(obj.getVersionId());

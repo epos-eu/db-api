@@ -37,6 +37,8 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
 
         obj = (org.epos.eposdatamodel.Distribution) VersioningStatusAPI.checkVersion(obj);
 
+        EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
+
         Distribution edmobj = new Distribution();
 
         edmobj.setVersionId(obj.getVersionId());

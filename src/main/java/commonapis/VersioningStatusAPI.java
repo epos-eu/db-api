@@ -10,10 +10,10 @@ import java.util.*;
 
 public class VersioningStatusAPI {
 
-    public static void updateStatus(String instanceId, StatusType status){
+    public static Boolean updateStatus(String instanceId, StatusType status){
         List<Versioningstatus> returnList = getDbaccess().getOneFromDBByInstanceId(instanceId,Versioningstatus.class);
         returnList.get(0).setStatus(status);
-        getDbaccess().updateObject(returnList.get(0));
+        return getDbaccess().updateObject(returnList.get(0));
     }
 
     public static EPOSDataModelEntity checkVersion(EPOSDataModelEntity obj) {

@@ -33,6 +33,8 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
 
         obj = (org.epos.eposdatamodel.Person) VersioningStatusAPI.checkVersion(obj);
 
+        EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
+
         Person edmobj = new Person();
 
         edmobj.setVersionId(obj.getVersionId());

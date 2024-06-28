@@ -2,6 +2,7 @@ package metadataapis;
 
 import abstractapis.AbstractAPI;
 import commonapis.ElementAPI;
+import commonapis.EposDataModelEntityIDAPI;
 import commonapis.VersioningStatusAPI;
 import model.*;
 import org.epos.eposdatamodel.LinkedEntity;
@@ -35,6 +36,8 @@ public class MappingAPI extends AbstractAPI<org.epos.eposdatamodel.Mapping> {
         }
 
         obj = (org.epos.eposdatamodel.Mapping) VersioningStatusAPI.checkVersion(obj);
+
+        EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
 
         Mapping edmobj = new Mapping();
 

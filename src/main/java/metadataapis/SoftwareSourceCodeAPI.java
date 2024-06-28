@@ -38,6 +38,8 @@ public class SoftwareSourceCodeAPI extends AbstractAPI<org.epos.eposdatamodel.So
 
         obj = (org.epos.eposdatamodel.SoftwareSourceCode) VersioningStatusAPI.checkVersion(obj);
 
+        EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
+
         SoftwareSourceCode edmobj = new SoftwareSourceCode();
 
         edmobj.setVersionId(obj.getVersionId());

@@ -1,15 +1,20 @@
 package integrationtests.unittests;
 
+import abstractapis.AbstractAPI;
 import integrationtests.TestcontainersLifecycle;
+import metadataapis.EntityNames;
 import model.RequestStatusType;
 import model.RoleType;
 import org.epos.eposdatamodel.Group;
+import org.epos.eposdatamodel.Identifier;
+import org.epos.eposdatamodel.LinkedEntity;
 import org.epos.eposdatamodel.User;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import usermanagementapis.UserGroupManagementAPI;
 
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -139,5 +144,44 @@ public class UserGroupManagementTest extends TestcontainersLifecycle {
         assertEquals(group.getId(), retrieveGroup.getId());
         assertEquals(group.getName(), retrieveGroup.getName());
         assertEquals(group.getDescription(), retrieveGroup.getDescription());
+    }
+
+    @Test
+    @Order(8)
+    public void testAddEntityToGroup() {
+
+        AbstractAPI api = AbstractAPI.retrieveAPI(EntityNames.IDENTIFIER.name());
+
+        Identifier identifier = new Identifier();
+        identifier.setInstanceId(UUID.randomUUID().toString());
+        identifier.setMetaId(UUID.randomUUID().toString());
+        identifier.setUid(UUID.randomUUID().toString());
+        identifier.setType("TYPE");
+        identifier.setIdentifier("012345678900");
+
+        LinkedEntity identifierLe = api.create(identifier);
+
+        Identifier retrievedIdentifier = (Identifier) api.retrieve(identifierLe.getInstanceId());
+
+        Group metadataGroup = new Group();
+        metadataGroup.setId("test");
+        metadataGroup.setDescription("test");
+        metadataGroup.setName("test");
+        UserGroupManagementAPI.createGroup(metadataGroup);
+
+        Boolean response = UserGroupManagementAPI.addMetadataElementToGroup(identifierLe.getMetaId(), metadataGroup.getId());
+
+        Group returnGroup = UserGroupManagementAPI.retrieveGroupById(metadataGroup.getId());
+        System.out.println(returnGroup);
+
+        assertAll(
+                () -> assertEquals(identifier.getType(), retrievedIdentifier.getType()),
+                () -> assertEquals(identifier.getIdentifier(), retrievedIdentifier.getIdentifier()),
+                () -> assertEquals(identifier.getUid(), retrievedIdentifier.getUid()),
+                () -> assertEquals(identifier.getInstanceId(), retrievedIdentifier.getInstanceId()),
+                () -> assertEquals(identifier.getMetaId(), retrievedIdentifier.getMetaId()),
+                () -> assertTrue(response),
+                () -> assertEquals(returnGroup.getEntities().size(), 1)
+        );
     }
 }

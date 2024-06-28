@@ -38,6 +38,8 @@ public class AddressAPI extends AbstractAPI<org.epos.eposdatamodel.Address> {
 
         obj = (org.epos.eposdatamodel.Address) VersioningStatusAPI.checkVersion(obj);
 
+        EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
+
         Address edmobj = new Address();
         edmobj.setVersionId(obj.getVersionId());
         edmobj.setInstanceId(obj.getInstanceId());

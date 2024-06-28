@@ -32,8 +32,6 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
                 obj.getVersionId(),
                 getEdmClass());
 
-        System.out.println(returnList.toString());
-
         if(!returnList.isEmpty()){
             obj.setInstanceId(returnList.get(0).getInstanceId());
             obj.setMetaId(returnList.get(0).getMetaId());
@@ -42,6 +40,8 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
         }
 
         obj = (org.epos.eposdatamodel.WebService) VersioningStatusAPI.checkVersion(obj);
+
+        EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
 
         Webservice edmobj = new Webservice();
 

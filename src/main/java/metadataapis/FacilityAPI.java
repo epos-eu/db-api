@@ -37,6 +37,8 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
 
         obj = (org.epos.eposdatamodel.Facility) VersioningStatusAPI.checkVersion(obj);
 
+        EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
+
         Facility edmobj = new Facility();
 
         edmobj.setVersionId(obj.getVersionId());
