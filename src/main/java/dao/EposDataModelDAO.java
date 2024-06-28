@@ -23,9 +23,11 @@ public class EposDataModelDAO<T> {
             em.getTransaction().begin();
             em.persist(entity);
             em.getTransaction().commit();
+            em.close();
             return true;
         }catch (Exception exception){
-            System.err.println(exception.getLocalizedMessage());
+            LOG.severe(exception.getLocalizedMessage());
+            em.close();
             return false;
         }
     }
@@ -39,6 +41,7 @@ public class EposDataModelDAO<T> {
                 .setParameter("value", value)
                 .getResultList();
         em.getTransaction().commit();
+        em.close();
         return resultList;
     }
 
@@ -50,6 +53,7 @@ public class EposDataModelDAO<T> {
                 .setParameter("instanceId", instanceId)
                 .getResultList();
         em.getTransaction().commit();
+        em.close();
         return resultList;
     }
 
@@ -61,6 +65,7 @@ public class EposDataModelDAO<T> {
                 .setParameter("metaId", metaId)
                 .getResultList();
         em.getTransaction().commit();
+        em.close();
         return resultList;
     }
 
@@ -72,6 +77,7 @@ public class EposDataModelDAO<T> {
                 .setParameter("uid", uid)
                 .getResultList();
         em.getTransaction().commit();
+        em.close();
         return resultList;
     }
 
@@ -83,6 +89,7 @@ public class EposDataModelDAO<T> {
                 .setParameter("versionId", versionId)
                 .getResultList();
         em.getTransaction().commit();
+        em.close();
         return resultList;
     }
 
@@ -121,6 +128,7 @@ public class EposDataModelDAO<T> {
                         "SELECT c FROM "+obj.getSimpleName()+" c")
                 .getResultList();
         em.getTransaction().commit();
+        em.close();
         return resultList;
     }
 
@@ -131,9 +139,11 @@ public class EposDataModelDAO<T> {
             em.getTransaction().begin();
             em.merge(obj);
             em.getTransaction().commit();
+            em.close();
             return true;
         }catch(Exception exception){
-            System.err.println(exception.getLocalizedMessage());
+            LOG.severe(exception.getLocalizedMessage());
+            em.close();
             return false;
         }
     }
@@ -148,10 +158,12 @@ public class EposDataModelDAO<T> {
                 LOG.info(target.toString());
                 em.remove(target);
                 em.getTransaction().commit();
+                em.close();
             }
             return true;
         }catch(Exception exception){
             LOG.severe(exception.getLocalizedMessage());
+            em.close();
             return false;
         }
     }

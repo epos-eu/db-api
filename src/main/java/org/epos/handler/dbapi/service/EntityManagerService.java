@@ -40,10 +40,9 @@ public class EntityManagerService {
 
         hikariConfig.setDriverClassName("org.postgresql.Driver");
         hikariConfig.setPoolName("cerif");
-        hikariConfig.setConnectionTestQuery("SELECT 1");
+        //hikariConfig.setConnectionTestQuery("SELECT 1");
         hikariConfig.setConnectionTimeout(1000);
         hikariConfig.setInitializationFailTimeout(9000);
-
 
         this.connectionString = entityManagerServiceBuilder.connectionString;
         this.postgresqlHost = entityManagerServiceBuilder.postgresqlHost;
