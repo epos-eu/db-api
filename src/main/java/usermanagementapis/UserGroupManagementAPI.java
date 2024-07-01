@@ -237,6 +237,20 @@ public class UserGroupManagementAPI {
         return false;
     }
 
+    public static Boolean removeUserFromGroup(String groupId, String userId){
+
+        List<MetadataGroupUser> metadataGroupUserList = getDbaccess().getAllFromDB(MetadataGroupUser.class);
+        if(metadataGroupUserList.isEmpty()) return null;
+
+        for(MetadataGroupUser metadataGroupUser : metadataGroupUserList){
+            if(metadataGroupUser.getGroupId().equals(groupId) &&
+            metadataGroupUser.getUserByAuthIdentifier().equals(userId)){
+                return getDbaccess().deleteObject(metadataGroupUser);
+            }
+        }
+        return false;
+    }
+
     public static Boolean addMetadataElementToGroup(String metaId, String groupId){
 
         List<MetadataGroup> metadataGroupList = getDbaccess().getOneFromDBBySpecificKey("id",groupId, MetadataGroup.class);
@@ -260,6 +274,20 @@ public class UserGroupManagementAPI {
             return getDbaccess().updateObject(authorizationGroup);
         }
         else return false;
+    }
+
+    public static Boolean removeMetadataElementFromGroup(String metaId, String groupId){
+
+        List<AuthorizationGroup> authorizationGroupList = getDbaccess().getAllFromDB(AuthorizationGroup.class);
+        if(authorizationGroupList.isEmpty()) return null;
+
+        for(AuthorizationGroup authorizationGroup : authorizationGroupList){
+            if(authorizationGroup.getGroupId().equals(groupId) &&
+                    authorizationGroup.getMetaId().equals(metaId)){
+                return getDbaccess().deleteObject(authorizationGroup);
+            }
+        }
+        return false;
     }
 
     private static EposDataModelDAO getDbaccess() {
