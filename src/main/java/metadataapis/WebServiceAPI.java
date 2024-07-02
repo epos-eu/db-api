@@ -91,14 +91,27 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
 
         /** DOCUMENTATION **/
         if(obj.getDocumentation()!=null && !obj.getDocumentation().isEmpty()){
-            edmobj.setWebserviceElementsByInstanceId(new ArrayList<>());
-            for(Documentation documentation : obj.getDocumentation()) {
-                JsonObject documentationObj = new JsonObject();
-                documentationObj.addProperty("Title", documentation.getTitle());
-                documentationObj.addProperty("Description", documentation.getDescription());
-                documentationObj.addProperty("Uri", documentation.getUri());
-                String doc = new Gson().toJson(documentationObj);
-                createInnerElement(ElementType.DOCUMENTATION, doc, edmobj);
+            DocumentationAPI documentationAPI = new DocumentationAPI(EntityNames.DOCUMENTATION.name(), Documentation.class);
+
+            for(LinkedEntity documentation : obj.getDocumentation()) {
+                List<Documentation> list = dbaccess.getOneFromDBByInstanceId(documentation.getInstanceId(), Documentation.class);
+                Documentation documentation1 = null;
+                if (list.isEmpty()) {
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(documentation);
+                    documentation1 = (Documentation) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Documentation.class).get(0);
+                } else {
+                    documentation1 = list.get(0);
+                }
+
+                List<Element> el = dbaccess.getOneFromDBByInstanceId(documentation1.getInstanceId(), Element.class);
+
+                WebserviceElement ce = new WebserviceElement();
+                ce.setWebserviceByWebserviceInstanceId(edmobj);
+                ce.setWebserviceInstanceId(edmobj.getInstanceId());
+                ce.setElementByElementInstanceId(el.get(0));
+                ce.setElementInstanceId(el.get(0).getInstanceId());
+
+                edmobj.getWebserviceElementsByInstanceId().add(ce);
             }
         }
 
@@ -308,15 +321,12 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
             }
 
             if (edmobj.getWebserviceElementsByInstanceId().size() > 0) {
+                DocumentationAPI api = new DocumentationAPI(EntityNames.DOCUMENTATION.name(), Documentation.class);
+
                 for (WebserviceElement ed : edmobj.getWebserviceElementsByInstanceId()) {
                     Element el = ed.getElementByElementInstanceId();
-                    if (el.getType().equals(ElementType.PAGEURL)) {
-                        JsonObject doc = new Gson().fromJson(el.getValue(), JsonObject.class);
-                        Documentation documentation = new Documentation();
-                        documentation.setTitle(doc.get("Title").getAsString());
-                        documentation.setDescription(doc.get("Description").getAsString());
-                        documentation.setUri(doc.get("Uri").getAsString());
-                        o.addDocumentation(documentation);
+                    if (el.getType().equals(ElementType.DOCUMENTATION)) {
+                        o.addDocumentation(api.retrieveLinkedEntity(el.getInstanceId()));
                     }
                 }
             }

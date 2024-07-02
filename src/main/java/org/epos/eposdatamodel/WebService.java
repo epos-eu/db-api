@@ -22,7 +22,7 @@ public class WebService extends EPOSDataModelEntity {
     /**
      * This property contains the single idenfier of the WebService.
      */
-    private String schemaIdentifier;
+    //private String schemaIdentifier;
 
     /**
      * This property refers to a category of the Web Service. A Web Service may be associated with multiple categories.
@@ -53,7 +53,7 @@ public class WebService extends EPOSDataModelEntity {
     /**
      * This property refers to the API documentation.
      **/
-    private List<Documentation> documentation;
+    private List<LinkedEntity> documentation;
 
     /**
      * This property refers to the API definitions (e.g., WSDL, WADL)
@@ -164,9 +164,9 @@ public class WebService extends EPOSDataModelEntity {
         }
     }
 
-    public void addDocumentation(Documentation documentation) {
+    public void addDocumentation(LinkedEntity documentation) {
         if (this.getDocumentation() == null) {
-            ArrayList<Documentation> documentationList = new ArrayList<>();
+            ArrayList<LinkedEntity> documentationList = new ArrayList<>();
             documentationList.add(documentation);
             this.setDocumentation(documentationList);
         } else {
@@ -196,7 +196,7 @@ public class WebService extends EPOSDataModelEntity {
     }
 
 
-    public WebService schemaIdentifier(String schemaIdentifier) {
+    /*public WebService schemaIdentifier(String schemaIdentifier) {
         this.schemaIdentifier = schemaIdentifier;
         return this;
     }
@@ -207,7 +207,7 @@ public class WebService extends EPOSDataModelEntity {
 
     public void setSchemaIdentifier(String schemaIdentifier) {
         this.schemaIdentifier = schemaIdentifier;
-    }
+    }*/
 
     public WebService identifier(List<LinkedEntity> identifier) {
         this.identifier = identifier;
@@ -341,12 +341,12 @@ public class WebService extends EPOSDataModelEntity {
         this.description = description;
     }
 
-    public WebService documentation(List<Documentation> documentation) {
+    public WebService documentation(List<LinkedEntity> documentation) {
         this.documentation = documentation;
         return this;
     }
 
-    public WebService addDocumentationItem(Documentation documentationItem) {
+    public WebService addDocumentationItem(LinkedEntity documentationItem) {
         if (this.documentation == null) {
             this.documentation = new ArrayList<>();
         }
@@ -359,11 +359,11 @@ public class WebService extends EPOSDataModelEntity {
      *
      * @return documentation
      **/
-    public List<Documentation> getDocumentation() {
+    public List<LinkedEntity> getDocumentation() {
         return documentation;
     }
 
-    public void setDocumentation(ArrayList<Documentation> documentation) {
+    public void setDocumentation(ArrayList<LinkedEntity> documentation) {
         this.documentation = documentation;
     }
 
@@ -562,10 +562,23 @@ public class WebService extends EPOSDataModelEntity {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        WebService that = (WebService) o;
+        return Objects.equals(identifier, that.identifier) && Objects.equals(category, that.category) && Objects.equals(contactPoint, that.contactPoint) && Objects.equals(dateModified, that.dateModified) && Objects.equals(datePublished, that.datePublished) && Objects.equals(description, that.description) && Objects.equals(documentation, that.documentation) && Objects.equals(entryPoint, that.entryPoint) && Objects.equals(keywords, that.keywords) && Objects.equals(license, that.license) && Objects.equals(name, that.name) && Objects.equals(provider, that.provider) && Objects.equals(spatialExtent, that.spatialExtent) && Objects.equals(supportedOperation, that.supportedOperation) && Objects.equals(temporalExtent, that.temporalExtent) && Objects.equals(distribution, that.distribution) && Objects.equals(relation, that.relation) && Objects.equals(aaaiTypes, that.aaaiTypes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), identifier, category, contactPoint, dateModified, datePublished, description, documentation, entryPoint, keywords, license, name, provider, spatialExtent, supportedOperation, temporalExtent, distribution, relation, aaaiTypes);
+    }
+
+    @Override
     public String toString() {
         return "WebService{" +
                 "identifier=" + identifier +
-                ", schemaIdentifier='" + schemaIdentifier + '\'' +
                 ", category=" + category +
                 ", contactPoint=" + contactPoint +
                 ", dateModified=" + dateModified +
@@ -583,20 +596,6 @@ public class WebService extends EPOSDataModelEntity {
                 ", distribution=" + distribution +
                 ", relation=" + relation +
                 ", aaaiTypes='" + aaaiTypes + '\'' +
-                "} " + super.toString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        WebService that = (WebService) o;
-        return Objects.equals(getIdentifier(), that.getIdentifier()) && Objects.equals(getSchemaIdentifier(), that.getSchemaIdentifier()) && Objects.equals(getCategory(), that.getCategory()) && Objects.equals(getContactPoint(), that.getContactPoint()) && Objects.equals(getDateModified(), that.getDateModified()) && Objects.equals(getDatePublished(), that.getDatePublished()) && Objects.equals(getDescription(), that.getDescription()) && Objects.equals(getDocumentation(), that.getDocumentation()) && Objects.equals(getEntryPoint(), that.getEntryPoint()) && Objects.equals(getKeywords(), that.getKeywords()) && Objects.equals(getLicense(), that.getLicense()) && Objects.equals(getName(), that.getName()) && Objects.equals(getProvider(), that.getProvider()) && Objects.equals(getSpatialExtent(), that.getSpatialExtent()) && Objects.equals(getSupportedOperation(), that.getSupportedOperation()) && Objects.equals(getTemporalExtent(), that.getTemporalExtent()) && Objects.equals(getDistribution(), that.getDistribution()) && Objects.equals(getAaaiTypes(), that.getAaaiTypes()) && Objects.equals(getRelation(), that.getRelation());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), getIdentifier(), getSchemaIdentifier(), getCategory(), getContactPoint(), getDateModified(), getDatePublished(), getDescription(), getDocumentation(), getEntryPoint(), getKeywords(), getLicense(), getName(), getProvider(), getSpatialExtent(), getSupportedOperation(), getTemporalExtent(), getDistribution(), getAaaiTypes());
+                '}';
     }
 }
