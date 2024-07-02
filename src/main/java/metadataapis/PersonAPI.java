@@ -77,15 +77,18 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
             edmobj.setPersonIdentifiersByInstanceId(new ArrayList<>());
             for(org.epos.eposdatamodel.LinkedEntity identifier : obj.getIdentifier()){
                 LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(identifier);
-                PersonIdentifier pi = new PersonIdentifier();
-                pi.setPersonByPersonInstanceId(edmobj);
-                pi.setPersonInstanceId(edmobj.getInstanceId());
-                pi.setIdentifierInstanceId(le.getInstanceId());
-                pi.setIdentifierByIdentifierInstanceId((Identifier) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(),Identifier.class).get(0));
+                List<Identifier> identifierList1 = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(),Identifier.class);
+                if(!identifierList1.isEmpty()) {
+                    PersonIdentifier pi = new PersonIdentifier();
+                    pi.setPersonByPersonInstanceId(edmobj);
+                    pi.setPersonInstanceId(edmobj.getInstanceId());
+                    pi.setIdentifierInstanceId(le.getInstanceId());
+                    pi.setIdentifierByIdentifierInstanceId(identifierList1.get(0));
 
-                edmobj.getPersonIdentifiersByInstanceId().add(pi);
+                    edmobj.getPersonIdentifiersByInstanceId().add(pi);
 
-                dbaccess.updateObject(pi);
+                    dbaccess.updateObject(pi);
+                }
             }
         }
 

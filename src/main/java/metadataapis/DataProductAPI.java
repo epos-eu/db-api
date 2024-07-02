@@ -194,13 +194,16 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
             edmobj.setDataproductIdentifiersByInstanceId(new ArrayList<>());
             for(org.epos.eposdatamodel.LinkedEntity identifier : obj.getIdentifier()){
                 LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(identifier);
-                DataproductIdentifier pi = new DataproductIdentifier();
-                pi.setDataproductByDataproductInstanceId(edmobj);
-                pi.setDataproductInstanceId(edmobj.getInstanceId());
-                pi.setIdentifierInstanceId(le.getInstanceId());
-                pi.setIdentifierByIdentifierInstanceId((Identifier) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(),Identifier.class).get(0));
-                edmobj.getDataproductIdentifiersByInstanceId().add(pi);
-                dbaccess.updateObject(pi);
+                List<Identifier> identifierList = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(),Identifier.class);
+                if(!identifierList.isEmpty()) {
+                    DataproductIdentifier pi = new DataproductIdentifier();
+                    pi.setDataproductByDataproductInstanceId(edmobj);
+                    pi.setDataproductInstanceId(edmobj.getInstanceId());
+                    pi.setIdentifierInstanceId(le.getInstanceId());
+                    pi.setIdentifierByIdentifierInstanceId(identifierList.get(0));
+                    edmobj.getDataproductIdentifiersByInstanceId().add(pi);
+                    dbaccess.updateObject(pi);
+                }
             }
         }
         /** PROVENANCE **/

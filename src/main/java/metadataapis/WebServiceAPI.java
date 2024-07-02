@@ -94,13 +94,10 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
             DocumentationAPI documentationAPI = new DocumentationAPI(EntityNames.DOCUMENTATION.name(), Documentation.class);
 
             for(LinkedEntity documentation : obj.getDocumentation()) {
-                List<Documentation> list = dbaccess.getOneFromDBByInstanceId(documentation.getInstanceId(), Documentation.class);
-                Documentation documentation1 = null;
-                if (list.isEmpty()) {
+                Documentation documentation1 = documentationAPI.retrieve(documentation.getInstanceId());
+                if (documentation1==null) {
                     LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(documentation);
                     documentation1 = (Documentation) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Documentation.class).get(0);
-                } else {
-                    documentation1 = list.get(0);
                 }
 
                 List<Element> el = dbaccess.getOneFromDBByInstanceId(documentation1.getInstanceId(), Element.class);
