@@ -219,12 +219,22 @@ public class UserGroupManagementAPI {
         List<User> userList = getDbaccess().getOneFromDBBySpecificKey("authIdentifier",userId, User.class);
         if(userList.isEmpty()) return null;
 
+        List<MetadataGroupUser> metadataGroupUserList = getDbaccess().getAllFromDB(MetadataGroupUser.class);
+
         MetadataGroup retrievedGroup = metadataGroupList.get(0);
         User retrievedUser = userList.get(0);
 
         if(retrievedUser!=null && retrievedGroup!=null) {
+
             MetadataGroupUser metadataGroupUser = new MetadataGroupUser();
             metadataGroupUser.setId(UUID.randomUUID().toString());
+
+            for(MetadataGroupUser metadataGroupUser1 : metadataGroupUserList){
+                if(metadataGroupUser1.getGroupId().equals(retrievedGroup.getId())
+                && metadataGroupUser1.getAuthIdentifier().equals(retrievedUser.getAuthIdentifier())){
+                    metadataGroupUser = metadataGroupUser1;
+                }
+            }
             metadataGroupUser.setMetadataGroupByGroupId(retrievedGroup);
             metadataGroupUser.setGroupId(retrievedGroup.getId());
             metadataGroupUser.setUserByAuthIdentifier(retrievedUser);
@@ -259,15 +269,26 @@ public class UserGroupManagementAPI {
         List<EdmEntityId> edmEntityIdList = getDbaccess().getOneFromDBBySpecificKey("metaId",metaId, EdmEntityId.class);
         if(edmEntityIdList.isEmpty()) return null;
 
+        List<AuthorizationGroup> authorizationGroupList = getDbaccess().getAllFromDB(AuthorizationGroup.class);
+
+
         MetadataGroup retrievedGroup = metadataGroupList.get(0);
         EdmEntityId retrievedEdmEntity = edmEntityIdList.get(0);
 
         if(retrievedEdmEntity!=null && retrievedGroup!=null) {
 
             AuthorizationGroup authorizationGroup = new AuthorizationGroup();
+            authorizationGroup.setId(UUID.randomUUID().toString());
+
+            for(AuthorizationGroup authorizationGroup1 : authorizationGroupList){
+                if(authorizationGroup1.getGroupId().equals(groupId)
+                        && authorizationGroup1.getMetaId().equals(metaId)){
+                    authorizationGroup = authorizationGroup1;
+                }
+            }
+
             authorizationGroup.setGroupId(groupId);
             authorizationGroup.setMetaId(metaId);
-            authorizationGroup.setId(UUID.randomUUID().toString());
             authorizationGroup.setMetadataGroupByGroupId(retrievedGroup);
             authorizationGroup.setEdmEntityIdByMetaId(retrievedEdmEntity);
 

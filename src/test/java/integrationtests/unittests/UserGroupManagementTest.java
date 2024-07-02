@@ -5,6 +5,7 @@ import integrationtests.TestcontainersLifecycle;
 import metadataapis.EntityNames;
 import model.RequestStatusType;
 import model.RoleType;
+import net.bytebuddy.dynamic.scaffold.MethodGraph;
 import org.epos.eposdatamodel.Group;
 import org.epos.eposdatamodel.Identifier;
 import org.epos.eposdatamodel.LinkedEntity;
@@ -14,8 +15,6 @@ import org.junit.jupiter.api.Test;
 import usermanagementapis.UserGroupManagementAPI;
 
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.zip.ZipEntry;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,6 +22,9 @@ public class UserGroupManagementTest extends TestcontainersLifecycle {
 
     static User user;
     static Group group;
+
+    static Identifier identifier;
+    static LinkedEntity identifierLe;
 
     @Test
     @Order(1)
@@ -112,6 +114,28 @@ public class UserGroupManagementTest extends TestcontainersLifecycle {
 
     @Test
     @Order(6)
+    public void testAddSameUserToGroup() {
+
+        UserGroupManagementAPI.addUserToGroup(group.getId(),user.getAuthIdentifier(), RoleType.EDITOR, RequestStatusType.PENDING);
+
+        Group retrieveGroup = UserGroupManagementAPI.retrieveGroupById(group.getId());
+        User retrieveUser = UserGroupManagementAPI.retrieveUser(user);
+
+        System.out.println(retrieveGroup);
+        System.out.println(retrieveUser);
+
+        assertAll(
+                () -> assertNotNull(retrieveGroup),
+                () -> assertEquals(1, retrieveGroup.getUsers().size()),
+                () -> assertEquals(retrieveGroup.getUsers().get(0), retrieveUser.getAuthIdentifier()),
+                () -> assertEquals(1, retrieveUser.getGroups().size()),
+                () -> assertEquals(retrieveUser.getGroups().get(0).getGroupId(), retrieveGroup.getId()),
+                () -> assertEquals(retrieveUser.getGroups().get(0).getRole(), RoleType.EDITOR)
+        );
+    }
+
+    @Test
+    @Order(7)
     public void testDeleteUser() {
         UserGroupManagementAPI.deleteUser(user.getAuthIdentifier());
 
@@ -121,7 +145,7 @@ public class UserGroupManagementTest extends TestcontainersLifecycle {
     }
 
     @Test
-    @Order(7)
+    @Order(8)
     public void testDeleteGroup() {
 
         UserGroupManagementAPI.deleteGroup(group.getId());
@@ -133,7 +157,7 @@ public class UserGroupManagementTest extends TestcontainersLifecycle {
 
 
     @Test
-    @Order(8)
+    @Order(9)
     public void testCreateGroupWithoutName() {
         Group group = new Group(UUID.randomUUID().toString(), null, "Test Decription");
         UserGroupManagementAPI.createGroup(group);
@@ -147,19 +171,49 @@ public class UserGroupManagementTest extends TestcontainersLifecycle {
     }
 
     @Test
-    @Order(8)
+    @Order(10)
     public void testAddEntityToGroup() {
 
         AbstractAPI api = AbstractAPI.retrieveAPI(EntityNames.IDENTIFIER.name());
 
-        Identifier identifier = new Identifier();
+        identifier = new Identifier();
         identifier.setInstanceId(UUID.randomUUID().toString());
         identifier.setMetaId(UUID.randomUUID().toString());
         identifier.setUid(UUID.randomUUID().toString());
         identifier.setType("TYPE");
         identifier.setIdentifier("012345678900");
 
-        LinkedEntity identifierLe = api.create(identifier);
+        identifierLe = api.create(identifier);
+
+        Identifier retrievedIdentifier = (Identifier) api.retrieve(identifierLe.getInstanceId());
+
+        Group metadataGroup = new Group();
+        metadataGroup.setId("test");
+        metadataGroup.setDescription("test");
+        metadataGroup.setName("test");
+        UserGroupManagementAPI.createGroup(metadataGroup);
+
+        Boolean response = UserGroupManagementAPI.addMetadataElementToGroup(identifierLe.getMetaId(), metadataGroup.getId());
+
+        Group returnGroup = UserGroupManagementAPI.retrieveGroupById(metadataGroup.getId());
+        System.out.println(returnGroup);
+
+        assertAll(
+                () -> assertEquals(identifier.getType(), retrievedIdentifier.getType()),
+                () -> assertEquals(identifier.getIdentifier(), retrievedIdentifier.getIdentifier()),
+                () -> assertEquals(identifier.getUid(), retrievedIdentifier.getUid()),
+                () -> assertEquals(identifier.getInstanceId(), retrievedIdentifier.getInstanceId()),
+                () -> assertEquals(identifier.getMetaId(), retrievedIdentifier.getMetaId()),
+                () -> assertTrue(response),
+                () -> assertEquals(returnGroup.getEntities().size(), 1)
+        );
+    }
+
+    @Test
+    @Order(11)
+    public void testAddSameEntityToGroup() {
+
+        AbstractAPI api = AbstractAPI.retrieveAPI(EntityNames.IDENTIFIER.name());
 
         Identifier retrievedIdentifier = (Identifier) api.retrieve(identifierLe.getInstanceId());
 
