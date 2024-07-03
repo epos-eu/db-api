@@ -1,5 +1,6 @@
 package org.epos.eposdatamodel;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
@@ -14,12 +15,19 @@ import java.util.Objects;
 
 public class Group {
 
+    @Schema(description = "This property refers to the id of a group", example = "83823482374823fshe", required = false)
     private String id;
+
+    @Schema(description = "This property refers to the name of a group", example = "group name", required = false)
     private String name;
+
+    @Schema(description = "This property refers to the description of a group", example = "group description text", required = false)
     private String description;
 
+    @Schema(description = "This property refers to the list of users id of a group", example = "[32846284623,2342342342]", required = false)
     private List<String> users;
 
+    @Schema(description = "This property refers to the list of entities id of a group", example = "[32846284623,2342342342]", required = false)
     private List<String> entities;
 
 

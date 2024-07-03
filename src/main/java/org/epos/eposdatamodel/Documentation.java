@@ -1,16 +1,21 @@
 package org.epos.eposdatamodel;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.Objects;
 
 /**
  * Documentation.
  */
 public class Documentation extends EPOSDataModelEntity{
+    @Schema(description = "Documentation title", example = "Documentation title", required = false)
     private String title = null;
 
+    @Schema(description = "Documentation description", example = "Documentation description text", required = false)
     private String description = null;
 
+    @Schema(description = "Documentation url", example = "URL", required = false)
     private String uri = null;
 
     public Documentation title(String title) {

@@ -1,5 +1,7 @@
 package org.epos.eposdatamodel;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -16,126 +18,201 @@ public class DataProduct extends EPOSDataModelEntity {
     /**
      * This property refers to information that indicates whether the Data Product is open data, has access restrictions or is not public.
      **/
+    @Schema(description = "This property refers to information that indicates whether the Data Product is open data, has access restrictions or is not public.", example = "open data", required = false)
     private String accessRight;
 
     /**
      * This property refers to the frequency at which the Data Product is updated.
      **/
+    @Schema(description = "This property refers to the frequency at which the Data Product is updated.", example = "daily", required = false)
     private String accrualPeriodicity;
 
     /**
      * This property refers to a category of the Data Product. A Data Product may be associated with multiple categories.
      **/
+    @Schema(description = "This property refers to a category of the Data Product. A Data Product may be associated with multiple categories.", example = "{\n" +
+            "    \"entityType\": \"CATEGORY\",\n" +
+            "    \"instanceId\": \"an UUID\",\n" +
+            "    \"metaId\": \"an UUID\",\n" +
+            "    \"uid\": \"an UUID\"\n" +
+            "  }", required = false)
     private List<LinkedEntity> category;
 
     /**
      * This property contains contact information (i.e. Role) that can be used for sending comments about the Data Product.
      */
+    @Schema(description = "This property contains contact information (i.e. Role) that can be used for sending comments about the Data Product.", example = "{\n" +
+            "    \"entityType\": \"CONTACTPOINT\",\n" +
+            "    \"instanceId\": \"an UUID\",\n" +
+            "    \"metaId\": \"an UUID\",\n" +
+            "    \"uid\": \"an UUID\"\n" +
+            "  }", required = false)
     private List<LinkedEntity> contactPoint;
 
     /**
      * This property contains the date on which the Data Product was created.
      **/
+    @Schema(description = "This property contains the date on which the Data Product was created.", example = "2024-07-03T00:00:00", required = false)
     private LocalDateTime created;
 
     /**
      * This property contains the single identifier of the DataProduct
      */
+    @Schema(description = "This property contains the single identifier of the DataProduct", example = "UID:2314324", required = false)
     private String dctIdentifier;
 
     /**
      * This property contains a free-text account of the Data Product. This property can be repeated for parallel language versions of the description.
      **/
+    @Schema(description = "This property contains a free-text account of the Data Product. This property can be repeated for parallel language versions of the description.", example = "Example description text", required = false)
     private List<String> description = new ArrayList<>();
 
     /**
      * This property links the Data Product to an available Distribution.
      */
+    @Schema(description = "This property links the Data Product to an available Distribution.", example = "{\n" +
+            "    \"entityType\": \"DISTRIBUTION\",\n" +
+            "    \"instanceId\": \"an UUID\",\n" +
+            "    \"metaId\": \"an UUID\",\n" +
+            "    \"uid\": \"an UUID\"\n" +
+            "  }", required = false)
     private List<LinkedEntity> distribution;
 
     /**
      * This property refers to a related Data Product that is part of the described Data Product.
      */
+    @Schema(description = "This property refers to a related Data Product that is part of the described Data Product.", example = "{\n" +
+            "    \"entityType\": \"DATAPRODUCT\",\n" +
+            "    \"instanceId\": \"an UUID\",\n" +
+            "    \"metaId\": \"an UUID\",\n" +
+            "    \"uid\": \"an UUID\"\n" +
+            "  }", required = false)
     private List<LinkedEntity> hasPart;
 
     /**
      * This property refers to a secondary identifier of the Data Product, such as MAST/ADS, DataCite, DOI, EZID or W3ID. Linked entity of type IDENTIFIER
      **/
+    @Schema(description = "This property refers to a secondary identifier of the Data Product, such as MAST/ADS, DataCite, DOI, EZID or W3ID.", example = "{\n" +
+            "    \"entityType\": \"IDENTIFIER\",\n" +
+            "    \"instanceId\": \"an UUID\",\n" +
+            "    \"metaId\": \"an UUID\",\n" +
+            "    \"uid\": \"an UUID\"\n" +
+            "  }", required = false)
     private List<LinkedEntity> identifier;
 
     /**
      * This property refers to a related Data Product in which the described Data Product is physically or logically included.
      */
+    @Schema(description = "This property refers to a related Data Product in which the described Data Product is physically or logically included.", example = "{\n" +
+            "    \"entityType\": \"DATAPRODUCT\",\n" +
+            "    \"instanceId\": \"an UUID\",\n" +
+            "    \"metaId\": \"an UUID\",\n" +
+            "    \"uid\": \"an UUID\"\n" +
+            "  }", required = false)
     private List<LinkedEntity> isPartOf;
 
     /**
      * This property contains the date of formal issuance (e.g., publication) of the Data Product.
      **/
+    @Schema(description = "This property contains the date of formal issuance (e.g., publication) of the Data Product.", example = "2024-07-03T00:00:00", required = false)
     private LocalDateTime issued;
 
     /**
      * This property contains a keyword or tag describing the Data Product. Multiple entries in a keywords list are typically delimited by commas.
      **/
+    @Schema(description = "This property contains a keyword or tag describing the Data Product. Multiple entries in a keywords list are typically delimited by commas.", example = "event,seismology,station", required = false)
     private String keywords;
 
     /**
      * This property contains the most recent date on which the Data Product was changed or modified.
      **/
+    @Schema(description = "This property contains the most recent date on which the Data Product was changed or modified.", example = "2024-07-03T00:00:00", required = false)
     private LocalDateTime modified;
 
     /**
      * This property contains a statement about the lineage of a Data Product
      **/
+    @Schema(description = "This property contains a statement about the lineage of a Data Product", example = "some provenance url", required = false)
     private List<String> provenance;
 
     /**
      * This property refers to an entity (organization) responsible for making the Data Product available.
      */
+    @Schema(description = "This property refers to an entity (organization) responsible for making the Data Product available.", example = "{\n" +
+            "    \"entityType\": \"ORGANIZATION\",\n" +
+            "    \"instanceId\": \"an UUID\",\n" +
+            "    \"metaId\": \"an UUID\",\n" +
+            "    \"uid\": \"an UUID\"\n" +
+            "  }", required = false)
     private List<LinkedEntity> publisher;
 
     /**
      * It represents the link to another Epos resource.
      */
+    @Schema(description = "It represents the link to another Epos resource.", example = "{\n" +
+            "    \"entityType\": \"ANY ENTITY TYPE\",\n" +
+            "    \"instanceId\": \"an UUID\",\n" +
+            "    \"metaId\": \"an UUID\",\n" +
+            "    \"uid\": \"an UUID\"\n" +
+            "  }", required = false)
     private List<LinkedEntity> relation;
 
     /**
      * This property refers to a geographic region that is covered by the Data Product. Linked entity of type LOCATION
      **/
+    @Schema(description = "This property refers to a geographic region that is covered by the Data Product.", example = "{\n" +
+            "    \"entityType\": \"LOCATION\",\n" +
+            "    \"instanceId\": \"an UUID\",\n" +
+            "    \"metaId\": \"an UUID\",\n" +
+            "    \"uid\": \"an UUID\"\n" +
+            "  }", required = false)
     private List<LinkedEntity> spatialExtent;
 
     /**
      * This property refers to a temporal period (i.e. startDate, endDate) that the Data Product covers. Linked entity of type PERIODOFTIME
      **/
+    @Schema(description = "This property refers to a temporal period (i.e. startDate, endDate) that the Data Product covers.", example = "{\n" +
+            "    \"entityType\": \"PERIODOFTIME\",\n" +
+            "    \"instanceId\": \"an UUID\",\n" +
+            "    \"metaId\": \"an UUID\",\n" +
+            "    \"uid\": \"an UUID\"\n" +
+            "  }", required = false)
     private List<LinkedEntity> temporalExtent;
 
     /**
      * This property contains a name given to the Data Product. This property can be repeated for parallel language versions of the name.
      **/
+    @Schema(description = "This property contains a name given to the Data Product. This property can be repeated for parallel language versions of the name.", example = "Some DataProduct name", required = false)
     private List<String> title = new ArrayList<>();
 
     /**
      * This property refers to the type of the Data Product. A controlled vocabulary for the values has not been established.
      **/
+    @Schema(description = "This property refers to the type of the Data Product. A controlled vocabulary for the values has not been established.", example = "http://purl.org/dc/dcmitype/Collection", required = false)
     private String type;
 
     /**
      * This property contains a version number or other version designation of the Data Product.
      **/
+    @Schema(description = "This property contains a version number or other version designation of the Data Product.", example = "1.0", required = false)
     private String versionInfo;
 
     /**
      * This property refers to the Data Product documentation.
      */
+    @Schema(description = "This property refers to the Data Product documentation.", example = "URL to documentation", required = false)
     private String documentation;
 
     /**
      * This property refers to the URI which make available information about quality assurance of the Data Product.
      */
+    @Schema(description = "This property refers to the URI which make available information about quality assurance of the Data Product.", example = "URL to quality assurance", required = false)
     private String qualityAssurance;
 
     /**
      * probabily an useless property
      */
+    @Schema(description = "This property refers to the URI which make available information about quality assurance of the Data Product.", example = "URL to quality assurance", required = false)
     private String hasQualityAnnotation;
 
     public void addSpatialExtent(LinkedEntity spatialExtent) {

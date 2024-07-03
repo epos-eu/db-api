@@ -1,5 +1,7 @@
 package org.epos.eposdatamodel;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -12,26 +14,41 @@ public class Operation extends EPOSDataModelEntity {
     /**
      * The HTTP method.
      **/
+    @Schema(description = "The HTTP method.", example = "GET", required = false)
     private String method;
 
     /**
      * This property is used to specify the output format of the Operation. The possible values are listed here: https://www.iana.org/assignments/media-types/media-types.xhtml
      **/
+    @Schema(description = "This property is used to specify the output format of the Operation. The possible values are listed here: https://www.iana.org/assignments/media-types/media-types.xhtml", example = "application/json", required = false)
     private List<String> returns;
 
     /**
      * The syntax of the template literal is specified by the [RFC6570] URI Template syntax.
      **/
+    @Schema(description = "The syntax of the template literal is specified by the [RFC6570] URI Template syntax..", example = "http://urltoservice{?param1,param2,param3}", required = false)
     private String template;
 
     /**
      * A variable-to-property mapping of the IRI template.
      **/
+    @Schema(description = "A variable-to-property mapping of the IRI template.", example = "{\n" +
+            "    \"entityType\": \"MAPPING\",\n" +
+            "    \"instanceId\": \"an UUID\",\n" +
+            "    \"metaId\": \"an UUID\",\n" +
+            "    \"uid\": \"an UUID\"\n" +
+            "  }", required = false)
     private List<LinkedEntity> mapping;
 
     /**
      * Reverse reference to the related webservice.
      */
+    @Schema(description = "Reverse reference to the related webservice.", example = "{\n" +
+            "    \"entityType\": \"WEBSERVICE\",\n" +
+            "    \"instanceId\": \"an UUID\",\n" +
+            "    \"metaId\": \"an UUID\",\n" +
+            "    \"uid\": \"an UUID\"\n" +
+            "  }", required = false)
     private List<LinkedEntity> webservice;
 
 

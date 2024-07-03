@@ -1,5 +1,6 @@
 package org.epos.eposdatamodel;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import model.ElementType;
 
 import java.util.ArrayList;
@@ -11,15 +12,10 @@ import java.util.Objects;
  */
 public class Element extends EPOSDataModelEntity {
 
-    /**
-     * This property refers to the Contact Point role.
-     **/
+    @Schema(description = "This property refers to the type of an element ('TELEPHONE', 'EMAIL', 'LANGUAGE', 'DOWNLOADURL', 'ACCESSURL','DOCUMENTATION', 'RETURNS', 'PARAMVALUE', 'PROGRAMMINGLANGUAGE', 'PAGEURL')", example = "PAGEURL", required = false)
     private ElementType type = null;
 
-
-    /**
-     * This property refers to the related Organization which represents the contactpoint.
-     */
+    @Schema(description = "This property refers to the value of an element", example = "http://pageurl", required = false)
     private String value = null;
 
 

@@ -1,5 +1,7 @@
 package org.epos.eposdatamodel;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -14,11 +16,13 @@ public class PeriodOfTime extends EPOSDataModelEntity{
     /**
      * This property contains the END of the period
      **/
+    @Schema(description = "This property contains the END of the period", example = "2024-07-03T00:00:00", required = false)
     private LocalDateTime startDate;
 
     /**
      * This property contains the END of the period
      **/
+    @Schema(description = "This property contains the END of the period", example = "2024-07-03T00:00:00", required = false)
     private LocalDateTime endDate;
 
     public PeriodOfTime startDate(LocalDateTime startDate) {

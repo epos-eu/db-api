@@ -1,17 +1,26 @@
 package org.epos.eposdatamodel;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class User {
 
+    @Schema(description = "User identifier", example = "id234324543", required = false)
     private String authIdentifier;
+
+    @Schema(description = "Lastname of the user", example = "Doe", required = false)
     private String lastName;
+    @Schema(description = "Firstname of the user", example = "John", required = false)
     private String firstName;
+    @Schema(description = "Email of the user", example = "email@email.com", required = false)
     private String email;
 
+    @Schema(description = "Boolean, true if the user is a general admin", example = "true", required = false)
     private Boolean isAdmin;
 
+    @Schema(description = "List of groups on which user belong to", example = "342442", required = false)
     private List<UserGroup> groups;
 
     public User(){}

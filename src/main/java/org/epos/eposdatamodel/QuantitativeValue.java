@@ -1,5 +1,7 @@
 package org.epos.eposdatamodel;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.Objects;
 
 /**
@@ -9,12 +11,14 @@ public class QuantitativeValue extends EPOSDataModelEntity{
     /**
      * The unit of measurement given using the UN/CEFACT Common Code (3 characters) or a URL
      */
+    @Schema(description = "The unit of measurement given using the UN/CEFACT Common Code (3 characters) or a URL", example = "UNT", required = false)
     private String unit;
 
     /**
      * The unit of measurement given using the UN/CEFACT Common Code (3 characters) or a URL
      */
-        private String value;
+    @Schema(description = "The unit of measurement given using the UN/CEFACT Common Code (3 characters) or a URL", example = "value", required = false)
+    private String value;
 
 
     public String getUnit() {

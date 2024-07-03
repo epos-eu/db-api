@@ -1,5 +1,6 @@
 package org.epos.eposdatamodel;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import model.RoleType;
 import org.eclipse.persistence.internal.jpa.rs.metadata.model.Link;
 
@@ -15,48 +16,72 @@ public class Person extends EPOSDataModelEntity {
     /**
      * This property contains the physical address of the Person.
      */
+    @Schema(description = "This property contains the physical address of the Person.", example = "{\n" +
+            "    \"entityType\": \"ADDRESS\",\n" +
+            "    \"instanceId\": \"an UUID\",\n" +
+            "    \"metaId\": \"an UUID\",\n" +
+            "    \"uid\": \"an UUID\"\n" +
+            "  }", required = false)
     private LinkedEntity address;
 
     /**
      * This property refers to the organization to which the person is
      * affiliated.
      */
+    @Schema(description = "This property refers to the organization to which the person is affiliated.", example = "{\n" +
+            "    \"entityType\": \"ORGANIZATION\",\n" +
+            "    \"instanceId\": \"an UUID\",\n" +
+            "    \"metaId\": \"an UUID\",\n" +
+            "    \"uid\": \"an UUID\"\n" +
+            "  }", required = false)
     private List<LinkedEntity> affiliation;
 
     /**
      * This property refers to the URL of the Person curriculum vitae.
      **/
+    @Schema(description = "This property refers to the URL of the Person curriculum vitae.", example = "http://urltocv", required = false)
     private String CVURL;
 
     /**
      * This property contains the email address of the Person.
      **/
+    @Schema(description = "This property contains the email address of the Person.", example = "email@email.com", required = false)
     private List<String> email;
 
     /**
      * This property contains the last name of the Person.
      **/
+    @Schema(description = "This property contains the last name of the Person.", example = "Doe", required = false)
     private String familyName;
 
     /**
      * This property contains the first name of the Person.
      **/
+    @Schema(description = "This property contains the first name of the Person.", example = "John", required = false)
     private String givenName;
 
     /**
      * This property contains an identifier for the Person (e.g., ORCID, ScopusID, etc.).
      **/
 
+    @Schema(description = "This property contains an identifier for the Person (e.g., ORCID, ScopusID, etc.).", example = "{\n" +
+            "    \"entityType\": \"IDENTIFIER\",\n" +
+            "    \"instanceId\": \"an UUID\",\n" +
+            "    \"metaId\": \"an UUID\",\n" +
+            "    \"uid\": \"an UUID\"\n" +
+            "  }", required = false)
     private List<LinkedEntity> identifier = new ArrayList<>();
 
     /**
      * This property contains the specific qualifications of the Person.
      **/
+    @Schema(description = "his property contains the specific qualifications of the Person.", example = "manager", required = false)
     private List<String> qualifications;
 
     /**
      * This property contains the telephone number of the Person.
      **/
+    @Schema(description = "This property contains the telephone number of the Person.", example = "+0039213134325", required = false)
     private List<String> telephone;
 
     public void addQualifications(String qualification) {

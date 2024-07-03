@@ -1,7 +1,10 @@
 package org.epos.eposdatamodel;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import metadataapis.EntityNames;
 
+import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.Objects;
 
 
@@ -13,21 +16,25 @@ public class LinkedEntity {
     /**
      * The instanceId of the related instance, it can be used to precisely refer to the ote instance.
      */
+    @Schema(description = "The instanceId of the related instance, it can be used to precisely refer to the ote instance", example = "12414324252352", required = false)
     private String instanceId;
 
     /**
      * The uid of the related instance.
      */
+    @Schema(description = "The uid of the related instance.", example = "12414324252352", required = false)
     private String uid;
 
     /**
      * The entity type of the related instance (e.g. DataProduct, Equipment...)
      */
+    @Schema(description = "The entity type of the related instance in upper case (e.g. DataProduct, Equipment...)", example = "ORGANIZATION", required = false)
     private String entityType;
 
     /**
      * The metaId of the related instance
      */
+    @Schema(description = "The metaId of the related instance", example = "12414324252352", required = false)
     private String metaId;
 
 

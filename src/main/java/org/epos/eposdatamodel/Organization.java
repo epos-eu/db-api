@@ -1,5 +1,7 @@
 package org.epos.eposdatamodel;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -12,62 +14,104 @@ public class Organization extends EPOSDataModelEntity {
     /**
      * This property contains the physical address of the Organization.
      **/
-    private Address address;
+    @Schema(description = "This property contains the physical address of the Organization.", example = "{\n" +
+            "    \"entityType\": \"ADDRESS\",\n" +
+            "    \"instanceId\": \"an UUID\",\n" +
+            "    \"metaId\": \"an UUID\",\n" +
+            "    \"uid\": \"an UUID\"\n" +
+            "  }", required = false)
+    private LinkedEntity address;
 
     /**
      * This property refers to the Contact Point (i.e. Role) defined for the Organization
      */
+    @Schema(description = "This property refers to the Contact Point (i.e. Role) defined for the Organization", example = "{\n" +
+            "    \"entityType\": \"CONTACTPOINT\",\n" +
+            "    \"instanceId\": \"an UUID\",\n" +
+            "    \"metaId\": \"an UUID\",\n" +
+            "    \"uid\": \"an UUID\"\n" +
+            "  }", required = false)
     private List<LinkedEntity> contactPoint;
 
     /**
      * This property contains the email address of the Organization.
      **/
+    @Schema(description = "This property contains the email address of the Organization.", example = "email@email.com", required = false)
     private List<String> email;
 
     /**
      * This property contains an identifier for the Organization (e.g., PIC, ISNI, etc.). LinkedEntity of type IDENTIFIER
      **/
+    @Schema(description = "This property contains an identifier for the Organization (e.g., PIC, ISNI, etc.).", example = "{\n" +
+            "    \"entityType\": \"IDENTIFIER\",\n" +
+            "    \"instanceId\": \"an UUID\",\n" +
+            "    \"metaId\": \"an UUID\",\n" +
+            "    \"uid\": \"an UUID\"\n" +
+            "  }", required = false)
     private List<LinkedEntity> identifier = new ArrayList<>();
 
     /**
      * This property contains the Organization acronym (e.g., INGV).
      */
+    @Schema(description = "This property contains the Organization acronym (e.g., INGV).", example = "INGV", required = false)
     private String acronym;
 
     /**
      * This property contains the official name of the Organization. LinkedEntity of type LEGALNAME
      **/
+    @Schema(description = "This property contains the official name of the Organization.", example = "{\n" +
+            "    \"entityType\": \"LEGALNAME\",\n" +
+            "    \"instanceId\": \"an UUID\",\n" +
+            "    \"metaId\": \"an UUID\",\n" +
+            "    \"uid\": \"an UUID\"\n" +
+            "  }", required = false)
     private List<LinkedEntity> legalName;
 
     /**
      * This property contains the Organization identifier that uniquely identifies a legal entity as defined in ISO 17442.
      **/
+    @Schema(description = "This property contains the Organization identifier that uniquely identifies a legal entity as defined in ISO 17442.", example = "CODE", required = false)
     private String leiCode;
 
     /**
      * This property contains the URL of the Organization logo.
      **/
+    @Schema(description = "This property contains the URL of the Organization logo.", example = "http://urltologo", required = false)
     private String logo;
 
     /**
      * This property refers to an Organization to which this Organization belongs.
      */
+    @Schema(description = "This property refers to an Organization to which this Organization belongs.", example = "{\n" +
+            "    \"entityType\": \"ORGANIZATION\",\n" +
+            "    \"instanceId\": \"an UUID\",\n" +
+            "    \"metaId\": \"an UUID\",\n" +
+            "    \"uid\": \"an UUID\"\n" +
+            "  }", required = false)
     private List<LinkedEntity> memberOf;
 
     /**
      * This property refers to a Facility or Equipment of which it is the owner.
      **/
+    @Schema(description = "This property refers to a Facility or Equipment of which it is the owner.", example = "{\n" +
+            "    \"entityType\": \"EQUIPMENT or FACILITY\",\n" +
+            "    \"instanceId\": \"an UUID\",\n" +
+            "    \"metaId\": \"an UUID\",\n" +
+            "    \"uid\": \"an UUID\"\n" +
+            "  }", required = false)
     private List<LinkedEntity> owns;
 
 
     /**
      * This property contains the telephone number of the Organization.
      **/
+    @Schema(description = "This property contains the telephone number of the Organization.", example = "+003912414324", required = false)
     private List<String> telephone;
 
     /**
      * This property contains the URL of the Organization website.
      **/
+    @Schema(description = "This property contains the URL of the Organization website.", example = "http://urltowebsite", required = false)
     private String URL;
 
     /**
@@ -75,6 +119,7 @@ public class Organization extends EPOSDataModelEntity {
      * consortia, independent (INTERMAGNET), national EPOS consortia). A
      * controlled list for the values should be established.
      */
+    @Schema(description = "This property refers to the type of Organization (e.g., TCS, TCS internal consortia, independent (INTERMAGNET), national EPOS consortia). A controlled list for the values should be established.", example = "TCS", required = false)
     private String type;
 
     /**
@@ -82,6 +127,7 @@ public class Organization extends EPOSDataModelEntity {
      * respect to EPOS (e.g., existing TCS, candidate TCS, external service). A
      * controlled list for the values should be established.
      */
+    @Schema(description = "TThis property contains information about the status of the Organization with respect to EPOS (e.g., existing TCS, candidate TCS, external service). A controlled list for the values should be established.", example = "some maturity value", required = false)
     private String maturity;
 
 
@@ -147,7 +193,7 @@ public class Organization extends EPOSDataModelEntity {
     }
 
 
-    public Organization address(Address address) {
+    public Organization address(LinkedEntity address) {
         this.address = address;
         return this;
     }
@@ -157,11 +203,11 @@ public class Organization extends EPOSDataModelEntity {
      *
      * @return address
      **/
-    public Address getAddress() {
+    public LinkedEntity getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(LinkedEntity address) {
         this.address = address;
     }
 

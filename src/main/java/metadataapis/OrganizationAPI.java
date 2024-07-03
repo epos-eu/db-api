@@ -62,8 +62,7 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
                     getDbaccess().deleteObject(item);
                 }
             }
-            AddressAPI addressAPI = new AddressAPI(EntityNames.ADDRESS.name(), Address.class);
-            LinkedEntity le = addressAPI.create(obj.getAddress());
+            LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(obj.getAddress());
             edmobj.setAddressId(le.getInstanceId());
         }
 
@@ -263,14 +262,8 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
             }
 
             if (edmobj.getAddressByAddressId() != null) {
-                Address address = edmobj.getAddressByAddressId();
-                org.epos.eposdatamodel.Address address1 = new org.epos.eposdatamodel.Address();
-                address1.setLocality(address.getLocality());
-                address1.setCountryCode(address.getCountrycode());
-                address1.setCountry(address.getCountry());
-                address1.setPostalCode(address.getPostalCode());
-                address1.setStreet(address.getStreet());
-                o.setAddress(address1);
+                AddressAPI api = new AddressAPI(EntityNames.ADDRESS.name(), Address.class);
+                o.setAddress(api.retrieveLinkedEntity(edmobj.getAddressId()));
             }
 
             if (edmobj.getOrganizationContactpointsByInstanceId().size() > 0) {

@@ -1,5 +1,7 @@
 package org.epos.eposdatamodel;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.Objects;
 
 /**
@@ -10,6 +12,7 @@ public class Location extends EPOSDataModelEntity{
     /**
      * This property associates any resource with the corresponding geometry.
      **/
+    @Schema(description = "This property associates any resource with the corresponding geometry.", example = "POLYGON(....)", required = false)
     private String location;
 
 

@@ -1,5 +1,7 @@
 package org.epos.eposdatamodel;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -18,26 +20,41 @@ public class ContactPoint extends EPOSDataModelEntity {
      * This property contains information about the language used by the Contact
      * Point. Please use one of the language codes from the IETF BCP 47 standard.
      */
+    @Schema(description = "This property contains information about the language used by the Contact Point using the language codes from the IETF BCP 47 standard.", example = "en", required = false)
     private List<String> language = null;
 
     /**
      * This property refers to the Contact Point role.
      **/
+    @Schema(description = "This property refers to the Contact Point role.", example = "manager", required = false)
     private String role = null;
 
     /**
      * This property refers to the related Organization which represents the contactpoint.
      */
+    @Schema(description = "This property refers to the related Organization which represents the contactpoint.", example = "{\n" +
+            "    \"entityType\": \"ORGANIZATION\",\n" +
+            "    \"instanceId\": \"an UUID\",\n" +
+            "    \"metaId\": \"an UUID\",\n" +
+            "    \"uid\": \"an UUID\"\n" +
+            "  }", required = false)
     private LinkedEntity organization = null;
 
     /**
      * This property refers to the related Person which represents the contact point.
      */
+    @Schema(description = "This property refers to the related Person which represents the contact point.", example = "{\n" +
+            "    \"entityType\": \"PERSON\",\n" +
+            "    \"instanceId\": \"an UUID\",\n" +
+            "    \"metaId\": \"an UUID\",\n" +
+            "    \"uid\": \"an UUID\"\n" +
+            "  }", required = false)
     private LinkedEntity person = null;
 
     /**
      * This property refers to the Contact Point Telephone.
      **/
+    @Schema(description = "This property refers to the Contact Point Telephone.", example = "+0039213123164", required = false)
     private List<String> telephone = null;
 
     public void addEmail(String email) {

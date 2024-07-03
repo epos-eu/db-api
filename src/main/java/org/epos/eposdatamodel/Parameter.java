@@ -1,5 +1,7 @@
 package org.epos.eposdatamodel;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.Objects;
 
 /**
@@ -10,16 +12,19 @@ public class Parameter extends EPOSDataModelEntity {
     /**
      * Format
      **/
+    @Schema(description = "Format", example = "application/json", required = false)
     private String encodingFormat;
 
     /**
      * schema of the request
      **/
+    @Schema(description = "schema of the request", example = "http://urltoschema", required = false)
     private String conformsTo;
 
     /**
      * The type of action, can be object or result
      */
+    @Schema(description = "The type of action, can be object or result", example = "object", required = false)
     private ActionEnum action;
 
     public Parameter encodingFormat(String encodingFormat) {

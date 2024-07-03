@@ -1,5 +1,7 @@
 package org.epos.eposdatamodel;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.Objects;
 
 /**
@@ -9,11 +11,13 @@ public class LegalName extends EPOSDataModelEntity {
     /**
      * The language assigned to the legalname
      **/
+    @Schema(description = "The language assigned to the legalname", example = "en", required = false)
     private String language = null;
 
     /**
      * The legalname of an organization
      **/
+    @Schema(description = "The legalname of an organization", example = "Institute of examples", required = false)
     private String legalname = null;
 
     public String getLanguage() {
