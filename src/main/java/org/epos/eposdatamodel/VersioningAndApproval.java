@@ -87,7 +87,7 @@ public abstract class VersioningAndApproval {
     /**
      * list of group which the entity belong
      */
-    @Schema(description = "list of group ids which the entity belong", example = "32492582346584367", required = false)
+    @Schema(description = "list of group ids which the entity belong", required = false)
     private List<Group> groups;
 
 

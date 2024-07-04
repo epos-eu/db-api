@@ -20,7 +20,7 @@ public class User {
     @Schema(description = "Boolean, true if the user is a general admin", example = "true", required = false)
     private Boolean isAdmin;
 
-    @Schema(description = "List of groups on which user belong to", example = "342442", required = false)
+    @Schema(description = "List of groups on which user belong to", required = false)
     private List<UserGroup> groups;
 
     public User(){}

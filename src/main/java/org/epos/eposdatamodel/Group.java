@@ -15,7 +15,7 @@ import java.util.Objects;
 
 public class Group {
 
-    @Schema(description = "This property refers to the id of a group", example = "83823482374823fshe", required = false)
+    @Schema(description = "This property refers to the id of a group", example = "83823482374823f", required = false)
     private String id;
 
     @Schema(description = "This property refers to the name of a group", example = "group name", required = false)
@@ -24,10 +24,10 @@ public class Group {
     @Schema(description = "This property refers to the description of a group", example = "group description text", required = false)
     private String description;
 
-    @Schema(description = "This property refers to the list of users id of a group", example = "[32846284623,2342342342]", required = false)
+    @Schema(description = "This property refers to the list of users id of a group", required = false)
     private List<String> users;
 
-    @Schema(description = "This property refers to the list of entities id of a group", example = "[32846284623,2342342342]", required = false)
+    @Schema(description = "This property refers to the list of entities id of a group", required = false)
     private List<String> entities;
 
 
