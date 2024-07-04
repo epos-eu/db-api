@@ -11,31 +11,31 @@ public class Address extends EPOSDataModelEntity {
     /**
      * The country.
      **/
-    @Schema(description = "The country of the address", example = "IT or Italy", required = false)
+    @Schema(name = "country", description = "The country of the address", example = "IT or Italy", required = false)
     private String country = null;
 
     /**
      * The locality in which the street address is, and which is in the region. For example, Mountain View.
      **/
-    @Schema(description = "The locality in which the street address is, and which is in the region. For example, Mountain View", example = "Mountain View", required = false)
+    @Schema(name = "locality", description = "The locality in which the street address is, and which is in the region. For example, Mountain View", example = "Mountain View", required = false)
     private String locality = null;
 
     /**
      * The postal code. For example, 94043.
      **/
-    @Schema(description = "The postal code. For example, 94043.", example = "94043", required = false)
+    @Schema(name = "postalCode", description = "The postal code. For example, 94043.", example = "94043", required = false)
     private String postalCode = null;
 
     /**
      * The street address. For example, 1600 Amphitheatre Pkwy.
      **/
-    @Schema(description = "The street address. For example, 1600 Amphitheatre Pkwy.", example = "1600 Amphitheatre Pkwy", required = false)
+    @Schema(name = "street", description = "The street address. For example, 1600 Amphitheatre Pkwy.", example = "1600 Amphitheatre Pkwy", required = false)
     private String street = null;
 
     /**
      * The two-letter ISO 3166-1 alpha-2 country code (e.g., IT, UK).
      */
-    @Schema(description = "The two-letter ISO 3166-1 alpha-2 country code (e.g., IT, UK).", example = "IT", required = false)
+    @Schema(name = "countryCode", description = "The two-letter ISO 3166-1 alpha-2 country code (e.g., IT, UK).", example = "IT", required = false)
     private String countryCode = null;
 
 

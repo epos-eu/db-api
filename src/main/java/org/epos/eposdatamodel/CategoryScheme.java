@@ -14,44 +14,44 @@ public class CategoryScheme extends EPOSDataModelEntity {
     /**
      * This property contains a description of the category scheme.
      */
-	@Schema(description = "This property contains a description of the category scheme.", example = "The domain of all seismological assets", required = false)
+	@Schema(name = "description", description = "This property contains a description of the category scheme.", example = "The domain of all seismological assets", required = false)
 	private String description;
 
     /**
      * This property contains a name of the category scheme.
      */
-	@Schema(description = "This property contains a name of the category scheme.", example = "Seismology", required = false)
+	@Schema(name = "title", description = "This property contains a name of the category scheme.", example = "Seismology", required = false)
 	private String title;
 
-	@Schema(description = "Code used by Data Portal ", example = "00011", required = false)
+	@Schema(name = "code", description = "Code used by Data Portal ", example = "00011", required = false)
 	private String code;
 
-	@Schema(description = "Logo URL used by Data Portal ", example = "assets/img/logo/logo.png", required = false)
+	@Schema(name = "logo", description = "Logo URL used by Data Portal ", example = "assets/img/logo/logo.png", required = false)
 	private String logo;
 
-	@Schema(description = "Homepage URL used by Data Portal ", example = "https://homepage.com", required = false)
+	@Schema(name = "homepage", description = "Homepage URL used by Data Portal ", example = "https://homepage.com", required = false)
 	private String homepage;
 
-	@Schema(description = "Color used by Data Portal", example = "#06a8e2", required = false)
+	@Schema(name = "color", description = "Color used by Data Portal", example = "#06a8e2", required = false)
 	private String color;
 
-	@Schema(description = "Order number of the categoryscheme on the Data Portal", example = "1", required = false)
+	@Schema(name = "orderitemnumber", description = "Order number of the categoryscheme on the Data Portal", example = "1", required = false)
     private String orderitemnumber;
 
 
     /**
      *  Relates a list of resources of type CATEGORY
      */
-	@Schema(description = "Relates a list of resources of type CATEGORY", example = "{\n" +
+	@Schema(name = "topconcepts", description = "Relates a list of resources of type CATEGORY", example = "[{\n" +
 			"    \"entityType\": \"CATEGORY\",\n" +
 			"    \"instanceId\": \"an UUID\",\n" +
 			"    \"metaId\": \"an UUID\",\n" +
 			"    \"uid\": \"an UUID\"\n" +
-			"  }", required = false)
+			"  }]", required = false)
 	private List<LinkedEntity> topconcepts;
 
 
-	@Schema(description = "This property contains a preferred UUID of the category", example = "An UUID", required = false)
+	@Schema(name = "uid", description = "This property contains a preferred UUID of the category", example = "An UUID", required = false)
 	private String uid;
 
     public String getDescription() {

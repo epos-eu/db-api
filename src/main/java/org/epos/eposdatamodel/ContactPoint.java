@@ -14,25 +14,26 @@ public class ContactPoint extends EPOSDataModelEntity {
     /**
      * This property refers to the Contact Point Email.
      **/
+    @Schema(name = "email", description = "This property refers to the Contact Point Email.", example = "[\"email@email.com\"]", required = false)
     private List<String> email = null;
 
     /**
      * This property contains information about the language used by the Contact
      * Point. Please use one of the language codes from the IETF BCP 47 standard.
      */
-    @Schema(description = "This property contains information about the language used by the Contact Point using the language codes from the IETF BCP 47 standard.", example = "en", required = false)
+    @Schema(name = "language", description = "This property contains information about the language used by the Contact Point using the language codes from the IETF BCP 47 standard.", example = "[\"en\"]", required = false)
     private List<String> language = null;
 
     /**
      * This property refers to the Contact Point role.
      **/
-    @Schema(description = "This property refers to the Contact Point role.", example = "manager", required = false)
+    @Schema(name = "role", description = "This property refers to the Contact Point role.", example = "manager", required = false)
     private String role = null;
 
     /**
      * This property refers to the related Organization which represents the contactpoint.
      */
-    @Schema(description = "This property refers to the related Organization which represents the contactpoint.", example = "{\n" +
+    @Schema(name = "organization", description = "This property refers to the related Organization which represents the contactpoint.", example = "{\n" +
             "    \"entityType\": \"ORGANIZATION\",\n" +
             "    \"instanceId\": \"an UUID\",\n" +
             "    \"metaId\": \"an UUID\",\n" +
@@ -43,7 +44,7 @@ public class ContactPoint extends EPOSDataModelEntity {
     /**
      * This property refers to the related Person which represents the contact point.
      */
-    @Schema(description = "This property refers to the related Person which represents the contact point.", example = "{\n" +
+    @Schema(name = "person", description = "This property refers to the related Person which represents the contact point.", example = "{\n" +
             "    \"entityType\": \"PERSON\",\n" +
             "    \"instanceId\": \"an UUID\",\n" +
             "    \"metaId\": \"an UUID\",\n" +
@@ -54,7 +55,7 @@ public class ContactPoint extends EPOSDataModelEntity {
     /**
      * This property refers to the Contact Point Telephone.
      **/
-    @Schema(description = "This property refers to the Contact Point Telephone.", example = "+0039213123164", required = false)
+    @Schema(name = "telephone", description = "This property refers to the Contact Point Telephone.", example = "[\"+0039213123164\"]", required = false)
     private List<String> telephone = null;
 
     public void addEmail(String email) {

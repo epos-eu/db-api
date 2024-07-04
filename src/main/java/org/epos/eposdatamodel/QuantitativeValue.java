@@ -11,13 +11,13 @@ public class QuantitativeValue extends EPOSDataModelEntity{
     /**
      * The unit of measurement given using the UN/CEFACT Common Code (3 characters) or a URL
      */
-    @Schema(description = "The unit of measurement given using the UN/CEFACT Common Code (3 characters) or a URL", example = "UNT", required = false)
+    @Schema(name = "unit", description = "The unit of measurement given using the UN/CEFACT Common Code (3 characters) or a URL", example = "UNT", required = false)
     private String unit;
 
     /**
      * The unit of measurement given using the UN/CEFACT Common Code (3 characters) or a URL
      */
-    @Schema(description = "The unit of measurement given using the UN/CEFACT Common Code (3 characters) or a URL", example = "value", required = false)
+    @Schema(name = "value", description = "The unit of measurement given using the UN/CEFACT Common Code (3 characters) or a URL", example = "value", required = false)
     private String value;
 
 

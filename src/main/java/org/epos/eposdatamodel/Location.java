@@ -12,7 +12,7 @@ public class Location extends EPOSDataModelEntity{
     /**
      * This property associates any resource with the corresponding geometry.
      **/
-    @Schema(description = "This property associates any resource with the corresponding geometry.", example = "POLYGON(....)", required = false)
+    @Schema(name = "location", description = "This property associates any resource with the corresponding geometry.", example = "POLYGON(....)", required = false)
     private String location;
 
 

@@ -16,74 +16,74 @@ public class Mapping extends EPOSDataModelEntity {
     /**
      * This property contains the default value of the parameter.
      **/
-    @Schema(description = "This property contains the default value of the parameter.", example = "15", required = false)
+    @Schema(name = "defaultValue", description = "This property contains the default value of the parameter.", example = "15", required = false)
     private String defaultValue;
 
     /**
      * This property contains a short string used to describe the meaning of the parameter.
      **/
-    @Schema(description = "This property contains a short string used to describe the meaning of the parameter.", example = "Parameter label", required = false)
+    @Schema(name = "label", description = "This property contains a short string used to describe the meaning of the parameter.", example = "Parameter label", required = false)
     private String label;
 
     /**
      * This property contains the maximum value of the parameter.
      **/
-    @Schema(description = "This property contains the maximum value of the parameter.", example = "20", required = false)
+    @Schema(name = "maxValue", description = "This property contains the maximum value of the parameter.", example = "20", required = false)
     private String maxValue;
 
     /**
      * This property contains the minimum value of the parameter.
      **/
-    @Schema(description = "This property contains the minimum value of the parameter.", example = "12", required = false)
+    @Schema(name = "minValue", description = "This property contains the minimum value of the parameter.", example = "12", required = false)
     private String minValue;
 
     /**
      * This property contains one of the possible values which should be used in the web service query. It could be repeated as many times as needed.
      **/
-    @Schema(description = "This property contains one of the possible values which should be used in the web service query. It could be repeated as many times as needed.", example = "val1", required = false)
+    @Schema(name = "paramValue", description = "This property contains one of the possible values which should be used in the web service query. It could be repeated as many times as needed.", example = "[\"val1\"]", required = false)
     private List<String> paramValue;
 
     /**
      * This property contains the vocabulary term which indicates the semantic description of parameter.
      **/
-    @Schema(description = "This property contains the vocabulary term which indicates the semantic description of parameter.", example = "schema:endDate", required = false)
+    @Schema(name = "property", description = "This property contains the vocabulary term which indicates the semantic description of parameter.", example = "schema:endDate", required = false)
     private String property;
 
     /**
      * This property contains the type of parameter
      **/
-    @Schema(description = "This property contains the type of parameter", example = "string", required = false)
+    @Schema(name = "range", description = "This property contains the type of parameter", example = "string", required = false)
     private String range;
 
     /**
      * This property contains true if the property is required, false otherwise.
      **/
-    @Schema(description = "This property contains true if the property is required, false otherwise.", example = "true", required = false)
+    @Schema(name = "required", description = "This property contains true if the property is required, false otherwise.", example = "true", required = false)
     private String required;
 
     /**
      * This property contains the regular expression for testing values according to the parameters specification.
      **/
-    @Schema(description = "This property contains the regular expression for testing values according to the parameters specification.", example = "yyyy-MM-dd", required = false)
+    @Schema(name = "valuePattern", description = "This property contains the regular expression for testing values according to the parameters specification.", example = "yyyy-MM-dd", required = false)
     private String valuePattern;
 
     /**
      * This property contains the name of the parameter as required by web service specifications.
      **/
-    @Schema(description = "This property contains the name of the parameter as required by web service specifications.", example = "eventid", required = false)
+    @Schema(name = "variable", description = "This property contains the name of the parameter as required by web service specifications.", example = "eventid", required = false)
     private String variable;
 
     /**
      * This property is a boolean property that describe if the mapping has multiple values.
      */
-    @Schema(description = "This property is a boolean property that describe if the mapping has multiple values.", example = "true", required = false)
+    @Schema(name = "multipleValues", description = "This property is a boolean property that describe if the mapping has multiple values.", example = "true", required = false)
     private String multipleValues;
 
     /**
      * This property is a boolean property which if is marked as true means that the parameters need to be set but
      * it isn't showed on the gui and the user cannot interact with it
      */
-    @Schema(description = "This property is a boolean property which if is marked as true means that the parameters need to be set but it isn't showed on the gui and the user cannot interact with it", example = "true", required = false)
+    @Schema(name = "readOnlyValue", description = "This property is a boolean property which if is marked as true means that the parameters need to be set but it isn't showed on the gui and the user cannot interact with it", example = "true", required = false)
     private String readOnlyValue;
 
 

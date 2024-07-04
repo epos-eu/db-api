@@ -14,13 +14,13 @@ public class Identifier extends EPOSDataModelEntity{
     /**
      * This property refers the identifier scheme referenced by its datatype (e.g., DDSS-ID, DOI, etc.).
      **/
-    @Schema(description = "This property refers the identifier scheme referenced by its datatype (e.g., DDSS-ID, DOI, etc.).", example = "DOI", required = false)
+    @Schema(name = "type", description = "This property refers the identifier scheme referenced by its datatype (e.g., DDSS-ID, DOI, etc.).", example = "DOI", required = false)
     private String type = null;
 
     /**
      * This property contains a string that is an identifier in the context of the identifier scheme referenced by its datatype
      **/
-    @Schema(description = "This property contains a string that is an identifier in the context of the identifier scheme referenced by its datatype", example = "273129314", required = false)
+    @Schema(name = "identifier", description = "This property contains a string that is an identifier in the context of the identifier scheme referenced by its datatype", example = "273129314", required = false)
     private String identifier = null;
 
     public Identifier type(String type) {

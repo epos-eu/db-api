@@ -16,25 +16,25 @@ public class LinkedEntity {
     /**
      * The instanceId of the related instance, it can be used to precisely refer to the ote instance.
      */
-    @Schema(description = "The instanceId of the related instance, it can be used to precisely refer to the ote instance", example = "12414324252352", required = false)
+    @Schema(name = "instanceId", description = "The instanceId of the related instance, it can be used to precisely refer to the ote instance", example = "12414324252352", required = false)
     private String instanceId;
 
     /**
      * The uid of the related instance.
      */
-    @Schema(description = "The uid of the related instance.", example = "12414324252352", required = false)
+    @Schema(name = "uid", description = "The uid of the related instance.", example = "12414324252352", required = false)
     private String uid;
 
     /**
      * The entity type of the related instance (e.g. DataProduct, Equipment...)
      */
-    @Schema(description = "The entity type of the related instance in upper case (e.g. DataProduct, Equipment...)", example = "ORGANIZATION", required = false)
+    @Schema(name = "entityType", description = "The entity type of the related instance in upper case (e.g. DataProduct, Equipment...)", example = "ORGANIZATION", required = false)
     private String entityType;
 
     /**
      * The metaId of the related instance
      */
-    @Schema(description = "The metaId of the related instance", example = "12414324252352", required = false)
+    @Schema(name = "metaId", description = "The metaId of the related instance", example = "12414324252352", required = false)
     private String metaId;
 
 

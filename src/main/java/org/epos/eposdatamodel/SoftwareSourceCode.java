@@ -16,109 +16,109 @@ public class SoftwareSourceCode extends Software {
     /**
      * This property refers to a category of the Software Source Code. A Software Source Code may be associated with multiple categories.
      **/
-    @Schema(description = "This property refers to a category of the Software Source Code. A Software Source Code may be associated with multiple categories.", example = "{\n" +
+    @Schema(name="category", description = "This property refers to a category of the Software Source Code. A Software Source Code may be associated with multiple categories.", example = "[{\n" +
             "    \"entityType\": \"CATEGORY\",\n" +
             "    \"instanceId\": \"an UUID\",\n" +
             "    \"metaId\": \"an UUID\",\n" +
             "    \"uid\": \"an UUID\"\n" +
-            "  }", required = false)
+            "  }]", required = false)
     private List<LinkedEntity> category;
 
     /**
      * This property contains the link to the repository where the un-compiled, human readable code and related code is located (SVN, GitHub, CodePlex)
      **/
-    @Schema(description = "This property contains the link to the repository where the un-compiled, human readable code and related code is located (SVN, GitHub, CodePlex)", example = "https://repository/name", required = false)
+    @Schema(name="codeRepository", description = "This property contains the link to the repository where the un-compiled, human readable code and related code is located (SVN, GitHub, CodePlex)", example = "https://repository/name", required = false)
     private String codeRepository;
 
     /**
      * This property refers to the Contact Point (i.e. Role) defined for the Software
      * Source Code.
      */
-    @Schema(description = "This property refers to the Contact Point (i.e. Role) defined for the Software Source Code", example = "{\n" +
+    @Schema(name="contactPoint", description = "This property refers to the Contact Point (i.e. Role) defined for the Software Source Code", example = "[{\n" +
             "    \"entityType\": \"CONTACTPOINT\",\n" +
             "    \"instanceId\": \"an UUID\",\n" +
             "    \"metaId\": \"an UUID\",\n" +
             "    \"uid\": \"an UUID\"\n" +
-            "  }", required = false)
+            "  }]", required = false)
     private List<LinkedEntity> contactPoint;
 
     /**
      * This property contains the description of the Software
      **/
-    @Schema(description = "This property contains the description of the Software", example = "Code description", required = false)
+    @Schema(name="description", description = "This property contains the description of the Software", example = "Code description", required = false)
     private String description;
 
     /**
      * If the Software can be downloaded this property contains the URL to download it.
      **/
 
-    @Schema(description = "If the Software can be downloaded this property contains the URL to download it.", example = "https://urltodowload", required = false)
+    @Schema(name="downloadURL", description = "If the Software can be downloaded this property contains the URL to download it.", example = "https://urltodowload", required = false)
     private String downloadURL;
 
     /**
      * This property contains an identifier for the Software.
      **/
-    @Schema(description = "This property contains an identifier for the Software.", example = "{\n" +
+    @Schema(name="identifier", description = "This property contains an identifier for the Software.", example = "[{\n" +
             "    \"entityType\": \"IDENTIFIER\",\n" +
             "    \"instanceId\": \"an UUID\",\n" +
             "    \"metaId\": \"an UUID\",\n" +
             "    \"uid\": \"an UUID\"\n" +
-            "  }", required = false)
+            "  }]", required = false)
     private List<LinkedEntity> identifier = new ArrayList<>();
 
     /**
      * This property contains the keywords used to describe the Software. Multiple entries in a keywords list are typically delimited by commas.
      **/
-    @Schema(description = "This property contains the keywords used to describe the Software. Multiple entries in a keywords list are typically delimited by commas.", example = "kw1,kw2", required = false)
+    @Schema(name="keywords", description = "This property contains the keywords used to describe the Software. Multiple entries in a keywords list are typically delimited by commas.", example = "kw1,kw2", required = false)
     private String keywords;
 
     /**
      * This property contains the URL of the license document that applies to the Software.
      **/
-    @Schema(description = "This property contains the URL of the license document that applies to the Software.", example = "https://licenseurl", required = false)
+    @Schema(name="licenseURL", description = "This property contains the URL of the license document that applies to the Software.", example = "https://licenseurl", required = false)
     private String licenseURL;
 
     /**
      * This property refers to the web page URL which describes the Software.
      **/
-    @Schema(description = "TThis property refers to the web page URL which describes the Software.", example = "https://pageurl", required = false)
+    @Schema(name="mainEntityofPage", description = "TThis property refers to the web page URL which describes the Software.", example = "https://pageurl", required = false)
     private String mainEntityofPage;
 
     /**
      * This property contains the name of the Software
      **/
-    @Schema(description = "This property contains the name of the Software", example = "Code name", required = false)
+    @Schema(name="name", description = "This property contains the name of the Software", example = "Code name", required = false)
     private String name;
 
     /**
      * This property contains the computer programming language used to develop the Software.
      **/
-    @Schema(description = "This property contains the computer programming language used to develop the Software.", example = "Java", required = false)
+    @Schema(name="programmingLanguage", description = "This property contains the computer programming language used to develop the Software.", example = "[\"Java\"]", required = false)
     private List<String> programmingLanguage;
 
     /**
      * It represents the link to another Epos resource. e.g. Software, WebService,
      * Operation linked to this software.
      */
-    @Schema(description = "It represents the link to another Epos resource Software Application", example = "{\n" +
+    @Schema(name="relation", description = "It represents the link to another Epos resource Software Application", example = "[{\n" +
             "    \"entityType\": \"SOFTWAREAPPLICATION\",\n" +
             "    \"instanceId\": \"an UUID\",\n" +
             "    \"metaId\": \"an UUID\",\n" +
             "    \"uid\": \"an UUID\"\n" +
-            "  }", required = false)
+            "  }]", required = false)
     private List<LinkedEntity> relation;
 
     /**
      * This property refers to the runtime platform or script interpreter dependencies (Example - Java v1, Python2.3, .Net Framework 3.0).
      **/
 
-    @Schema(description = "This property refers to the runtime platform or script interpreter dependencies (Example - Java v1, Python2.3, .Net Framework 3.0).", example = "Java11", required = false)
+    @Schema(name="runtimePlatform", description = "This property refers to the runtime platform or script interpreter dependencies (Example - Java v1, Python2.3, .Net Framework 3.0).", example = "Java11", required = false)
     private String runtimePlatform;
 
     /**
      * This property contains the version of the Software instance.
      **/
-    @Schema(description = "This property contains the version of the Software instance.", example = "1.0", required = false)
+    @Schema(name="softwareVersion", description = "This property contains the version of the Software instance.", example = "1.0", required = false)
     private String softwareVersion;
 
 

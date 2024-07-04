@@ -11,13 +11,13 @@ public class LegalName extends EPOSDataModelEntity {
     /**
      * The language assigned to the legalname
      **/
-    @Schema(description = "The language assigned to the legalname", example = "en", required = false)
+    @Schema(name = "language", description = "The language assigned to the legalname", example = "en", required = false)
     private String language = null;
 
     /**
      * The legalname of an organization
      **/
-    @Schema(description = "The legalname of an organization", example = "Institute of examples", required = false)
+    @Schema(name = "legalname", description = "The legalname of an organization", example = "Institute of examples", required = false)
     private String legalname = null;
 
     public String getLanguage() {

@@ -12,10 +12,10 @@ import java.util.Objects;
  */
 public class Element extends EPOSDataModelEntity {
 
-    @Schema(description = "This property refers to the type of an element ('TELEPHONE', 'EMAIL', 'LANGUAGE', 'DOWNLOADURL', 'ACCESSURL','DOCUMENTATION', 'RETURNS', 'PARAMVALUE', 'PROGRAMMINGLANGUAGE', 'PAGEURL')", example = "PAGEURL", required = false)
+    @Schema(name = "type", description = "This property refers to the type of an element ('TELEPHONE', 'EMAIL', 'LANGUAGE', 'DOWNLOADURL', 'ACCESSURL','DOCUMENTATION', 'RETURNS', 'PARAMVALUE', 'PROGRAMMINGLANGUAGE', 'PAGEURL')", example = "PAGEURL", required = false)
     private ElementType type = null;
 
-    @Schema(description = "This property refers to the value of an element", example = "http://pageurl", required = false)
+    @Schema(name = "value", description = "This property refers to the value of an element", example = "http://pageurl", required = false)
     private String value = null;
 
 

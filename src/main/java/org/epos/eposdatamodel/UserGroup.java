@@ -8,10 +8,10 @@ import java.util.Objects;
 
 public class UserGroup {
 
-    @Schema(description = "Role of the User in the group", example = "ADMIN, REVIEWER, EDITOR, VIEWER", required = false)
+    @Schema(name="role", description = "Role of the User in the group", example = "EDITOR", required = false)
     private RoleType role;
 
-    @Schema(description = "Id of the group", example = "342442", required = false)
+    @Schema(name="groupId", description = "Id of the group", example = "342442", required = false)
     private String groupId;
 
     public UserGroup(RoleType role, String groupId) {

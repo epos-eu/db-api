@@ -9,13 +9,13 @@ import java.util.Objects;
  * Documentation.
  */
 public class Documentation extends EPOSDataModelEntity{
-    @Schema(description = "Documentation title", example = "Documentation title", required = false)
+    @Schema(name = "title", description = "Documentation title", example = "Documentation title", required = false)
     private String title = null;
 
-    @Schema(description = "Documentation description", example = "Documentation description text", required = false)
+    @Schema(name = "description", description = "Documentation description", example = "Documentation description text", required = false)
     private String description = null;
 
-    @Schema(description = "Documentation url", example = "URL", required = false)
+    @Schema(name = "uri", description = "Documentation url", example = "URL", required = false)
     private String uri = null;
 
     public Documentation title(String title) {

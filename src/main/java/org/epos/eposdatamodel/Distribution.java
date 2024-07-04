@@ -19,74 +19,74 @@ public class Distribution extends EPOSDataModelEntity {
     /**
      * This property refers to the URL which supports selection of an extract, sub-set, or combination of data
      */
-    @Schema(description = "his property refers to the URL which supports selection of an extract, sub-set, or combination of data", example = "URL", required = false)
+    @Schema(name = "accessURL", description = "his property refers to the URL which supports selection of an extract, sub-set, or combination of data", example = "[\"https://accessurl\"]", required = false)
     private List<String> accessURL;
 
     /**
      * This property contains a free-text account of the Distribution. This property can be repeated for parallel language
      * versions of the description.
      **/
-    @Schema(description = "This property contains a free-text account of the Distribution. This property can be repeated for parallel language versions of the description.", example = "Description of the distribution", required = false)
+    @Schema(name = "description", description = "This property contains a free-text account of the Distribution. This property can be repeated for parallel language versions of the description.", example = "[\"Description of the distribution\"]", required = false)
     private List<String> description;
 
     /**
      * This property contains a URL that is a direct link to a downloadable file in a given format.
      **/
-    @Schema(description = "This property contains a URL that is a direct link to a downloadable file in a given format.", example = "URL", required = false)
+    @Schema(name = "downloadURL", description = "This property contains a URL that is a direct link to a downloadable file in a given format.", example = "[\"https://downloadurl\"]", required = false)
     private List<String> downloadURL;
 
     /**
      * This property refers to the type of the Distribution. A controlled vocabulary for the values has not been established.
      **/
-    @Schema(description = "This property refers to the type of the Distribution. A controlled vocabulary for the values has not been established.", example = "http://publications.europa.eu/resource/authority/file-type/BIN", required = false)
+    @Schema(name = "format", description = "This property refers to the type of the Distribution. A controlled vocabulary for the values has not been established.", example = "http://publications.europa.eu/resource/authority/file-type/BIN", required = false)
     private String format;
 
     /**
      * This property contains the date of formal issuance (e.g., publication) of the Distribution.
      **/
-    @Schema(description = "This property contains the date of formal issuance (e.g., publication) of the Distribution.", example = "2024-07-03T00:00:00", required = false)
+    @Schema(name = "issued", description = "This property contains the date of formal issuance (e.g., publication) of the Distribution.", example = "2024-07-03T00:00:00", required = false)
     private LocalDateTime issued;
 
     /**
      * This property refers to the licence under which the Distribution is made available.
      **/
-    @Schema(description = "This property refers to the licence under which the Distribution is made available.", example = "Apache 2.0", required = false)
+    @Schema(name = "licence", description = "This property refers to the licence under which the Distribution is made available.", example = "Apache 2.0", required = false)
     private String licence;
 
     /**
      * This property contains the most recent date on which the Distribution was changed or modified.
      **/
-    @Schema(description = "This property contains the most recent date on which the Distribution was changed or modified.", example = "2024-07-03T00:00:00", required = false)
+    @Schema(name = "modified", description = "This property contains the most recent date on which the Distribution was changed or modified.", example = "2024-07-03T00:00:00", required = false)
     private LocalDateTime modified;
 
     /**
      * This property contains a name given to the Distribution. This property can be repeated for parallel language
      * versions of the description.
      **/
-    @Schema(description = "This property contains a name given to the Distribution. This property can be repeated for parallel language versions of the description.", example = "Name of distribution", required = false)
+    @Schema(name = "title", description = "This property contains a name given to the Distribution. This property can be repeated for parallel language versions of the description.", example = "[\"Name of distribution\"]", required = false)
     private List<String> title;
 
     /**
      * This property refers to the type of the Distribution.
      **/
-    @Schema(description = "This property refers to the type of the Distribution.", example = "http://publications.europa.eu/resource/authority/distribution-type/WEB_SERVICE", required = false)
+    @Schema(name = "type", description = "This property refers to the type of the Distribution.", example = "http://publications.europa.eu/resource/authority/distribution-type/WEB_SERVICE", required = false)
     private String type;
 
     /**
      * This property refers to the Data Policy URI.
      */
-    @Schema(description = "This property refers to the Data Policy URI.", example = "URL to datapolicy", required = false)
+    @Schema(name = "dataPolicy", description = "This property refers to the Data Policy URI.", example = "URL to datapolicy", required = false)
     private String dataPolicy;
 
     /**
      * Reverse reference to the related dataproduct.
      */
-    @Schema(description = "Reverse reference to the related dataproduct.", example = "{\n" +
+    @Schema(name = "dataProduct", description = "Reverse reference to the related dataproduct.", example = "[{\n" +
             "    \"entityType\": \"DATAPRODUCT\",\n" +
             "    \"instanceId\": \"an UUID\",\n" +
             "    \"metaId\": \"an UUID\",\n" +
             "    \"uid\": \"an UUID\"\n" +
-            "  }", required = false)
+            "  }]", required = false)
     private List<LinkedEntity> dataProduct;
 
 

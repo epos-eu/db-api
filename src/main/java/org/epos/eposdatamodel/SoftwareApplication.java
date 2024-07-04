@@ -13,112 +13,112 @@ public class SoftwareApplication extends Software {
     /**
      * This property refers to a category of the Software Application. A Software Application may be associated with multiple categories.
      **/
-    @Schema(description = "This property refers to a category of the Software Application. A Software Application may be associated with multiple categories.", example = "{\n" +
+    @Schema(name="category", description = "This property refers to a category of the Software Application. A Software Application may be associated with multiple categories.", example = "[{\n" +
             "    \"entityType\": \"CATEGORY\",\n" +
             "    \"instanceId\": \"an UUID\",\n" +
             "    \"metaId\": \"an UUID\",\n" +
             "    \"uid\": \"an UUID\"\n" +
-            "  }", required = false)
+            "  }]", required = false)
     private List<LinkedEntity> category;
 
     /**
      * This property refers to the Contact Point (i.e. Role) defined for the Software
      * Application.
      */
-    @Schema(description = "This property refers to the Contact Point defined for the Software Application", example = "{\n" +
+    @Schema(name="contactPoint", description = "This property refers to the Contact Point defined for the Software Application", example = "[{\n" +
             "    \"entityType\": \"CONTACTPOINT\",\n" +
             "    \"instanceId\": \"an UUID\",\n" +
             "    \"metaId\": \"an UUID\",\n" +
             "    \"uid\": \"an UUID\"\n" +
-            "  }", required = false)
+            "  }]", required = false)
     private List<LinkedEntity> contactPoint;
 
     /**
      * This property contains the description of the Software Application
      **/
-    @Schema(description = "This property contains the description of the Software Application", example = "App description", required = false)
+    @Schema(name="description", description = "This property contains the description of the Software Application", example = "App description", required = false)
     private String description;
 
     /**
      * If the Software Application can be downloaded this property contains the URL to download it.
      **/
-    @Schema(description = "If the Software Application can be downloaded this property contains the URL to download it.", example = "https://urltodownload", required = false)
+    @Schema(name="downloadURL", description = "If the Software Application can be downloaded this property contains the URL to download it.", example = "https://urltodownload", required = false)
     private String downloadURL;
 
     /**
      * This property contains an identifier for the Software Application.
      **/
-    @Schema(description = "This property contains an identifier for the Software Application.", example = "{\n" +
+    @Schema(name="identifier", description = "This property contains an identifier for the Software Application.", example = "[{\n" +
             "    \"entityType\": \"IDENTIFIER\",\n" +
             "    \"instanceId\": \"an UUID\",\n" +
             "    \"metaId\": \"an UUID\",\n" +
             "    \"uid\": \"an UUID\"\n" +
-            "  }", required = false)
+            "  }]", required = false)
     private List<LinkedEntity> identifier = new ArrayList<>();
 
     /**
      * This property contains the URL at which the application may be installed.
      **/
-    @Schema(description = "This property contains the URL at which the application may be installed.", example = "https://urltoinstaller", required = false)
+    @Schema(name="installURL", description = "This property contains the URL at which the application may be installed.", example = "https://urltoinstaller", required = false)
     private String installURL;
 
     /**
      * This property contains the keywords used to describe the Software Application. Multiple entries in a keywords list are typically delimited by commas.
      **/
-    @Schema(description = "This property contains the keywords used to describe the Software Application. Multiple entries in a keywords list are typically delimited by commas.", example = "appkw1,appwk2", required = false)
+    @Schema(name="keywords", description = "This property contains the keywords used to describe the Software Application. Multiple entries in a keywords list are typically delimited by commas.", example = "appkw1,appwk2", required = false)
     private String keywords;
 
     /**
      * This property contains the URL of the license document that applies to the Software Application.
      **/
-    @Schema(description = "This property contains the URL of the license document that applies to the Software Application.", example = "https//githubrepo/LICENSE", required = false)
+    @Schema(name="licenseURL", description = "This property contains the URL of the license document that applies to the Software Application.", example = "https//githubrepo/LICENSE", required = false)
     private String licenseURL;
 
     /**
      * This property refers to the web page URL which describes the Software Application.
      **/
-    @Schema(description = "This property refers to the web page URL which describes the Software Application.", example = "https//githubrepo/readme.md", required = false)
+    @Schema(name="mainEntityOfPage", description = "This property refers to the web page URL which describes the Software Application.", example = "https//githubrepo/readme.md", required = false)
     private String mainEntityOfPage;
 
     /**
      * This property contains the name of the Software Application
      **/
-    @Schema(description = "This property contains the name of the Software Application", example = "App name", required = false)
+    @Schema(name="name", description = "This property contains the name of the Software Application", example = "App name", required = false)
     private String name;
 
     /**
      * This property represents an input or output parameters of the Software Application.
      **/
-    @Schema(description = "This property represents an input or output parameters of the Software Application.", example = "{\n" +
+    @Schema(name="parameter", description = "This property represents an input or output parameters of the Software Application.", example = "[{\n" +
             "    \"entityType\": \"PARAMETER\",\n" +
             "    \"instanceId\": \"an UUID\",\n" +
             "    \"metaId\": \"an UUID\",\n" +
             "    \"uid\": \"an UUID\"\n" +
-            "  }", required = false)
+            "  }]", required = false)
     private List<LinkedEntity> parameter;
 
     /**
      * It represents the link to another Epos resource. e.g. Software, WebService,
      * Operation linked to this software.
      */
-    @Schema(description = "It represents the link to OPERATION Epos resource", example = "{\n" +
+    @Schema(name="relation", description = "It represents the link to OPERATION Epos resource", example = "[{\n" +
             "    \"entityType\": \"OPERATION\",\n" +
             "    \"instanceId\": \"an UUID\",\n" +
             "    \"metaId\": \"an UUID\",\n" +
             "    \"uid\": \"an UUID\"\n" +
-            "  }", required = false)
+            "  }]", required = false)
     private List<LinkedEntity> relation;
 
     /**
      * Component dependency requirements for application. This includes runtime environments and shared libraries that are not included in the application distribution package, but required to run the application.
      **/
-    @Schema(description = "Component dependency requirements for application. This includes runtime environments and shared libraries that are not included in the application distribution package, but required to run the application.", example = "Java11", required = false)
+    @Schema(name="requirements", description = "Component dependency requirements for application. This includes runtime environments and shared libraries that are not included in the application distribution package, but required to run the application.", example = "Java11", required = false)
     private String requirements;
 
     /**
      * This property contains the version of the Software Application instance.
      **/
-    @Schema(description = "This property contains the version of the Software Application instance.", example = "1.0", required = false)
+    @Schema(name="softwareVersion", description = "This property contains the version of the Software Application instance.", example = "1.0", required = false)
     private String softwareVersion;
 
     public void addRelation(LinkedEntity relation) {

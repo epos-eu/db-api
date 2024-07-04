@@ -15,19 +15,19 @@ import java.util.Objects;
 
 public class Group {
 
-    @Schema(description = "This property refers to the id of a group", example = "83823482374823f", required = false)
+    @Schema(name = "id", description = "This property refers to the id of a group", example = "83823482374823f", required = false)
     private String id;
 
-    @Schema(description = "This property refers to the name of a group", example = "group name", required = false)
+    @Schema(name = "name", description = "This property refers to the name of a group", example = "group name", required = false)
     private String name;
 
-    @Schema(description = "This property refers to the description of a group", example = "group description text", required = false)
+    @Schema(name = "description", description = "This property refers to the description of a group", example = "group description text", required = false)
     private String description;
 
-    @Schema(description = "This property refers to the list of users id of a group", required = false)
+    @Schema(name = "users", description = "This property refers to the list of users id of a group", example = "[\"authidentifier\"]",  required = false)
     private List<String> users;
 
-    @Schema(description = "This property refers to the list of entities id of a group", required = false)
+    @Schema(name = "entities", description = "This property refers to the list of entities id of a group", example = "[\"entitymetaid\"]", required = false)
     private List<String> entities;
 
 

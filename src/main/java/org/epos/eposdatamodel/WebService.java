@@ -19,12 +19,12 @@ public class WebService extends EPOSDataModelEntity {
     /**
      * This property refers to a secondary identifier of the Web Service, such as MAST/ADS, DataCite, DOI, EZID or W3ID.
      **/
-    @Schema(description = "This property refers to identifiers of the Web Service, such as MAST/ADS, DataCite, DOI, EZID or W3ID.", example = "{\n" +
+    @Schema(name = "identifier", description = "This property refers to identifiers of the Web Service, such as MAST/ADS, DataCite, DOI, EZID or W3ID.", example = "[{\n" +
             "    \"entityType\": \"IDENTIFIER\",\n" +
             "    \"instanceId\": \"an UUID\",\n" +
             "    \"metaId\": \"an UUID\",\n" +
             "    \"uid\": \"an UUID\"\n" +
-            "  }", required = false)
+            "  }]", required = false)
     private List<LinkedEntity> identifier;
 
     /**
@@ -35,83 +35,83 @@ public class WebService extends EPOSDataModelEntity {
     /**
      * This property refers to a category of the Web Service. A Web Service may be associated with multiple categories.
      **/
-    @Schema(description = "This property refers to a category of the Web Service. A Web Service may be associated with multiple categories.", example = "{\n" +
+    @Schema(name = "category", description = "This property refers to a category of the Web Service. A Web Service may be associated with multiple categories.", example = "[{\n" +
             "    \"entityType\": \"CATEGORY\",\n" +
             "    \"instanceId\": \"an UUID\",\n" +
             "    \"metaId\": \"an UUID\",\n" +
             "    \"uid\": \"an UUID\"\n" +
-            "  }", required = false)
+            "  }]", required = false)
     private List<LinkedEntity> category;
 
     /**
      * This property contains contact information (i.e. Role) that can be used for
      * sending comments about the Web Service.
      */
-    @Schema(description = "This property contains contact information that can be used for sending comments about the Web Service.", example = "{\n" +
+    @Schema(name = "contactPoint", description = "This property contains contact information that can be used for sending comments about the Web Service.", example = "[{\n" +
             "    \"entityType\": \"CONTACTPOINT\",\n" +
             "    \"instanceId\": \"an UUID\",\n" +
             "    \"metaId\": \"an UUID\",\n" +
             "    \"uid\": \"an UUID\"\n" +
-            "  }", required = false)
+            "  }]", required = false)
     private List<LinkedEntity> contactPoint;
 
     /**
      * This property contains the most recent date on which the Web Service was modified.
      **/
-    @Schema(description = "This property contains the most recent date on which the Web Service was modified.", example = "2024-07-03T00:00:00", required = false)
+    @Schema(name = "dateModified", description = "This property contains the most recent date on which the Web Service was modified.", example = "2024-07-03T00:00:00", required = false)
     private LocalDateTime dateModified;
 
     /**
      * This property contains the date of publication of the Web Service.
      **/
-    @Schema(description = "This property contains the date of publication of the Web Service.", example = "2024-07-03T00:00:00", required = false)
+    @Schema(name = "datePublished", description = "This property contains the date of publication of the Web Service.", example = "2024-07-03T00:00:00", required = false)
     private LocalDateTime datePublished;
 
     /**
      * This property contains a free-text description of the Web Service.
      **/
-    @Schema(description = "This property contains a free-text description of the Web Service.", example = "Webservice description text", required = false)
+    @Schema(name = "description", description = "This property contains a free-text description of the Web Service.", example = "Webservice description text", required = false)
     private String description;
 
     /**
      * This property refers to the API documentation.
      **/
-    @Schema(description = "This property refers to the API documentation.", example = "{\n" +
+    @Schema(name = "documentation", description = "This property refers to the API documentation.", example = "[{\n" +
             "    \"entityType\": \"DOCUMENTATION\",\n" +
             "    \"instanceId\": \"an UUID\",\n" +
             "    \"metaId\": \"an UUID\",\n" +
             "    \"uid\": \"an UUID\"\n" +
-            "  }", required = false)
+            "  }]", required = false)
     private List<LinkedEntity> documentation;
 
     /**
      * This property refers to the API definitions (e.g., WSDL, WADL)
      **/
-    @Schema(description = "This property refers to the API definitions (e.g., WSDL, WADL)", example = "https://entrypoint", required = false)
+    @Schema(name = "entryPoint", description = "This property refers to the API definitions (e.g., WSDL, WADL)", example = "https://entrypoint", required = false)
     private String entryPoint;
 
     /**
      * This property contains the keywords used to describe the Web Service. Multiple entries in a keywords list are typically delimited by commas.
      **/
-    @Schema(description = "This property contains the keywords used to describe the Web Service. Multiple entries in a keywords list are typically delimited by commas.", example = "kw1,kw2", required = false)
+    @Schema(name = "keywords", description = "This property contains the keywords used to describe the Web Service. Multiple entries in a keywords list are typically delimited by commas.", example = "kw1,kw2", required = false)
     private String keywords;
 
     /**
      * This property refers to the licence under which the Web Service can be used or reused.
      **/
-    @Schema(description = "This property refers to the licence under which the Web Service can be used or reused.", example = "Apache2", required = false)
+    @Schema(name = "license", description = "This property refers to the licence under which the Web Service can be used or reused.", example = "Apache2", required = false)
     private String license;
 
     /**
      * This property contains a name given to the Web Service.
      **/
-    @Schema(description = "This property contains a name given to the Web Service.", example = "Webservice name", required = false)
+    @Schema(name = "name", description = "This property contains a name given to the Web Service.", example = "Webservice name", required = false)
     private String name;
 
     /**
      * This property refers to an Organisation responsible for making the Web Service available.
      **/
-    @Schema(description = "This property refers to an Organisation responsible for making the Web Service available.", example = "{\n" +
+    @Schema(name = "provider", description = "This property refers to an Organisation responsible for making the Web Service available.", example = "{\n" +
             "    \"entityType\": \"ORGANIZATION\",\n" +
             "    \"instanceId\": \"an UUID\",\n" +
             "    \"metaId\": \"an UUID\",\n" +
@@ -122,52 +122,52 @@ public class WebService extends EPOSDataModelEntity {
     /**
      * This property refers to a geographical area covered by the Web Service.
      **/
-    @Schema(description = "This property refers to a geographical area covered by the Web Service.", example = "{\n" +
+    @Schema(name = "spatialExtent", description = "This property refers to a geographical area covered by the Web Service.", example = "[{\n" +
             "    \"entityType\": \"LOCATION\",\n" +
             "    \"instanceId\": \"an UUID\",\n" +
             "    \"metaId\": \"an UUID\",\n" +
             "    \"uid\": \"an UUID\"\n" +
-            "  }", required = false)
+            "  }]", required = false)
     private List<LinkedEntity> spatialExtent;
 
     /**
      * This property refers to a web service operation supported by the
      * Web Service.
      */
-    @Schema(description = "This property refers to a web service operation supported by the Web Service.", example = "{\n" +
+    @Schema(name="supportedOperation",description = "This property refers to a web service operation supported by the Web Service.", example = "[{\n" +
             "    \"entityType\": \"OPERATION\",\n" +
             "    \"instanceId\": \"an UUID\",\n" +
             "    \"metaId\": \"an UUID\",\n" +
             "    \"uid\": \"an UUID\"\n" +
-            "  }", required = false)
+            "  }]", required = false)
     private List<LinkedEntity> supportedOperation;
 
     /**
      * This property refers to a temporal period (i.e. startDate, endDate) that the Web Service covers.
      **/
-    @Schema(description = "This property refers to a temporal period (i.e. startDate, endDate) that the Web Service covers.", example = "{\n" +
+    @Schema(name="temporalExtent", description = "This property refers to a temporal period (i.e. startDate, endDate) that the Web Service covers.", example = "[{\n" +
             "    \"entityType\": \"PERIODOFTIME\",\n" +
             "    \"instanceId\": \"an UUID\",\n" +
             "    \"metaId\": \"an UUID\",\n" +
             "    \"uid\": \"an UUID\"\n" +
-            "  }", required = false)
+            "  }]", required = false)
     private List<LinkedEntity> temporalExtent;
 
     /**
      * Reverse reference to the related distribution.
      */
-    @Schema(description = "Reverse reference to the related distribution.", example = "{\n" +
+    @Schema(name= "distribution", description = "Reverse reference to the related distribution.", example = "[{\n" +
             "    \"entityType\": \"DISTRIBUTION\",\n" +
             "    \"instanceId\": \"an UUID\",\n" +
             "    \"metaId\": \"an UUID\",\n" +
             "    \"uid\": \"an UUID\"\n" +
-            "  }", required = false)
+            "  }]", required = false)
     private List<LinkedEntity> distribution;
     
     /**
      * It represents the link to another Epos resource.
      */
-    @Schema(description = "It represents the link to another Epos resource.", example = "{\n" +
+    @Schema(name= "relation", description = "It represents the link to another Epos resource.", example = "{\n" +
             "    \"entityType\": \"ANY ENTITY\",\n" +
             "    \"instanceId\": \"an UUID\",\n" +
             "    \"metaId\": \"an UUID\",\n" +
@@ -179,7 +179,7 @@ public class WebService extends EPOSDataModelEntity {
     /**
      * List of possible authentication/authorization methods supported.
      */
-    @Schema(description = "List of possible authentication/authorization methods supported.", example = "OAUTH", required = false)
+    @Schema(name= "aaaiTypes", description = "List of possible authentication/authorization methods supported.", example = "OAUTH", required = false)
     private String aaaiTypes;
     
 

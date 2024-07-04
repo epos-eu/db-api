@@ -7,20 +7,20 @@ import java.util.Objects;
 
 public class User {
 
-    @Schema(description = "User identifier", example = "id234324543", required = false)
+    @Schema(name="authIdentifier", description = "User identifier", example = "id234324543", required = false)
     private String authIdentifier;
 
-    @Schema(description = "Lastname of the user", example = "Doe", required = false)
+    @Schema(name="lastName", description = "Lastname of the user", example = "Doe", required = false)
     private String lastName;
-    @Schema(description = "Firstname of the user", example = "John", required = false)
+    @Schema(name="firstName", description = "Firstname of the user", example = "John", required = false)
     private String firstName;
-    @Schema(description = "Email of the user", example = "email@email.com", required = false)
+    @Schema(name="email", description = "Email of the user", example = "email@email.com", required = false)
     private String email;
 
-    @Schema(description = "Boolean, true if the user is a general admin", example = "true", required = false)
+    @Schema(name="isAdmin", description = "Boolean, true if the user is a general admin", example = "true", required = false)
     private Boolean isAdmin;
 
-    @Schema(description = "List of groups on which user belong to", required = false)
+    @Schema(name="groups", description = "List of groups on which user belong to", required = false)
     private List<UserGroup> groups;
 
     public User(){}

@@ -13,13 +13,13 @@ public class Category extends EPOSDataModelEntity {
     /**
      * This property contains a description of the category
      */
-    @Schema(description = "This property contains a description of the category", example = "Refer to seismological events", required = false)
+    @Schema(name = "description", description = "This property contains a description of the category", example = "Refer to seismological events", required = false)
     private String description;
 
     /**
      * Relates a resource of type CATEGORYSCHEME
      */
-    @Schema(description = "Relates a resource of type CATEGORYSCHEME", example = "{\n" +
+    @Schema(name = "inScheme", description = "Relates a resource of type CATEGORYSCHEME", example = "{\n" +
             "    \"entityType\": \"CATEGORYSCHEME\",\n" +
             "    \"instanceId\": \"an UUID\",\n" +
             "    \"metaId\": \"an UUID\",\n" +
@@ -30,35 +30,35 @@ public class Category extends EPOSDataModelEntity {
     /**
      * This property contains a preferred label of the category
      */
-    @Schema(description = "This property contains a preferred label of the category", example = "Seismological events", required = false)
+    @Schema(name = "name", description = "This property contains a preferred label of the category", example = "Seismological events", required = false)
     private String name;
     
     /**
      * This property contains a UUID of the category .
      */
-    @Schema(description = "This property contains a preferred UUID of the category", example = "An UUID", required = false)
+    @Schema(name = "uid", description = "This property contains a preferred UUID of the category", example = "An UUID", required = false)
     private String uid;
     
     /**
      * Relates a list of resources of type CATEGORY
      */
-    @Schema(description = "Relates a list of resources CATEGORY", example = "{\n" +
+    @Schema(name = "broader", description = "Relates a list of resources CATEGORY", example = "[{\n" +
             "    \"entityType\": \"CATEGORY\",\n" +
             "    \"instanceId\": \"an UUID\",\n" +
             "    \"metaId\": \"an UUID\",\n" +
             "    \"uid\": \"an UUID\"\n" +
-            "  }", required = false)
+            "  }]", required = false)
     private List<LinkedEntity> broader;
     
     /**
      * Relates a list of resources of type CATEGORY
      */
-    @Schema(description = "Relates a list of resources CATEGORY", example = "{\n" +
+    @Schema(name = "narrower", description = "Relates a list of resources CATEGORY", example = "[{\n" +
             "    \"entityType\": \"CATEGORY\",\n" +
             "    \"instanceId\": \"an UUID\",\n" +
             "    \"metaId\": \"an UUID\",\n" +
             "    \"uid\": \"an UUID\"\n" +
-            "  }", required = false)
+            "  }]", required = false)
     private List<LinkedEntity> narrower;
 
 
