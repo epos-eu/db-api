@@ -3,9 +3,6 @@ package commonapis;
 import abstractapis.AbstractAPI;
 import metadataapis.EntityNames;
 import model.Address;
-import model.Category;
-import model.Identifier;
-import org.apache.commons.math3.analysis.function.Add;
 import org.epos.eposdatamodel.LinkedEntity;
 
 import java.util.ArrayList;

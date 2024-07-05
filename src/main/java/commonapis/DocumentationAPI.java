@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import metadataapis.EntityNames;
 import model.*;
-import org.epos.eposdatamodel.Documentation;
 import org.epos.eposdatamodel.LinkedEntity;
 
 import java.util.ArrayList;

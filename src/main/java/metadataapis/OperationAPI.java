@@ -1,17 +1,9 @@
 package metadataapis;
 
 import abstractapis.AbstractAPI;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import commonapis.*;
 import model.*;
-import org.epos.eposdatamodel.ContactPoint;
-import org.epos.eposdatamodel.Documentation;
 import org.epos.eposdatamodel.LinkedEntity;
-import relationsapi.CategoryRelationsAPI;
-import relationsapi.ContactPointRelationsAPI;
-
-import java.sql.Timestamp;
 import java.util.*;
 
 public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> {
