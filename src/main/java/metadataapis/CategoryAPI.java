@@ -2,6 +2,7 @@ package metadataapis;
 
 import abstractapis.AbstractAPI;
 import commonapis.EposDataModelEntityIDAPI;
+import commonapis.LinkedEntityAPI;
 import commonapis.VersioningStatusAPI;
 import model.*;
 import org.eclipse.persistence.internal.jpa.rs.metadata.model.Link;
@@ -77,11 +78,8 @@ public class CategoryAPI extends AbstractAPI<org.epos.eposdatamodel.Category> {
 
     private void createBroaders(List<LinkedEntity> broaders, Category edmobj){
         for(LinkedEntity broader : broaders) {
-            org.epos.eposdatamodel.Category childObj = new org.epos.eposdatamodel.Category();
-            childObj.setInstanceId(broader.getInstanceId());
-            childObj.setMetaId(broader.getMetaId());
-            childObj.setUid(broader.getUid());
-            LinkedEntity le = create(childObj);
+
+            LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(broader);
 
             List<CategoryIspartof> list = getDbaccess().getAllFromDB(CategoryIspartof.class);
             for(CategoryIspartof item : list){
@@ -106,11 +104,8 @@ public class CategoryAPI extends AbstractAPI<org.epos.eposdatamodel.Category> {
     private void createNarrowers(List<LinkedEntity> narrowers, Category edmobj){
         CategoryAPI api = new CategoryAPI(EntityNames.CATEGORY.name(), Category.class);
         for(LinkedEntity narrower : narrowers) {
-            org.epos.eposdatamodel.Category childObj = new org.epos.eposdatamodel.Category();
-            childObj.setInstanceId(narrower.getInstanceId());
-            childObj.setMetaId(narrower.getMetaId());
-            childObj.setUid(narrower.getUid());
-            LinkedEntity le = create(childObj);
+
+            LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(narrower);
 
             List<CategoryIspartof> list = getDbaccess().getAllFromDB(CategoryIspartof.class);
             for(CategoryIspartof item : list){
