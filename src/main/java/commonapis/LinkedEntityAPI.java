@@ -143,6 +143,10 @@ public class LinkedEntityAPI {
                 Versioningstatus.class
         );
 
+        System.out.println("------------------------");
+        System.out.println(returnList);
+        System.out.println("------------------------");
+
         if(api!=null && entity!=null) {
             if (returnList.isEmpty()) {
                 entity.setInstanceId(Optional.ofNullable(obj.getInstanceId()).orElse(UUID.randomUUID().toString()));
@@ -151,15 +155,12 @@ public class LinkedEntityAPI {
                 return api.create(entity);
             } else {
                 Versioningstatus versioningstatus = returnList.get(0);
-                entity.setInstanceId(Optional.ofNullable(versioningstatus.getInstanceId()).orElse(UUID.randomUUID().toString()));
-                entity.setMetaId(Optional.ofNullable(versioningstatus.getMetaId()).orElse(UUID.randomUUID().toString()));
-                entity.setUid(Optional.ofNullable(obj.getUid()).orElse(null));
-                entity.setVersionId(Optional.ofNullable(versioningstatus.getVersionId()).orElse(UUID.randomUUID().toString()));
-                return api.create(entity);
+                obj.setInstanceId(versioningstatus.getInstanceId());
+                obj.setMetaId(versioningstatus.getMetaId());
+                return obj;
             }
         }
         return null;
-
     }
 
 
