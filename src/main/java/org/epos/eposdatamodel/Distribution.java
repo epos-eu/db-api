@@ -34,6 +34,17 @@ public class Distribution extends EPOSDataModelEntity {
     private LinkedEntity accessService;
 
     /**
+     * This property refers to the Operation which supports selection of an extract, sub-set, or combination of data
+     */
+    @Schema(name = "operation", description = "This property refers to the WebService which supports selection of an extract, sub-set, or combination of data", example = "{\n" +
+            "    \"entityType\": \"OPERATION\",\n" +
+            "    \"instanceId\": \"an UUID\",\n" +
+            "    \"metaId\": \"an UUID\",\n" +
+            "    \"uid\": \"an UUID\"\n" +
+            "  }", required = false)
+    private LinkedEntity supportedOperation;
+
+    /**
      * This property contains a free-text account of the Distribution. This property can be repeated for parallel language
      * versions of the description.
      **/
@@ -377,11 +388,21 @@ public class Distribution extends EPOSDataModelEntity {
         return this;
     }
 
+    public LinkedEntity getSupportedOperation() {
+        return supportedOperation;
+    }
+
+    public Distribution setSupportedOperation(LinkedEntity supportedOperation) {
+        this.supportedOperation = supportedOperation;
+        return this;
+    }
+
 
     @Override
     public String toString() {
         return "Distribution{" +
                 "accessService=" + accessService +
+                "supportedOperation=" + supportedOperation +
                 "accessURL=" + accessURL +
                 ", description=" + description +
                 ", downloadURL=" + downloadURL +
@@ -402,11 +423,11 @@ public class Distribution extends EPOSDataModelEntity {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Distribution that = (Distribution) o;
-        return Objects.equals(getAccessURL(), that.getAccessURL()) && Objects.equals(getDescription(), that.getDescription()) && Objects.equals(getDownloadURL(), that.getDownloadURL()) && Objects.equals(getFormat(), that.getFormat()) && Objects.equals(getIssued(), that.getIssued()) && Objects.equals(getLicence(), that.getLicence()) && Objects.equals(getModified(), that.getModified()) && Objects.equals(getTitle(), that.getTitle()) && Objects.equals(getType(), that.getType()) && Objects.equals(getDataPolicy(), that.getDataPolicy()) && Objects.equals(getDataProduct(), that.getDataProduct());
+        return Objects.equals(accessURL, that.accessURL) && Objects.equals(accessService, that.accessService) && Objects.equals(supportedOperation, that.supportedOperation) && Objects.equals(description, that.description) && Objects.equals(downloadURL, that.downloadURL) && Objects.equals(format, that.format) && Objects.equals(issued, that.issued) && Objects.equals(licence, that.licence) && Objects.equals(modified, that.modified) && Objects.equals(title, that.title) && Objects.equals(type, that.type) && Objects.equals(dataPolicy, that.dataPolicy) && Objects.equals(dataProduct, that.dataProduct);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getAccessURL(), getDescription(), getDownloadURL(), getFormat(), getIssued(), getLicence(), getModified(), getTitle(), getType(), getDataPolicy(), getDataProduct());
+        return Objects.hash(super.hashCode(), accessURL, accessService, supportedOperation, description, downloadURL, format, issued, licence, modified, title, type, dataPolicy, dataProduct);
     }
 }

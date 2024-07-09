@@ -166,6 +166,30 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
             dbaccess.updateObject(pi);
         }
 
+        if (obj.getSupportedOperation() != null ) {
+            List<OperationDistribution> operationDistributions = getDbaccess().getAllFromDB(OperationDistribution.class);
+            for(OperationDistribution item : operationDistributions){
+                if(item.getDistributionInstanceId().equals(obj.getInstanceId())){
+                    getDbaccess().deleteObject(item);
+                }
+            }
+            List<Operation> list = dbaccess.getOneFromDBByInstanceId(obj.getSupportedOperation().getInstanceId(),Operation.class);
+            Operation operation = null;
+            if(list.isEmpty()){
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(obj.getAccessService(), overrideStatus);
+                operation = (Operation) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Operation.class).get(0);
+            } else {
+                operation = list.get(0);
+            }
+            OperationDistribution pi = new OperationDistribution();
+            pi.setDistributionByDistributionInstanceId(edmobj);
+            pi.setDistributionInstanceId(edmobj.getInstanceId());
+            pi.setOperationInstanceId(operation.getInstanceId());
+            pi.setOperationByOperationInstanceId(operation);
+
+            dbaccess.updateObject(pi);
+        }
+
         edmobj.setDistributionElementsByInstanceId(new ArrayList<>());
 
         if(obj.getAccessURL()!=null && !obj.getAccessURL().isEmpty()){
@@ -255,6 +279,16 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
                     if(ed.getDistributionInstanceId().equals(o.getInstanceId())) {
                         AbstractAPI api = AbstractAPI.retrieveAPI(EntityNames.WEBSERVICE.name());
                         o.setAccessService(api.retrieveLinkedEntity(ed.getWebserviceInstanceId()));
+                    }
+                }
+            }
+
+            List<OperationDistribution> operationDistributions = getDbaccess().getAllFromDB(OperationDistribution.class);
+            if (!operationDistributions.isEmpty()) {
+                for (OperationDistribution ed : operationDistributions) {
+                    if(ed.getDistributionInstanceId().equals(o.getInstanceId())) {
+                        AbstractAPI api = AbstractAPI.retrieveAPI(EntityNames.OPERATION.name());
+                        o.setAccessService(api.retrieveLinkedEntity(ed.getOperationInstanceId()));
                     }
                 }
             }
