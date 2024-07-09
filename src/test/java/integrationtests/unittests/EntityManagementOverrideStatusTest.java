@@ -15,7 +15,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class EntityManagementUpdateStatusTest extends TestcontainersLifecycle {
+public class EntityManagementOverrideStatusTest extends TestcontainersLifecycle {
 
     static Address address;
     @Test
@@ -41,6 +41,7 @@ public class EntityManagementUpdateStatusTest extends TestcontainersLifecycle {
 
         assertNotNull(retrievedAddress);
         assertEquals(address, retrievedAddress);
+        assertEquals(StatusType.DRAFT, retrievedAddress.getStatus());
     }
 
 
@@ -49,14 +50,12 @@ public class EntityManagementUpdateStatusTest extends TestcontainersLifecycle {
     public void testUpdateAddress() {
         AbstractAPI api = AbstractAPI.retrieveAPI(EntityNames.ADDRESS.name());
 
-        address.setStatus(StatusType.SUBMITTED);
-
-        LinkedEntity le = api.create(address, null);
+        LinkedEntity le = api.create(address, StatusType.PUBLISHED);
 
         List<Address> retrievedAddress = api.retrieveAll();
 
         assertEquals(1, retrievedAddress.size());
-        assertEquals(StatusType.SUBMITTED, retrievedAddress.get(0).getStatus());
+        assertEquals(StatusType.PUBLISHED, retrievedAddress.get(0).getStatus());
     }
 
 }

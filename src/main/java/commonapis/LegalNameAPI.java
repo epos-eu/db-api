@@ -4,6 +4,7 @@ import abstractapis.AbstractAPI;
 import metadataapis.EntityNames;
 import model.Identifier;
 import model.OrganizationLegalname;
+import model.StatusType;
 import model.Temporal;
 import org.epos.eposdatamodel.LinkedEntity;
 
@@ -20,7 +21,7 @@ public class LegalNameAPI extends AbstractAPI<org.epos.eposdatamodel.LegalName> 
     }
 
     @Override
-    public LinkedEntity create(org.epos.eposdatamodel.LegalName obj) {
+    public LinkedEntity create(org.epos.eposdatamodel.LegalName obj, StatusType overrideStatus) {
 
         List<OrganizationLegalname> returnList = getDbaccess().getOneFromDB(
                 obj.getInstanceId(),
@@ -36,7 +37,7 @@ public class LegalNameAPI extends AbstractAPI<org.epos.eposdatamodel.LegalName> 
             obj.setVersionId(returnList.get(0).getVersionId());
         }
 
-        obj = (org.epos.eposdatamodel.LegalName) VersioningStatusAPI.checkVersion(obj);
+        obj = (org.epos.eposdatamodel.LegalName) VersioningStatusAPI.checkVersion(obj, overrideStatus);
 
         EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
 

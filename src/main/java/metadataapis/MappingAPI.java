@@ -19,7 +19,7 @@ public class MappingAPI extends AbstractAPI<org.epos.eposdatamodel.Mapping> {
     }
 
     @Override
-    public LinkedEntity create(org.epos.eposdatamodel.Mapping obj) {
+    public LinkedEntity create(org.epos.eposdatamodel.Mapping obj, StatusType overrideStatus) {
 
         List<Operation> returnList = getDbaccess().getOneFromDB(
                 obj.getInstanceId(),
@@ -35,7 +35,7 @@ public class MappingAPI extends AbstractAPI<org.epos.eposdatamodel.Mapping> {
             obj.setVersionId(returnList.get(0).getVersionId());
         }
 
-        obj = (org.epos.eposdatamodel.Mapping) VersioningStatusAPI.checkVersion(obj);
+        obj = (org.epos.eposdatamodel.Mapping) VersioningStatusAPI.checkVersion(obj, overrideStatus);
 
         EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
 
@@ -65,7 +65,7 @@ public class MappingAPI extends AbstractAPI<org.epos.eposdatamodel.Mapping> {
         edmobj.setMappingElementsByInstanceId(new ArrayList<>());
         if(obj.getParamValue()!=null && !obj.getParamValue().isEmpty()){
             for(String paramvalue : obj.getParamValue()) {
-                createInnerElement(ElementType.PARAMVALUE, paramvalue, edmobj);
+                createInnerElement(ElementType.PARAMVALUE, paramvalue, edmobj, overrideStatus);
             }
         }
 
@@ -78,12 +78,12 @@ public class MappingAPI extends AbstractAPI<org.epos.eposdatamodel.Mapping> {
 
     }
 
-    private void createInnerElement(ElementType elementType, String value, Mapping edmobj){
+    private void createInnerElement(ElementType elementType, String value, Mapping edmobj, StatusType overrideStatus){
         org.epos.eposdatamodel.Element element = new org.epos.eposdatamodel.Element();
         element.setType(elementType);
         element.setValue(value);
         ElementAPI api = new ElementAPI(EntityNames.ELEMENT.name(), Element.class);
-        LinkedEntity le = api.create(element);
+        LinkedEntity le = api.create(element, overrideStatus);
         List<Element> el = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Element.class);
         MappingElement ce = new MappingElement();
         ce.setMappingByMappingInstanceId(edmobj);

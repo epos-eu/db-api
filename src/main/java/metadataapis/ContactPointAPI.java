@@ -17,7 +17,7 @@ public class ContactPointAPI extends AbstractAPI<ContactPoint> {
     }
 
     @Override
-    public LinkedEntity create(org.epos.eposdatamodel.ContactPoint obj) {
+    public LinkedEntity create(org.epos.eposdatamodel.ContactPoint obj, StatusType overrideStatus) {
 
         List<Contactpoint> returnList = getDbaccess().getOneFromDB(
                 obj.getInstanceId(),
@@ -33,7 +33,7 @@ public class ContactPointAPI extends AbstractAPI<ContactPoint> {
             obj.setVersionId(returnList.get(0).getVersionId());
         }
 
-        obj = (org.epos.eposdatamodel.ContactPoint) VersioningStatusAPI.checkVersion(obj);
+        obj = (org.epos.eposdatamodel.ContactPoint) VersioningStatusAPI.checkVersion(obj, overrideStatus);
 
         EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
 
@@ -61,21 +61,21 @@ public class ContactPointAPI extends AbstractAPI<ContactPoint> {
         /* LANGUAGE */
         if(obj.getLanguage()!=null && !obj.getLanguage().isEmpty()){
             for(String lang : obj.getLanguage()) {
-                createInnerElement(ElementType.LANGUAGE, lang, edmobj);
+                createInnerElement(ElementType.LANGUAGE, lang, edmobj, overrideStatus);
             }
         }
 
         /* TELEPHONE */
         if(obj.getTelephone()!=null && !obj.getTelephone().isEmpty()){
             for(String tel : obj.getTelephone()) {
-                createInnerElement(ElementType.TELEPHONE, tel, edmobj);
+                createInnerElement(ElementType.TELEPHONE, tel, edmobj, overrideStatus);
             }
         }
 
         /* EMAIL */
         if(obj.getEmail()!=null && !obj.getEmail().isEmpty()){
             for(String email : obj.getEmail()) {
-                createInnerElement(ElementType.EMAIL, email, edmobj);
+                createInnerElement(ElementType.EMAIL, email, edmobj, overrideStatus);
             }
         }
 
@@ -88,12 +88,12 @@ public class ContactPointAPI extends AbstractAPI<ContactPoint> {
 
     }
 
-    private void createInnerElement(ElementType elementType, String value, Contactpoint edmobj){
+    private void createInnerElement(ElementType elementType, String value, Contactpoint edmobj, StatusType overrideStatus){
         org.epos.eposdatamodel.Element element = new org.epos.eposdatamodel.Element();
         element.setType(elementType);
         element.setValue(value);
         ElementAPI api = new ElementAPI(EntityNames.ELEMENT.name(), Element.class);
-        LinkedEntity le = api.create(element);
+        LinkedEntity le = api.create(element, overrideStatus);
         List<Element> el = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Element.class);
         ContactpointElement ce = new ContactpointElement();
         ce.setContactpointByContactpointInstanceId(edmobj);

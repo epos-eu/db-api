@@ -31,7 +31,7 @@ public class EntityManagementComplexTest extends TestcontainersLifecycle {
         identifier.setType("TYPE");
         identifier.setIdentifier("012345678900");
 
-        LinkedEntity le = identifierAPI.create(identifier);
+        LinkedEntity le = identifierAPI.create(identifier, null);
 
         LOG.info("CREATED:\n"+identifier.toString());
 
@@ -43,7 +43,7 @@ public class EntityManagementComplexTest extends TestcontainersLifecycle {
         webservice.setName("Test name");
         webservice.setIdentifier(List.of(le));
 
-        webserviceAPI.create(webservice);
+        webserviceAPI.create(webservice, null);
 
         LOG.info("CREATED:\n"+webservice.toString());
 

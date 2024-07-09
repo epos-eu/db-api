@@ -19,7 +19,7 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
     }
 
     @Override
-    public LinkedEntity create(org.epos.eposdatamodel.Facility obj) {
+    public LinkedEntity create(org.epos.eposdatamodel.Facility obj, StatusType overrideStatus) {
 
         List<Facility> returnList = getDbaccess().getOneFromDB(
                 obj.getInstanceId(),
@@ -35,7 +35,7 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
             obj.setVersionId(returnList.get(0).getVersionId());
         }
 
-        obj = (org.epos.eposdatamodel.Facility) VersioningStatusAPI.checkVersion(obj);
+        obj = (org.epos.eposdatamodel.Facility) VersioningStatusAPI.checkVersion(obj, overrideStatus);
 
         EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
 
@@ -56,11 +56,11 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
 
         /** CATEGORY **/
         if (obj.getCategory() != null && !obj.getCategory().isEmpty())
-            CategoryRelationsAPI.createRelation(edmobj,obj);
+            CategoryRelationsAPI.createRelation(edmobj,obj, overrideStatus);
 
         /** CONTACTPOINT **/
         if (obj.getContactPoint() != null && !obj.getContactPoint().isEmpty())
-            ContactPointRelationsAPI.createRelation(edmobj,obj);
+            ContactPointRelationsAPI.createRelation(edmobj,obj, overrideStatus);
 
 
         /** ADDRESS **/
@@ -77,7 +77,7 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
                 List<Address> list = dbaccess.getOneFromDBByInstanceId(address.getInstanceId(),Address.class);
                 Address address1 = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(address);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(address, overrideStatus);
                     address1 = (Address) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Address.class).get(0);
                 } else {
                     address1 = list.get(0);
@@ -107,7 +107,7 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
                 List<Facility> list = dbaccess.getOneFromDBByInstanceId(facility.getInstanceId(),Facility.class);
                 Facility facility1 = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(facility);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(facility, overrideStatus);
                     facility1 = (Facility) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Facility.class).get(0);
                 } else {
                     facility1 = list.get(0);
@@ -138,7 +138,7 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
                 List<Spatial> list = dbaccess.getOneFromDBByInstanceId(location.getInstanceId(),Spatial.class);
                 Spatial spatial = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(location);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(location, overrideStatus);
                     spatial = (Spatial) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Spatial.class).get(0);
                 } else {
                     spatial = list.get(0);
@@ -167,7 +167,7 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
         /* PAGEURL */
         if(obj.getPageURL()!=null && !obj.getPageURL().isEmpty()){
             for(String pageurl : obj.getPageURL()) {
-                createInnerElement(ElementType.PAGEURL, pageurl, edmobj);
+                createInnerElement(ElementType.PAGEURL, pageurl, edmobj, overrideStatus);
             }
         }
 
@@ -180,12 +180,12 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
 
     }
 
-    private void createInnerElement(ElementType elementType, String value, Facility edmobj){
+    private void createInnerElement(ElementType elementType, String value, Facility edmobj, StatusType overrideStatus){
         org.epos.eposdatamodel.Element element = new org.epos.eposdatamodel.Element();
         element.setType(elementType);
         element.setValue(value);
         ElementAPI api = new ElementAPI(EntityNames.ELEMENT.name(), Element.class);
-        LinkedEntity le = api.create(element);
+        LinkedEntity le = api.create(element, overrideStatus);
         List<Element> el = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Element.class);
         FacilityElement ce = new FacilityElement();
         ce.setFacilityByFacilityInstanceId(edmobj);

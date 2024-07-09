@@ -20,7 +20,7 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
     }
 
     @Override
-    public LinkedEntity create(org.epos.eposdatamodel.DataProduct obj) {
+    public LinkedEntity create(org.epos.eposdatamodel.DataProduct obj, StatusType overrideStatus) {
 
         List<Dataproduct> returnList = getDbaccess().getOneFromDB(
                 obj.getInstanceId(),
@@ -36,7 +36,7 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
             obj.setVersionId(returnList.get(0).getVersionId());
         }
 
-        obj = (org.epos.eposdatamodel.DataProduct) VersioningStatusAPI.checkVersion(obj);
+        obj = (org.epos.eposdatamodel.DataProduct) VersioningStatusAPI.checkVersion(obj, overrideStatus);
 
         EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
 
@@ -68,11 +68,11 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
 
         /** CATEGORY **/
         if (obj.getCategory() != null && !obj.getCategory().isEmpty())
-            CategoryRelationsAPI.createRelation(edmobj,obj);
+            CategoryRelationsAPI.createRelation(edmobj,obj, overrideStatus);
 
         /** CONTACTPOINT **/
         if (obj.getContactPoint() != null && !obj.getContactPoint().isEmpty())
-            ContactPointRelationsAPI.createRelation(edmobj,obj);
+            ContactPointRelationsAPI.createRelation(edmobj,obj, overrideStatus);
 
         /** TITLE **/
         if (obj.getTitle() != null && !obj.getTitle().isEmpty()) {
@@ -136,7 +136,7 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
                 List<Dataproduct> list = dbaccess.getOneFromDBByInstanceId(dataProduct.getInstanceId(),Dataproduct.class);
                 Dataproduct dataproduct = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(dataProduct);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(dataProduct, overrideStatus);
                     dataproduct = (Dataproduct) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Dataproduct.class).get(0);
                 } else {
                     dataproduct = list.get(0);
@@ -164,7 +164,7 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
                 List<Dataproduct> list = dbaccess.getOneFromDBByInstanceId(dataProduct.getInstanceId(),Dataproduct.class);
                 Dataproduct dataproduct = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(dataProduct);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(dataProduct, overrideStatus);
                     List<Dataproduct> list1 = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Dataproduct.class);
                     dataproduct =list1.size()>0? list.get(0) : null;
                 } else {
@@ -192,7 +192,7 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
             }
             edmobj.setDataproductIdentifiersByInstanceId(new ArrayList<>());
             for(org.epos.eposdatamodel.LinkedEntity identifier : obj.getIdentifier()){
-                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(identifier);
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(identifier, overrideStatus);
                 List<Identifier> identifierList = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(),Identifier.class);
                 if(!identifierList.isEmpty()) {
                     DataproductIdentifier pi = new DataproductIdentifier();
@@ -243,7 +243,7 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
                 List<Organization> list = dbaccess.getOneFromDBByInstanceId(organization.getInstanceId(),Organization.class);
                 Organization organization1 = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(organization);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(organization, overrideStatus);
                     organization1 = (Organization) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Organization.class).get(0);
                 } else {
                     organization1 = list.get(0);
@@ -273,7 +273,7 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
                 List<Spatial> list = dbaccess.getOneFromDBByInstanceId(location.getInstanceId(),Spatial.class);
                 Spatial spatial = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(location);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(location, overrideStatus);
                     spatial = (Spatial) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Spatial.class).get(0);
                 } else {
                     spatial = list.get(0);
@@ -301,7 +301,7 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
                 List<Temporal> list = dbaccess.getOneFromDBByInstanceId(periodOfTime.getInstanceId(),Temporal.class);
                 Temporal temporal = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(periodOfTime);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(periodOfTime, overrideStatus);
                     temporal = (Temporal) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Temporal.class).get(0);
                 } else {
                     temporal = list.get(0);

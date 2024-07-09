@@ -5,6 +5,7 @@ import commonapis.EposDataModelEntityIDAPI;
 import commonapis.VersioningStatusAPI;
 import model.Category;
 import model.CategoryScheme;
+import model.StatusType;
 import org.epos.eposdatamodel.LinkedEntity;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class CategorySchemeAPI extends AbstractAPI<org.epos.eposdatamodel.Catego
     }
 
     @Override
-    public LinkedEntity create(org.epos.eposdatamodel.CategoryScheme obj) {
+    public LinkedEntity create(org.epos.eposdatamodel.CategoryScheme obj, StatusType overrideStatus) {
 
         List<CategoryScheme> returnList = getDbaccess().getOneFromDB(
                 obj.getInstanceId(),
@@ -35,7 +36,7 @@ public class CategorySchemeAPI extends AbstractAPI<org.epos.eposdatamodel.Catego
             obj.setVersionId(returnList.get(0).getVersionId());
         }
 
-        obj = (org.epos.eposdatamodel.CategoryScheme) VersioningStatusAPI.checkVersion(obj);
+        obj = (org.epos.eposdatamodel.CategoryScheme) VersioningStatusAPI.checkVersion(obj, overrideStatus);
 
         EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
 

@@ -5,6 +5,7 @@ import metadataapis.EntityNames;
 import model.Address;
 import model.Element;
 import model.Identifier;
+import model.StatusType;
 import org.epos.eposdatamodel.LinkedEntity;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class IdentifierAPI extends AbstractAPI<org.epos.eposdatamodel.Identifier
     }
 
     @Override
-    public LinkedEntity create(org.epos.eposdatamodel.Identifier obj) {
+    public LinkedEntity create(org.epos.eposdatamodel.Identifier obj, StatusType overrideStatus) {
 
         List<Identifier> returnList = getDbaccess().getOneFromDB(
                 obj.getInstanceId(),
@@ -35,7 +36,7 @@ public class IdentifierAPI extends AbstractAPI<org.epos.eposdatamodel.Identifier
             obj.setVersionId(returnList.get(0).getVersionId());
         }
 
-        obj = (org.epos.eposdatamodel.Identifier) VersioningStatusAPI.checkVersion(obj);
+        obj = (org.epos.eposdatamodel.Identifier) VersioningStatusAPI.checkVersion(obj, overrideStatus);
 
         EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
 

@@ -35,7 +35,7 @@ public class EntityManagementTest extends TestcontainersLifecycle {
 
         LOG.info("CREATED:\n"+address.toString());
 
-        api.create(address);
+        api.create(address, null);
 
         Address retrievedAddress = (Address) api.retrieve(address.getInstanceId());
 
@@ -61,13 +61,13 @@ public class EntityManagementTest extends TestcontainersLifecycle {
         address.setPostalCode("75002");
         address.setLocality("Paris");
 
-        api.create(address);
+        api.create(address, null);
 
         address.setCountry("Spain");
         address.setPostalCode("28001");
         address.setLocality("Madrid");
 
-        api.create(address);
+        api.create(address, null);
 
         Address retrievedAddress = (Address) api.retrieve(address.getInstanceId());
 
@@ -90,7 +90,7 @@ public class EntityManagementTest extends TestcontainersLifecycle {
         address.setPostalCode("10117");
         address.setLocality("Berlin");
 
-        api.create(address);
+        api.create(address, null);
 
        List<model.Address> addressList = api.getDbaccess().getOneFromDBByInstanceId(address.getInstanceId(),model.Address.class);
 

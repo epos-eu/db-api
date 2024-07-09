@@ -17,7 +17,7 @@ public class CategoryAPI extends AbstractAPI<org.epos.eposdatamodel.Category> {
     }
 
     @Override
-    public LinkedEntity create(org.epos.eposdatamodel.Category obj) {
+    public LinkedEntity create(org.epos.eposdatamodel.Category obj, StatusType overrideStatus) {
 
         List<Category> returnList = getDbaccess().getOneFromDB(
                 obj.getInstanceId(),
@@ -33,7 +33,7 @@ public class CategoryAPI extends AbstractAPI<org.epos.eposdatamodel.Category> {
             obj.setVersionId(returnList.get(0).getVersionId());
         }
 
-        obj = (org.epos.eposdatamodel.Category) VersioningStatusAPI.checkVersion(obj);
+        obj = (org.epos.eposdatamodel.Category) VersioningStatusAPI.checkVersion(obj, overrideStatus);
 
         EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
 
@@ -49,12 +49,12 @@ public class CategoryAPI extends AbstractAPI<org.epos.eposdatamodel.Category> {
         edmobj.setName(Optional.ofNullable(obj.getName()).orElse(""));
         edmobj.setDescription(Optional.ofNullable(obj.getDescription()).orElse(""));
 
-        if (Objects.nonNull(obj.getInScheme())) createInscheme(obj.getInScheme(), edmobj);
+        if (Objects.nonNull(obj.getInScheme())) createInscheme(obj.getInScheme(), edmobj, overrideStatus);
 
         edmobj.setCategoryIspartofsByInstanceId(new ArrayList<>());
 
-        if (Objects.nonNull(obj.getBroader())) createBroaders(obj.getBroader(), edmobj);
-        if (Objects.nonNull(obj.getNarrower())) createNarrowers(obj.getNarrower(), edmobj);
+        if (Objects.nonNull(obj.getBroader())) createBroaders(obj.getBroader(), edmobj, overrideStatus);
+        if (Objects.nonNull(obj.getNarrower())) createNarrowers(obj.getNarrower(), edmobj, overrideStatus);
 
         getDbaccess().updateObject(edmobj);
 
@@ -65,21 +65,21 @@ public class CategoryAPI extends AbstractAPI<org.epos.eposdatamodel.Category> {
 
     }
 
-    private void createInscheme(LinkedEntity inscheme, Category edmobj){
+    private void createInscheme(LinkedEntity inscheme, Category edmobj, StatusType overrideStatus){
         CategorySchemeAPI api = new CategorySchemeAPI(EntityNames.CATEGORYSCHEME.name(), CategoryScheme.class);
         org.epos.eposdatamodel.CategoryScheme childObj = new org.epos.eposdatamodel.CategoryScheme();
         childObj.setInstanceId(inscheme.getInstanceId());
         childObj.setMetaId(inscheme.getMetaId());
         childObj.setUid(inscheme.getUid());
-        LinkedEntity le = api.create(childObj);
+        LinkedEntity le = api.create(childObj, overrideStatus);
         edmobj.setInScheme(le.getInstanceId());
 
     }
 
-    private void createBroaders(List<LinkedEntity> broaders, Category edmobj){
+    private void createBroaders(List<LinkedEntity> broaders, Category edmobj, StatusType overrideStatus){
         for(LinkedEntity broader : broaders) {
 
-            LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(broader);
+            LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(broader, overrideStatus);
 
             List<CategoryIspartof> list = getDbaccess().getAllFromDB(CategoryIspartof.class);
             for(CategoryIspartof item : list){
@@ -101,11 +101,11 @@ public class CategoryAPI extends AbstractAPI<org.epos.eposdatamodel.Category> {
         }
     }
 
-    private void createNarrowers(List<LinkedEntity> narrowers, Category edmobj){
+    private void createNarrowers(List<LinkedEntity> narrowers, Category edmobj, StatusType overrideStatus){
         CategoryAPI api = new CategoryAPI(EntityNames.CATEGORY.name(), Category.class);
         for(LinkedEntity narrower : narrowers) {
 
-            LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(narrower);
+            LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(narrower, overrideStatus);
 
             List<CategoryIspartof> list = getDbaccess().getAllFromDB(CategoryIspartof.class);
             for(CategoryIspartof item : list){

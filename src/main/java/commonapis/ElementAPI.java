@@ -4,6 +4,7 @@ import abstractapis.AbstractAPI;
 import metadataapis.EntityNames;
 import model.Address;
 import model.Element;
+import model.StatusType;
 import org.epos.eposdatamodel.LinkedEntity;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class ElementAPI extends AbstractAPI<org.epos.eposdatamodel.Element> {
     }
 
     @Override
-    public LinkedEntity create(org.epos.eposdatamodel.Element obj) {
+    public LinkedEntity create(org.epos.eposdatamodel.Element obj, StatusType overrideStatus) {
 
         List<Element> returnList = getDbaccess().getOneFromDB(
                 obj.getInstanceId(),
@@ -34,7 +35,7 @@ public class ElementAPI extends AbstractAPI<org.epos.eposdatamodel.Element> {
             obj.setVersionId(returnList.get(0).getVersionId());
         }
 
-        obj = (org.epos.eposdatamodel.Element) VersioningStatusAPI.checkVersion(obj);
+        obj = (org.epos.eposdatamodel.Element) VersioningStatusAPI.checkVersion(obj, overrideStatus);
 
         EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
 

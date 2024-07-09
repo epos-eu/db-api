@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class LinkedEntityAPI {
 
-    public static LinkedEntity createFromLinkedEntity(LinkedEntity obj){
+    public static LinkedEntity createFromLinkedEntity(LinkedEntity obj, StatusType overrideStatus){
 
         AbstractAPI api = null;
         Class<?> edmClass = null;
@@ -152,7 +152,8 @@ public class LinkedEntityAPI {
                 entity.setInstanceId(Optional.ofNullable(obj.getInstanceId()).orElse(UUID.randomUUID().toString()));
                 entity.setMetaId(Optional.ofNullable(obj.getMetaId()).orElse(UUID.randomUUID().toString()));
                 entity.setUid(Optional.ofNullable(obj.getUid()).orElse(UUID.randomUUID().toString()));
-                return api.create(entity);
+                if(overrideStatus!=null) entity.setStatus(overrideStatus);
+                return api.create(entity, overrideStatus);
             } else {
                 Versioningstatus versioningstatus = returnList.get(0);
                 obj.setInstanceId(versioningstatus.getInstanceId());
@@ -276,7 +277,7 @@ public class LinkedEntityAPI {
                 return api.retrieve(edmobj.getInstanceId());
             }
         } else {
-            return createFromLinkedEntity(obj);
+            return createFromLinkedEntity(obj, null);
         }
         return null;
     }

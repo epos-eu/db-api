@@ -42,7 +42,7 @@ public abstract class AbstractAPI<T> {
         return entityName;
     }
 
-    public abstract LinkedEntity create(T obj);
+    public abstract LinkedEntity create(T obj, StatusType overrideStatus);
 
     public abstract T retrieve(String instanceId);
 

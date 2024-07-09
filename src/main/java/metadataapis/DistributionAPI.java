@@ -19,7 +19,7 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
     }
 
     @Override
-    public LinkedEntity create(org.epos.eposdatamodel.Distribution obj) {
+    public LinkedEntity create(org.epos.eposdatamodel.Distribution obj, StatusType overrideStatus) {
 
         List<Distribution> returnList = getDbaccess().getOneFromDB(
                 obj.getInstanceId(),
@@ -35,7 +35,7 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
             obj.setVersionId(returnList.get(0).getVersionId());
         }
 
-        obj = (org.epos.eposdatamodel.Distribution) VersioningStatusAPI.checkVersion(obj);
+        obj = (org.epos.eposdatamodel.Distribution) VersioningStatusAPI.checkVersion(obj, overrideStatus);
 
         EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
 
@@ -125,7 +125,7 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
                 List<Dataproduct> list = dbaccess.getOneFromDBByInstanceId(dataProduct.getInstanceId(),Dataproduct.class);
                 Dataproduct dataproduct = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(dataProduct);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(dataProduct, overrideStatus);
                     dataproduct = (Dataproduct) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Dataproduct.class).get(0);
                 } else {
                     dataproduct = list.get(0);
@@ -146,13 +146,13 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
 
         if(obj.getAccessURL()!=null && !obj.getAccessURL().isEmpty()){
             for(String accessurl : obj.getAccessURL()) {
-                createInnerElement(ElementType.ACCESSURL, accessurl, edmobj);
+                createInnerElement(ElementType.ACCESSURL, accessurl, edmobj, overrideStatus);
             }
         }
 
         if(obj.getDownloadURL()!=null && !obj.getDownloadURL().isEmpty()) {
             for (String downloadurl : obj.getDownloadURL()) {
-                createInnerElement(ElementType.DOWNLOADURL, downloadurl, edmobj);
+                createInnerElement(ElementType.DOWNLOADURL, downloadurl, edmobj, overrideStatus);
             }
         }
 
@@ -165,12 +165,12 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
 
     }
 
-    private void createInnerElement(ElementType elementType, String value, Distribution edmobj){
+    private void createInnerElement(ElementType elementType, String value, Distribution edmobj, StatusType overrideStatus){
         org.epos.eposdatamodel.Element element = new org.epos.eposdatamodel.Element();
         element.setType(elementType);
         element.setValue(value);
         ElementAPI api = new ElementAPI(EntityNames.ELEMENT.name(), Element.class);
-        LinkedEntity le = api.create(element);
+        LinkedEntity le = api.create(element, overrideStatus);
         List<Element> el = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Element.class);
         DistributionElement ce = new DistributionElement();
         ce.setDistributionByDistributionInstanceId(edmobj);

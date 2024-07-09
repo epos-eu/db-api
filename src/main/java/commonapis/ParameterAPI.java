@@ -2,10 +2,7 @@ package commonapis;
 
 import abstractapis.AbstractAPI;
 import metadataapis.EntityNames;
-import model.Identifier;
-import model.OrganizationLegalname;
-import model.QuantitativeValue;
-import model.SoftwareapplicationParameters;
+import model.*;
 import org.epos.eposdatamodel.LinkedEntity;
 import org.epos.eposdatamodel.Parameter;
 
@@ -21,7 +18,7 @@ public class ParameterAPI extends AbstractAPI<org.epos.eposdatamodel.Parameter> 
     }
 
     @Override
-    public LinkedEntity create(org.epos.eposdatamodel.Parameter obj) {
+    public LinkedEntity create(org.epos.eposdatamodel.Parameter obj, StatusType overrideStatus) {
 
         List<SoftwareapplicationParameters> returnList = getDbaccess().getOneFromDB(
                 obj.getInstanceId(),
@@ -37,7 +34,7 @@ public class ParameterAPI extends AbstractAPI<org.epos.eposdatamodel.Parameter> 
             obj.setVersionId(returnList.get(0).getVersionId());
         }
 
-        obj = (org.epos.eposdatamodel.Parameter) VersioningStatusAPI.checkVersion(obj);
+        obj = (org.epos.eposdatamodel.Parameter) VersioningStatusAPI.checkVersion(obj, overrideStatus);
 
         EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
 

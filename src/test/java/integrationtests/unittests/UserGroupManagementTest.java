@@ -183,7 +183,7 @@ public class UserGroupManagementTest extends TestcontainersLifecycle {
         identifier.setType("TYPE");
         identifier.setIdentifier("012345678900");
 
-        identifierLe = api.create(identifier);
+        identifierLe = api.create(identifier, null);
 
         Identifier retrievedIdentifier = (Identifier) api.retrieve(identifierLe.getInstanceId());
 

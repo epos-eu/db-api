@@ -15,7 +15,7 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
     }
 
     @Override
-    public LinkedEntity create(org.epos.eposdatamodel.Person obj) {
+    public LinkedEntity create(org.epos.eposdatamodel.Person obj, StatusType overrideStatus) {
 
         List<Person> returnList = getDbaccess().getOneFromDB(
                 obj.getInstanceId(),
@@ -31,7 +31,7 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
             obj.setVersionId(returnList.get(0).getVersionId());
         }
 
-        obj = (org.epos.eposdatamodel.Person) VersioningStatusAPI.checkVersion(obj);
+        obj = (org.epos.eposdatamodel.Person) VersioningStatusAPI.checkVersion(obj, overrideStatus);
 
         EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
 
@@ -57,7 +57,7 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
                     getDbaccess().deleteObject(item);
                 }
             }
-            LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(obj.getAddress());
+            LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(obj.getAddress(), overrideStatus);
             addressList = getDbaccess().getOneFromDBByInstanceId(le.getInstanceId(),Address.class);
             edmobj.setAddressId(addressList.get(0).getInstanceId());
             edmobj.setAddressByAddressId(addressList.get(0));
@@ -76,7 +76,7 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
             IdentifierAPI identifierAPI = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
             edmobj.setPersonIdentifiersByInstanceId(new ArrayList<>());
             for(org.epos.eposdatamodel.LinkedEntity identifier : obj.getIdentifier()){
-                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(identifier);
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(identifier, overrideStatus);
                 List<Identifier> identifierList1 = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(),Identifier.class);
                 if(!identifierList1.isEmpty()) {
                     PersonIdentifier pi = new PersonIdentifier();
@@ -100,7 +100,7 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
                 List<Organization> list = dbaccess.getOneFromDBByInstanceId(organization.getInstanceId(),Organization.class);
                 Organization organization1 = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(organization);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(organization, overrideStatus);
                     organization1 = (Organization) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Organization.class).get(0);
                 } else {
                     organization1 = list.get(0);
@@ -129,14 +129,14 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
         /* TELEPHONE */
         if(obj.getTelephone()!=null && !obj.getTelephone().isEmpty()){
             for(String tel : obj.getTelephone()) {
-                createInnerElement(ElementType.TELEPHONE, tel, edmobj);
+                createInnerElement(ElementType.TELEPHONE, tel, edmobj, overrideStatus);
             }
         }
 
         /* EMAIL */
         if(obj.getEmail()!=null && !obj.getEmail().isEmpty()){
             for(String email : obj.getEmail()) {
-                createInnerElement(ElementType.EMAIL, email, edmobj);
+                createInnerElement(ElementType.EMAIL, email, edmobj, overrideStatus);
             }
         }
 
@@ -149,12 +149,12 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
 
     }
 
-    private void createInnerElement(ElementType elementType, String value, Person edmobj){
+    private void createInnerElement(ElementType elementType, String value, Person edmobj, StatusType overrideStatus){
         org.epos.eposdatamodel.Element element = new org.epos.eposdatamodel.Element();
         element.setType(elementType);
         element.setValue(value);
         ElementAPI api = new ElementAPI(EntityNames.ELEMENT.name(), Element.class);
-        LinkedEntity le = api.create(element);
+        LinkedEntity le = api.create(element, overrideStatus);
         List<Element> el = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Element.class);
         PersonElement ce = new PersonElement();
         ce.setPersonByPersonInstanceId(edmobj);

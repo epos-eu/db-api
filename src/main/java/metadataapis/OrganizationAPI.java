@@ -18,7 +18,7 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
     }
 
     @Override
-    public LinkedEntity create(org.epos.eposdatamodel.Organization obj) {
+    public LinkedEntity create(org.epos.eposdatamodel.Organization obj, StatusType overrideStatus) {
 
         List<Organization> returnList = getDbaccess().getOneFromDB(
                 obj.getInstanceId(),
@@ -34,7 +34,7 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
             obj.setVersionId(returnList.get(0).getVersionId());
         }
 
-        obj = (org.epos.eposdatamodel.Organization) VersioningStatusAPI.checkVersion(obj);
+        obj = (org.epos.eposdatamodel.Organization) VersioningStatusAPI.checkVersion(obj, overrideStatus);
 
         EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
 
@@ -62,7 +62,7 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
                     getDbaccess().deleteObject(item);
                 }
             }
-            LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(obj.getAddress());
+            LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(obj.getAddress(), overrideStatus);
             edmobj.setAddressId(le.getInstanceId());
         }
 
@@ -109,7 +109,7 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
             IdentifierAPI identifierAPI = new IdentifierAPI(EntityNames.IDENTIFIER.name(), Identifier.class);
             edmobj.setOrganizationIdentifiersByInstanceId(new ArrayList<>());
             for(org.epos.eposdatamodel.LinkedEntity identifier : obj.getIdentifier()){
-                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(identifier);
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(identifier, overrideStatus);
                 OrganizationIdentifier pi = new OrganizationIdentifier();
                 pi.setOrganizationByOrganizationInstanceId(edmobj);
                 pi.setOrganizationInstanceId(edmobj.getInstanceId());
@@ -134,14 +134,14 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
         /* TELEPHONE */
         if(obj.getTelephone()!=null && !obj.getTelephone().isEmpty()){
             for(String tel : obj.getTelephone()) {
-                createInnerElement(ElementType.TELEPHONE, tel, edmobj);
+                createInnerElement(ElementType.TELEPHONE, tel, edmobj, overrideStatus);
             }
         }
 
         /* EMAIL */
         if(obj.getEmail()!=null && !obj.getEmail().isEmpty()){
             for(String email : obj.getEmail()) {
-                createInnerElement(ElementType.EMAIL, email, edmobj);
+                createInnerElement(ElementType.EMAIL, email, edmobj, overrideStatus);
             }
         }
 
@@ -157,7 +157,7 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
             }
             edmobj.setOrganizationLegalnamesByInstanceId(new ArrayList<>());
             for(LinkedEntity legalname : obj.getLegalName()) {
-                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(legalname);
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(legalname, overrideStatus);
                 edmobj.getOrganizationLegalnamesByInstanceId().add((OrganizationLegalname) getDbaccess().getOneFromDBByInstanceId(le.getInstanceId(),OrganizationLegalname.class));
             }
         }
@@ -172,7 +172,7 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
             }
             edmobj.setOrganizationMemberofsByInstanceId(new ArrayList<>());
             for(LinkedEntity organization : obj.getMemberOf()) {
-                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(organization);
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(organization, overrideStatus);
 
                 List<Organization> list2 = getDbaccess().getOneFromDBByInstanceId(le.getInstanceId(), Organization.class);
 
@@ -218,12 +218,12 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
 
     }
 
-    private void createInnerElement(ElementType elementType, String value, Organization edmobj){
+    private void createInnerElement(ElementType elementType, String value, Organization edmobj, StatusType overrideStatus){
         org.epos.eposdatamodel.Element element = new org.epos.eposdatamodel.Element();
         element.setType(elementType);
         element.setValue(value);
         ElementAPI api = new ElementAPI(EntityNames.ELEMENT.name(), Element.class);
-        LinkedEntity le = api.create(element);
+        LinkedEntity le = api.create(element, overrideStatus);
         List<Element> el = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Element.class);
         OrganizationElement ce = new OrganizationElement();
         ce.setOrganizationByOrganizationInstanceId(edmobj);

@@ -13,7 +13,7 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
     }
 
     @Override
-    public LinkedEntity create(org.epos.eposdatamodel.Operation obj) {
+    public LinkedEntity create(org.epos.eposdatamodel.Operation obj, StatusType overrideStatus) {
 
         List<Operation> returnList = getDbaccess().getOneFromDB(
                 obj.getInstanceId(),
@@ -29,7 +29,7 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
             obj.setVersionId(returnList.get(0).getVersionId());
         }
 
-        obj = (org.epos.eposdatamodel.Operation) VersioningStatusAPI.checkVersion(obj);
+        obj = (org.epos.eposdatamodel.Operation) VersioningStatusAPI.checkVersion(obj, overrideStatus);
 
         EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
 
@@ -53,7 +53,7 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
                 List<Mapping> list = dbaccess.getOneFromDBByInstanceId(mapping.getInstanceId(),Mapping.class);
                 Mapping mapping1 = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(mapping);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(mapping, overrideStatus);
                     mapping1 = (Mapping) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Mapping.class).get(0);
                 } else {
                     mapping1 = list.get(0);
@@ -76,7 +76,7 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
                 List<Webservice> list = dbaccess.getOneFromDBByInstanceId(webService.getInstanceId(),Webservice.class);
                 Webservice webservice = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(webService);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(webService, overrideStatus);
                     webservice = (Webservice) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Webservice.class).get(0);
                 } else {
                     webservice = list.get(0);
@@ -97,7 +97,7 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
         /** RETURNS **/
         if(obj.getReturns()!=null && !obj.getReturns().isEmpty()){
             for(String returns : obj.getReturns()) {
-                createInnerElement(ElementType.RETURNS, returns, edmobj);
+                createInnerElement(ElementType.RETURNS, returns, edmobj, overrideStatus);
             }
         }
 
@@ -110,12 +110,12 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
 
     }
 
-    private void createInnerElement(ElementType elementType, String value, Operation edmobj){
+    private void createInnerElement(ElementType elementType, String value, Operation edmobj, StatusType overrideStatus){
         org.epos.eposdatamodel.Element element = new org.epos.eposdatamodel.Element();
         element.setType(elementType);
         element.setValue(value);
         ElementAPI api = new ElementAPI(EntityNames.ELEMENT.name(), Element.class);
-        LinkedEntity le = api.create(element);
+        LinkedEntity le = api.create(element, overrideStatus);
         List<Element> el = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Element.class);
         OperationElement ce = new OperationElement();
         ce.setOperationByOperationInstanceId(edmobj);

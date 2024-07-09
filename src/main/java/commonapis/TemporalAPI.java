@@ -3,6 +3,7 @@ package commonapis;
 import abstractapis.AbstractAPI;
 import metadataapis.EntityNames;
 import model.Spatial;
+import model.StatusType;
 import model.Temporal;
 import org.epos.eposdatamodel.LinkedEntity;
 
@@ -19,7 +20,7 @@ public class TemporalAPI extends AbstractAPI<org.epos.eposdatamodel.PeriodOfTime
     }
 
     @Override
-    public LinkedEntity create(org.epos.eposdatamodel.PeriodOfTime obj) {
+    public LinkedEntity create(org.epos.eposdatamodel.PeriodOfTime obj, StatusType overrideStatus) {
 
         List<Temporal> returnList = getDbaccess().getOneFromDB(
                 obj.getInstanceId(),
@@ -35,7 +36,7 @@ public class TemporalAPI extends AbstractAPI<org.epos.eposdatamodel.PeriodOfTime
             obj.setVersionId(returnList.get(0).getVersionId());
         }
 
-        obj = (org.epos.eposdatamodel.PeriodOfTime) VersioningStatusAPI.checkVersion(obj);
+        obj = (org.epos.eposdatamodel.PeriodOfTime) VersioningStatusAPI.checkVersion(obj, overrideStatus);
 
         EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
 

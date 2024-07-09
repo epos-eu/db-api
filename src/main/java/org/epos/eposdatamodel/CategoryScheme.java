@@ -23,7 +23,7 @@ public class CategoryScheme extends EPOSDataModelEntity {
 	@Schema(name = "title", description = "This property contains a name of the category scheme.", example = "Seismology", required = false)
 	private String title;
 
-	@Schema(name = "code", description = "Code used by Data Portal ", example = "00011", required = false)
+	@Schema(name = "code", description = "Code used by Data Portal ", example = "ANT", required = false)
 	private String code;
 
 	@Schema(name = "logo", description = "Logo URL used by Data Portal ", example = "assets/img/logo/logo.png", required = false)

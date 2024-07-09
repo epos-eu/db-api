@@ -23,7 +23,7 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
     }
 
     @Override
-    public LinkedEntity create(org.epos.eposdatamodel.WebService obj) {
+    public LinkedEntity create(org.epos.eposdatamodel.WebService obj, StatusType overrideStatus) {
 
         List<Webservice> returnList = getDbaccess().getOneFromDB(
                 obj.getInstanceId(),
@@ -39,7 +39,7 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
             obj.setVersionId(returnList.get(0).getVersionId());
         }
 
-        obj = (org.epos.eposdatamodel.WebService) VersioningStatusAPI.checkVersion(obj);
+        obj = (org.epos.eposdatamodel.WebService) VersioningStatusAPI.checkVersion(obj, overrideStatus);
 
         EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
 
@@ -70,7 +70,7 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
             List<Organization> list = dbaccess.getOneFromDBByInstanceId(obj.getProvider().getInstanceId(),Organization.class);
             Organization organization1 = null;
             if(list.isEmpty()){
-                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(obj.getProvider());
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(obj.getProvider(), overrideStatus);
                 organization1 = (Organization) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Organization.class).get(0);
             } else {
                 organization1 = list.get(0);
@@ -83,11 +83,11 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
 
         /** CATEGORY **/
         if (obj.getCategory() != null && !obj.getCategory().isEmpty())
-            CategoryRelationsAPI.createRelation(edmobj,obj);
+            CategoryRelationsAPI.createRelation(edmobj,obj, overrideStatus);
 
         /** CONTACTPOINT **/
         if (obj.getContactPoint() != null && !obj.getContactPoint().isEmpty())
-            ContactPointRelationsAPI.createRelation(edmobj,obj);
+            ContactPointRelationsAPI.createRelation(edmobj,obj, overrideStatus);
 
         /** DOCUMENTATION **/
         if(obj.getDocumentation()!=null && !obj.getDocumentation().isEmpty()){
@@ -96,7 +96,7 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
             for(LinkedEntity documentation : obj.getDocumentation()) {
                 Documentation documentation1 = documentationAPI.retrieve(documentation.getInstanceId());
                 if (documentation1==null) {
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(documentation);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(documentation, overrideStatus);
                     documentation1 = documentationAPI.retrieve(le.getInstanceId());
                 }
 
@@ -124,7 +124,7 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
                 List<Identifier> list = dbaccess.getOneFromDBByInstanceId(identifier.getInstanceId(),Identifier.class);
                 Identifier identifier1 = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(identifier);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(identifier, overrideStatus);
                     identifier1 = (Identifier) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Identifier.class).get(0);
                 } else {
                     identifier1 = list.get(0);
@@ -155,7 +155,7 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
                 List<Spatial> list = dbaccess.getOneFromDBByInstanceId(location.getInstanceId(),Spatial.class);
                 Spatial spatial = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(location);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(location, overrideStatus);
                     spatial = (Spatial) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Spatial.class).get(0);
                 } else {
                     spatial = list.get(0);
@@ -186,7 +186,7 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
                 List<Temporal> list = dbaccess.getOneFromDBByInstanceId(periodOfTime.getInstanceId(),Temporal.class);
                 Temporal temporal = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(periodOfTime);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(periodOfTime, overrideStatus);
                     temporal = (Temporal) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Temporal.class).get(0);
                 } else {
                     temporal = list.get(0);
@@ -216,7 +216,7 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
                 List<Operation> list = dbaccess.getOneFromDBByInstanceId(operation.getInstanceId(),Operation.class);
                 Operation operation1 = null;
                 if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(operation);
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(operation, overrideStatus);
                     operation1 = (Operation) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Operation.class).get(0);
                 } else {
                     operation1 = list.get(0);
@@ -256,12 +256,12 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
 
     }
 
-    private void createInnerElement(ElementType elementType, String value, Webservice edmobj){
+    private void createInnerElement(ElementType elementType, String value, Webservice edmobj, StatusType overrideStatus){
         org.epos.eposdatamodel.Element element = new org.epos.eposdatamodel.Element();
         element.setType(elementType);
         element.setValue(value);
         ElementAPI api = new ElementAPI(EntityNames.ELEMENT.name(), Element.class);
-        LinkedEntity le = api.create(element);
+        LinkedEntity le = api.create(element, overrideStatus);
         List<Element> el = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Element.class);
         WebserviceElement ce = new WebserviceElement();
         ce.setWebserviceByWebserviceInstanceId(edmobj);

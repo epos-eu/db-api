@@ -2,10 +2,7 @@ package commonapis;
 
 import abstractapis.AbstractAPI;
 import metadataapis.EntityNames;
-import model.Element;
-import model.QuantitativeValue;
-import model.SoftwareapplicationParameters;
-import model.Spatial;
+import model.*;
 import org.epos.eposdatamodel.LinkedEntity;
 
 import java.util.ArrayList;
@@ -20,7 +17,7 @@ public class SpatialAPI extends AbstractAPI<org.epos.eposdatamodel.Location> {
     }
 
     @Override
-    public LinkedEntity create(org.epos.eposdatamodel.Location obj) {
+    public LinkedEntity create(org.epos.eposdatamodel.Location obj, StatusType overrideStatus) {
 
         List<Spatial> returnList = getDbaccess().getOneFromDB(
                 obj.getInstanceId(),
@@ -36,7 +33,7 @@ public class SpatialAPI extends AbstractAPI<org.epos.eposdatamodel.Location> {
             obj.setVersionId(returnList.get(0).getVersionId());
         }
 
-        obj = (org.epos.eposdatamodel.Location) VersioningStatusAPI.checkVersion(obj);
+        obj = (org.epos.eposdatamodel.Location) VersioningStatusAPI.checkVersion(obj, overrideStatus);
 
         EposDataModelEntityIDAPI.addEntityToEDMEntityID(obj.getMetaId(), entityName);
 

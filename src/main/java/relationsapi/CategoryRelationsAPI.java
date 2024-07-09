@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public class CategoryRelationsAPI extends AbstractRelationsAPI {
 
-    public static void createRelation(Equipment edmobj, org.epos.eposdatamodel.Equipment obj){
+    public static void createRelation(Equipment edmobj, org.epos.eposdatamodel.Equipment obj, StatusType overrideStatus){
         List<EquipmentCategory> facilityCategoryList = getDbaccess().getAllFromDB(EquipmentCategory.class);
         for(EquipmentCategory item : facilityCategoryList){
             if(item.getCategoryInstanceId().equals(obj.getInstanceId())){
@@ -29,7 +29,7 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
                     Category.class);
             Category category1 = null;
             if(list.isEmpty()){
-                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(category);
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(category, overrideStatus);
                 category1 = (Category) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Category.class).get(0);
             } else {
                 category1 = list.get(0);
@@ -46,7 +46,7 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
         }
     }
 
-    public static void createRelation(Facility edmobj, org.epos.eposdatamodel.Facility obj) {
+    public static void createRelation(Facility edmobj, org.epos.eposdatamodel.Facility obj, StatusType overrideStatus) {
         List<FacilityCategory> facilityCategoryList = getDbaccess().getAllFromDB(FacilityCategory.class);
         for (FacilityCategory item : facilityCategoryList) {
             if (item.getFacilityInstanceId().equals(obj.getInstanceId())) {
@@ -63,7 +63,7 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
                     Category.class);
             Category category1 = null;
             if (list.isEmpty()) {
-                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(category);
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(category, overrideStatus);
                 category1 = (Category) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Category.class).get(0);
             } else {
                 category1 = list.get(0);
@@ -80,7 +80,7 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
         }
     }
 
-    public static void createRelation(Dataproduct edmobj, org.epos.eposdatamodel.DataProduct obj) {
+    public static void createRelation(Dataproduct edmobj, org.epos.eposdatamodel.DataProduct obj, StatusType overrideStatus) {
         List<DataproductCategory> dataproductCategoryList = getDbaccess().getAllFromDB(DataproductCategory.class);
         for (DataproductCategory item : dataproductCategoryList) {
             if (item.getDataproductInstanceId().equals(obj.getInstanceId())) {
@@ -97,7 +97,7 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
                     Category.class);
             Category category1 = null;
             if (list.isEmpty()) {
-                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(category);
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(category, overrideStatus);
                 category1 = (Category) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Category.class).get(0);
             } else {
                 category1 = list.get(0);
@@ -112,7 +112,7 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
         }
     }
 
-    public static void createRelation(Webservice edmobj, org.epos.eposdatamodel.WebService obj) {
+    public static void createRelation(Webservice edmobj, org.epos.eposdatamodel.WebService obj, StatusType overrideStatus) {
         List<WebserviceCategory> webserviceCategoryList = getDbaccess().getAllFromDB(WebserviceCategory.class);
         for (WebserviceCategory item : webserviceCategoryList) {
             if (item.getWebserviceInstanceId().equals(obj.getInstanceId())) {
@@ -130,7 +130,7 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
                     Category.class);
             Category category1 = null;
             if (list.isEmpty()) {
-                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(category);
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(category, overrideStatus);
                 category1 = (Category) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Category.class).get(0);
             } else {
                 category1 = list.get(0);
@@ -145,7 +145,7 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
         }
     }
 
-    public static void createRelation(SoftwareSourceCode edmobj, org.epos.eposdatamodel.SoftwareSourceCode obj) {
+    public static void createRelation(SoftwareSourceCode edmobj, org.epos.eposdatamodel.SoftwareSourceCode obj, StatusType overrideStatus) {
         List<SoftwaresourcecodeCategory> softwaresourcecodeCategoryList = getDbaccess().getAllFromDB(SoftwaresourcecodeCategory.class);
         for (SoftwaresourcecodeCategory item : softwaresourcecodeCategoryList) {
             if (item.getSoftwaresourcecodeInstanceId().equals(obj.getInstanceId())) {
@@ -162,7 +162,7 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
                     Category.class);
             Category category1 = null;
             if (list.isEmpty()) {
-                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(category);
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(category, overrideStatus);
                 category1 = (Category) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Category.class).get(0);
             } else {
                 category1 = list.get(0);
@@ -177,7 +177,7 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
         }
     }
 
-    public static void createRelation(SoftwareApplication edmobj, org.epos.eposdatamodel.SoftwareApplication obj) {
+    public static void createRelation(SoftwareApplication edmobj, org.epos.eposdatamodel.SoftwareApplication obj, StatusType overrideStatus) {
         List<SoftwareapplicationCategory> softwareapplicationCategoryList = getDbaccess().getAllFromDB(SoftwareapplicationCategory.class);
         for (SoftwareapplicationCategory item : softwareapplicationCategoryList) {
             if (item.getSoftwareapplicationInstanceId().equals(obj.getInstanceId())) {
@@ -195,7 +195,7 @@ public class CategoryRelationsAPI extends AbstractRelationsAPI {
                     Category.class);
             Category category1 = null;
             if (list.isEmpty()) {
-                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(category);
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(category, overrideStatus);
                 category1 = (Category) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Category.class).get(0);
             } else {
                 category1 = list.get(0);
