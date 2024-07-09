@@ -23,6 +23,17 @@ public class Distribution extends EPOSDataModelEntity {
     private List<String> accessURL;
 
     /**
+     * This property refers to the WebService which supports selection of an extract, sub-set, or combination of data
+     */
+    @Schema(name = "accessService", description = "This property refers to the WebService which supports selection of an extract, sub-set, or combination of data", example = "{\n" +
+            "    \"entityType\": \"WEBSERVICE\",\n" +
+            "    \"instanceId\": \"an UUID\",\n" +
+            "    \"metaId\": \"an UUID\",\n" +
+            "    \"uid\": \"an UUID\"\n" +
+            "  }", required = false)
+    private LinkedEntity accessService;
+
+    /**
      * This property contains a free-text account of the Distribution. This property can be repeated for parallel language
      * versions of the description.
      **/
@@ -357,11 +368,21 @@ public class Distribution extends EPOSDataModelEntity {
         }
     }
 
+    public LinkedEntity getAccessService() {
+        return accessService;
+    }
+
+    public Distribution setAccessService(LinkedEntity accessService) {
+        this.accessService = accessService;
+        return this;
+    }
+
 
     @Override
     public String toString() {
         return "Distribution{" +
-                "accessService=" + accessURL +
+                "accessService=" + accessService +
+                "accessURL=" + accessURL +
                 ", description=" + description +
                 ", downloadURL=" + downloadURL +
                 ", format='" + format + '\'' +

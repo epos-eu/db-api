@@ -142,6 +142,30 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
             }
         }
 
+        if (obj.getAccessService() != null ) {
+            List<WebserviceDistribution> webserviceDistributions = getDbaccess().getAllFromDB(WebserviceDistribution.class);
+            for(WebserviceDistribution item : webserviceDistributions){
+                if(item.getDistributionInstanceId().equals(obj.getInstanceId())){
+                    getDbaccess().deleteObject(item);
+                }
+            }
+            List<Webservice> list = dbaccess.getOneFromDBByInstanceId(obj.getAccessService().getInstanceId(),Webservice.class);
+            Webservice webservice = null;
+            if(list.isEmpty()){
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(obj.getAccessService(), overrideStatus);
+                webservice = (Webservice) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Webservice.class).get(0);
+            } else {
+                webservice = list.get(0);
+            }
+            WebserviceDistribution pi = new WebserviceDistribution();
+            pi.setDistributionByDistributionInstanceId(edmobj);
+            pi.setDistributionInstanceId(edmobj.getInstanceId());
+            pi.setWebserviceInstanceId(webservice.getInstanceId());
+            pi.setWebserviceByWebserviceInstanceId(webservice);
+
+            dbaccess.updateObject(pi);
+        }
+
         edmobj.setDistributionElementsByInstanceId(new ArrayList<>());
 
         if(obj.getAccessURL()!=null && !obj.getAccessURL().isEmpty()){
@@ -224,6 +248,17 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
                     o.addDataproduct(cp);
                 }
             }
+
+            List<WebserviceDistribution> webserviceDistributions = getDbaccess().getAllFromDB(WebserviceDistribution.class);
+            if (!webserviceDistributions.isEmpty()) {
+                for (WebserviceDistribution ed : webserviceDistributions) {
+                    if(ed.getDistributionInstanceId().equals(o.getInstanceId())) {
+                        AbstractAPI api = AbstractAPI.retrieveAPI(EntityNames.WEBSERVICE.name());
+                        o.setAccessService(api.retrieveLinkedEntity(ed.getWebserviceInstanceId()));
+                    }
+                }
+            }
+
 
             if (edmobj.getDistributionElementsByInstanceId().size() > 0) {
                 for (DistributionElement ed : edmobj.getDistributionElementsByInstanceId()) {
