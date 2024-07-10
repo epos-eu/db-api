@@ -1,0 +1,45 @@
+package integrationtests.unittests;
+
+import abstractapis.AbstractAPI;
+import integrationtests.TestcontainersLifecycle;
+import metadataapis.EntityNames;
+import org.eclipse.persistence.internal.jpa.rs.metadata.model.Link;
+import org.epos.eposdatamodel.Address;
+import org.epos.eposdatamodel.Distribution;
+import org.epos.eposdatamodel.LinkedEntity;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+public class EntityManagementDistributionTest extends TestcontainersLifecycle {
+
+    @Test
+    @Order(1)
+    public void testCreateAndGetAddress() {
+
+        AbstractAPI api = AbstractAPI.retrieveAPI(EntityNames.DISTRIBUTION.name());
+
+        LinkedEntity le = new LinkedEntity();
+        le.setUid("test");
+        le.setEntityType(EntityNames.WEBSERVICE.name());
+
+        Distribution distribution = new Distribution();
+        distribution.setInstanceId(UUID.randomUUID().toString());
+        distribution.setMetaId(UUID.randomUUID().toString());
+        distribution.setUid(UUID.randomUUID().toString());
+        distribution.setAccessService(le);
+
+        api.create(distribution, null);
+
+        Distribution retrievedDistribution = (Distribution) api.retrieve(distribution.getInstanceId());
+
+        assertNotNull(retrievedDistribution);
+    }
+
+
+}

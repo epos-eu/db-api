@@ -100,6 +100,7 @@
 		<class>model.SoftwaresourcecodeIdentifier</class>
 		<class>model.WebserviceCategory</class>
 		<class>model.WebserviceContactpoint</class>
+		<class>model.WebserviceDistribution</class>
 		<class>model.WebserviceElement</class>
 		<class>model.WebserviceIdentifier</class>
 		<class>model.WebserviceSpatial</class>
