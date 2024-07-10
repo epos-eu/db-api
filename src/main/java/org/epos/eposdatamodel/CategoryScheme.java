@@ -164,9 +164,16 @@ public class CategoryScheme extends EPOSDataModelEntity {
 
 	@Override
 	public String toString() {
-		return "CategoryScheme [description=" + description + ", title=" + title + ", code=" + code + ", logo=" + logo
-				+ ", homepage=" + homepage + ", color=" + color + ", orderitemnumber=" + orderitemnumber
-				+ ", topconcepts=" + topconcepts + ", uid=" + uid + "]";
+		return "CategoryScheme{" +
+				"description='" + description + '\'' +
+				", title='" + title + '\'' +
+				", code='" + code + '\'' +
+				", logo='" + logo + '\'' +
+				", homepage='" + homepage + '\'' +
+				", color='" + color + '\'' +
+				", orderitemnumber='" + orderitemnumber + '\'' +
+				", topconcepts=" + topconcepts +
+				", uid='" + uid + '\'' +
+				'}'+ super.toString();
 	}
-	
 }

@@ -152,10 +152,15 @@ public class Category extends EPOSDataModelEntity {
 				&& Objects.equals(narrower, other.narrower) && Objects.equals(uid, other.uid);
 	}
 
-	@Override
-	public String toString() {
-		return "Category [description=" + description + ", inScheme=" + inScheme + ", name=" + name + ", uid=" + uid
-				+ ", broader=" + broader + ", narrower=" + narrower + "]";
-	}
-	
+    @Override
+    public String toString() {
+        return "Category{" +
+                "description='" + description + '\'' +
+                ", inScheme=" + inScheme +
+                ", name='" + name + '\'' +
+                ", uid='" + uid + '\'' +
+                ", broader=" + broader +
+                ", narrower=" + narrower +
+                '}'+ super.toString();
+    }
 }

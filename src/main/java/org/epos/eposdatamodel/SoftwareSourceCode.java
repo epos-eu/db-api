@@ -11,7 +11,7 @@ import java.util.Objects;
  * This class represents a computer programming source code. Example: Full (compile ready) solutions,
  * code snippet samples, scripts, templates.
  */
-public class SoftwareSourceCode extends Software {
+public class SoftwareSourceCode {
 
     /**
      * This property refers to a category of the Software Source Code. A Software Source Code may be associated with multiple categories.
@@ -445,8 +445,22 @@ public class SoftwareSourceCode extends Software {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SoftwareSourceCode that = (SoftwareSourceCode) o;
+        return Objects.equals(category, that.category) && Objects.equals(codeRepository, that.codeRepository) && Objects.equals(contactPoint, that.contactPoint) && Objects.equals(description, that.description) && Objects.equals(downloadURL, that.downloadURL) && Objects.equals(identifier, that.identifier) && Objects.equals(keywords, that.keywords) && Objects.equals(licenseURL, that.licenseURL) && Objects.equals(mainEntityofPage, that.mainEntityofPage) && Objects.equals(name, that.name) && Objects.equals(programmingLanguage, that.programmingLanguage) && Objects.equals(relation, that.relation) && Objects.equals(runtimePlatform, that.runtimePlatform) && Objects.equals(softwareVersion, that.softwareVersion);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(category, codeRepository, contactPoint, description, downloadURL, identifier, keywords, licenseURL, mainEntityofPage, name, programmingLanguage, relation, runtimePlatform, softwareVersion);
+    }
+
+    @Override
     public String toString() {
-        return "SoftwareSourceCode{ category=" + category +
+        return "SoftwareSourceCode{" +
+                "category=" + category +
                 ", codeRepository='" + codeRepository + '\'' +
                 ", contactPoint=" + contactPoint +
                 ", description='" + description + '\'' +
@@ -460,20 +474,6 @@ public class SoftwareSourceCode extends Software {
                 ", relation=" + relation +
                 ", runtimePlatform='" + runtimePlatform + '\'' +
                 ", softwareVersion='" + softwareVersion + '\'' +
-                "} " + super.toString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        SoftwareSourceCode that = (SoftwareSourceCode) o;
-        return Objects.equals(getCategory(), that.getCategory()) && Objects.equals(getCodeRepository(), that.getCodeRepository()) && Objects.equals(getContactPoint(), that.getContactPoint()) && Objects.equals(getDescription(), that.getDescription()) && Objects.equals(getDownloadURL(), that.getDownloadURL()) && Objects.equals(getIdentifier(), that.getIdentifier()) && Objects.equals(getKeywords(), that.getKeywords()) && Objects.equals(getLicenseURL(), that.getLicenseURL()) && Objects.equals(getMainEntityofPage(), that.getMainEntityofPage()) && Objects.equals(getName(), that.getName()) && Objects.equals(getProgrammingLanguage(), that.getProgrammingLanguage()) && Objects.equals(getRelation(), that.getRelation()) && Objects.equals(getRuntimePlatform(), that.getRuntimePlatform()) && Objects.equals(getSoftwareVersion(), that.getSoftwareVersion());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), getCategory(), getCodeRepository(), getContactPoint(), getDescription(), getDownloadURL(), getIdentifier(), getKeywords(), getLicenseURL(), getMainEntityofPage(), getName(), getProgrammingLanguage(), getRelation(), getRuntimePlatform(), getSoftwareVersion());
+                '}'+ super.toString();
     }
 }

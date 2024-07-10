@@ -54,6 +54,6 @@ public class Element extends EPOSDataModelEntity {
         return "Element{" +
                 "type=" + type +
                 ", value='" + value + '\'' +
-                '}';
+                '}'+ super.toString();
     }
 }

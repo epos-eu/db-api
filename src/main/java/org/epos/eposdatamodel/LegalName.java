@@ -55,6 +55,6 @@ public class LegalName extends EPOSDataModelEntity {
         return "LegalName{" +
                 "language='" + language + '\'' +
                 ", legalname='" + legalname + '\'' +
-                '}';
+                '}'+ super.toString();
     }
 }

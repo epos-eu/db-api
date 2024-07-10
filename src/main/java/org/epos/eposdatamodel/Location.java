@@ -40,7 +40,7 @@ public class Location extends EPOSDataModelEntity{
     public String toString() {
         return "Location{" +
                 "location='" + location + '\'' +
-                '}';
+                '}'+ super.toString();
     }
 
     @Override

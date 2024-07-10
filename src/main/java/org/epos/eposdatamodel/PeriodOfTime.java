@@ -88,7 +88,7 @@ public class PeriodOfTime extends EPOSDataModelEntity{
         return "PeriodOfTime{" +
                 "startDate=" + startDate +
                 ", endDate=" + endDate +
-                '}';
+                '}'+ super.toString();
     }
 
     @Override

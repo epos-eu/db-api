@@ -666,6 +666,6 @@ public class WebService extends EPOSDataModelEntity {
                 ", distribution=" + distribution +
                 ", relation=" + relation +
                 ", aaaiTypes='" + aaaiTypes + '\'' +
-                '}';
+                '}'+ super.toString();
     }
 }

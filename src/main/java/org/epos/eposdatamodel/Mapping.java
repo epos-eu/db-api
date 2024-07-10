@@ -327,7 +327,7 @@ public class Mapping extends EPOSDataModelEntity {
                 ", variable='" + variable + '\'' +
                 ", multipleValues='" + multipleValues + '\'' +
                 ", readOnlyValue='" + readOnlyValue + '\'' +
-                '}';
+                '}'+ super.toString();
     }
 
     @Override

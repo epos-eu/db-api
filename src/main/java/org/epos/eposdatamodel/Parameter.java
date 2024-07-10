@@ -90,7 +90,7 @@ public class Parameter extends EPOSDataModelEntity {
                 "encodingFormat='" + encodingFormat + '\'' +
                 ", conformsTo='" + conformsTo + '\'' +
                 ", action=" + action +
-                '}';
+                '}'+ super.toString();
     }
 
     @Override

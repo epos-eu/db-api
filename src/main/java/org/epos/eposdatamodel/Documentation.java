@@ -100,7 +100,7 @@ public class Documentation extends EPOSDataModelEntity{
         return "Documentation{" +
                 "title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", URI='" + uri + '\'' +
-                '}';
+                ", uri='" + uri + '\'' +
+                '}'+ super.toString();
     }
 }

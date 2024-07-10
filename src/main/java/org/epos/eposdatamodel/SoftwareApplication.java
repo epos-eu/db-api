@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * This class represents software package, application and program.
  */
-public class SoftwareApplication extends Software {
+public class SoftwareApplication {
     /**
      * This property refers to a category of the Software Application. A Software Application may be associated with multiple categories.
      **/
@@ -443,10 +443,23 @@ public class SoftwareApplication extends Software {
         this.relation = relation;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SoftwareApplication that = (SoftwareApplication) o;
+        return Objects.equals(category, that.category) && Objects.equals(contactPoint, that.contactPoint) && Objects.equals(description, that.description) && Objects.equals(downloadURL, that.downloadURL) && Objects.equals(identifier, that.identifier) && Objects.equals(installURL, that.installURL) && Objects.equals(keywords, that.keywords) && Objects.equals(licenseURL, that.licenseURL) && Objects.equals(mainEntityOfPage, that.mainEntityOfPage) && Objects.equals(name, that.name) && Objects.equals(parameter, that.parameter) && Objects.equals(relation, that.relation) && Objects.equals(requirements, that.requirements) && Objects.equals(softwareVersion, that.softwareVersion);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(category, contactPoint, description, downloadURL, identifier, installURL, keywords, licenseURL, mainEntityOfPage, name, parameter, relation, requirements, softwareVersion);
+    }
 
     @Override
     public String toString() {
-        return "SoftwareApplication{ category=" + category +
+        return "SoftwareApplication{" +
+                "category=" + category +
                 ", contactPoint=" + contactPoint +
                 ", description='" + description + '\'' +
                 ", downloadURL='" + downloadURL + '\'' +
@@ -460,20 +473,6 @@ public class SoftwareApplication extends Software {
                 ", relation=" + relation +
                 ", requirements='" + requirements + '\'' +
                 ", softwareVersion='" + softwareVersion + '\'' +
-                "} " + super.toString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        SoftwareApplication that = (SoftwareApplication) o;
-        return Objects.equals(getCategory(), that.getCategory()) && Objects.equals(getContactPoint(), that.getContactPoint()) && Objects.equals(getDescription(), that.getDescription()) && Objects.equals(getDownloadURL(), that.getDownloadURL()) && Objects.equals(getIdentifier(), that.getIdentifier()) && Objects.equals(getInstallURL(), that.getInstallURL()) && Objects.equals(getKeywords(), that.getKeywords()) && Objects.equals(getLicenseURL(), that.getLicenseURL()) && Objects.equals(getMainEntityOfPage(), that.getMainEntityOfPage()) && Objects.equals(getName(), that.getName()) && Objects.equals(getParameter(), that.getParameter()) && Objects.equals(getRelation(), that.getRelation()) && Objects.equals(getRequirements(), that.getRequirements()) && Objects.equals(getSoftwareVersion(), that.getSoftwareVersion());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), getCategory(), getContactPoint(), getDescription(), getDownloadURL(), getIdentifier(), getInstallURL(), getKeywords(), getLicenseURL(), getMainEntityOfPage(), getName(), getParameter(), getRelation(), getRequirements(), getSoftwareVersion());
+                '}'+ super.toString();
     }
 }

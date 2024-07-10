@@ -45,7 +45,7 @@ public class QuantitativeValue extends EPOSDataModelEntity{
         return "QuantitativeValue{" +
                 "unit='" + unit + '\'' +
                 ", value='" + value + '\'' +
-                '}';
+                '}'+ super.toString();
     }
 
     @Override
