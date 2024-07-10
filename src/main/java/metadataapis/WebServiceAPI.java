@@ -125,19 +125,23 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
                 Identifier identifier1 = null;
                 if(list.isEmpty()){
                     LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(identifier, overrideStatus);
-                    identifier1 = (Identifier) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Identifier.class).get(0);
+                    List<Identifier> identifierList1 = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Identifier.class);
+                    if(!identifierList1.isEmpty())
+                        identifier1 = identifierList1.get(0);
                 } else {
                     identifier1 = list.get(0);
                 }
-                WebserviceIdentifier pi = new WebserviceIdentifier();
-                pi.setWebserviceByWebserviceInstanceId(edmobj);
-                pi.setWebserviceInstanceId(edmobj.getInstanceId());
-                pi.setIdentifierInstanceId(identifier1.getInstanceId());
-                pi.setIdentifierByIdentifierInstanceId(identifier1);
+                if(identifier1!=null) {
+                    WebserviceIdentifier pi = new WebserviceIdentifier();
+                    pi.setWebserviceByWebserviceInstanceId(edmobj);
+                    pi.setWebserviceInstanceId(edmobj.getInstanceId());
+                    pi.setIdentifierInstanceId(identifier1.getInstanceId());
+                    pi.setIdentifierByIdentifierInstanceId(identifier1);
 
-                edmobj.getWebserviceIdentifiersByInstanceId().add(pi);
+                    edmobj.getWebserviceIdentifiersByInstanceId().add(pi);
 
-                dbaccess.updateObject(pi);
+                    dbaccess.updateObject(pi);
+                }
             }
         }
 
@@ -149,14 +153,16 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
                     getDbaccess().deleteObject(item);
                 }
             }
-            SpatialAPI spatialAPI = new SpatialAPI(EntityNames.LOCATION.name(), Spatial.class);
+
             edmobj.setWebserviceSpatialsByInstanceId(new ArrayList<>());
             for(org.epos.eposdatamodel.LinkedEntity location : obj.getSpatialExtent()){
                 List<Spatial> list = dbaccess.getOneFromDBByInstanceId(location.getInstanceId(),Spatial.class);
                 Spatial spatial = null;
                 if(list.isEmpty()){
                     LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(location, overrideStatus);
-                    spatial = (Spatial) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Spatial.class).get(0);
+                    List<Spatial> spatialList = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Spatial.class);
+                    if(!spatialList.isEmpty())
+                        spatial = spatialList.get(0);
                 } else {
                     spatial = list.get(0);
                 }
@@ -180,26 +186,29 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
                     getDbaccess().deleteObject(item);
                 }
             }
-            TemporalAPI temporalAPI = new TemporalAPI(EntityNames.PERIODOFTIME.name(), Temporal.class);
             edmobj.setWebserviceTemporalsByInstanceId(new ArrayList<>());
             for(org.epos.eposdatamodel.LinkedEntity periodOfTime : obj.getTemporalExtent()){
                 List<Temporal> list = dbaccess.getOneFromDBByInstanceId(periodOfTime.getInstanceId(),Temporal.class);
                 Temporal temporal = null;
                 if(list.isEmpty()){
                     LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(periodOfTime, overrideStatus);
-                    temporal = (Temporal) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Temporal.class).get(0);
+                    List<Temporal> temporalList = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Temporal.class);
+                    if(!temporalList.isEmpty())
+                        temporal = temporalList.get(0);
                 } else {
                     temporal = list.get(0);
                 }
-                WebserviceTemporal pi = new WebserviceTemporal();
-                pi.setWebserviceByWebserviceInstanceId(edmobj);
-                pi.setWebserviceInstanceId(edmobj.getInstanceId());
-                pi.setTemporalInstanceId(temporal.getInstanceId());
-                pi.setTemporalByTemporalInstanceId(temporal);
+                if(temporal!=null) {
+                    WebserviceTemporal pi = new WebserviceTemporal();
+                    pi.setWebserviceByWebserviceInstanceId(edmobj);
+                    pi.setWebserviceInstanceId(edmobj.getInstanceId());
+                    pi.setTemporalInstanceId(temporal.getInstanceId());
+                    pi.setTemporalByTemporalInstanceId(temporal);
 
-                edmobj.getWebserviceTemporalsByInstanceId().add(pi);
+                    edmobj.getWebserviceTemporalsByInstanceId().add(pi);
 
-                dbaccess.updateObject(pi);
+                    dbaccess.updateObject(pi);
+                }
             }
         }
 
@@ -217,19 +226,23 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
                 Operation operation1 = null;
                 if(list.isEmpty()){
                     LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(operation, overrideStatus);
-                    operation1 = (Operation) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Operation.class).get(0);
+                    List<Operation> operationList = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Operation.class);
+                    if(!operationList.isEmpty())
+                        operation1 = operationList.get(0);
                 } else {
                     operation1 = list.get(0);
                 }
-                OperationWebservice pi = new OperationWebservice();
-                pi.setOperationByOperationInstanceId(operation1);
-                pi.setOperationInstanceId(operation1.getInstanceId());
-                pi.setWebserviceInstanceId(edmobj.getInstanceId());
-                pi.setWebserviceByWebserviceInstanceId(edmobj);
+                if(operation1!=null) {
+                    OperationWebservice pi = new OperationWebservice();
+                    pi.setOperationByOperationInstanceId(operation1);
+                    pi.setOperationInstanceId(operation1.getInstanceId());
+                    pi.setWebserviceInstanceId(edmobj.getInstanceId());
+                    pi.setWebserviceByWebserviceInstanceId(edmobj);
 
-                edmobj.getOperationWebservicesByInstanceId().add(pi);
+                    edmobj.getOperationWebservicesByInstanceId().add(pi);
 
-                dbaccess.updateObject(pi);
+                    dbaccess.updateObject(pi);
+                }
             }
         }
 

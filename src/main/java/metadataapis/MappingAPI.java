@@ -21,7 +21,7 @@ public class MappingAPI extends AbstractAPI<org.epos.eposdatamodel.Mapping> {
     @Override
     public LinkedEntity create(org.epos.eposdatamodel.Mapping obj, StatusType overrideStatus) {
 
-        List<Operation> returnList = getDbaccess().getOneFromDB(
+        List<Mapping> returnList = getDbaccess().getOneFromDB(
                 obj.getInstanceId(),
                 obj.getMetaId(),
                 obj.getUid(),
