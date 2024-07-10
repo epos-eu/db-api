@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * This class represents software package, application and program.
  */
-public class SoftwareApplication {
+public class SoftwareApplication extends EPOSDataModelEntity {
     /**
      * This property refers to a category of the Software Application. A Software Application may be associated with multiple categories.
      **/

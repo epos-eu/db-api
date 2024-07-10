@@ -11,7 +11,7 @@ import java.util.Objects;
  * This class represents a computer programming source code. Example: Full (compile ready) solutions,
  * code snippet samples, scripts, templates.
  */
-public class SoftwareSourceCode {
+public class SoftwareSourceCode extends EPOSDataModelEntity {
 
     /**
      * This property refers to a category of the Software Source Code. A Software Source Code may be associated with multiple categories.
