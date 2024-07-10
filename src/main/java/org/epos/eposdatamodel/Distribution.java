@@ -36,7 +36,7 @@ public class Distribution extends EPOSDataModelEntity {
     /**
      * This property refers to the Operation which supports selection of an extract, sub-set, or combination of data
      */
-    @Schema(name = "operation", description = "This property refers to the WebService which supports selection of an extract, sub-set, or combination of data", example = "{\n" +
+    @Schema(name = "supportedOperation", description = "This property refers to the WebService which supports selection of an extract, sub-set, or combination of data", example = "{\n" +
             "    \"entityType\": \"OPERATION\",\n" +
             "    \"instanceId\": \"an UUID\",\n" +
             "    \"metaId\": \"an UUID\",\n" +
