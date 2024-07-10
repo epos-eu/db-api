@@ -30,9 +30,7 @@ public class VersioningStatusAPI {
 
             Versioningstatus edmobj = returnList.get(0);
 
-            if(overrideStatus!=null) {
-                edmobj.setStatus(overrideStatus);
-            }
+            if(overrideStatus!=null) edmobj.setStatus(overrideStatus);
             else {
 
                 if (obj.getStatus() == null) obj.setStatus(StatusType.DRAFT);

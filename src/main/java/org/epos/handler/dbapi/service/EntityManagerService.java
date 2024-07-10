@@ -90,7 +90,7 @@ public class EntityManagerService {
 
         private final String PERSISTENCE_NAME_DEFAULT = "EPOSDataModel";
         private final String CONNECTION_POOL_MAX_SIZE_DEFAULT = "10";
-        private final String CONNECTION_MAX_LIFETIME_DEFAULT = "60000";
+        private final String CONNECTION_MAX_LIFETIME_DEFAULT = "40000";
         private final String CONNECTION_TEST_IDLE_INTERVAL_TIME_DEFAULT = "30000";
 
         public EntityManagerServiceBuilder(){

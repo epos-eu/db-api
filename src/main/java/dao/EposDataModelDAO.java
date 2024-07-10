@@ -27,6 +27,7 @@ public class EposDataModelDAO<T> {
             return true;
         }catch (Exception exception){
             LOG.severe(exception.getLocalizedMessage());
+            em.getTransaction().rollback();
             em.close();
             return false;
         }
@@ -118,6 +119,8 @@ public class EposDataModelDAO<T> {
     public List<Versioningstatus> getVersionsFromDBByVersionId(String versionId){
         EntityManager em = EntityManagerService.getInstance().createEntityManager();
         Versioningstatus objReturn = em.find(Versioningstatus.class, versionId);
+        em.getTransaction().commit();
+        em.close();
         return objReturn==null? List.of() : List.of(objReturn);
     }
 
@@ -143,6 +146,7 @@ public class EposDataModelDAO<T> {
             return true;
         }catch(Exception exception){
             LOG.severe(exception.getLocalizedMessage());
+            em.getTransaction().rollback();
             em.close();
             return false;
         }
@@ -163,6 +167,7 @@ public class EposDataModelDAO<T> {
             return true;
         }catch(Exception exception){
             LOG.severe(exception.getLocalizedMessage());
+            em.getTransaction().rollback();
             em.close();
             return false;
         }
