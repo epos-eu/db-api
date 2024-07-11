@@ -1,6 +1,7 @@
 package org.epos.eposdatamodel;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import utilities.ParseLocalDateTime;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -234,13 +235,7 @@ public class Distribution extends EPOSDataModelEntity {
     }
 
     public void setIssued(String issued){
-        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
-                .appendPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
-                .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
-                .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
-                .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
-                .toFormatter();
-        this.issued = LocalDateTime.parse(issued,formatter);
+        this.issued = ParseLocalDateTime.parse(issued);
     }
 
     public Distribution licence(String licence) {
@@ -281,13 +276,7 @@ public class Distribution extends EPOSDataModelEntity {
     }
 
     public void setModified(String modified){
-        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
-                .appendPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
-                .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
-                .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
-                .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
-                .toFormatter();
-        this.modified = LocalDateTime.parse(modified,formatter);
+        this.modified = ParseLocalDateTime.parse(modified);
     }
 
     public Distribution title(List<String> title) {

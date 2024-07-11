@@ -1,6 +1,7 @@
 package org.epos.eposdatamodel;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import utilities.ParseLocalDateTime;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -45,13 +46,7 @@ public class PeriodOfTime extends EPOSDataModelEntity{
     }
 
     public void setStartDate(String startDate){
-        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
-                .appendPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
-                .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
-                .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
-                .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
-                .toFormatter();
-        this.startDate = LocalDateTime.parse(startDate,formatter);
+        this.startDate = ParseLocalDateTime.parse(startDate);
     }
 
     public PeriodOfTime endDate(LocalDateTime endDate) {
@@ -74,13 +69,7 @@ public class PeriodOfTime extends EPOSDataModelEntity{
     }
 
     public void setEndDate(String endDate){
-        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
-                .appendPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
-                .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
-                .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
-                .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
-                .toFormatter();
-        this.endDate = LocalDateTime.parse(endDate,formatter);
+        this.endDate = ParseLocalDateTime.parse(endDate);
     }
 
     @Override

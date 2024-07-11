@@ -2,6 +2,7 @@ package org.epos.eposdatamodel;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import utilities.ParseLocalDateTime;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -353,13 +354,7 @@ public class WebService extends EPOSDataModelEntity {
     }
 
     public void setDateModified(String dateModified){
-        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
-                .appendPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
-                .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
-                .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
-                .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
-                .toFormatter();
-        this.dateModified = LocalDateTime.parse(dateModified,formatter);
+        this.dateModified = ParseLocalDateTime.parse(dateModified);
     }
 
     public WebService datePublished(LocalDateTime datePublished) {
@@ -382,13 +377,7 @@ public class WebService extends EPOSDataModelEntity {
     }
 
     public void setDatePublished(String datePublished){
-        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
-                .appendPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
-                .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
-                .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
-                .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
-                .toFormatter();
-        this.datePublished = LocalDateTime.parse(datePublished,formatter);
+        this.datePublished = ParseLocalDateTime.parse(datePublished);
     }
 
 

@@ -2,10 +2,13 @@ package org.epos.eposdatamodel;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.eclipse.persistence.internal.jpa.rs.metadata.model.Link;
+import utilities.ParseLocalDateTime;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.SignStyle;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.List;
@@ -414,13 +417,7 @@ public class DataProduct extends EPOSDataModelEntity {
     }
 
     public void setCreated(String created){
-        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
-                .appendPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
-                .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
-                .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
-                .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
-                .toFormatter();
-        this.created = LocalDateTime.parse(created,formatter);
+        this.created = ParseLocalDateTime.parse(created);
     }
 
     public DataProduct description(List<String> description) {
@@ -494,13 +491,7 @@ public class DataProduct extends EPOSDataModelEntity {
     }
 
     public void setIssued(String issued){
-        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
-                .appendPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
-                .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
-                .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
-                .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
-                .toFormatter();
-        this.issued = LocalDateTime.parse(issued,formatter);
+        this.issued = ParseLocalDateTime.parse(issued);
     }
 
     public DataProduct keywords(String keywords) {
@@ -547,13 +538,7 @@ public class DataProduct extends EPOSDataModelEntity {
     }
 
     public void setModified(String modified){
-        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
-                .appendPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
-                .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
-                .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
-                .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
-                .toFormatter();
-        this.modified = LocalDateTime.parse(modified,formatter);
+        this.modified = ParseLocalDateTime.parse(modified);
     }
 
     public DataProduct provenance(List<String> provenance) {

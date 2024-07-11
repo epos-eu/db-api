@@ -259,6 +259,39 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
             }
         }
 
+        /** DISTRIBUTION **/
+        if (obj.getDistribution() != null && !obj.getDistribution().isEmpty()) {
+            List<DistributionDataproduct> distributionDataproductList = getDbaccess().getAllFromDB(DistributionDataproduct.class);
+            for(DistributionDataproduct item : distributionDataproductList){
+                if(item.getDataproductInstanceId().equals(obj.getInstanceId())){
+                    getDbaccess().deleteObject(item);
+                }
+            }
+            edmobj.setDistributionDataproductsByInstanceId(new ArrayList<>());
+            for(LinkedEntity distribution : obj.getDistribution()){
+                List<Distribution> list = dbaccess.getOneFromDBByInstanceId(distribution.getInstanceId(),Distribution.class);
+                Distribution distribution1 = null;
+                if(list.isEmpty()){
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(distribution, overrideStatus);
+                    List<Distribution> distributionList = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Distribution.class);
+                    if(!distributionList.isEmpty())
+                        distribution1 = distributionList.get(0);
+                } else {
+                    distribution1 = list.get(0);
+                }
+                if(distribution1!=null) {
+                    DistributionDataproduct pi = new DistributionDataproduct();
+                    pi.setDataproductByDataproductInstanceId(edmobj);
+                    pi.setDataproductInstanceId(edmobj.getInstanceId());
+                    pi.setDistributionInstanceId(distribution1.getInstanceId());
+                    pi.setDistributionByDistributionInstanceId(distribution1);
+                    edmobj.getDistributionDataproductsByInstanceId().add(pi);
+
+                    dbaccess.updateObject(pi);
+                }
+            }
+        }
+
         /** SPATIAL **/
         if (obj.getSpatialExtent() != null && !obj.getSpatialExtent().isEmpty()) {
             List<DataproductSpatial> dataproductSpatialList = getDbaccess().getAllFromDB(DataproductSpatial.class);
@@ -267,7 +300,6 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
                     getDbaccess().deleteObject(item);
                 }
             }
-            SpatialAPI spatialAPI = new SpatialAPI(EntityNames.LOCATION.name(), Spatial.class);
             edmobj.setDataproductSpatialsByInstanceId(new ArrayList<>());
             for(org.epos.eposdatamodel.LinkedEntity location : obj.getSpatialExtent()){
                 List<Spatial> list = dbaccess.getOneFromDBByInstanceId(location.getInstanceId(),Spatial.class);
@@ -410,6 +442,14 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
                 for (DataproductPublisher ed : edmobj.getDataproductPublishersByInstanceId()) {
                     OrganizationAPI api = new OrganizationAPI(EntityNames.ORGANIZATION.name(), Organization.class);
                     LinkedEntity cp = api.retrieveLinkedEntity(ed.getOrganizationInstanceId());
+                    o.addPublisher(cp);
+                }
+            }
+
+            if (edmobj.getDistributionDataproductsByInstanceId().size() > 0) {
+                for (DistributionDataproduct ed : edmobj.getDistributionDataproductsByInstanceId()) {
+                    DistributionAPI api = new DistributionAPI(EntityNames.DISTRIBUTION.name(), Distribution.class);
+                    LinkedEntity cp = api.retrieveLinkedEntity(ed.getDistributionInstanceId());
                     o.addPublisher(cp);
                 }
             }
