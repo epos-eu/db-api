@@ -267,7 +267,7 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
                     getDbaccess().deleteObject(item);
                 }
             }
-            edmobj.setDistributionDataproductsByInstanceId(new ArrayList<>());
+
             for(LinkedEntity distribution : obj.getDistribution()){
                 List<Distribution> list = dbaccess.getOneFromDBByInstanceId(distribution.getInstanceId(),Distribution.class);
                 Distribution distribution1 = null;
@@ -279,13 +279,15 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
                 } else {
                     distribution1 = list.get(0);
                 }
+                System.out.println("ADDING DISTRIBUTION: "+distribution1);
                 if(distribution1!=null) {
                     DistributionDataproduct pi = new DistributionDataproduct();
                     pi.setDataproductByDataproductInstanceId(edmobj);
                     pi.setDataproductInstanceId(edmobj.getInstanceId());
                     pi.setDistributionInstanceId(distribution1.getInstanceId());
                     pi.setDistributionByDistributionInstanceId(distribution1);
-                    edmobj.getDistributionDataproductsByInstanceId().add(pi);
+                    //edmobj.getDistributionDataproductsByInstanceId().add(pi);
+                    System.out.println(pi);
 
                     dbaccess.updateObject(pi);
                 }
@@ -445,12 +447,12 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
                     o.addPublisher(cp);
                 }
             }
-
-            if (edmobj.getDistributionDataproductsByInstanceId().size() > 0) {
-                for (DistributionDataproduct ed : edmobj.getDistributionDataproductsByInstanceId()) {
+            List<DistributionDataproduct> distributionDataproductList = getDbaccess().getAllFromDB(DistributionDataproduct.class);
+            if (!distributionDataproductList.isEmpty()) {
+                for (DistributionDataproduct ed : distributionDataproductList) {
                     DistributionAPI api = new DistributionAPI(EntityNames.DISTRIBUTION.name(), Distribution.class);
                     LinkedEntity cp = api.retrieveLinkedEntity(ed.getDistributionInstanceId());
-                    o.addPublisher(cp);
+                    o.addDistribution(cp);
                 }
             }
 
