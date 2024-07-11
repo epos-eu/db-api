@@ -287,7 +287,6 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
                     pi.setDistributionInstanceId(distribution1.getInstanceId());
                     pi.setDistributionByDistributionInstanceId(distribution1);
                     //edmobj.getDistributionDataproductsByInstanceId().add(pi);
-                    System.out.println(pi);
 
                     dbaccess.updateObject(pi);
                 }
@@ -447,12 +446,15 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
                     o.addPublisher(cp);
                 }
             }
+
             List<DistributionDataproduct> distributionDataproductList = getDbaccess().getAllFromDB(DistributionDataproduct.class);
+            DistributionAPI distributionAPI = new DistributionAPI(EntityNames.DISTRIBUTION.name(), Distribution.class);
             if (!distributionDataproductList.isEmpty()) {
                 for (DistributionDataproduct ed : distributionDataproductList) {
-                    DistributionAPI api = new DistributionAPI(EntityNames.DISTRIBUTION.name(), Distribution.class);
-                    LinkedEntity cp = api.retrieveLinkedEntity(ed.getDistributionInstanceId());
-                    o.addDistribution(cp);
+                    if(ed.getDataproductInstanceId().equals(o.getInstanceId())) {
+                        LinkedEntity cp = distributionAPI.retrieveLinkedEntity(ed.getDistributionInstanceId());
+                        o.addDistribution(cp);
+                    }
                 }
             }
 
