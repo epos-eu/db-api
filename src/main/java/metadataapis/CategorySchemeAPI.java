@@ -95,9 +95,9 @@ public class CategorySchemeAPI extends AbstractAPI<org.epos.eposdatamodel.Catego
     public List<org.epos.eposdatamodel.CategoryScheme> retrieveAll() {
         List<CategoryScheme> list = getDbaccess().getAllFromDB(CategoryScheme.class);
         List<org.epos.eposdatamodel.CategoryScheme> returnList = new ArrayList<>();
-        for(CategoryScheme item : list){
+        list.parallelStream().forEach(item -> {
             returnList.add(retrieve(item.getInstanceId()));
-        }
+        });
         return returnList;
     }
 

@@ -169,9 +169,9 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
     public List<org.epos.eposdatamodel.Operation> retrieveAll() {
         List<Operation> list = getDbaccess().getAllFromDB(Operation.class);
         List<org.epos.eposdatamodel.Operation> returnList = new ArrayList<>();
-        for(Operation item : list){
+        list.parallelStream().forEach(item -> {
             returnList.add(retrieve(item.getInstanceId()));
-        }
+        });
         return returnList;
     }
 

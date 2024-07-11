@@ -217,9 +217,9 @@ public class SoftwareApplicationAPI extends AbstractAPI<org.epos.eposdatamodel.S
     public List<org.epos.eposdatamodel.SoftwareApplication> retrieveAll() {
         List<SoftwareApplication> list = getDbaccess().getAllFromDB(SoftwareApplication.class);
         List<org.epos.eposdatamodel.SoftwareApplication> returnList = new ArrayList<>();
-        for(SoftwareApplication item : list){
+        list.parallelStream().forEach(item -> {
             returnList.add(retrieve(item.getInstanceId()));
-        }
+        });
         return returnList;
     }
 

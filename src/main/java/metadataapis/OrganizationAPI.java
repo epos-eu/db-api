@@ -321,9 +321,9 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
     public List<org.epos.eposdatamodel.Organization> retrieveAll() {
         List<Organization> list = getDbaccess().getAllFromDB(Organization.class);
         List<org.epos.eposdatamodel.Organization> returnList = new ArrayList<>();
-        for(Organization item : list){
+        list.parallelStream().forEach(item -> {
             returnList.add(retrieve(item.getInstanceId()));
-        }
+        });
         return returnList;
     }
 

@@ -80,6 +80,7 @@
 		<class>model.OrganizationOwns</class>
 		<class>model.PersonElement</class>
 		<class>model.PersonIdentifier</class>
+		<class>model.PersonContactpoint</class>
 		<class>model.PublicationCategory</class>
 		<class>model.PublicationContributor</class>
 		<class>model.PublicationIdentifier</class>

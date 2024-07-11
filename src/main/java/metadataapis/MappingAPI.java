@@ -138,9 +138,9 @@ public class MappingAPI extends AbstractAPI<org.epos.eposdatamodel.Mapping> {
     public List<org.epos.eposdatamodel.Mapping> retrieveAll() {
         List<Mapping> list = getDbaccess().getAllFromDB(Mapping.class);
         List<org.epos.eposdatamodel.Mapping> returnList = new ArrayList<>();
-        for(Mapping item : list){
+        list.parallelStream().forEach(item -> {
             returnList.add(retrieve(item.getInstanceId()));
-        }
+        });
         return returnList;
     }
 

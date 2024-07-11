@@ -75,9 +75,9 @@ public class SpatialAPI extends AbstractAPI<org.epos.eposdatamodel.Location> {
     public List<org.epos.eposdatamodel.Location> retrieveAll() {
         List<Spatial> list = getDbaccess().getAllFromDB(Spatial.class);
         List<org.epos.eposdatamodel.Location> returnList = new ArrayList<>();
-        for(Spatial item : list){
+        list.parallelStream().forEach(item -> {
             returnList.add(retrieve(item.getInstanceId()));
-        }
+        });
         return returnList;
     }
 

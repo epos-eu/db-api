@@ -189,9 +189,9 @@ public class SoftwareSourceCodeAPI extends AbstractAPI<org.epos.eposdatamodel.So
     public List<org.epos.eposdatamodel.SoftwareSourceCode> retrieveAll() {
         List<SoftwareSourceCode> list = getDbaccess().getAllFromDB(SoftwareSourceCode.class);
         List<org.epos.eposdatamodel.SoftwareSourceCode> returnList = new ArrayList<>();
-        for(SoftwareSourceCode item : list){
+        list.parallelStream().forEach(item -> {
             returnList.add(retrieve(item.getInstanceId()));
-        }
+        });
         return returnList;
     }
 

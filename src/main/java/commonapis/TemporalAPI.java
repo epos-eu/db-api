@@ -80,9 +80,9 @@ public class TemporalAPI extends AbstractAPI<org.epos.eposdatamodel.PeriodOfTime
     public List<org.epos.eposdatamodel.PeriodOfTime> retrieveAll() {
         List<Temporal> list = getDbaccess().getAllFromDB(Temporal.class);
         List<org.epos.eposdatamodel.PeriodOfTime> returnList = new ArrayList<>();
-        for(Temporal item : list){
+        list.parallelStream().forEach(item -> {
             returnList.add(retrieve(item.getInstanceId()));
-        }
+        });
         return returnList;
     }
 

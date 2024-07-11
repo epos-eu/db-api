@@ -80,9 +80,9 @@ public class QuantitativeValueAPI extends AbstractAPI<org.epos.eposdatamodel.Qua
     public List<org.epos.eposdatamodel.QuantitativeValue> retrieveAll() {
         List<QuantitativeValue> list = getDbaccess().getAllFromDB(QuantitativeValue.class);
         List<org.epos.eposdatamodel.QuantitativeValue> returnList = new ArrayList<>();
-        for(QuantitativeValue item : list){
+        list.parallelStream().forEach(item -> {
             returnList.add(retrieve(item.getInstanceId()));
-        }
+        });
         return returnList;
     }
 

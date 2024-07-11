@@ -385,9 +385,9 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
     public List<org.epos.eposdatamodel.WebService> retrieveAll() {
         List<Webservice> list = getDbaccess().getAllFromDB(Webservice.class);
         List<org.epos.eposdatamodel.WebService> returnList = new ArrayList<>();
-        for(Webservice item : list){
+        list.parallelStream().forEach(item -> {
             returnList.add(retrieve(item.getInstanceId()));
-        }
+        });
         return returnList;
     }
 

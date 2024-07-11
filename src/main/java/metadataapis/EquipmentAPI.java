@@ -322,9 +322,9 @@ public class EquipmentAPI extends AbstractAPI<org.epos.eposdatamodel.Equipment> 
     public List<org.epos.eposdatamodel.Equipment> retrieveAll() {
         List<Equipment> list = getDbaccess().getAllFromDB(Equipment.class);
         List<org.epos.eposdatamodel.Equipment> returnList = new ArrayList<>();
-        for(Equipment item : list){
+        list.parallelStream().forEach(item -> {
             returnList.add(retrieve(item.getInstanceId()));
-        }
+        });
         return returnList;
     }
 

@@ -313,9 +313,9 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
     public List<org.epos.eposdatamodel.Distribution> retrieveAll() {
         List<Distribution> list = getDbaccess().getAllFromDB(Distribution.class);
         List<org.epos.eposdatamodel.Distribution> returnList = new ArrayList<>();
-        for(Distribution item : list){
+        list.parallelStream().forEach(item -> {
             returnList.add(retrieve(item.getInstanceId()));
-        }
+        });
         return returnList;
     }
 

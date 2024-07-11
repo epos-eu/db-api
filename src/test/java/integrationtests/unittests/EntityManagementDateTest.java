@@ -32,6 +32,10 @@ public class EntityManagementDateTest extends TestcontainersLifecycle {
 
         api.create(dataProduct, null);
 
+        DataProduct dataProduct1 = (DataProduct) api.retrieve(dataProduct.getInstanceId());
+
+        assertEquals(dataProduct1.getCreated(), dataProduct.getCreated());
+
     }
 
     @Test

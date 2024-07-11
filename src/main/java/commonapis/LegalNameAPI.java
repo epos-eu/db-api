@@ -81,9 +81,9 @@ public class LegalNameAPI extends AbstractAPI<org.epos.eposdatamodel.LegalName> 
     public List<org.epos.eposdatamodel.LegalName> retrieveAll() {
         List<OrganizationLegalname> list = getDbaccess().getAllFromDB(OrganizationLegalname.class);
         List<org.epos.eposdatamodel.LegalName> returnList = new ArrayList<>();
-        for(OrganizationLegalname item : list){
+        list.parallelStream().forEach(item -> {
             returnList.add(retrieve(item.getInstanceId()));
-        }
+        });
         return returnList;
     }
 

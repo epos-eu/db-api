@@ -80,9 +80,9 @@ public class ParameterAPI extends AbstractAPI<org.epos.eposdatamodel.Parameter> 
     public List<org.epos.eposdatamodel.Parameter> retrieveAll() {
         List<SoftwareapplicationParameters> list = getDbaccess().getAllFromDB(SoftwareapplicationParameters.class);
         List<org.epos.eposdatamodel.Parameter> returnList = new ArrayList<>();
-        for(SoftwareapplicationParameters item : list){
+        list.parallelStream().forEach(item -> {
             returnList.add(retrieve(item.getInstanceId()));
-        }
+        });
         return returnList;
     }
 

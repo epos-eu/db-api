@@ -36,6 +36,14 @@ public class Person extends EPOSDataModelEntity {
             "  }]", required = false)
     private List<LinkedEntity> affiliation;
 
+    @Schema(name = "contactPoint", description = "This property refers to the contactpoint to which the person is associated.", example = "[{\n" +
+            "    \"entityType\": \"CONTACTPOINT\",\n" +
+            "    \"instanceId\": \"an UUID\",\n" +
+            "    \"metaId\": \"an UUID\",\n" +
+            "    \"uid\": \"an UUID\"\n" +
+            "  }]", required = false)
+    private List<LinkedEntity> contactPoint;
+
     /**
      * This property refers to the URL of the Person curriculum vitae.
      **/
@@ -121,6 +129,16 @@ public class Person extends EPOSDataModelEntity {
             this.setAffiliation(affiliationList);
         } else {
             this.getAffiliation().add(affiliation);
+        }
+    }
+
+    public void addContactPoint(LinkedEntity contactPoint) {
+        if (this.contactPoint == null) {
+            ArrayList<LinkedEntity> contactPointList = new ArrayList<>();
+            contactPointList.add(contactPoint);
+            this.setContactPoint(contactPointList);
+        } else {
+            this.getContactPoint().add(contactPoint);
         }
     }
 
@@ -326,19 +344,13 @@ public class Person extends EPOSDataModelEntity {
     public void setAffiliation(List<LinkedEntity> affiliation) {
         this.affiliation = affiliation;
     }
-    @Override
-    public String toString() {
-        return "Person{" +
-                "address=" + address +
-                ", affiliation=" + affiliation +
-                ", CVURL='" + CVURL + '\'' +
-                ", email=" + email +
-                ", familyName='" + familyName + '\'' +
-                ", givenName='" + givenName + '\'' +
-                ", identifier=" + identifier +
-                ", qualifications=" + qualifications +
-                ", telephone=" + telephone +
-                "} " + super.toString();
+
+    public List<LinkedEntity> getContactPoint() {
+        return contactPoint;
+    }
+
+    public void setContactPoint(List<LinkedEntity> contactPoint) {
+        this.contactPoint = contactPoint;
     }
 
     @Override
@@ -347,11 +359,27 @@ public class Person extends EPOSDataModelEntity {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Person person = (Person) o;
-        return Objects.equals(getAddress(), person.getAddress()) && Objects.equals(getAffiliation(), person.getAffiliation()) && Objects.equals(getCVURL(), person.getCVURL()) && Objects.equals(getEmail(), person.getEmail()) && Objects.equals(getFamilyName(), person.getFamilyName()) && Objects.equals(getGivenName(), person.getGivenName()) && Objects.equals(getIdentifier(), person.getIdentifier()) && Objects.equals(getQualifications(), person.getQualifications()) && Objects.equals(getTelephone(), person.getTelephone());
+        return Objects.equals(address, person.address) && Objects.equals(affiliation, person.affiliation) && Objects.equals(contactPoint, person.contactPoint) && Objects.equals(CVURL, person.CVURL) && Objects.equals(email, person.email) && Objects.equals(familyName, person.familyName) && Objects.equals(givenName, person.givenName) && Objects.equals(identifier, person.identifier) && Objects.equals(qualifications, person.qualifications) && Objects.equals(telephone, person.telephone);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getAddress(), getAffiliation(), getCVURL(), getEmail(), getFamilyName(), getGivenName(), getIdentifier(), getQualifications(), getTelephone());
+        return Objects.hash(super.hashCode(), address, affiliation, contactPoint, CVURL, email, familyName, givenName, identifier, qualifications, telephone);
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "address=" + address +
+                ", affiliation=" + affiliation +
+                ", contactPoint=" + contactPoint +
+                ", CVURL='" + CVURL + '\'' +
+                ", email=" + email +
+                ", familyName='" + familyName + '\'' +
+                ", givenName='" + givenName + '\'' +
+                ", identifier=" + identifier +
+                ", qualifications=" + qualifications +
+                ", telephone=" + telephone +
+                '}';
     }
 }

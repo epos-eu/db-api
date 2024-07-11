@@ -34,6 +34,9 @@ public class Person {
     private String addressId;
     @OneToMany(mappedBy = "personByPersonInstanceId")
     private Collection<OrganizationAffiliation> organizationAffiliationsByInstanceId;
+
+    @OneToMany(mappedBy = "personByPersonInstanceId")
+    private Collection<PersonContactpoint> personContactpointsByInstanceId;
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "version_id", referencedColumnName = "version_id")
     private Versioningstatus versioningstatusByVersionId;
@@ -160,6 +163,14 @@ public class Person {
 
     public void setOrganizationAffiliationsByInstanceId(Collection<OrganizationAffiliation> organizationAffiliationsByInstanceId) {
         this.organizationAffiliationsByInstanceId = organizationAffiliationsByInstanceId;
+    }
+
+    public Collection<PersonContactpoint> getPersonContactpointsByInstanceId() {
+        return personContactpointsByInstanceId;
+    }
+
+    public void setPersonContactpointsByInstanceId(Collection<PersonContactpoint> personContactpointsByInstanceId) {
+        this.personContactpointsByInstanceId = personContactpointsByInstanceId;
     }
 
     public Versioningstatus getVersioningstatusByVersionId() {

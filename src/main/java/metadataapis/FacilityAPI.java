@@ -271,9 +271,9 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
     public List<org.epos.eposdatamodel.Facility> retrieveAll() {
         List<Facility> list = getDbaccess().getAllFromDB(Facility.class);
         List<org.epos.eposdatamodel.Facility> returnList = new ArrayList<>();
-        for(Facility item : list){
+        list.parallelStream().forEach(item -> {
             returnList.add(retrieve(item.getInstanceId()));
-        }
+        });
         return returnList;
     }
 

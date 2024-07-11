@@ -3,6 +3,7 @@ package metadataapis;
 import abstractapis.AbstractAPI;
 import commonapis.ElementAPI;
 import commonapis.EposDataModelEntityIDAPI;
+import commonapis.LinkedEntityAPI;
 import commonapis.VersioningStatusAPI;
 import model.*;
 import org.epos.eposdatamodel.ContactPoint;
@@ -127,6 +128,18 @@ public class ContactPointAPI extends AbstractAPI<ContactPoint> {
                 }
             }
 
+            for (OrganizationContactpoint organizationContactpoint : edmobj.getOrganizationContactpointsByInstanceId()) {
+                OrganizationAPI organizationAPI = new OrganizationAPI(EntityNames.ORGANIZATION.name(), Organization.class);
+                o.setOrganization(organizationAPI.retrieveLinkedEntity(organizationContactpoint.getOrganizationInstanceId()));
+            }
+
+            for (Object personContactpoint : dbaccess.getAllFromDB(PersonContactpoint.class)) {
+                if(((PersonContactpoint)personContactpoint).getContactpointInstanceId().equals(o.getInstanceId())) {
+                    PersonAPI personAPI = new PersonAPI(EntityNames.PERSON.name(), Person.class);
+                    o.setPerson(personAPI.retrieveLinkedEntity(((PersonContactpoint) personContactpoint).getPersonInstanceId()));
+                }
+            }
+
             o = (org.epos.eposdatamodel.ContactPoint) VersioningStatusAPI.retrieveVersion(o);
 
             return o;
@@ -138,9 +151,9 @@ public class ContactPointAPI extends AbstractAPI<ContactPoint> {
     public List<org.epos.eposdatamodel.ContactPoint> retrieveAll() {
         List<Contactpoint> list = getDbaccess().getAllFromDB(Contactpoint.class);
         List<org.epos.eposdatamodel.ContactPoint> returnList = new ArrayList<>();
-        for(Contactpoint item : list){
+        list.parallelStream().forEach(item -> {
             returnList.add(retrieve(item.getInstanceId()));
-        }
+        });
         return returnList;
     }
 

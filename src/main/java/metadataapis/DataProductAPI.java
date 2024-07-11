@@ -483,9 +483,9 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
     public List<org.epos.eposdatamodel.DataProduct> retrieveAll() {
         List<Dataproduct> list = getDbaccess().getAllFromDB(Dataproduct.class);
         List<org.epos.eposdatamodel.DataProduct> returnList = new ArrayList<>();
-        for(Dataproduct item : list){
+        list.parallelStream().forEach(item -> {
             returnList.add(retrieve(item.getInstanceId()));
-        }
+        });
         return returnList;
     }
 

@@ -80,9 +80,9 @@ public class ElementAPI extends AbstractAPI<org.epos.eposdatamodel.Element> {
     public List<org.epos.eposdatamodel.Element> retrieveAll() {
         List<Element> list = getDbaccess().getAllFromDB(Element.class);
         List<org.epos.eposdatamodel.Element> returnList = new ArrayList<>();
-        for(Element item : list){
+        list.parallelStream().forEach(item -> {
             returnList.add(retrieve(item.getInstanceId()));
-        }
+        });
         return returnList;
     }
 

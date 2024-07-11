@@ -79,9 +79,9 @@ public class IdentifierAPI extends AbstractAPI<org.epos.eposdatamodel.Identifier
     public List<org.epos.eposdatamodel.Identifier> retrieveAll() {
         List<Identifier> list = getDbaccess().getAllFromDB(Identifier.class);
         List<org.epos.eposdatamodel.Identifier> returnList = new ArrayList<>();
-        for(Identifier item : list){
+        list.parallelStream().forEach(item -> {
             returnList.add(retrieve(item.getInstanceId()));
-        }
+        });
         return returnList;
     }
 

@@ -83,9 +83,9 @@ public class AddressAPI extends AbstractAPI<org.epos.eposdatamodel.Address> {
     public List<org.epos.eposdatamodel.Address> retrieveAll() {
         List<Address> list = getDbaccess().getAllFromDB(Address.class);
         List<org.epos.eposdatamodel.Address> returnList = new ArrayList<>();
-        for(Address item : list){
+        list.parallelStream().forEach(item -> {
             returnList.add(retrieve(item.getInstanceId()));
-        }
+        });
         return returnList;
     }
 

@@ -86,9 +86,9 @@ public class DocumentationAPI extends AbstractAPI<org.epos.eposdatamodel.Documen
     public List<org.epos.eposdatamodel.Documentation> retrieveAll() {
         List<Element> list = getDbaccess().getAllFromDB(Element.class);
         List<org.epos.eposdatamodel.Documentation> returnList = new ArrayList<>();
-        for(Element item : list){
+        list.parallelStream().forEach(item -> {
             returnList.add(retrieve(item.getInstanceId()));
-        }
+        });
         return returnList;
     }
 

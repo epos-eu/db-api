@@ -3,6 +3,7 @@ package metadataapis;
 import abstractapis.AbstractAPI;
 import commonapis.*;
 import model.*;
+import org.epos.eposdatamodel.ContactPoint;
 import org.epos.eposdatamodel.LinkedEntity;
 
 import java.util.*;
@@ -117,6 +118,30 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
             }
         }
 
+        /** CONTACTPOINT **/
+        if (obj.getContactPoint() != null && !obj.getContactPoint().isEmpty()) {
+            edmobj.setPersonContactpointsByInstanceId(new ArrayList<>());
+            for(LinkedEntity contactpoint : obj.getContactPoint()){
+                List<Contactpoint> list = dbaccess.getOneFromDBByInstanceId(contactpoint.getInstanceId(),Contactpoint.class);
+                Contactpoint contactpoint1 = null;
+                if(list.isEmpty()){
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(contactpoint, overrideStatus);
+                    contactpoint1 = (Contactpoint) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Contactpoint.class).get(0);
+                } else {
+                    contactpoint1 = list.get(0);
+                }
+                PersonContactpoint pi = new PersonContactpoint();
+                pi.setPersonByPersonInstanceId(edmobj);
+                pi.setPersonInstanceId(edmobj.getInstanceId());
+                pi.setContactpointInstanceId(contactpoint1.getInstanceId());
+                pi.setContactpointByContactpointInstanceId(contactpoint1);
+
+                edmobj.getPersonContactpointsByInstanceId().add(pi);
+
+                dbaccess.updateObject(pi);
+            }
+        }
+
         List<PersonElement> elementslist = getDbaccess().getAllFromDB(PersonElement.class);
         edmobj.setPersonElementsByInstanceId(new ArrayList<>());
         for(PersonElement item : elementslist){
@@ -195,6 +220,7 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
                 o.setAddress(api.retrieveLinkedEntity(edmobj.getAddressByAddressId().getInstanceId()));
             }
 
+
             if (edmobj.getPersonElementsByInstanceId().size() > 0) {
                 for (PersonElement ed : edmobj.getPersonElementsByInstanceId()) {
                     Element el = ed.getElementByElementInstanceId();
@@ -217,6 +243,14 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
                 }
             }
 
+            if (edmobj.getPersonContactpointsByInstanceId() != null) {
+                o.setContactPoint(new LinkedList<>());
+                for (PersonContactpoint personContactpoint : edmobj.getPersonContactpointsByInstanceId()) {
+                    ContactPointAPI contactPointAPI = new ContactPointAPI(EntityNames.CONTACTPOINT.name(), Contactpoint.class);
+                    o.addContactPoint(contactPointAPI.retrieveLinkedEntity(personContactpoint.getContactpointInstanceId()));
+                }
+            }
+
             o = (org.epos.eposdatamodel.Person) VersioningStatusAPI.retrieveVersion(o);
 
             return o;
@@ -228,9 +262,9 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
     public List<org.epos.eposdatamodel.Person> retrieveAll() {
         List<Person> list = getDbaccess().getAllFromDB(Person.class);
         List<org.epos.eposdatamodel.Person> returnList = new ArrayList<>();
-        for(Person item : list){
+        list.parallelStream().forEach(item -> {
             returnList.add(retrieve(item.getInstanceId()));
-        }
+        });
         return returnList;
     }
 
