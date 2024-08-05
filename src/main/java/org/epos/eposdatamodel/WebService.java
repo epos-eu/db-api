@@ -354,7 +354,8 @@ public class WebService extends EPOSDataModelEntity {
     }
 
     public void setDateModified(String dateModified){
-        this.dateModified = ParseLocalDateTime.parse(dateModified);
+        if(!dateModified.isEmpty() && !dateModified.isBlank())
+            this.dateModified = ParseLocalDateTime.parse(dateModified);
     }
 
     public WebService datePublished(LocalDateTime datePublished) {
@@ -377,7 +378,8 @@ public class WebService extends EPOSDataModelEntity {
     }
 
     public void setDatePublished(String datePublished){
-        this.datePublished = ParseLocalDateTime.parse(datePublished);
+        if(!datePublished.isEmpty() && !datePublished.isBlank())
+            this.datePublished = ParseLocalDateTime.parse(datePublished);
     }
 
 

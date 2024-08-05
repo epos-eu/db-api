@@ -235,7 +235,8 @@ public class Distribution extends EPOSDataModelEntity {
     }
 
     public void setIssued(String issued){
-        this.issued = ParseLocalDateTime.parse(issued);
+        if(!issued.isEmpty() && !issued.isBlank())
+            this.issued = ParseLocalDateTime.parse(issued);
     }
 
     public Distribution licence(String licence) {
@@ -276,7 +277,8 @@ public class Distribution extends EPOSDataModelEntity {
     }
 
     public void setModified(String modified){
-        this.modified = ParseLocalDateTime.parse(modified);
+        if(!modified.isEmpty() && !modified.isBlank())
+            this.modified = ParseLocalDateTime.parse(modified);
     }
 
     public Distribution title(List<String> title) {

@@ -417,7 +417,8 @@ public class DataProduct extends EPOSDataModelEntity {
     }
 
     public void setCreated(String created){
-        this.created = ParseLocalDateTime.parse(created);
+        if(!created.isEmpty() && !created.isBlank())
+            this.created = ParseLocalDateTime.parse(created);
     }
 
     public DataProduct description(List<String> description) {
@@ -491,7 +492,8 @@ public class DataProduct extends EPOSDataModelEntity {
     }
 
     public void setIssued(String issued){
-        this.issued = ParseLocalDateTime.parse(issued);
+        if(!issued.isEmpty() && !issued.isBlank())
+            this.issued = ParseLocalDateTime.parse(issued);
     }
 
     public DataProduct keywords(String keywords) {
@@ -538,7 +540,8 @@ public class DataProduct extends EPOSDataModelEntity {
     }
 
     public void setModified(String modified){
-        this.modified = ParseLocalDateTime.parse(modified);
+        if(!modified.isEmpty() && !modified.isBlank())
+            this.modified = ParseLocalDateTime.parse(modified);
     }
 
     public DataProduct provenance(List<String> provenance) {

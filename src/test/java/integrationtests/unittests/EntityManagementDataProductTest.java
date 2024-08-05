@@ -32,6 +32,7 @@ public class EntityManagementDataProductTest extends TestcontainersLifecycle {
         dataProduct.setMetaId(UUID.randomUUID().toString());
         dataProduct.setUid(UUID.randomUUID().toString());
         dataProduct.addDistribution(le);
+        dataProduct.setCreated("");
 
         api.create(dataProduct, null);
 

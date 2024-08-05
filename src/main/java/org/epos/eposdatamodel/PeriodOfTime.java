@@ -46,7 +46,8 @@ public class PeriodOfTime extends EPOSDataModelEntity{
     }
 
     public void setStartDate(String startDate){
-        this.startDate = ParseLocalDateTime.parse(startDate);
+        if(!startDate.isEmpty() && !startDate.isBlank())
+            this.startDate = ParseLocalDateTime.parse(startDate);
     }
 
     public PeriodOfTime endDate(LocalDateTime endDate) {
@@ -69,7 +70,8 @@ public class PeriodOfTime extends EPOSDataModelEntity{
     }
 
     public void setEndDate(String endDate){
-        this.endDate = ParseLocalDateTime.parse(endDate);
+        if(!endDate.isEmpty() && !endDate.isBlank())
+            this.endDate = ParseLocalDateTime.parse(endDate);
     }
 
     @Override
