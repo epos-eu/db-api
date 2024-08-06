@@ -288,7 +288,7 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
                 for (OperationDistribution ed : operationDistributions) {
                     if(ed.getDistributionInstanceId().equals(o.getInstanceId())) {
                         AbstractAPI api = AbstractAPI.retrieveAPI(EntityNames.OPERATION.name());
-                        o.setAccessService(api.retrieveLinkedEntity(ed.getOperationInstanceId()));
+                        o.setSupportedOperation(api.retrieveLinkedEntity(ed.getOperationInstanceId()));
                     }
                 }
             }

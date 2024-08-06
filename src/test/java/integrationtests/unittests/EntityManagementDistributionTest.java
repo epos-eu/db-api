@@ -38,6 +38,8 @@ public class EntityManagementDistributionTest extends TestcontainersLifecycle {
 
         Distribution retrievedDistribution = (Distribution) api.retrieve(distribution.getInstanceId());
 
+        System.out.println(retrievedDistribution);
+
         assertNotNull(retrievedDistribution);
     }
 
