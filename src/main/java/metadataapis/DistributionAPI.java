@@ -176,7 +176,7 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
             List<Operation> list = dbaccess.getOneFromDBByInstanceId(obj.getSupportedOperation().getInstanceId(),Operation.class);
             Operation operation = null;
             if(list.isEmpty()){
-                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(obj.getAccessService(), overrideStatus);
+                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(obj.getSupportedOperation(), overrideStatus);
                 operation = (Operation) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Operation.class).get(0);
             } else {
                 operation = list.get(0);

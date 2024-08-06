@@ -28,11 +28,16 @@ public class EntityManagementDistributionTest extends TestcontainersLifecycle {
         le.setUid("test");
         le.setEntityType(EntityNames.WEBSERVICE.name());
 
+        LinkedEntity le2 = new LinkedEntity();
+        le2.setUid("test2");
+        le2.setEntityType(EntityNames.OPERATION.name());
+
         Distribution distribution = new Distribution();
         distribution.setInstanceId(UUID.randomUUID().toString());
         distribution.setMetaId(UUID.randomUUID().toString());
         distribution.setUid(UUID.randomUUID().toString());
         distribution.setAccessService(le);
+        distribution.setSupportedOperation(le2);
 
         api.create(distribution, null);
 
