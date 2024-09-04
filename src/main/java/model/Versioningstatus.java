@@ -84,8 +84,6 @@ public class Versioningstatus {
     @OneToMany(mappedBy = "versioningstatusByVersionId")
     private Collection<Organization> organizationsByVersionId;
     @OneToMany(mappedBy = "versioningstatusByVersionId")
-    private Collection<OrganizationLegalname> organizationLegalnamesByVersionId;
-    @OneToMany(mappedBy = "versioningstatusByVersionId")
     private Collection<Person> peopleByVersionId;
     @OneToMany(mappedBy = "versioningstatusByVersionId")
     private Collection<Publication> publicationsByVersionId;
@@ -391,14 +389,6 @@ public class Versioningstatus {
 
     public void setOrganizationsByVersionId(Collection<Organization> organizationsByVersionId) {
         this.organizationsByVersionId = organizationsByVersionId;
-    }
-
-    public Collection<OrganizationLegalname> getOrganizationLegalnamesByVersionId() {
-        return organizationLegalnamesByVersionId;
-    }
-
-    public void setOrganizationLegalnamesByVersionId(Collection<OrganizationLegalname> organizationLegalnamesByVersionId) {
-        this.organizationLegalnamesByVersionId = organizationLegalnamesByVersionId;
     }
 
     public Collection<Person> getPeopleByVersionId() {

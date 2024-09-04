@@ -29,7 +29,6 @@
     	<class>model.MetadataGroupUser</class>
     	<class>model.Operation</class>
     	<class>model.Organization</class>
-    	<class>model.OrganizationLegalname</class>
     	<class>model.OrganizationOwns</class>
     	<class>model.Person</class>
     	<class>model.Publication</class>

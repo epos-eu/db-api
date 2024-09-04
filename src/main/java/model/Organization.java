@@ -24,6 +24,9 @@ public class Organization {
     @Column(name = "leicode", nullable = true, length = 1024)
     private String leicode;
     @Basic
+    @Column(name = "legalname", nullable = true, length = 1024)
+    private String legalname;
+    @Basic
     @Column(name = "address_id", nullable = true, length = 100)
     private String addressId;
     @Basic
@@ -56,8 +59,6 @@ public class Organization {
     private Collection<OrganizationElement> organizationElementsByInstanceId;
     @OneToMany(mappedBy = "organizationByOrganizationInstanceId")
     private Collection<OrganizationIdentifier> organizationIdentifiersByInstanceId;
-    @OneToMany(mappedBy = "organizationByOrganizationInstanceId")
-    private Collection<OrganizationLegalname> organizationLegalnamesByInstanceId;
     @OneToMany(mappedBy = "organizationByOrganization1InstanceId")
     private Collection<OrganizationMemberof> organizationMemberofsByInstanceId;
     @OneToMany(mappedBy = "organizationByOrganization2InstanceId")
@@ -111,6 +112,14 @@ public class Organization {
 
     public void setLeicode(String leicode) {
         this.leicode = leicode;
+    }
+
+    public String getLegalname() {
+        return legalname;
+    }
+
+    public void setLegalname(String legalname) {
+        this.legalname = legalname;
     }
 
     public String getAddressId() {
@@ -253,14 +262,6 @@ public class Organization {
 
     public void setOrganizationIdentifiersByInstanceId(Collection<OrganizationIdentifier> organizationIdentifiersByInstanceId) {
         this.organizationIdentifiersByInstanceId = organizationIdentifiersByInstanceId;
-    }
-
-    public Collection<OrganizationLegalname> getOrganizationLegalnamesByInstanceId() {
-        return organizationLegalnamesByInstanceId;
-    }
-
-    public void setOrganizationLegalnamesByInstanceId(Collection<OrganizationLegalname> organizationLegalnamesByInstanceId) {
-        this.organizationLegalnamesByInstanceId = organizationLegalnamesByInstanceId;
     }
 
     public Collection<OrganizationMemberof> getOrganizationMemberofsByInstanceId() {

@@ -59,13 +59,8 @@ public class Organization extends EPOSDataModelEntity {
     /**
      * This property contains the official name of the Organization. LinkedEntity of type LEGALNAME
      **/
-    @Schema(name = "legalName", description = "This property contains the official name of the Organization.", example = "[{\n" +
-            "    \"entityType\": \"LEGALNAME\",\n" +
-            "    \"instanceId\": \"an UUID\",\n" +
-            "    \"metaId\": \"an UUID\",\n" +
-            "    \"uid\": \"an UUID\"\n" +
-            "  }]", required = false)
-    private List<LinkedEntity> legalName;
+    @Schema(name = "legalName", description = "This property contains the Organization legalname (e.g., Istituto Nazionale di Geofisica e Vulcanologia).", example = " Istituto Nazionale di Geofisica e Vulcanologia", required = false)
+    private List<String> legalName;
 
     /**
      * This property contains the Organization identifier that uniquely identifies a legal entity as defined in ISO 17442.
@@ -161,9 +156,9 @@ public class Organization extends EPOSDataModelEntity {
         }
     }
 
-    public void addLegalName(LinkedEntity legalName) {
+    public void addLegalName(String legalName) {
         if (this.getLegalName() == null) {
-            ArrayList<LinkedEntity> legalNameList = new ArrayList<>();
+            ArrayList<String> legalNameList = new ArrayList<>();
             legalNameList.add(legalName);
             this.setLegalName(legalNameList);
         } else {
@@ -262,7 +257,7 @@ public class Organization extends EPOSDataModelEntity {
         this.identifier = identifier;
     }
 
-    public Organization legalName(List<LinkedEntity> legalName) {
+    public Organization legalName(List<String> legalName) {
         this.legalName = legalName;
         return this;
     }
@@ -273,11 +268,11 @@ public class Organization extends EPOSDataModelEntity {
      * @return legalName
      **/
 
-    public List<LinkedEntity> getLegalName() {
+    public List<String> getLegalName() {
         return legalName;
     }
 
-    public void setLegalName(List<LinkedEntity> legalName) {
+    public void setLegalName(List<String> legalName) {
         this.legalName = legalName;
     }
 

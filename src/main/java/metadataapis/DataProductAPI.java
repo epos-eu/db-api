@@ -49,7 +49,7 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
         getDbaccess().updateObject(edmobj);
 
         edmobj.setUid(Optional.ofNullable(obj.getUid()).orElse(getEdmClass().getSimpleName()+"/"+UUID.randomUUID().toString()));
-        edmobj.setKeywords(obj.getKeywords());
+        edmobj.setKeywords(String.join("\\|", Optional.ofNullable(obj.getKeywords()).orElse("")));
         edmobj.setAccessright(obj.getAccessRight());
         edmobj.setAccrualperiodicity(obj.getAccrualPeriodicity());
         edmobj.setType(obj.getType());
@@ -166,7 +166,7 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
                 if(list.isEmpty()){
                     LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(dataProduct, overrideStatus);
                     List<Dataproduct> list1 = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Dataproduct.class);
-                    dataproduct =list1.size()>0? list.get(0) : null;
+                    dataproduct =list1.size()>0? list1.get(0) : null;
                 } else {
                     dataproduct = list.get(0);
                 }
@@ -383,6 +383,10 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
             o.setDocumentation(edmobj.getDocumentation());
             o.setQualityAssurance(edmobj.getQualityassurance());
             o.setAccessRight(edmobj.getAccessright());
+
+            if(!edmobj.getKeywords().isBlank())
+                for(String item : edmobj.getKeywords().split("\\|"))
+                    o.addKeywords(item);
 
             if (edmobj.getDataproductCategoriesByInstanceId().size() > 0) {
                 for (DataproductCategory ed : edmobj.getDataproductCategoriesByInstanceId()) {

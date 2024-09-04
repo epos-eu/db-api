@@ -3,9 +3,6 @@ package metadataapis;
 import abstractapis.AbstractAPI;
 import commonapis.*;
 import model.*;
-import org.eclipse.persistence.internal.jpa.rs.metadata.model.Link;
-import org.epos.eposdatamodel.ContactPoint;
-import org.epos.eposdatamodel.LegalName;
 import org.epos.eposdatamodel.LinkedEntity;
 
 import java.util.*;
@@ -50,18 +47,13 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
         edmobj.setLogo(obj.getLogo());
         edmobj.setType(obj.getType());
         edmobj.setAcronym(obj.getAcronym());
+        edmobj.setLegalname(String.join("\\|", obj.getLegalName()));
         edmobj.setLeicode(obj.getLeiCode());
         edmobj.setUrl(obj.getURL());
         edmobj.setMaturity(obj.getMaturity());
 
         /** ADDRESS **/
         if (obj.getAddress() != null) {
-            List<Address> identifierList = getDbaccess().getAllFromDB(Address.class);
-            for(Address item : identifierList){
-                if(item.getInstanceId().equals(obj.getAddress().getInstanceId())){
-                    getDbaccess().deleteObject(item);
-                }
-            }
             LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(obj.getAddress(), overrideStatus);
             edmobj.setAddressId(le.getInstanceId());
         }
@@ -142,23 +134,6 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
         if(obj.getEmail()!=null && !obj.getEmail().isEmpty()){
             for(String email : obj.getEmail()) {
                 createInnerElement(ElementType.EMAIL, email, edmobj, overrideStatus);
-            }
-        }
-
-        /** LEGALNAME **/
-        if (obj.getLegalName() != null && !obj.getLegalName().isEmpty()) {
-            List<OrganizationLegalname> legalnameList = getDbaccess().getAllFromDB(OrganizationLegalname.class);
-            for(OrganizationLegalname item : legalnameList){
-                if(item.getOrganizationInstanceId().equals(obj.getInstanceId())){
-                    getDbaccess().deleteObject(item);
-                    List<OrganizationLegalname> list2 = getDbaccess().getOneFromDBByInstanceId(item.getInstanceId(), OrganizationLegalname.class);
-                    if(list2.size()>0) getDbaccess().deleteObject(list2.get(0));
-                }
-            }
-            edmobj.setOrganizationLegalnamesByInstanceId(new ArrayList<>());
-            for(LinkedEntity legalname : obj.getLegalName()) {
-                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(legalname, overrideStatus);
-                edmobj.getOrganizationLegalnamesByInstanceId().add((OrganizationLegalname) getDbaccess().getOneFromDBByInstanceId(le.getInstanceId(),OrganizationLegalname.class));
             }
         }
 
@@ -281,13 +256,9 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
                     if (el.getType().equals(ElementType.EMAIL)) o.addEmail(el.getValue());
                 }
             }
-
-            if (edmobj.getOrganizationLegalnamesByInstanceId().size() > 0) {
-                LegalNameAPI api = new LegalNameAPI(EntityNames.LEGALNAME.name(), OrganizationLegalname.class);
-                for (OrganizationLegalname ed : edmobj.getOrganizationLegalnamesByInstanceId()) {
-                    o.addLegalName(api.retrieveLinkedEntity(ed.getInstanceId()));
-                }
-            }
+            if(!edmobj.getLegalname().isBlank())
+                for(String item : edmobj.getLegalname().split("\\|"))
+                    o.addLegalName(item);
 
             List<OrganizationOwns> organizationOwnsList = dbaccess.getOneFromDBBySpecificKey("organizationInstanceId", edmobj.getInstanceId(), OrganizationOwns.class);
             if (organizationOwnsList.size() > 0) {

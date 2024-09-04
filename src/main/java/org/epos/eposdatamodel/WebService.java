@@ -266,20 +266,6 @@ public class WebService extends EPOSDataModelEntity {
         }
     }
 
-
-    /*public WebService schemaIdentifier(String schemaIdentifier) {
-        this.schemaIdentifier = schemaIdentifier;
-        return this;
-    }
-
-    public String getSchemaIdentifier() {
-        return schemaIdentifier;
-    }
-
-    public void setSchemaIdentifier(String schemaIdentifier) {
-        this.schemaIdentifier = schemaIdentifier;
-    }*/
-
     public WebService identifier(List<LinkedEntity> identifier) {
         this.identifier = identifier;
         return this;

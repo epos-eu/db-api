@@ -55,7 +55,7 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
         edmobj.setName(obj.getName());
         edmobj.setDescription(obj.getDescription());
         edmobj.setEntrypoint(obj.getEntryPoint());
-        edmobj.setKeywords(obj.getKeywords());
+        edmobj.setKeywords(String.join("\\|", Optional.ofNullable(obj.getKeywords()).orElse("")));
         edmobj.setLicense(obj.getLicense());
         edmobj.setAaaitypes(obj.getAaaiTypes());
 
@@ -66,7 +66,6 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
 
         /** PUBLISHER **/
         if (obj.getProvider() != null) {
-            OrganizationAPI organizationAPI = new OrganizationAPI(EntityNames.ORGANIZATION.name(), Organization.class);
             List<Organization> list = dbaccess.getOneFromDBByInstanceId(obj.getProvider().getInstanceId(),Organization.class);
             Organization organization1 = null;
             if(list.isEmpty()){
@@ -78,8 +77,6 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
 
             edmobj.setProvider(organization1.getInstanceId());
         }
-
-
 
         /** CATEGORY **/
         if (obj.getCategory() != null && !obj.getCategory().isEmpty())
@@ -212,7 +209,6 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
             }
         }
 
-        /** TODO: SUPPORTEDOPERATION **/
         if (obj.getSupportedOperation() != null && !obj.getSupportedOperation().isEmpty()) {
             List<OperationWebservice> operationWebserviceList = getDbaccess().getAllFromDB(OperationWebservice.class);
             for(OperationWebservice item : operationWebserviceList){
@@ -308,6 +304,9 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
             o.setLicense(edmobj.getLicense());
             o.setName(edmobj.getName());
             o.setAaaiTypes(edmobj.getAaaitypes());
+            if(!edmobj.getKeywords().isBlank())
+                for(String item : edmobj.getKeywords().split("\\|"))
+                    o.addKeywords(item);
 
             if (edmobj.getWebserviceCategoriesByInstanceId().size() > 0) {
                 for (WebserviceCategory ed : edmobj.getWebserviceCategoriesByInstanceId()) {
@@ -366,12 +365,13 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
             }
 
             if (edmobj.getOperationWebservicesByInstanceId().size() > 0) {
+                OperationAPI api = new OperationAPI(EntityNames.OPERATION.name(), Operation.class);
                 for (OperationWebservice ed : edmobj.getOperationWebservicesByInstanceId()) {
-                    OperationAPI api = new OperationAPI(EntityNames.OPERATION.name(), Operation.class);
-                    LinkedEntity cp = api.retrieveLinkedEntity(ed.getOperationInstanceId());
-                    o.addSupportedOperation(cp);
+                    LinkedEntity el = api.retrieveLinkedEntity(ed.getOperationInstanceId());
+                    o.addSupportedOperation(el);
                 }
             }
+
             /** TODO: RELATION **/
 
             o = (org.epos.eposdatamodel.WebService) VersioningStatusAPI.retrieveVersion(o);

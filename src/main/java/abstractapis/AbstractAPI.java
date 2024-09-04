@@ -143,9 +143,6 @@ public abstract class AbstractAPI<T> {
                 edmClass = SoftwareapplicationParameters.class;
                 api = new ParameterAPI(entityType, edmClass);
                 break;
-            case LEGALNAME:
-                edmClass = OrganizationLegalname.class;
-                api = new LegalNameAPI(entityType, edmClass);
             case RELATION:
                 System.out.println("Relation empty case");
                 break;
@@ -224,8 +221,6 @@ public abstract class AbstractAPI<T> {
             case PARAMETER:
                 edmClass = SoftwareapplicationParameters.class;
                 break;
-            case LEGALNAME:
-                edmClass = OrganizationLegalname.class;
             case RELATION:
                 System.out.println("Relation empty case");
                 break;

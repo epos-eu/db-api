@@ -4,6 +4,8 @@ import abstractapis.AbstractAPI;
 import commonapis.*;
 import model.*;
 import org.epos.eposdatamodel.LinkedEntity;
+import org.epos.eposdatamodel.WebService;
+
 import java.util.*;
 
 public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> {
@@ -70,7 +72,6 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
                     getDbaccess().deleteObject(item);
                 }
             }
-            WebServiceAPI webServiceAPI = new WebServiceAPI(EntityNames.WEBSERVICE.name(), Webservice.class);
             edmobj.setOperationWebservicesByInstanceId(new ArrayList<>());
             for(LinkedEntity webService : obj.getWebservice()){
                 List<Webservice> list = dbaccess.getOneFromDBByInstanceId(webService.getInstanceId(),Webservice.class);
@@ -140,6 +141,14 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
             o.setUid(edmobj.getUid());
             o.setMethod(edmobj.getMethod());
             o.setTemplate(edmobj.getTemplate());
+
+            if (edmobj.getOperationWebservicesByInstanceId().size() > 0) {
+                WebServiceAPI api = new WebServiceAPI(EntityNames.WEBSERVICE.name(), Webservice.class);
+                for (OperationWebservice ed : edmobj.getOperationWebservicesByInstanceId()) {
+                    LinkedEntity el = api.retrieveLinkedEntity(ed.getWebserviceInstanceId());
+                    o.addWebservice(el);
+                }
+            }
 
             if (edmobj.getOperationElementsByInstanceId().size() > 0) {
                 for (OperationElement ed : edmobj.getOperationElementsByInstanceId()) {
