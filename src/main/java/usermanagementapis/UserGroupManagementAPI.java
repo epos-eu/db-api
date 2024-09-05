@@ -110,7 +110,7 @@ public class UserGroupManagementAPI {
 
     public static Boolean createGroup(org.epos.eposdatamodel.Group group){
         MetadataGroup group1 = new MetadataGroup();
-        group1.setId(group.getId()==null? UUID.randomUUID().toString() : group.getId());
+        group1.setId(group.getId()==null || group.getId().isBlank()? UUID.randomUUID().toString() : group.getId());
         group1.setName(group.getName());
         group1.setDescription(group.getDescription());
         return getDbaccess().updateObject(group1);
@@ -174,11 +174,10 @@ public class UserGroupManagementAPI {
 
         List<Group> returnList = new ArrayList<>();
         for(MetadataGroup group : metadataGroupList){
-            MetadataGroup retrievedGroup = metadataGroupList.get(0);
             org.epos.eposdatamodel.Group group1 = new org.epos.eposdatamodel.Group(
-                    retrievedGroup.getId(),
-                    retrievedGroup.getName(),
-                    retrievedGroup.getDescription()
+                    group.getId(),
+                    group.getName(),
+                    group.getDescription()
             );
 
             List<AuthorizationGroup> authorizationGroupList = getDbaccess().getAllFromDB(AuthorizationGroup.class);

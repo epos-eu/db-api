@@ -45,7 +45,7 @@ public class ParameterAPI extends AbstractAPI<org.epos.eposdatamodel.Parameter> 
         edmobj.setUid(Optional.ofNullable(obj.getUid()).orElse(getEdmClass().getSimpleName()+"/"+UUID.randomUUID().toString()));
         edmobj.setEncodingformat(obj.getEncodingFormat());
         edmobj.setConformsto(obj.getConformsTo());
-        edmobj.setAction(obj.getAction().name());
+        if(obj.getAction()!=null) edmobj.setAction(obj.getAction().name());
 
         getDbaccess().updateObject(edmobj);
 

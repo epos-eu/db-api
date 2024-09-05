@@ -47,7 +47,7 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
         edmobj.setLogo(obj.getLogo());
         edmobj.setType(obj.getType());
         edmobj.setAcronym(obj.getAcronym());
-        edmobj.setLegalname(String.join("\\|", obj.getLegalName()));
+        edmobj.setLegalname(obj.getLegalName()!=null?String.join("\\|", obj.getLegalName()):null);
         edmobj.setLeicode(obj.getLeiCode());
         edmobj.setUrl(obj.getURL());
         edmobj.setMaturity(obj.getMaturity());
@@ -256,7 +256,7 @@ public class OrganizationAPI extends AbstractAPI<org.epos.eposdatamodel.Organiza
                     if (el.getType().equals(ElementType.EMAIL)) o.addEmail(el.getValue());
                 }
             }
-            if(!edmobj.getLegalname().isBlank())
+            if(edmobj.getLegalname()!=null && !edmobj.getLegalname().isBlank())
                 for(String item : edmobj.getLegalname().split("\\|"))
                     o.addLegalName(item);
 
