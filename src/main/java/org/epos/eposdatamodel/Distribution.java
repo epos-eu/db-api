@@ -26,24 +26,24 @@ public class Distribution extends EPOSDataModelEntity {
     /**
      * This property refers to the WebService which supports selection of an extract, sub-set, or combination of data
      */
-    @Schema(name = "accessService", description = "This property refers to the WebService which supports selection of an extract, sub-set, or combination of data", example = "{\n" +
+    @Schema(name = "accessService", description = "This property refers to the WebService which supports selection of an extract, sub-set, or combination of data", example = "[{\n" +
             "    \"entityType\": \"WEBSERVICE\",\n" +
             "    \"instanceId\": \"an UUID\",\n" +
             "    \"metaId\": \"an UUID\",\n" +
             "    \"uid\": \"an UUID\"\n" +
-            "  }", required = false)
-    private LinkedEntity accessService;
+            "  }]", required = false)
+    private List<LinkedEntity> accessService;
 
     /**
      * This property refers to the Operation which supports selection of an extract, sub-set, or combination of data
      */
-    @Schema(name = "supportedOperation", description = "This property refers to the WebService which supports selection of an extract, sub-set, or combination of data", example = "{\n" +
+    @Schema(name = "supportedOperation", description = "This property refers to the WebService which supports selection of an extract, sub-set, or combination of data", example = "[{\n" +
             "    \"entityType\": \"OPERATION\",\n" +
             "    \"instanceId\": \"an UUID\",\n" +
             "    \"metaId\": \"an UUID\",\n" +
             "    \"uid\": \"an UUID\"\n" +
-            "  }", required = false)
-    private LinkedEntity supportedOperation;
+            "  }]", required = false)
+    private List<LinkedEntity> supportedOperation;
 
     /**
      * This property contains a free-text account of the Distribution. This property can be repeated for parallel language
@@ -370,22 +370,42 @@ public class Distribution extends EPOSDataModelEntity {
         }
     }
 
-    public LinkedEntity getAccessService() {
+    public List<LinkedEntity> getAccessService() {
         return accessService;
     }
 
-    public Distribution setAccessService(LinkedEntity accessService) {
+    public Distribution setAccessService(List<LinkedEntity> accessService) {
         this.accessService = accessService;
         return this;
     }
 
-    public LinkedEntity getSupportedOperation() {
+    public void addAccessService(LinkedEntity accessService) {
+        if (this.getAccessService() == null) {
+            ArrayList<LinkedEntity> accessServiceList = new ArrayList<>();
+            accessServiceList.add(accessService);
+            this.setAccessService(accessServiceList);
+        } else {
+            this.getAccessService().add(accessService);
+        }
+    }
+
+    public List<LinkedEntity> getSupportedOperation() {
         return supportedOperation;
     }
 
-    public Distribution setSupportedOperation(LinkedEntity supportedOperation) {
+    public Distribution setSupportedOperation(List<LinkedEntity> supportedOperation) {
         this.supportedOperation = supportedOperation;
         return this;
+    }
+
+    public void addSupportedOperation(LinkedEntity supportedOperation) {
+        if (this.getSupportedOperation() == null) {
+            ArrayList<LinkedEntity> supportedOperationList = new ArrayList<>();
+            supportedOperationList.add(supportedOperation);
+            this.setSupportedOperation(supportedOperationList);
+        } else {
+            this.getSupportedOperation().add(supportedOperation);
+        }
     }
 
 

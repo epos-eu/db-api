@@ -149,21 +149,23 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
                     getDbaccess().deleteObject(item);
                 }
             }
-            List<Webservice> list = dbaccess.getOneFromDBByInstanceId(obj.getAccessService().getInstanceId(),Webservice.class);
-            Webservice webservice = null;
-            if(list.isEmpty()){
-                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(obj.getAccessService(), overrideStatus);
-                webservice = (Webservice) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Webservice.class).get(0);
-            } else {
-                webservice = list.get(0);
-            }
-            WebserviceDistribution pi = new WebserviceDistribution();
-            pi.setDistributionByDistributionInstanceId(edmobj);
-            pi.setDistributionInstanceId(edmobj.getInstanceId());
-            pi.setWebserviceInstanceId(webservice.getInstanceId());
-            pi.setWebserviceByWebserviceInstanceId(webservice);
+            for(LinkedEntity accessService : obj.getAccessService()) {
+                List<Webservice> list = dbaccess.getOneFromDBByInstanceId(accessService.getInstanceId(), Webservice.class);
+                Webservice webservice = null;
+                if (list.isEmpty()) {
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(accessService, overrideStatus);
+                    webservice = (Webservice) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Webservice.class).get(0);
+                } else {
+                    webservice = list.get(0);
+                }
+                WebserviceDistribution pi = new WebserviceDistribution();
+                pi.setDistributionByDistributionInstanceId(edmobj);
+                pi.setDistributionInstanceId(edmobj.getInstanceId());
+                pi.setWebserviceInstanceId(webservice.getInstanceId());
+                pi.setWebserviceByWebserviceInstanceId(webservice);
 
-            dbaccess.updateObject(pi);
+                dbaccess.updateObject(pi);
+            }
         }
 
         if (obj.getSupportedOperation() != null ) {
@@ -173,21 +175,23 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
                     getDbaccess().deleteObject(item);
                 }
             }
-            List<Operation> list = dbaccess.getOneFromDBByInstanceId(obj.getSupportedOperation().getInstanceId(),Operation.class);
-            Operation operation = null;
-            if(list.isEmpty()){
-                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(obj.getSupportedOperation(), overrideStatus);
-                operation = (Operation) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Operation.class).get(0);
-            } else {
-                operation = list.get(0);
-            }
-            OperationDistribution pi = new OperationDistribution();
-            pi.setDistributionByDistributionInstanceId(edmobj);
-            pi.setDistributionInstanceId(edmobj.getInstanceId());
-            pi.setOperationInstanceId(operation.getInstanceId());
-            pi.setOperationByOperationInstanceId(operation);
+            for(LinkedEntity supportedOperation : obj.getSupportedOperation()) {
+                List<Operation> list = dbaccess.getOneFromDBByInstanceId(supportedOperation.getInstanceId(), Operation.class);
+                Operation operation = null;
+                if (list.isEmpty()) {
+                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(supportedOperation, overrideStatus);
+                    operation = (Operation) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Operation.class).get(0);
+                } else {
+                    operation = list.get(0);
+                }
+                OperationDistribution pi = new OperationDistribution();
+                pi.setDistributionByDistributionInstanceId(edmobj);
+                pi.setDistributionInstanceId(edmobj.getInstanceId());
+                pi.setOperationInstanceId(operation.getInstanceId());
+                pi.setOperationByOperationInstanceId(operation);
 
-            dbaccess.updateObject(pi);
+                dbaccess.updateObject(pi);
+            }
         }
 
         edmobj.setDistributionElementsByInstanceId(new ArrayList<>());
@@ -278,7 +282,7 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
                 for (WebserviceDistribution ed : webserviceDistributions) {
                     if(ed.getDistributionInstanceId().equals(o.getInstanceId())) {
                         AbstractAPI api = AbstractAPI.retrieveAPI(EntityNames.WEBSERVICE.name());
-                        o.setAccessService(api.retrieveLinkedEntity(ed.getWebserviceInstanceId()));
+                        o.addAccessService(api.retrieveLinkedEntity(ed.getWebserviceInstanceId()));
                     }
                 }
             }
@@ -288,7 +292,7 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
                 for (OperationDistribution ed : operationDistributions) {
                     if(ed.getDistributionInstanceId().equals(o.getInstanceId())) {
                         AbstractAPI api = AbstractAPI.retrieveAPI(EntityNames.OPERATION.name());
-                        o.setSupportedOperation(api.retrieveLinkedEntity(ed.getOperationInstanceId()));
+                        o.addSupportedOperation(api.retrieveLinkedEntity(ed.getOperationInstanceId()));
                     }
                 }
             }

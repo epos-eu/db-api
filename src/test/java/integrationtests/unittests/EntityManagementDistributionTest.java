@@ -36,8 +36,8 @@ public class EntityManagementDistributionTest extends TestcontainersLifecycle {
         distribution.setInstanceId(UUID.randomUUID().toString());
         distribution.setMetaId(UUID.randomUUID().toString());
         distribution.setUid(UUID.randomUUID().toString());
-        distribution.setAccessService(le);
-        distribution.setSupportedOperation(le2);
+        distribution.addAccessService(le);
+        distribution.addSupportedOperation(le2);
 
         api.create(distribution, null);
 
