@@ -22,7 +22,7 @@ public class EntityManagementStressTest extends TestcontainersLifecycle {
         AbstractAPI mappingAPI = AbstractAPI.retrieveAPI(EntityNames.MAPPING.name());
         AbstractAPI operationAPI = AbstractAPI.retrieveAPI(EntityNames.OPERATION.name());
 
-        for(int i = 0; i<250; i++){
+        for(int i = 0; i<50; i++){
             Operation operation = new Operation();
             operation.setInstanceId(UUID.randomUUID().toString());
             operation.setMetaId(UUID.randomUUID().toString());

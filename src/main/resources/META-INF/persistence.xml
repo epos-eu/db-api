@@ -70,6 +70,7 @@
 		<class>model.MappingElement</class>
 		<class>model.OperationDistribution</class>
 		<class>model.OperationElement</class>
+		<class>model.OperationMapping</class>
 		<class>model.OperationWebservice</class>
 		<class>model.OrganizationAffiliation</class>
 		<class>model.OrganizationContactpoint</class>
