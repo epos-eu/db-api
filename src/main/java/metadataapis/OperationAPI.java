@@ -2,6 +2,7 @@ package metadataapis;
 
 import abstractapis.AbstractAPI;
 import commonapis.*;
+import io.swagger.v3.core.jackson.mixin.OperationMixin;
 import model.*;
 import org.epos.eposdatamodel.LinkedEntity;
 import org.epos.eposdatamodel.WebService;
@@ -47,10 +48,13 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
         edmobj.setMethod(obj.getMethod());
         edmobj.setTemplate(obj.getTemplate());
 
-        /** MAPPING TODO: CHECK IF DELETE **/
         if (obj.getMapping() != null && !obj.getMapping().isEmpty()) {
-            MappingAPI mappingAPI = new MappingAPI(EntityNames.MAPPING.name(), Mapping.class);
-            List<Mapping> mappingList = new ArrayList<>();
+            List<OperationMapping> operationMappingList = getDbaccess().getAllFromDB(OperationMapping.class);
+            for(OperationMapping item : operationMappingList){
+                if(item.getOperationInstanceId().equals(obj.getInstanceId())){
+                    getDbaccess().deleteObject(item);
+                }
+            }
             for(LinkedEntity mapping : obj.getMapping()){
                 List<Mapping> list = dbaccess.getOneFromDBByInstanceId(mapping.getInstanceId(),Mapping.class);
                 Mapping mapping1 = null;
@@ -60,9 +64,13 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
                 } else {
                     mapping1 = list.get(0);
                 }
-                mappingList.add(mapping1);
+                OperationMapping pi = new OperationMapping();
+                pi.setOperationByOperationInstanceId(edmobj);
+                pi.setOperationInstanceId(edmobj.getInstanceId());
+                pi.setMappingInstanceId(mapping1.getInstanceId());
+                pi.setMappingByMappingInstanceId(mapping1);
+                dbaccess.updateObject(pi);
             }
-            edmobj.setMappingsByInstanceId(mappingList);
         }
 
         if (obj.getWebservice() != null && !obj.getWebservice().isEmpty()) {
@@ -150,6 +158,14 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
                 }
             }
 
+            if (edmobj.getOperationMappingsByInstanceId().size() > 0) {
+                MappingAPI api = new MappingAPI(EntityNames.MAPPING.name(), Mapping.class);
+                for (OperationMapping ed : edmobj.getOperationMappingsByInstanceId()) {
+                    LinkedEntity el = api.retrieveLinkedEntity(ed.getMappingInstanceId());
+                    o.addMapping(el);
+                }
+            }
+
             if (edmobj.getOperationElementsByInstanceId().size() > 0) {
                 for (OperationElement ed : edmobj.getOperationElementsByInstanceId()) {
                     Element el = ed.getElementByElementInstanceId();
@@ -159,13 +175,6 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
                 }
             }
 
-            if (edmobj.getMappingsByInstanceId().size() > 0) {
-                for (Mapping ed : edmobj.getMappingsByInstanceId()) {
-
-                    MappingAPI api = new MappingAPI(EntityNames.MAPPING.name(), Mapping.class);
-                    o.addMapping(api.retrieveLinkedEntity(ed.getInstanceId()));
-                }
-            }
 
             o = (org.epos.eposdatamodel.Operation) VersioningStatusAPI.retrieveVersion(o);
 

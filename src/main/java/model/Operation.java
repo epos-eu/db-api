@@ -23,8 +23,6 @@ public class Operation {
     @Basic
     @Column(name = "template", nullable = true, length = -1)
     private String template;
-    @OneToMany(mappedBy = "operationByIsmappingof")
-    private Collection<Mapping> mappingsByInstanceId;
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "version_id", referencedColumnName = "version_id")
     private Versioningstatus versioningstatusByVersionId;
@@ -34,6 +32,8 @@ public class Operation {
     private Collection<OperationElement> operationElementsByInstanceId;
     @OneToMany(mappedBy = "operationByOperationInstanceId")
     private Collection<OperationWebservice> operationWebservicesByInstanceId;
+    @OneToMany(mappedBy = "operationByOperationInstanceId")
+    private Collection<OperationMapping> operationMappingsByInstanceId;
     @OneToMany(mappedBy = "operationByOperationInstanceId")
     private Collection<SoftwareapplicationOperation> softwareapplicationOperationsByInstanceId;
 
@@ -113,14 +113,6 @@ public class Operation {
         return result;
     }
 
-    public Collection<Mapping> getMappingsByInstanceId() {
-        return mappingsByInstanceId;
-    }
-
-    public void setMappingsByInstanceId(Collection<Mapping> mappingsByInstanceId) {
-        this.mappingsByInstanceId = mappingsByInstanceId;
-    }
-
     public Versioningstatus getVersioningstatusByVersionId() {
         return versioningstatusByVersionId;
     }
@@ -151,6 +143,14 @@ public class Operation {
 
     public void setOperationWebservicesByInstanceId(Collection<OperationWebservice> operationWebservicesByInstanceId) {
         this.operationWebservicesByInstanceId = operationWebservicesByInstanceId;
+    }
+
+    public Collection<OperationMapping> getOperationMappingsByInstanceId() {
+        return operationMappingsByInstanceId;
+    }
+
+    public void setOperationMappingsByInstanceId(Collection<OperationMapping> operationMappingsByInstanceId) {
+        this.operationMappingsByInstanceId = operationMappingsByInstanceId;
     }
 
     public Collection<SoftwareapplicationOperation> getSoftwareapplicationOperationsByInstanceId() {

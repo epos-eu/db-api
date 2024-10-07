@@ -45,7 +45,6 @@ public class BunchOfEntitiesManagementTest extends TestcontainersLifecycle {
 
 
         List<DataProduct> retrieveAll = api.retrieveAll();
-
         LOG.info("RECEIVED:\n"+retrieveAll.size());
 
         assertNotNull(retrieveAll);
