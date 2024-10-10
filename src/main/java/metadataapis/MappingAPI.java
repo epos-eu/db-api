@@ -117,6 +117,7 @@ public class MappingAPI extends AbstractAPI<org.epos.eposdatamodel.Mapping> {
             o.setRequired(Boolean.toString(edmobj.isRequired()));
             o.setRange(edmobj.getRange());
             o.setProperty(edmobj.getProperty());
+            o.setVariable(edmobj.getVariable());
 
             if (edmobj.getMappingElementsByInstanceId().size() > 0) {
                 for (MappingElement ed : edmobj.getMappingElementsByInstanceId()) {
