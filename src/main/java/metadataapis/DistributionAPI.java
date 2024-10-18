@@ -5,6 +5,7 @@ import commonapis.*;
 import model.*;
 import org.epos.eposdatamodel.ContactPoint;
 import org.epos.eposdatamodel.LinkedEntity;
+import relationsapi.RelationChecker;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -119,17 +120,12 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
                     getDbaccess().deleteObject(item);
                 }
             }
-            DataProductAPI dataProductAPI = new DataProductAPI(EntityNames.DATAPRODUCT.name(), Dataproduct.class);
+
             edmobj.setDistributionDataproductsByInstanceId(new ArrayList<>());
             for(LinkedEntity dataProduct : obj.getDataProduct()){
-                List<Dataproduct> list = dbaccess.getOneFromDBByInstanceId(dataProduct.getInstanceId(),Dataproduct.class);
-                Dataproduct dataproduct = null;
-                if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(dataProduct, overrideStatus);
-                    dataproduct = (Dataproduct) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Dataproduct.class).get(0);
-                } else {
-                    dataproduct = list.get(0);
-                }
+
+                Dataproduct dataproduct = (Dataproduct) RelationChecker.checkRelation(dataProduct, overrideStatus, Dataproduct.class);
+
                 DistributionDataproduct pi = new DistributionDataproduct();
                 pi.setDistributionByDistributionInstanceId(edmobj);
                 pi.setDistributionInstanceId(edmobj.getInstanceId());
@@ -150,14 +146,9 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
                 }
             }
             for(LinkedEntity accessService : obj.getAccessService()) {
-                List<Webservice> list = dbaccess.getOneFromDBByInstanceId(accessService.getInstanceId(), Webservice.class);
-                Webservice webservice = null;
-                if (list.isEmpty()) {
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(accessService, overrideStatus);
-                    webservice = (Webservice) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Webservice.class).get(0);
-                } else {
-                    webservice = list.get(0);
-                }
+
+                Webservice webservice = (Webservice) RelationChecker.checkRelation(accessService, overrideStatus, Webservice.class);
+
                 WebserviceDistribution pi = new WebserviceDistribution();
                 pi.setDistributionByDistributionInstanceId(edmobj);
                 pi.setDistributionInstanceId(edmobj.getInstanceId());
@@ -176,14 +167,9 @@ public class DistributionAPI extends AbstractAPI<org.epos.eposdatamodel.Distribu
                 }
             }
             for(LinkedEntity supportedOperation : obj.getSupportedOperation()) {
-                List<Operation> list = dbaccess.getOneFromDBByInstanceId(supportedOperation.getInstanceId(), Operation.class);
-                Operation operation = null;
-                if (list.isEmpty()) {
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(supportedOperation, overrideStatus);
-                    operation = (Operation) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Operation.class).get(0);
-                } else {
-                    operation = list.get(0);
-                }
+
+                Operation operation = (Operation) RelationChecker.checkRelation(supportedOperation, overrideStatus, Operation.class);
+
                 OperationDistribution pi = new OperationDistribution();
                 pi.setDistributionByDistributionInstanceId(edmobj);
                 pi.setDistributionInstanceId(edmobj.getInstanceId());

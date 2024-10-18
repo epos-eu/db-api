@@ -9,6 +9,7 @@ import org.epos.eposdatamodel.Documentation;
 import org.epos.eposdatamodel.LinkedEntity;
 import relationsapi.CategoryRelationsAPI;
 import relationsapi.ContactPointRelationsAPI;
+import relationsapi.RelationChecker;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -66,14 +67,8 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
 
         /** PUBLISHER **/
         if (obj.getProvider() != null) {
-            List<Organization> list = dbaccess.getOneFromDBByInstanceId(obj.getProvider().getInstanceId(),Organization.class);
-            Organization organization1 = null;
-            if(list.isEmpty()){
-                LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(obj.getProvider(), overrideStatus);
-                organization1 = (Organization) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Organization.class).get(0);
-            } else {
-                organization1 = list.get(0);
-            }
+
+            Organization organization1 = (Organization) RelationChecker.checkRelation(obj.getProvider(), overrideStatus, Organization.class);
 
             edmobj.setProvider(organization1.getInstanceId());
         }
@@ -118,16 +113,9 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
             }
             edmobj.setWebserviceIdentifiersByInstanceId(new ArrayList<>());
             for(org.epos.eposdatamodel.LinkedEntity identifier : obj.getIdentifier()){
-                List<Identifier> list = dbaccess.getOneFromDBByInstanceId(identifier.getInstanceId(),Identifier.class);
-                Identifier identifier1 = null;
-                if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(identifier, overrideStatus);
-                    List<Identifier> identifierList1 = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Identifier.class);
-                    if(!identifierList1.isEmpty())
-                        identifier1 = identifierList1.get(0);
-                } else {
-                    identifier1 = list.get(0);
-                }
+
+                Identifier identifier1 = (Identifier) RelationChecker.checkRelation(identifier, overrideStatus, Identifier.class);
+
                 if(identifier1!=null) {
                     WebserviceIdentifier pi = new WebserviceIdentifier();
                     pi.setWebserviceByWebserviceInstanceId(edmobj);
@@ -153,16 +141,9 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
 
             edmobj.setWebserviceSpatialsByInstanceId(new ArrayList<>());
             for(org.epos.eposdatamodel.LinkedEntity location : obj.getSpatialExtent()){
-                List<Spatial> list = dbaccess.getOneFromDBByInstanceId(location.getInstanceId(),Spatial.class);
-                Spatial spatial = null;
-                if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(location, overrideStatus);
-                    List<Spatial> spatialList = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Spatial.class);
-                    if(!spatialList.isEmpty())
-                        spatial = spatialList.get(0);
-                } else {
-                    spatial = list.get(0);
-                }
+
+                Spatial spatial = (Spatial) RelationChecker.checkRelation(location, overrideStatus, Spatial.class);
+
                 WebserviceSpatial pi = new WebserviceSpatial();
                 pi.setWebserviceByWebserviceInstanceId(edmobj);
                 pi.setWebserviceInstanceId(edmobj.getInstanceId());
@@ -185,16 +166,9 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
             }
             edmobj.setWebserviceTemporalsByInstanceId(new ArrayList<>());
             for(org.epos.eposdatamodel.LinkedEntity periodOfTime : obj.getTemporalExtent()){
-                List<Temporal> list = dbaccess.getOneFromDBByInstanceId(periodOfTime.getInstanceId(),Temporal.class);
-                Temporal temporal = null;
-                if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(periodOfTime, overrideStatus);
-                    List<Temporal> temporalList = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Temporal.class);
-                    if(!temporalList.isEmpty())
-                        temporal = temporalList.get(0);
-                } else {
-                    temporal = list.get(0);
-                }
+
+                Temporal temporal = (Temporal) RelationChecker.checkRelation(periodOfTime, overrideStatus, Temporal.class);
+
                 if(temporal!=null) {
                     WebserviceTemporal pi = new WebserviceTemporal();
                     pi.setWebserviceByWebserviceInstanceId(edmobj);
@@ -218,16 +192,9 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
             }
             edmobj.setOperationWebservicesByInstanceId(new ArrayList<>());
             for(LinkedEntity operation : obj.getSupportedOperation()){
-                List<Operation> list = dbaccess.getOneFromDBByInstanceId(operation.getInstanceId(),Operation.class);
-                Operation operation1 = null;
-                if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(operation, overrideStatus);
-                    List<Operation> operationList = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Operation.class);
-                    if(!operationList.isEmpty())
-                        operation1 = operationList.get(0);
-                } else {
-                    operation1 = list.get(0);
-                }
+
+                Operation operation1 = (Operation) RelationChecker.checkRelation(operation, overrideStatus, Operation.class);
+
                 if(operation1!=null) {
                     OperationWebservice pi = new OperationWebservice();
                     pi.setOperationByOperationInstanceId(operation1);

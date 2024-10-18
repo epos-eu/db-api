@@ -6,6 +6,7 @@ import io.swagger.v3.core.jackson.mixin.OperationMixin;
 import model.*;
 import org.epos.eposdatamodel.LinkedEntity;
 import org.epos.eposdatamodel.WebService;
+import relationsapi.RelationChecker;
 
 import java.util.*;
 
@@ -48,6 +49,7 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
         edmobj.setMethod(obj.getMethod());
         edmobj.setTemplate(obj.getTemplate());
 
+        edmobj.setOperationMappingsByInstanceId(new ArrayList<>());
         if (obj.getMapping() != null && !obj.getMapping().isEmpty()) {
             List<OperationMapping> operationMappingList = getDbaccess().getAllFromDB(OperationMapping.class);
             for(OperationMapping item : operationMappingList){
@@ -56,19 +58,17 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
                 }
             }
             for(LinkedEntity mapping : obj.getMapping()){
-                List<Mapping> list = dbaccess.getOneFromDBByInstanceId(mapping.getInstanceId(),Mapping.class);
-                Mapping mapping1 = null;
-                if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(mapping, overrideStatus);
-                    mapping1 = (Mapping) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Mapping.class).get(0);
-                } else {
-                    mapping1 = list.get(0);
-                }
+
+                Mapping mapping1 = (Mapping) RelationChecker.checkRelation(mapping, overrideStatus, Mapping.class);
+
                 OperationMapping pi = new OperationMapping();
                 pi.setOperationByOperationInstanceId(edmobj);
                 pi.setOperationInstanceId(edmobj.getInstanceId());
                 pi.setMappingInstanceId(mapping1.getInstanceId());
                 pi.setMappingByMappingInstanceId(mapping1);
+
+                edmobj.getOperationMappingsByInstanceId().add(pi);
+
                 dbaccess.updateObject(pi);
             }
         }
@@ -82,14 +82,9 @@ public class OperationAPI extends AbstractAPI<org.epos.eposdatamodel.Operation> 
             }
             edmobj.setOperationWebservicesByInstanceId(new ArrayList<>());
             for(LinkedEntity webService : obj.getWebservice()){
-                List<Webservice> list = dbaccess.getOneFromDBByInstanceId(webService.getInstanceId(),Webservice.class);
-                Webservice webservice = null;
-                if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(webService, overrideStatus);
-                    webservice = (Webservice) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Webservice.class).get(0);
-                } else {
-                    webservice = list.get(0);
-                }
+
+                Webservice webservice = (Webservice) RelationChecker.checkRelation(webService, overrideStatus, Webservice.class);
+
                 OperationWebservice pi = new OperationWebservice();
                 pi.setOperationByOperationInstanceId(edmobj);
                 pi.setOperationInstanceId(edmobj.getInstanceId());

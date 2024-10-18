@@ -6,7 +6,6 @@ import metadataapis.*;
 import model.*;
 import org.epos.eposdatamodel.EPOSDataModelEntity;
 import org.epos.eposdatamodel.LinkedEntity;
-import org.epos.eposdatamodel.Parameter;
 
 import java.util.List;
 import java.util.Optional;

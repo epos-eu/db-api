@@ -6,6 +6,7 @@ import model.*;
 import org.epos.eposdatamodel.LinkedEntity;
 import relationsapi.CategoryRelationsAPI;
 import relationsapi.ContactPointRelationsAPI;
+import relationsapi.RelationChecker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,14 +75,9 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
             AddressAPI addressAPI = new AddressAPI(EntityNames.ADDRESS.name(), Address.class);
             edmobj.setFacilityAddressesByInstanceId(new ArrayList<>());
             for(LinkedEntity address : obj.getAddress()){
-                List<Address> list = dbaccess.getOneFromDBByInstanceId(address.getInstanceId(),Address.class);
-                Address address1 = null;
-                if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(address, overrideStatus);
-                    address1 = (Address) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Address.class).get(0);
-                } else {
-                    address1 = list.get(0);
-                }
+
+                Address address1 = (Address) RelationChecker.checkRelation(address, overrideStatus, Address.class);
+
                 FacilityAddress pi = new FacilityAddress();
                 pi.setFacilityByFacilityInstanceId(edmobj);
                 pi.setFacilityInstanceId(edmobj.getInstanceId());
@@ -104,14 +100,9 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
             }
             edmobj.setFacilityIspartofsByInstanceId(new ArrayList<>());
             for(LinkedEntity facility : obj.getIsPartOf()){
-                List<Facility> list = dbaccess.getOneFromDBByInstanceId(facility.getInstanceId(),Facility.class);
-                Facility facility1 = null;
-                if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(facility, overrideStatus);
-                    facility1 = (Facility) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Facility.class).get(0);
-                } else {
-                    facility1 = list.get(0);
-                }
+
+                Facility facility1 = (Facility) RelationChecker.checkRelation(facility, overrideStatus, Facility.class);
+
                 FacilityIspartof pi = new FacilityIspartof();
                 pi.setFacilityByFacility1InstanceId(edmobj);
                 pi.setFacility1InstanceId(edmobj.getInstanceId());
@@ -135,14 +126,9 @@ public class FacilityAPI extends AbstractAPI<org.epos.eposdatamodel.Facility> {
             SpatialAPI spatialAPI = new SpatialAPI(EntityNames.LOCATION.name(), Spatial.class);
             edmobj.setFacilitySpatialsByInstanceId(new ArrayList<>());
             for(org.epos.eposdatamodel.LinkedEntity location : obj.getSpatialExtent()){
-                List<Spatial> list = dbaccess.getOneFromDBByInstanceId(location.getInstanceId(),Spatial.class);
-                Spatial spatial = null;
-                if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(location, overrideStatus);
-                    spatial = (Spatial) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Spatial.class).get(0);
-                } else {
-                    spatial = list.get(0);
-                }
+
+                Spatial spatial = (Spatial) RelationChecker.checkRelation(location, overrideStatus, Spatial.class);
+
                 FacilitySpatial pi = new FacilitySpatial();
                 pi.setFacilityByFacilityInstanceId(edmobj);
                 pi.setFacilityInstanceId(edmobj.getInstanceId());

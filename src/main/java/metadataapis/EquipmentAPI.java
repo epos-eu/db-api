@@ -6,6 +6,7 @@ import model.*;
 import org.epos.eposdatamodel.LinkedEntity;
 import relationsapi.CategoryRelationsAPI;
 import relationsapi.ContactPointRelationsAPI;
+import relationsapi.RelationChecker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,15 +82,9 @@ public class EquipmentAPI extends AbstractAPI<org.epos.eposdatamodel.Equipment> 
                 }
             }
             for(LinkedEntity equipment : obj.getIsPartOf()){
-                List<Equipment> list = dbaccess.getOneFromDBByInstanceId(equipment.getInstanceId(),Equipment.class);
-                Equipment equipment1 = null;
-                if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(equipment, overrideStatus);
-                    List<Equipment> list1 = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Equipment.class);
-                    if(list1.size()>0) equipment1 = list1.get(0);
-                } else {
-                    equipment1 = list.get(0);
-                }
+
+                Equipment equipment1 = (Equipment) RelationChecker.checkRelation(equipment, overrideStatus, Equipment.class);
+
                 if(equipment1!=null) {
                     EquipmentIspartof pi = new EquipmentIspartof();
                     pi.setEquipmentByEquipmentInstanceId(edmobj);
@@ -112,15 +107,9 @@ public class EquipmentAPI extends AbstractAPI<org.epos.eposdatamodel.Equipment> 
                 }
             }
             for(LinkedEntity facility : obj.getIsPartOf()){
-                List<Facility> list = dbaccess.getOneFromDBByInstanceId(facility.getInstanceId(),Facility.class);
-                Facility facility1 = null;
-                if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(facility, overrideStatus);
-                    List<Facility> list1 = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Facility.class);
-                    facility1 = list1.size()>0? list1.get(0) : null;
-                } else {
-                    facility1 = list.get(0);
-                }
+
+                Facility facility1 = (Facility) RelationChecker.checkRelation(facility, overrideStatus, Facility.class);
+
                 if(facility1!=null) {
                     EquipmentIspartof pi = new EquipmentIspartof();
                     pi.setEquipmentByEquipmentInstanceId(edmobj);
@@ -144,14 +133,9 @@ public class EquipmentAPI extends AbstractAPI<org.epos.eposdatamodel.Equipment> 
             SpatialAPI spatialAPI = new SpatialAPI(EntityNames.LOCATION.name(), Spatial.class);
             edmobj.setEquipmentSpatialsByInstanceId(new ArrayList<>());
             for(org.epos.eposdatamodel.LinkedEntity location : obj.getSpatialExtent()){
-                List<Spatial> list = dbaccess.getOneFromDBByInstanceId(location.getInstanceId(),Spatial.class);
-                Spatial spatial = null;
-                if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(location, overrideStatus);
-                    spatial = (Spatial) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Spatial.class).get(0);
-                } else {
-                    spatial = list.get(0);
-                }
+
+                Spatial spatial = (Spatial) RelationChecker.checkRelation(location, overrideStatus, Spatial.class);
+
                 EquipmentSpatial pi = new EquipmentSpatial();
                 pi.setEquipmentByEquipmentInstanceId(edmobj);
                 pi.setEquipmentInstanceId(edmobj.getInstanceId());
@@ -174,14 +158,9 @@ public class EquipmentAPI extends AbstractAPI<org.epos.eposdatamodel.Equipment> 
             TemporalAPI temporalAPI = new TemporalAPI(EntityNames.PERIODOFTIME.name(), Temporal.class);
             edmobj.setEquipmentTemporalsByInstanceId(new ArrayList<>());
             for(org.epos.eposdatamodel.LinkedEntity periodOfTime : obj.getTemporalExtent()){
-                List<Temporal> list = dbaccess.getOneFromDBByInstanceId(periodOfTime.getInstanceId(),Temporal.class);
-                Temporal temporal = null;
-                if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(periodOfTime, overrideStatus);
-                    temporal = (Temporal) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Temporal.class).get(0);
-                } else {
-                    temporal = list.get(0);
-                }
+
+                Temporal temporal = (Temporal) RelationChecker.checkRelation(periodOfTime, overrideStatus, Temporal.class);
+
                 EquipmentTemporal pi = new EquipmentTemporal();
                 pi.setEquipmentByEquipmentInstanceId(edmobj);
                 pi.setEquipmentInstanceId(edmobj.getInstanceId());

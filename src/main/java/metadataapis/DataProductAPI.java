@@ -6,6 +6,7 @@ import model.*;
 import org.epos.eposdatamodel.LinkedEntity;
 import relationsapi.CategoryRelationsAPI;
 import relationsapi.ContactPointRelationsAPI;
+import relationsapi.RelationChecker;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -133,14 +134,9 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
             }
             edmobj.setDataproductHaspartsByInstanceId(new ArrayList<>());
             for(LinkedEntity dataProduct : obj.getHasPart()){
-                List<Dataproduct> list = dbaccess.getOneFromDBByInstanceId(dataProduct.getInstanceId(),Dataproduct.class);
-                Dataproduct dataproduct = null;
-                if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(dataProduct, overrideStatus);
-                    dataproduct = (Dataproduct) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Dataproduct.class).get(0);
-                } else {
-                    dataproduct = list.get(0);
-                }
+
+                Dataproduct dataproduct = (Dataproduct) RelationChecker.checkRelation(dataProduct, overrideStatus, Dataproduct.class);
+
                 DataproductHaspart pi = new DataproductHaspart();
                 pi.setDataproductByDataproduct1InstanceId(edmobj);
                 pi.setDataproduct1InstanceId(edmobj.getInstanceId());
@@ -161,15 +157,8 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
             }
             edmobj.setDataproductIspartofsByInstanceId(new ArrayList<>());
             for(LinkedEntity dataProduct : obj.getIsPartOf()){
-                List<Dataproduct> list = dbaccess.getOneFromDBByInstanceId(dataProduct.getInstanceId(),Dataproduct.class);
-                Dataproduct dataproduct = null;
-                if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(dataProduct, overrideStatus);
-                    List<Dataproduct> list1 = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Dataproduct.class);
-                    dataproduct =list1.size()>0? list1.get(0) : null;
-                } else {
-                    dataproduct = list.get(0);
-                }
+                Dataproduct dataproduct = (Dataproduct) RelationChecker.checkRelation(dataProduct, overrideStatus, Dataproduct.class);
+
                 if(dataproduct!=null) {
                     DataproductIspartof pi = new DataproductIspartof();
                     pi.setDataproductByDataproduct1InstanceId(edmobj);
@@ -240,14 +229,9 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
             OrganizationAPI organizationAPI = new OrganizationAPI(EntityNames.ORGANIZATION.name(), Organization.class);
             edmobj.setDataproductPublishersByInstanceId(new ArrayList<>());
             for(LinkedEntity organization : obj.getPublisher()){
-                List<Organization> list = dbaccess.getOneFromDBByInstanceId(organization.getInstanceId(),Organization.class);
-                Organization organization1 = null;
-                if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(organization, overrideStatus);
-                    organization1 = (Organization) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Organization.class).get(0);
-                } else {
-                    organization1 = list.get(0);
-                }
+
+                Organization organization1 = (Organization) RelationChecker.checkRelation(organization, overrideStatus, Organization.class);
+
                 DataproductPublisher pi = new DataproductPublisher();
                 pi.setDataproductByDataproductInstanceId(edmobj);
                 pi.setDataproductInstanceId(edmobj.getInstanceId());
@@ -269,17 +253,9 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
             }
 
             for(LinkedEntity distribution : obj.getDistribution()){
-                List<Distribution> list = dbaccess.getOneFromDBByInstanceId(distribution.getInstanceId(),Distribution.class);
-                Distribution distribution1 = null;
-                if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(distribution, overrideStatus);
-                    List<Distribution> distributionList = dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Distribution.class);
-                    if(!distributionList.isEmpty())
-                        distribution1 = distributionList.get(0);
-                } else {
-                    distribution1 = list.get(0);
-                }
-                System.out.println("ADDING DISTRIBUTION: "+distribution1);
+
+                Distribution distribution1 = (Distribution) RelationChecker.checkRelation(distribution, overrideStatus, Distribution.class);
+
                 if(distribution1!=null) {
                     DistributionDataproduct pi = new DistributionDataproduct();
                     pi.setDataproductByDataproductInstanceId(edmobj);
@@ -303,14 +279,9 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
             }
             edmobj.setDataproductSpatialsByInstanceId(new ArrayList<>());
             for(org.epos.eposdatamodel.LinkedEntity location : obj.getSpatialExtent()){
-                List<Spatial> list = dbaccess.getOneFromDBByInstanceId(location.getInstanceId(),Spatial.class);
-                Spatial spatial = null;
-                if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(location, overrideStatus);
-                    spatial = (Spatial) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Spatial.class).get(0);
-                } else {
-                    spatial = list.get(0);
-                }
+
+                Spatial spatial = (Spatial) RelationChecker.checkRelation(location, overrideStatus, Spatial.class);
+
                 DataproductSpatial pi = new DataproductSpatial();
                 pi.setDataproductByDataproductInstanceId(edmobj);
                 pi.setDataproductInstanceId(edmobj.getInstanceId());
@@ -331,14 +302,9 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
             TemporalAPI temporalAPI = new TemporalAPI(EntityNames.PERIODOFTIME.name(), Temporal.class);
             edmobj.setDataproductTemporalsByInstanceId(new ArrayList<>());
             for(org.epos.eposdatamodel.LinkedEntity periodOfTime : obj.getTemporalExtent()){
-                List<Temporal> list = dbaccess.getOneFromDBByInstanceId(periodOfTime.getInstanceId(),Temporal.class);
-                Temporal temporal = null;
-                if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(periodOfTime, overrideStatus);
-                    temporal = (Temporal) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Temporal.class).get(0);
-                } else {
-                    temporal = list.get(0);
-                }
+
+                Temporal temporal = (Temporal) RelationChecker.checkRelation(periodOfTime, overrideStatus, Temporal.class);
+
                 DataproductTemporal pi = new DataproductTemporal();
                 pi.setDataproductByDataproductInstanceId(edmobj);
                 pi.setDataproductInstanceId(edmobj.getInstanceId());

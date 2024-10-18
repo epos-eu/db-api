@@ -5,6 +5,7 @@ import commonapis.*;
 import model.*;
 import org.epos.eposdatamodel.ContactPoint;
 import org.epos.eposdatamodel.LinkedEntity;
+import relationsapi.RelationChecker;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -98,14 +99,9 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
             OrganizationAPI organizationAPI = new OrganizationAPI(EntityNames.ORGANIZATION.name(), Organization.class);
             edmobj.setOrganizationAffiliationsByInstanceId(new ArrayList<>());
             for(LinkedEntity organization : obj.getAffiliation()){
-                List<Organization> list = dbaccess.getOneFromDBByInstanceId(organization.getInstanceId(),Organization.class);
-                Organization organization1 = null;
-                if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(organization, overrideStatus);
-                    organization1 = (Organization) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Organization.class).get(0);
-                } else {
-                    organization1 = list.get(0);
-                }
+
+                Organization organization1 = (Organization) RelationChecker.checkRelation(organization, overrideStatus, Organization.class);
+
                 OrganizationAffiliation pi = new OrganizationAffiliation();
                 pi.setPersonByPersonInstanceId(edmobj);
                 pi.setPersonInstanceId(edmobj.getInstanceId());
@@ -122,14 +118,9 @@ public class PersonAPI extends AbstractAPI<org.epos.eposdatamodel.Person> {
         if (obj.getContactPoint() != null && !obj.getContactPoint().isEmpty()) {
             edmobj.setPersonContactpointsByInstanceId(new ArrayList<>());
             for(LinkedEntity contactpoint : obj.getContactPoint()){
-                List<Contactpoint> list = dbaccess.getOneFromDBByInstanceId(contactpoint.getInstanceId(),Contactpoint.class);
-                Contactpoint contactpoint1 = null;
-                if(list.isEmpty()){
-                    LinkedEntity le = LinkedEntityAPI.createFromLinkedEntity(contactpoint, overrideStatus);
-                    contactpoint1 = (Contactpoint) dbaccess.getOneFromDBByInstanceId(le.getInstanceId(), Contactpoint.class).get(0);
-                } else {
-                    contactpoint1 = list.get(0);
-                }
+
+                Contactpoint contactpoint1 = (Contactpoint) RelationChecker.checkRelation(contactpoint, overrideStatus, Contactpoint.class);
+
                 PersonContactpoint pi = new PersonContactpoint();
                 pi.setPersonByPersonInstanceId(edmobj);
                 pi.setPersonInstanceId(edmobj.getInstanceId());
