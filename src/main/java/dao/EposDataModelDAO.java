@@ -3,6 +3,7 @@ package dao;
 import model.Versioningstatus;
 
 import jakarta.persistence.EntityManager;
+import org.epos.eposdatamodel.LinkedEntity;
 import org.epos.handler.dbapi.service.EntityManagerService;
 
 import java.util.ArrayList;
@@ -110,6 +111,24 @@ public class EposDataModelDAO<T> {
         }
         if(versionId!=null) {
             resultList.addAll(getOneFromDBByVersionID(versionId,obj));
+            return resultList;
+        }
+
+        return resultList;
+    }
+
+    public List<T> getOneFromDBByLinkedEntity(LinkedEntity linkedEntity, Class<T> obj){
+        List resultList = new ArrayList<T>();
+        if(linkedEntity.getInstanceId()!=null) {
+            resultList.addAll(getOneFromDBByInstanceId(linkedEntity.getInstanceId(),obj));
+            return resultList;
+        }
+        if(linkedEntity.getMetaId()!=null) {
+            resultList.addAll(getOneFromDBByMetaId(linkedEntity.getMetaId(),obj));
+            return resultList;
+        }
+        if(linkedEntity.getUid()!=null) {
+            resultList.addAll(getOneFromDBByUID(linkedEntity.getUid(),obj));
             return resultList;
         }
 

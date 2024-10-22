@@ -226,7 +226,6 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
                     getDbaccess().deleteObject(item);
                 }
             }
-            OrganizationAPI organizationAPI = new OrganizationAPI(EntityNames.ORGANIZATION.name(), Organization.class);
             edmobj.setDataproductPublishersByInstanceId(new ArrayList<>());
             for(LinkedEntity organization : obj.getPublisher()){
 
@@ -253,8 +252,10 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
             }
 
             for(LinkedEntity distribution : obj.getDistribution()){
+                System.out.println("DISTRIBUTION LE :"+distribution);
 
                 Distribution distribution1 = (Distribution) RelationChecker.checkRelation(distribution, overrideStatus, Distribution.class);
+                System.out.println("DISTRIBUTION OBJ :"+distribution1);
 
                 if(distribution1!=null) {
                     DistributionDataproduct pi = new DistributionDataproduct();
@@ -262,7 +263,6 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
                     pi.setDataproductInstanceId(edmobj.getInstanceId());
                     pi.setDistributionInstanceId(distribution1.getInstanceId());
                     pi.setDistributionByDistributionInstanceId(distribution1);
-                    //edmobj.getDistributionDataproductsByInstanceId().add(pi);
 
                     dbaccess.updateObject(pi);
                 }
