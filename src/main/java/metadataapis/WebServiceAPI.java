@@ -271,7 +271,7 @@ public class WebServiceAPI extends AbstractAPI<org.epos.eposdatamodel.WebService
             o.setLicense(edmobj.getLicense());
             o.setName(edmobj.getName());
             o.setAaaiTypes(edmobj.getAaaitypes());
-            if(!edmobj.getKeywords().isBlank())
+            if(edmobj.getKeywords()!=null && !edmobj.getKeywords().isBlank())
                 for(String item : edmobj.getKeywords().split("\\|"))
                     o.addKeywords(item);
 
