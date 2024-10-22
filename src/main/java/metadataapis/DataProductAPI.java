@@ -350,7 +350,7 @@ public class DataProductAPI extends AbstractAPI<org.epos.eposdatamodel.DataProdu
             o.setQualityAssurance(edmobj.getQualityassurance());
             o.setAccessRight(edmobj.getAccessright());
 
-            if(!edmobj.getKeywords().isBlank())
+            if(edmobj.getKeywords()!=null && !edmobj.getKeywords().isBlank())
                 for(String item : edmobj.getKeywords().split("\\|"))
                     o.addKeywords(item);
 
